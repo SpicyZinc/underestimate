@@ -1,0 +1,108 @@
+/*
+Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+According to the definition of LCA on Wikipedia: 
+"The lowest common ancestor is defined between two nodes v and w as the lowest node in T 
+that has both v and w as descendants (where we allow a node to be a descendant of itself)."
+For example, 
+        _______3______
+       /              \
+    ___5__          ___1__
+   /      \        /      \
+   6      _2       0       8
+         /  \
+         7   4
+the lowest common ancestor (LCA) of nodes 5 and 1 is 3
+LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.
+
+idea:
+1. recursion
+http://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/
+2. find paths from root to p and q. 
+Loop through the two paths, return last one node before two paths are mismatched
+http://blog.csdn.net/xudli/article/details/46871283
+*/
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+public class LowestCommonAncestorOfBinaryTree {
+	// method 1
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if ( root == null ) {
+        	return root;
+        }
+        if ( root == p || root == q ) {
+        	return root;
+        }
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        if ( left != null && right != null ) {
+        	return root;
+        }
+
+        return left == null ? right : left;
+    }
+
+    // method 2, note know how to get path from some node to target using list
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || p == root || q == root) return root;
+        List<TreeNode> pathP = new ArrayList<TreeNode>();
+        List<TreeNode> pathQ = new ArrayList<TreeNode>();
+        path(root, p, pathP);
+        path(root, q, pathQ);
+        int i = 0;
+        while (i < pathP.size() && i < pathQ.size()) {
+            if (pathP.get(i) != pathQ.get(i)) {
+                break;
+            }
+            i++;
+        }
+        return pathP.get(i - 1);
+    }
+    
+    public boolean path(TreeNode node, TreeNode target, List<TreeNode> path) {
+        if (node == null) return false;
+        path.add(node);
+        if (node == target) {
+            return true;
+        }
+        if (path(node.left, target, path) || path(node.right, target, path)) {
+            return true;
+        }
+        // continually remove last element from list, make sure no wrong element on correct path
+        path.remove(path.size() - 1);
+        return false;
+    }
+}
+
+// implement DFS on tree with stack
+class DepthFirstSearch {
+    public static boolean search( Node node, int value ) {
+        if ( node == null ) {
+            return false;
+        }
+        Stack<Node> stack = new Stack<Node>( );
+        stack.push( node );
+        while ( !stack.isEmpty() ) {
+            Node currentNode = stack.pop( );
+            if ( currentNode.data == value ) {
+                // Found the value!
+                return true;
+            }
+            if ( currentNode.right != null ) {
+                stack.push( currentNode.right );
+            }
+            // As we want to visit left child first, we must push this node last
+            if ( currentNode.left != null ) {
+                stack.push( currentNode.left );
+            }
+        }
+        return false;
+    }
+}

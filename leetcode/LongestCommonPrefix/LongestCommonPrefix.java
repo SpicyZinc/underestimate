@@ -1,0 +1,83 @@
+/*
+Write a function to find the longest common prefix string amongst an array of strings.
+
+Two ideas:
+one is to combine first two strings to find the first prefix, then combine this prefix with the 3rd string to get 2nd prefix...
+one is pick char in the 1st string, same position's char in other strings
+
+idea:
+1. every time use current prefix and next string to generate new prefix
+brute force, simple and direct
+base = strs[0]
+take the first string in the array of string as comparing "base"
+compare the "base" with the string starting from 2nd position place in the array
+each comparison, use temporary "prefix" to hold the common prefix between these two strings, 
+and update base at the end of iteration
+next iteration will be based on last iteration's "base" result
+
+s1	s2    s3    s4    s5
+|____|
+|__________|
+|________________|
+|______________________|
+
+idea:
+2. compare each char in the first string with the rest strings' char at the same position
+save each iteration's base to return value so far
+if k == 1st string length, break;
+if k == length of any other string except 1st one, break;
+update return value, k after each iteration
+update base char before each iteration
+"" is nothing, charAt(0) is meaning length == 1;
+if length == 0, charAt(0) is nonsense
+*/
+
+public class LongestCommonPrefix {
+	public static void main(String[] args) {
+		LongestCommonPrefix aTest = new LongestCommonPrefix();		
+	}
+	// constructor
+	public LongestCommonPrefix() {
+		String[] strs = {"flower", "flow", "flight"};
+		// String[] strs = {"", "", ""};
+		// String res = longestCommonPrefix(strs);
+		String res = findLongestCommonPrefix(strs);
+		System.out.println("LongestCommonPrefix == " + res);
+	}
+    public String longestCommonPrefix(String[] strs) {
+        String prefix = "";
+        if (strs.length == 0 || strs == null) {
+            return prefix;
+        }
+        prefix = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            int k = 0;
+            String tmpPrefix = "";
+            String str = strs[i];
+            while (k < str.length() && k < prefix.length() && str.charAt(k) == prefix.charAt(k)) {
+                tmpPrefix += str.charAt(k);
+                k++;
+            }
+            prefix = tmpPrefix;
+        }
+        
+        return prefix;
+    }
+
+    // this method the best, neat
+    public String lcp(String[] strs) {
+        int n = strs.length;
+        if (n == 0) return "";
+        int i = 0;
+        for (i = 0; i < strs[0].length(); i++) {
+            char c = strs[0].charAt(i);
+            for (int j = 1; j < strs.length; j++) {
+                if (i >= strs[j].length() || strs[j].charAt(i) != c) {
+                	return strs[0].substring(0, i);
+                }
+            }
+        }
+        
+        return strs[0].substring(0, i);
+    }
+}

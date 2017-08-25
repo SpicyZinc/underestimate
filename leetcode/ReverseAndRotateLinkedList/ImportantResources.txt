@@ -1,0 +1,4 @@
+http://www.geeksforgeeks.org/archives/11371
+http://www.geeksforgeeks.org/archives/8014
+http://www.geeksforgeeks.org/archives/860
+http://crackinterviewtoday.wordpress.com/2010/03/24/reverse-a-single-linked-list-iterative-procedure/
