@@ -16,18 +16,15 @@ so use pathSum to hold the bottom row's value, then from bottom to up, find mini
 
 DP Attention: 
 1. it is "adjacent"
-2. ArrayList.add() is not set() method, suppress others to the behind
+2. ArrayList.add(index, val) is like set() method, suppress others to the behind
 
-FIRST:
-think of the shape as a shape like two antenna, there are two elements at the top of current element
+1. think of the shape as a shape like two antenna, there are two elements at the top of current element
 in the two elements, the smaller element can give rise to a smaller sum,
 so Math.min(left, right) + current element, put it in the current position in the memory arraylist
 
-SECOND:
-for each row in the triangle, starting from the right to left
+2. for each row in the triangle, starting from the right to left
 
-THIRD:
-bottom up
+3. bottom up
 
 difference between method 2 and 3 is from top or from bottom
 */
