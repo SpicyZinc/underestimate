@@ -4,41 +4,33 @@ For example, given [0,1,2,4,5,7], return ["0->2","4->5","7"].
 
 idea:
 loop through the array one time,
-keep track of current element, last visited element, head element
-
+keep track of current, previous, start element
+province ids 1, 2, 3, 5, 10, 11, 15, 19 in MZ 
 */
 
 public class SummaryRanges {
     public List<String> summaryRanges(int[] nums) {
-        List<String> ret = new ArrayList<String>();
-        if ( nums.length == 0 || nums == null ) {
-            return ret;
-        }
-        
-        int last = nums[0];
-        int head = nums[0];
-        for ( int i = 1; i < nums.length; i++ ) {
-            int current = nums[i];
-            if ( last + 1 != current ) {
-                ret.add( format(head, last) );
-                head = last = current;
-            }
-            else {
-                last = current;
+        List<String> result = new ArrayList<String>();
+        if (nums.length == 0 || nums == null) return result;
+
+        int start = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            int prev = nums[i - 1];
+            int curr = nums[i];
+            if (curr - prev == 1) {
+                continue;
+            } else {
+                result.add(getRange(start, prev));
+                start = curr;
             }
         }
-        // add the last range
-        ret.add( format(head, last) );
+        result.add(getRange(start, nums[nums.length - 1]));
         
-        return ret;
+        return result;
     }
     
-    public String format(int s, int t) {
-        if ( s == t ) {
-            return s + "";
-        }
-        else {
-            return s + "->" + t;
-        }
+    public String getRange(int start, int end) {
+        if (start == end) return start + "";
+        return start + "->" + end;
     }
 }
