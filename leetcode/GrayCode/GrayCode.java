@@ -1,19 +1,35 @@
 /*
-Deci  Gray   Binary    Deci  Gray         Deci  Gray                          	Gray
- 0    000    000        0    00            3    10                             	10 + 100 = 110  
- 1    001    001        1    01   --->     2    11  ---> + 1<<(3-1) == 100     	11 + 100 = 111
- 2    011    010        2    11            1    01                        	   	01 + 100 = 101 
- 3    010    011        3    10            0    00                        		00 + 100 = 100 
- ----------------------
- 4    110    100
- 5    111    101
- 6    101    110
- 7    100    111
+The gray code is a binary numeral system where two successive values differ in only one bit.
+Given a non-negative integer n representing the total number of bits in the code, print the sequence of gray code.
+A gray code sequence must begin with 0.
+
+For example, given n = 2, return [0,1,3,2]. Its gray code sequence is:
+00 - 0
+01 - 1
+11 - 3
+10 - 2
+
+Note:
+For a given n, a gray code sequence is not uniquely defined.
+For example, [0,2,3,1] is also a valid gray code sequence according to the above definition.
+For now, the judge is able to judge based on one instance of gray code sequence. Sorry about that.
 
 idea:
-see the transformation as above
-mirror + prefix
-grayCode(n) = [reverse grayCode(n-1) + (1 << n-1)] + grayCode(n-1)
+http://blog.csdn.net/u010500263/article/details/18209669
+
+Deci Binary  Gray           Gray                Gray                        Gray
+ 0   000     000            00    reversed      10                        10 + 100 = 110  
+ 1   001     001            01    ------->      11  ---> + 100 (1<<(3-1)) 11 + 100 = 111
+ 2   010     011            11                  01                        01 + 100 = 101 
+ 3   011     010            10                  00                        00 + 100 = 100 
+ ----------------------
+ 4   100     110    
+ 5   101     111    
+ 6   110     101    
+ 7   111     100    
+
+prefix + mirror
+grayCode(n) = concatenate both grayCode(n-1) and [reversed grayCode(n-1) + (1 << n-1)]
 */
 
 import java.util.*;
@@ -23,118 +39,70 @@ public class GrayCode {
 		new GrayCode();
 	}
 	public GrayCode() {		
-		// ArrayList<Integer> ret = grayCode(3);
-		ArrayList<Integer> ret = grayCode_neat(3);
+		List<Integer> ret = grayCode(3);
 		for (int i=0; i<ret.size(); i++) {
 			System.out.print(ret.get(i) + "  ");
 		}
 	}
-
-	// even simpler version
-	// use this one
-	public ArrayList<Integer> grayCode(int n) {
-        ArrayList<Integer> ret = new ArrayList<Integer>();
-        if (n < 0) {
-            return ret;
-        }
-        if (n == 0) {
-            ret.add(0);
-            return ret;
-        }
-        if (n == 1) {
-            ret.add(0);
-            ret.add(1);
-            return ret;
-        }
- 
-        ArrayList<Integer> r0 = grayCode(n - 1);
-        ArrayList<Integer> r1 = reverse(r0);
-        int x = 1 << (n-1);
-        for (int i = 0; i < r1.size(); i++) {
-            r1.set( i, r1.get(i) + x );
-        }
- 
-        r0.addAll(r1);
-        return r0; 
-    }
-    
-    private ArrayList<Integer> reverse(ArrayList<Integer> r) {
-        ArrayList<Integer> rev = new ArrayList<Integer>(); 
-        for(int i = r.size() - 1; i >= 0; i--) {
-            rev.add(r.get(i));
-        }
-        return rev;
-    }
-	// easy-to-understand version
-    public ArrayList<Integer> grayCode(int n) {
-		if (n < 0) {
-            return new ArrayList<Integer>();
-        }
-        if (n == 0) {
-            ArrayList<Integer> ret = new ArrayList<Integer>();
-            ret.add(0);
-            return ret;
-        }
-        if (n == 1) {
-            ArrayList<Integer> ret = new ArrayList<Integer>();
-            ret.add(0);
-            ret.add(1);
-            return ret;
-        }
- 
-        ArrayList<Integer> r0 = grayCode(n - 1);
-        ArrayList<Integer> r1 = reverse(r0);
-        int x = 1 << (n-1);
-        for (int i = 0; i < r1.size(); i++) {
-            r1.set( i, r1.get(i) + x );
-        }
- 
-        r0.addAll(r1);
-        return r0; 
-    }
- 
-    public ArrayList<Integer> reverse(ArrayList<Integer> r) {
-        ArrayList<Integer> rev = new ArrayList<Integer>(); 
-        for(int i = r.size() - 1; i >= 0; i--) {
-            rev.add(r.get(i));
-        }
-        return rev;
-    }
-	// neat version 
-	public ArrayList<Integer> grayCode_neat(int n) {  
-		ArrayList<Integer> result = new ArrayList<Integer>();
-		result.add(0);  
-		/* 
-		// both work
-		for(int i=1; i<=n; i++) {  
-			int highestBit = 1<<(i-1);
-		*/
-		for (int i = 0; i < n; i++) {  
-			int highestBit = 1<<i;  
-			int len = result.size();  
-			for (int j = len-1; j >= 0; j--) {
-				// arraylist result keep growing
-				// append on previous base
-				// append mirror part
-				result.add(highestBit + result.get(j));  
-			}  
-		}  
-		return result;  
-	}
-
-	// http://blog.csdn.net/u010500263/article/details/18209669
-    public ArrayList<Integer> grayCode(int n) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        if (n == 0) {
-            res.add(0);
-            return res;
+    // best without recursion
+    public List<Integer> grayCode(int n) {
+        List<Integer> result = new ArrayList<Integer>();
+        result.add(0);
+        for (int i = 0; i < n; i++) {
+            int size = result.size();
+            int highestBit = 1 << i;
+            // reversed n - 1 gray code
+            for (int j = size - 1; j >= 0; j--) {
+                result.add(highestBit + result.get(j));
+            }
         }
         
-        ArrayList<Integer> preRes = grayCode(n-1);
-        res.addAll(preRes);
-        for (int i = preRes.size()-1; i >= 0; i--) {
-            res.add( preRes.get(i) + (int)Math.pow(2, n-1) );
+        return result;
+    }
+    // easy to understand
+    public List<Integer> grayCode(int n) {
+        List<Integer> result = new ArrayList<Integer>();
+        if (n == 0) {
+            result.add(0);
+            return result;
         }
-        return res;
+        if (n == 1) {
+            Collections.addAll(result, 0, 1);
+            return result;
+        }
+        
+        List<Integer> pre = grayCode(n - 1);
+        // define size here because pre size is changing
+        int size = pre.size();
+        int highestBit = 1 << (n - 1);
+        // follow the idea that it is reversed
+        for (int i = size - 1; i >= 0; i--) {
+            pre.add(highestBit + pre.get(i));
+        }
+
+        return pre;
+    }
+
+    // for fun
+    public List<Integer> grayCode(int n) {
+        gray("", n);
+    }
+    // append reverse of order n gray code to prefix string, and print
+    public void yarg(String prefix, int n) {
+        if (n == 0) {
+            System.out.println(prefix);
+        } else {
+            gray(prefix + "1", n - 1);
+            yarg(prefix + "0", n - 1);
+        }
+    }
+    // append order n gray code to end of prefix string, and print
+    public void gray(String prefix, int n) {
+        if (n == 0) {
+            System.out.println(prefix);
+        } else {
+            gray(prefix + "0", n - 1);
+            yarg(prefix + "1", n - 1);
+        }
     }
 }
