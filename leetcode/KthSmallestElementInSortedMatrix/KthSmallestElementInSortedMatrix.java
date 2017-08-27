@@ -25,47 +25,39 @@ public class KthSmallestElementInSortedMatrix {
     // method 1
     public int kthSmallest(int[][] matrix, int k) {
         int n = matrix.length;
-        int L = matrix[0][0];
-        int R = matrix[0][n-1];
+        int min = matrix[0][0];
+        int max = matrix[n - 1][matrix[0].length - 1];
 
-        for (int i = 1; i < n; i++) {
-        	L = Math.min(L, matrix[i][0]);
-        	R = Math.max(R, matrix[i][n-1]);
-        }
-
-        while (L < R) {
-        	int mid = (L + R) / 2;
+        while (min < max) {
         	int midPosition = 0;
+            int midVal = min + (max - min) / 2;
         	for (int i = 0; i < n; i++) {
-        		midPosition += binarySearch(matrix[i], mid);
+        		midPosition += binarySearch(matrix[i], midVal);
         	}
         	if (midPosition < k) {
-        		L = mid + 1;
+        		min = midVal + 1;
         	}
         	else {
-        		R = mid;
+        		max = midVal;
         	}
         }
 
-        return L;
+        return min;
     }
+    // slightly different from search insertion position
+    public int binarySearch(int[] nums, int target) {
+    	int left = 0;
+        int right = nums.length;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
 
-
-    public int binarySearch(int[] arr, int target) {
-    	int start = 0;
-    	int end = arr.length;
-
-    	while (start < end) {
-    		int mid = (start + end) / 2;
-    		if (arr[mid] > target) {
-    			end = mid;
-    		}
-    		else {
-    			start = mid + 1;
-    		}
-    	}
-
-    	return start;
+        return left;
     }
 
     // method 2
@@ -96,10 +88,7 @@ public class KthSmallestElementInSortedMatrix {
     public boolean isValid(int[][] matrix, int x, int y, boolean[][] isVisited) {
         int m = matrix.length;
         int n = matrix[0].length;
-        if (x < m && y < n && !isVisited[x][y]) {
-            return true;
-        }
-        return false;
+        return x < m && y < n && !isVisited[x][y];
     }
 }
 

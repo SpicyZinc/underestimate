@@ -22,13 +22,14 @@ end = mid
 
 end = mid - 1; corresponds to while(start <= end) 
 */
-
 public class SearchInsertPosition {
 	public static void main(String[] args) {
 		SearchInsertPosition eg = new SearchInsertPosition();
-		int[] a = {1,3,5,5,5,6};
-		int target = Integer.parseInt(args[0]);
+		// int[] a = {1,3,5,5,5,6};
+		int[] a = {1};
+		int target = 1;
 		System.out.println("target insertion position is " + eg.searchInsert(a, target));
+		System.out.println("target insertion position is " + eg.binarySearch(a, target));
 	}
 	// passed OJ
     public int searchInsert(int[] A, int target) {
@@ -83,4 +84,33 @@ public class SearchInsertPosition {
 			return start + 1;
         } 
 	}
+	// best, must memorize
+	public int searchInsert(int[] nums, int target) {
+		int left = 0;
+		int right = nums.length;
+		while (left < right) {
+			int mid = left + (right - left) / 2;
+			if (nums[mid] < target) {
+				left = mid + 1;
+			} else {
+				right = mid;
+			}
+		}
+		return left;
+	}
+	// this is to get right position, if duplicates, the last one
+	public int binarySearch(int[] nums, int target) {
+    	int left = 0;
+        int right = nums.length;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;
+    }
 }
