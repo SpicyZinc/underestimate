@@ -6,7 +6,7 @@ You may assume no duplicate exists in the array.
 
 idea:
 binary search
-note: the minimum element's previous one is bigger than the minimum, which breaks the sorted array fact
+note: the minimum element's previous one is bigger than the minimum, which breaks the fact that the array is sorted
 */
 public class FindMinimumInSortedArray {
     public int findMin(int[] nums) {
@@ -18,6 +18,7 @@ public class FindMinimumInSortedArray {
         }
         int start = 0;
         int end = nums.length - 1;
+        // nums already sorted
         if (nums[start] < nums[end]) {
             return nums[start];
         }
@@ -29,50 +30,31 @@ public class FindMinimumInSortedArray {
             int mid = start  + (end - start) / 2;
             if (nums[mid] > nums[end]) {
                 start = mid;
-            }
-            else {
+            } else {
                 end = mid;
             }
         }
         
         return nums[start];
-        // also works
-        // return Math.min(nums[start], nums[end]);
     }
-
     // recursion
     public int findMin(int[] nums) {
         return findMin(nums, 0, nums.length - 1);
     }
+    
     public int findMin(int[] nums, int start, int end) {
-        if (start == end) {
-            return nums[start];
-        }
-        int mid = start + (end - start) / 2;
-        if (nums[end] > nums[mid]) {
-            return findMin(nums, start, mid);
-        }
-        else {
-            return findMin(nums, mid + 1, end);
-        }
-    }
-    // self recursion same logic as iteration
-    public int findMin(int[] nums) {
-        return findMin(nums, 0, nums.length - 1);
-    }
-    public int findMin(int[] nums, int start, int end) {
+        // two cases:
+        // if two pointers are equal, no matter which one is picked
+        // if value at start < one at end, the array is sorted, so 1st element is min
         if (start == end || nums[start] < nums[end]) {
             return nums[start];
-        } 
+        }
+        // if start + 1 == end, means only two elements
         if (start + 1 == end) {
             return nums[end];
         }
+        
         int mid = start + (end - start) / 2;
-        if (nums[mid] > nums[end]) {
-            return findMin(nums, mid, end);
-        }
-        else {
-            return findMin(nums, start, mid);
-        }
+        return nums[mid] > nums[end] ? findMin(nums, mid, end) : findMin(nums, start, mid);
     }
 }

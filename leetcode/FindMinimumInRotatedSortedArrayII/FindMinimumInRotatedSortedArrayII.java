@@ -11,6 +11,7 @@ The array may contain duplicates.
 idea:
 1. {2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 1, 2} and {2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2}
 worse case 时间复杂度升到O(n)
+mid vs right
 
 2. recursion:
 https://segmentfault.com/a/1190000003488815
@@ -21,32 +22,24 @@ public class FindMinimumInRotatedSortedArrayII {
         if (nums == null || nums.length == 0) {
             return -1;
         }
-        int l = 0;
-        int r = nums.length - 1;
-        while (l < r) {
-            if (nums[l] < nums[r]) {
-                return nums[l];
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            // already sorted
+            if (nums[left] < nums[right]) {
+                return nums[left];
             }
-            int m = l + (r - l) / 2;
-            if (nums[l] > nums[m]) {
-                r = m;
-            } 
-            else if (nums[l] < nums[m]) {
-                l = m + 1;
-            } 
-            else {
-                if (nums[l] == nums[r]) {
-                    l++;
-                    r--;
-                } 
-                else {
-                    // not very understand
-                    l = m + 1;
-                }
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > nums[right]) {
+                left = mid + 1;
+            } else if (nums[mid] < nums[right]) {
+                right = mid;
+            } else {
+                right--; // no idea how to shrink the search range by half, but must be duplicates, just eliminate duplicates
             }
         }
 
-        return nums[l];
+        return nums[left];
     }
     // recursion
     public int findMin(int[] nums) {
