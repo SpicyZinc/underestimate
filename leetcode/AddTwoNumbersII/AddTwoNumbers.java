@@ -12,8 +12,11 @@ Input: (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
 Output: 7 -> 8 -> 0 -> 7
 
 idea:
-similar to first one, the only difference is that
-this one is reversed, so use stack
+Sum of Two Integers
+Add Two Numbers
+
+similar to first Add Two Numbers,
+the only difference is that this one's input is reversed, so use stack
 */
 class ListNode {
     int val;
@@ -39,7 +42,7 @@ public class AddTwoNumbers {
         ListNode ret = new ListNode(0);
 
         while (!s1.empty() || !s2.empty()) {
-            sum = carry + (s1.empty() ? 0:s1.pop()) + (s2.empty() ? 0:s2.pop());
+            sum = carry + (s1.empty() ? 0 : s1.pop()) + (s2.empty() ? 0 : s2.pop());
             carry = sum / 10;
             ret.val = sum % 10;
             ListNode newHead = new ListNode(carry);
