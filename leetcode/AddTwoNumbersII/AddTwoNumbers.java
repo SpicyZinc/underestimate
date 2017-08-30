@@ -12,6 +12,9 @@ Input: (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
 Output: 7 -> 8 -> 0 -> 7
 
 idea:
+7 -> 2 -> 4 -> 3
+     5 -> 6 -> 4
+
 Sum of Two Integers
 Add Two Numbers
 
@@ -28,6 +31,7 @@ public class AddTwoNumbers {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         Stack<Integer> s1 = new Stack<Integer>();
         Stack<Integer> s2 = new Stack<Integer>();
+        
         while (l1 != null) {
             s1.push(l1.val);
             l1 = l1.next;
@@ -36,20 +40,20 @@ public class AddTwoNumbers {
             s2.push(l2.val);
             l2 = l2.next;
         }
-
-        int sum = 0;
-        int carry = 0;
-        ListNode ret = new ListNode(0);
-
-        while (!s1.empty() || !s2.empty()) {
-            sum = carry + (s1.empty() ? 0 : s1.pop()) + (s2.empty() ? 0 : s2.pop());
-            carry = sum / 10;
-            ret.val = sum % 10;
-            ListNode newHead = new ListNode(carry);
-            newHead.next = ret;
-            ret = newHead;
-        }
         
-        return ret.val == 0 ? ret.next : ret;
+        int carry = 0;
+        ListNode curr = new ListNode(0);
+        
+        while (!s1.isEmpty() || !s2.isEmpty()) {
+            int val = (s1.empty() ? 0 : s1.pop()) + (s2.empty() ? 0 : s2.pop()) + carry;
+            carry = val / 10;
+            curr.val = val % 10;
+            // insert at front
+            ListNode newHead = new ListNode(carry);
+            newHead.next = curr;
+            curr = newHead;
+        }
+        // curr.val == 0 means carry = 0, no need to have the extra curr, so curr.next
+        return curr.val == 0 ? curr.next : curr;
     }
 }
