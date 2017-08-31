@@ -18,10 +18,11 @@ e.g. 15 + 07 = 22
 */
 
 public class SumOfTwoIntegers {
-	// iterative
+   	// iterative
     public int getSum(int a, int b) {
         if (a == 0) return b;
         if (b == 0) return a;
+
         while (b != 0) {
             int carry = a & b;
             a ^= b;
@@ -30,12 +31,10 @@ public class SumOfTwoIntegers {
 
         return a;
     }
-	// recursive
-	int getSum(int num1, int num2) {
-	    if (num2 == 0) {
-	        return num1;
-	    }
 
-	    return getSum(num1 ^ num2, (num1 & num2) << 1);
-	}
+    // recursive
+    public int getSum(int a, int b) {
+        if (b == 0) return a;
+        return getSum(a ^ b, (a & b) << 1);
+    }
 }
