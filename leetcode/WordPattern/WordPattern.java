@@ -11,7 +11,14 @@ Notes:
 You may assume pattern contains only lowercase letters, and str contains lowercase letters separated by a single space.
 
 idea:
-hashmap is used
+Isomorphic Strings
+
+note: vice versa
+string - char
+but no string, it has value of char, return false
+
+1. str to char map
+2. char to str map
 */
 
 import java.util.*;
@@ -23,29 +30,26 @@ public class WordPattern {
 		System.out.println(hm.put('A', "222"));    // 111
 		System.out.println(hm.get('A'));           // 222
 	}
-	// string to character map
-	public boolean wordPattern(String pattern, String str) {
-       	String[] words = str.split("\\s");
-	    if (words.length != pattern.length()) {
-	        return false;
-	    }
-       	Map<String, Character> hm = new HashMap<String, Character>();
-	    for (int i = 0; i < words.length; i++) {
-	    	String word = words[i];
-	    	if (hm.containsKey(word)) {
-	    		if (hm.get(word) != pattern.charAt(i)) {
-	    			return false;
-	    		}
-	    	}
-	    	else {
-		    	if (hm.size() > 0 && hm.containsValue(pattern.charAt(i))) return false;
-	    		hm.put(word, pattern.charAt(i));
-	    	}
-	    }
+    // str to char map
+    public boolean wordPattern(String pattern, String str) {
+        String[] words = str.split("\\s");
+        if (pattern.length() != words.length) return false;
 
-	    return true;
+        Map<String, Character> hm = new HashMap<String, Character>();
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            char c = pattern.charAt(i);
+            if (hm.containsKey(word)) {
+                if (hm.get(word) != c) return false;
+            } else {
+                if (hm.containsValue(c)) return false;
+                hm.put(word, c);
+            }
+        }
+        
+        return true;
     }
-    // character to string map
+    // char to str map
     public boolean wordPattern(String pattern, String str) {
     	if ((pattern.length() == 0 || pattern == null) && (str.length() == 0 || str == null)) {
     		return true;
@@ -53,7 +57,7 @@ public class WordPattern {
     	if (pattern.length() != str.split("\\s").length) {
     		return false;
     	}
-       	HashMap<Character, String> hm = new HashMap<Character, String>();
+       	Map<Character, String> hm = new HashMap<Character, String>();
        	String[] words = str.split("\\s");
        	for (int i = 0; i < pattern.length(); i++) {
        		char c = pattern.charAt(i);
