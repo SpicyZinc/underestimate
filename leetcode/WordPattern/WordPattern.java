@@ -51,32 +51,22 @@ public class WordPattern {
     }
     // char to str map
     public boolean wordPattern(String pattern, String str) {
-    	if ((pattern.length() == 0 || pattern == null) && (str.length() == 0 || str == null)) {
-    		return true;
-    	}
-    	if (pattern.length() != str.split("\\s").length) {
-    		return false;
-    	}
-       	Map<Character, String> hm = new HashMap<Character, String>();
-       	String[] words = str.split("\\s");
-       	for (int i = 0; i < pattern.length(); i++) {
-       		char c = pattern.charAt(i);
-       		String word = words[i];
-       		if (!hm.containsKey(c)) {
-       			if (hm.containsValue(word)) {
-       				return false;
-       			}
-       			else {
-       				hm.put(c, word);
-       			}
-       		}
-       		else {
-       			if (!hm.get(c).equals(word)) {
-       				return false;
-       			}
-       		}
-       	}
+        String[] words = str.split("\\s");
+        if (pattern.length() != words.length) return false;
 
-       	return true;
+        Map<Character, String> hm = new HashMap<Character, String>();
+        for (int i = 0; i < words.length; i++) {
+            char c = pattern.charAt(i);
+            String word = words[i];
+
+            if (hm.containsKey(c)) {
+                if (!hm.get(c).equals(word)) return false;
+            } else {
+                if (hm.containsValue(word)) return false;
+                hm.put(c, word);
+            }
+        }
+
+        return true;
     }
 }
