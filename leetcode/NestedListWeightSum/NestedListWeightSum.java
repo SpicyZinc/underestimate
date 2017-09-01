@@ -24,45 +24,40 @@ public class NestedListWeightSum {
 		if (nestedList == null || nestedList.size() == 0) {
 			return 0;
 		}
-		// sum in the recursion
 		int sum = 0;
 		for (NestedInteger ni : nestedList) {
 			if (ni.isInteger()) {
 				sum += ni.getInteger() * depth;
-			}
-			else {
+			} else {
 				sum += dfs(ni.getList(), depth + 1);
 			}
 		}
-
 		return sum;
 	}
-
 	// method 2
 	public int depthSum(List<NestedInteger> nestedList) {
 		int sum = 0;
 	    Queue<NestedInteger> niQueue = new LinkedList<NestedInteger>();
-	    Queue<Integer> depQueue = new LinkedList<Integer>();
+	    Queue<Integer> depthQueue = new LinkedList<Integer>();
 	    for (NestedInteger ni : nestedList) {
 	    	niQueue.offer(ni);
 	    	// in beginning, depth is 1
 	    	// then gradually add +1
-	    	depQueue.offer(1);
+	    	depthQueue.offer(1);
 	    }
 
 	    while (!niQueue.isEmpty()) {
 	    	// make sure each NestedInteger (if Integer) is associated correct depth
-	    	// have to be poll() at the same time
+	    	// have poll() at the same time
 	    	NestedInteger current = niQueue.poll();
-	    	int depth = depQueue.poll();
+	    	int depth = depthQueue.poll();
 
 	    	if (current.isInteger()) {
 	    		sum += current.getInteger() * depth;
-	    	}
-	    	else {
-	    		for ( NestedInteger ni : current.getList() ) {
+	    	} else {
+	    		for (NestedInteger ni : current.getList()) {
 	    			niQueue.offer(ni);
-	    			depQueue.offer(depth + 1);
+	    			depthQueue.offer(depth + 1);
 	    		}
 	    	}
 	    }
