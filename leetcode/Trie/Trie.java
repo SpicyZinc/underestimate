@@ -14,12 +14,18 @@ http://www.cnblogs.com/tonyluis/p/4563990.html
 */
 
 class TrieNode {
-    char val;
+    char c;
     TrieNode[] children;
-    boolean isEnd;
+    boolean isLeaf;
+
     public TrieNode() {
         this.children = new TrieNode[26];
-        this.isEnd = false;
+        this.isLeaf = false;
+    }
+    public TrieNode(char c) {
+        this.c = c;
+        this.children = new TrieNode[26];
+        this.isLeaf = false;
     }
 }
 
@@ -40,52 +46,34 @@ public class Trie {
             char c = word.charAt(i);
             int pos = c - 'a';
             if (node.children[pos] == null) {
-                TrieNode temp = new TrieNode();
-                temp.val = c;
-                node.children[pos] = temp;
+                node.children[pos] = new TrieNode(c);
             }
             node = node.children[pos];
         }
-        node.isEnd = true;
+        node.isLeaf = true;
     }
     
     /** Returns if the word is in the trie. */
     public boolean search(String word) {
-        if (word.length() == 0 || word == null) {
-            return false;
-        }
-        TrieNode node = root;
-        for (int i = 0; i < word.length(); i++) {
-            char c = word.charAt(i);
-            int pos = c - 'a';
-            if (node.children[pos] != null) {
-                node = node.children[pos];
-            } else {
-                return false;
-            }
-        }
-
-        return node.isEnd;
+        TrieNode node = deepInTrie(word);
+        return node == null ? false : node.isLeaf;
     }
     
     /** Returns if there is any word in the trie that starts with the given prefix. */
     public boolean startsWith(String prefix) {
-        if (prefix.length() == 0 || prefix == null) {
-            return false;
-        }
+        TrieNode node = deepInTrie(prefix);
+        return node != null;
+    }
 
+    // helper to go deep in the trie
+    private TrieNode deepInTrie(String s) {
         TrieNode node = root;
-        for (int i = 0; i < prefix.length(); i++) {
-            char c = prefix.charAt(i);
-            int pos = c - 'a';
-            if (node.children[pos] != null) {
-                node = node.children[pos];
-            } else {
-                return false;
-            }
+        for (int i = 0; i < s.length(); i++) {
+            int pos = s.charAt(i) - 'a';
+            if (node.children[pos] == null) return null;
+            node = node.children[pos];
         }
-
-        return true;
+        return node;
     }
 
     public static void main(String[] args) {
