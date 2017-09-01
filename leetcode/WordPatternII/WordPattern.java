@@ -13,7 +13,7 @@ You may assume both pattern and str contains only lowercase letters.
 
 idea:
 http://www.programcreek.com/2014/07/leetcode-word-pattern-ii-java/
-dfs()
+dfs
 */
 
 import java.util.*;
@@ -30,28 +30,22 @@ public class WordPattern {
 
 	public boolean wordPatternMatch(String pattern, String str) {
 		if (pattern.length() == 0 && str.length() == 0) return true;
-
-		Map<Character, String> hm = new HashMap<Character, String>();
-		return dfs(pattern, str, 0, 0, hm);
+		return dfs(pattern, str, 0, 0, new HashMap<Character, String>());
 	}
 
 	public boolean dfs(String pattern, String str, int i, int j, Map<Character, String> hm) {
-		if (i == pattern.length() && j == str.length()) {
-			return true;
-		}
-		if (i >= pattern.length() || j >= str.length()) {
-			return false;
-		}
+		if (i == pattern.length() && j == str.length()) return true;
+		if (i > pattern.length() || j > str.length()) return false; 
+
 		char c = pattern.charAt(i);
-		// note k <= str.length()
+		// where a potential word ends, note: <= str.length()
 		for (int k = j + 1; k <= str.length(); k++) {
 			String word = str.substring(j, k);
 			if (!hm.containsKey(c) && !hm.containsValue(word)) {
 				hm.put(c, word);
 				if (dfs(pattern, str, i + 1, k, hm)) return true;
 				hm.remove(c);
-			}
-			else if (hm.containsKey(c) && hm.get(c).equals(word)) {
+			} else if (hm.containsKey(c) && hm.get(c).equals(word)) {
 				if (dfs(pattern, str, i + 1, k, hm)) return true;
 			}
 		}
