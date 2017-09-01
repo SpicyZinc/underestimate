@@ -32,37 +32,40 @@ public class ExpressionAddOperators {
     }
 
     public List<String> addOperators(String num, int target) {
-        List<String> res = new ArrayList<String>();
-        dfsSearch(num, target, "", 0, 0, res);
-        return res;
+        List<String> result = new ArrayList<String>();
+        dfs(num, target, 0, 0, "", result);
+        return result;
     }
-    
-    private void dfsSearch(String num, int target, String path, long currRes, long prevNum, List<String> res) {
+
+    public void dfs(String num, int target, long currRes, long prevRes, String path, List<String> result) {
         if (currRes == target && num.length() == 0) {
-            String exp = new String(path);
-            res.add(exp);
+            result.add(new String(path));
             return;
         }
+        
         for (int i = 1; i <= num.length(); i++) {
             String currStr = num.substring(0, i);
             // exclude any number which has a leading 0
+            // if >= 1, will skip 0, which is a good case 1 * 0 + 5
             if (currStr.length() > 1 && currStr.charAt(0) == '0') {
                 return;
             }
-            long currNum = Long.parseLong(currStr);
-            String next = num.substring(i);
+            Long currNum = Long.parseLong(currStr);
+            String nextNum = num.substring(i);
+            // just started dfs for the 1st time
             if (path.length() == 0) {
-                dfsSearch(next, target, currStr, currNum, currNum, res);
+                dfs(nextNum, target, currNum, currNum, currStr, result);
             } else {
-                // multiplication
-                dfsSearch(next, target, path + "*" + currNum, (currRes - prevNum) + prevNum * currNum, prevNum * currNum, res);
-                // add
-                dfsSearch(next, target, path + "+" + currNum, currRes + currNum, currNum, res);
-                // subtract
-                dfsSearch(next, target, path + "-" + currNum, currRes - currNum, -currNum, res);                    
+                // add '*' before currNum
+                dfs(nextNum, target, (currRes - prevRes) + prevRes * currNum, prevRes * currNum, path + "*" + currNum, result);
+                // add '+' before currNum
+                dfs(nextNum, target, currRes + currNum, currNum, path + "+" + currNum, result);
+                // add '-' before currNum
+                dfs(nextNum, target, currRes - currNum, -currNum, path + "-" + currNum, result);
             }
         }
     }
+
     // public List<String> addOperators(String num, int target) {
     //     List<String> list = new ArrayList<String>();
     //     dfs(list, num, "", 0, 0, 0, target);
