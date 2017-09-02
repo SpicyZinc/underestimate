@@ -2,69 +2,93 @@
 Design a data structure that supports all following operations in average O(1) time.
 
 Note: Duplicate elements are allowed.
+
 insert(val): Inserts an item val to the collection.
 remove(val): Removes an item val from the collection if present.
 getRandom: Returns a random element from current collection of elements.
 The probability of each element being returned is linearly related to the number of same value the collection contains.
 
+
+Example:
+// Init an empty collection.
+RandomizedCollection collection = new RandomizedCollection();
+
+// Inserts 1 to the collection. Returns true as the collection did not contain 1.
+collection.insert(1);
+
+// Inserts another 1 to the collection. Returns false as the collection contained 1. Collection now contains [1,1].
+collection.insert(1);
+
+// Inserts 2 to the collection, returns true. Collection now contains [1,1,2].
+collection.insert(2);
+
+// getRandom should return 1 with the probability 2/3, and returns 2 with the probability 1/3.
+collection.getRandom();
+
+// Removes 1 from the collection, returns true. Collection now contains [1,2].
+collection.remove(1);
+
+// getRandom should return 1 and 2 both equally likely.
+collection.getRandom();
+
 idea:
 ArrayList to keep all elements
 HashMap<Integer, HashSet<Integer>> hm, duplicate number corresponds to a list of positions
 
-note: remove last element is easy to deal with
+note: last element is easy to deal with, so remove it
 */
 
-public class RandomizedCollection {
+class RandomizedCollection {
     List<Integer> list;
     Map<Integer, HashSet<Integer>> hm;
-    Random r;
+    Random random;
     /** Initialize your data structure here. */
     public RandomizedCollection() {
         list = new ArrayList<Integer>();
         hm = new HashMap<Integer, HashSet<Integer>>();
-        r = new Random();
+        random = new Random();
     }
     
     /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
     public boolean insert(int val) {
-        HashSet<Integer> indexes = hm.get(val);
-        if (indexes == null) {
-            indexes = new HashSet<Integer>();
-            hm.put(val, indexes);
+        HashSet<Integer> positions = hm.get(val);
+        if (positions == null) {
+            positions = new HashSet<Integer>();
+            hm.put(val, positions);
         }
+        // update list
         list.add(val);
-        indexes.add(list.size() - 1);
-
-        return indexes.size() == 1;
+        // update hashmap
+        positions.add(list.size() - 1);
+        return positions.size() == 1;
     }
     
     /** Removes a value from the collection. Returns true if the collection contained the specified element. */
     public boolean remove(int val) {
-        HashSet<Integer> indexes = hm.get(val);
-        if (indexes == null) {
+        HashSet<Integer> positions = hm.get(val);
+        if (positions == null) {
             return false;
-        }
-        else {
-            int index = indexes.iterator().next();
-            // remove from hashset
-            indexes.remove(index);
-            if (index < list.size() - 1) {
-                // remove from list by setting in the list
+        } else {
+            int posToRemove = positions.iterator().next();
+            // remove from HashSet
+            positions.remove(posToRemove);
+            if (posToRemove < list.size() - 1) {
+                // remove from list by moving last value at the removed position
                 int last = list.get(list.size() - 1);
-                list.set(index, last);
-                // deal with victim last
+                list.set(posToRemove, last);
                 // last leaves old position and goes to the new position
-                HashSet<Integer> victim = hm.get(last);
-                victim.remove(list.size() - 1);
-                victim.add(index);
+                // update the last
+                HashSet<Integer> lastPositions = hm.get(last);
+                lastPositions.add(posToRemove);
+                lastPositions.remove(list.size() - 1);
             }
-            // remove victim at last minute
+                
+            // remove last from list at final
             list.remove(list.size() - 1);
-            if (indexes.size() == 0) {
+            if (positions.size() == 0) {
                 hm.remove(val);
-            }
-            else {
-                hm.put(val, indexes);    
+            } else {
+                hm.put(val, positions);
             }
             return true;
         }
@@ -72,8 +96,7 @@ public class RandomizedCollection {
     
     /** Get a random element from the collection. */
     public int getRandom() {
-        int randomIndex = r.nextInt(list.size());
-        return list.get(randomIndex);
+        return list.get(random.nextInt(list.size()));
     }
 }
 
