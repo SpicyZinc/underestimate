@@ -21,62 +21,53 @@ If there is no sub-string to go on, we know we have found a valid solution, so w
 
 2. DP:
 http://blog.csdn.net/linhuanmars/article/details/24570759
-http://blog.csdn.net/worldwindjp/article/details/19938131
+
+ways[i] = ways[i - 1] + ways[i - 2], because there are at most 26, two digits
+ways[i] is the number of decoding ways for substring(0, i)
 */
 
 public class DecodeWays {
-    // 225 / 259 test cases passed
+    // 240 / 259 test cases passed
     public int numDecodings(String s) {
-        List<Integer> ret = new ArrayList<Integer>();
-        if (s == null || s.length() == 0) {
-            return 0;
-        }
-        helper(s, ret);
-        
-        return ret.size();
+        if (s.length() == 0 || s == null) return 0;
+        return dfs(s);
     }
     
-    public void helper(String s, List<Integer> ret) {
-        if (s.length() == 0) {
-            ret.add(1);
-        }
-        else { // two cases
-            // 1-9
-            if (s.charAt(0) >= '1' && s.charAt(0) <= '9') {
-                helper(s.substring(1), ret);
+    public int dfs(String s) {
+        // stopping case
+        if (s.length() == 0 || s == null) return 1;
+        // case '0' as input
+        if (s.charAt(0) == '0') return 0; 
+        int cnt = dfs(s.substring(1));
+        if (s.length() >= 2) {
+            char first = s.charAt(0);
+            char second = s.charAt(1);
+            if (first == '1' || first == '2' && second >= '0' && second <= '6') {
+                cnt += dfs(s.substring(2));
             }
-            if (s.length() >= 2) {
-                // 10-19 and 20-26
-                if ( (s.charAt(0) == '1' && s.charAt(1) >= '0' && s.charAt(1) <= '9') || (s.charAt(0) == '2' && s.charAt(1) >= '0' && s.charAt(1) <= '6') ) {
-                    helper(s.substring(2), ret);
-                }
-            } 
         }
-    }
 
+        return cnt;
+    }
+    // DP
     public int numDecodings(String s) {  
         if (s == null || s.length() == 0 || s.charAt(0) == '0') {
             return 0;  
         }
-        // ways[i] is s[0, i - 1] the number of decoding ways
-        // ways[i] = ways[i - 1] + ways[i - 2], because there are at most 26, two digits
         int[] ways = new int[s.length() + 1];
         ways[0] = 1;
         ways[1] = 1;
-        for (int i = 2; i <= s.length(); i++) {  
-            // check if current char is '0'
-            if (s.charAt(i - 1) != '0') {
+        for (int i = 2; i <= s.length(); i++) {
+            char first = s.charAt(i - 2);
+            char second = s.charAt(i - 1);
+            if (second != '0') {
                 ways[i] += ways[i - 1];  
             }
-            // check if current char + previous char in 1 - 26
-            if (s.charAt(i - 2) != '0') {
-                int currTwoChars = Integer.parseInt(s.substring(i-2, i));  
-                if (currTwoChars >= 1 && currTwoChars <= 26) {  
-                    ways[i] += ways[i - 2];  
-                }  
-            }  
+            if (first == '1' || first == '2' && second >= '0' && second <= '6') {
+                ways[i] += ways[i - 2];  
+            }
         }
 
-        return ways[s.length()];  
+        return ways[s.length()];
     }
 }
