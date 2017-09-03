@@ -1,6 +1,5 @@
 /*
 Given a binary tree, return all root-to-leaf paths.
-
 For example, given the following binary tree:
    1
  /   \
@@ -14,7 +13,8 @@ Credits:
 Special thanks to @jianchao.li.fighter for adding this problem and creating all test cases.
 
 idea:
-
+dfs for sure
+note: stop case is when node is not null, but node.left and node.right are null
 */
 
 class TreeNode {
@@ -30,15 +30,14 @@ public class BinaryTreePaths {
         dfs(root, "", result);
         return result;
     }
-
+    
     public void dfs(TreeNode node, String path, List<String> result) {
         if (node == null) return;
         if (node.left == null && node.right == null) {
             path += node.val;
-            result.add(path);
-            return;
+            result.add(new String(path));
         }
-        if (node.left != null) dfs(node.left, path + node.val + "->", result);
-        if (node.right != null) dfs(node.right, path + node.val + "->", result);
+        dfs(node.left, path + node.val + "->", result);
+        dfs(node.right, path + node.val + "->", result);
     }
 }
