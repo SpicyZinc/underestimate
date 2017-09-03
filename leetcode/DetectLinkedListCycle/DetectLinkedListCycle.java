@@ -8,7 +8,6 @@ Can you solve it without using extra space?
 idea: best solution explaining 
 http://www.cnblogs.com/hiddenfox/p/3408931.html
 
-
 basic: 
 1. find the node X where fast and slow meet
 2. let slow walk from X 
@@ -23,9 +22,12 @@ derivative questions from this issue:
 
 
 1. 从一开始到二者第一次相遇, while循环的次数就等于环的长度.
-2. 我们已经得到了结论a=c, 那么让两个指针分别从X和Z开始走, 每次走一步, 那么正好会在Y相遇!也就是环的第一个节点.
+2. 我们已经得到了结论a=c, 那么让两个指针分别从X和Z开始走, 每次走一步, 那么正好会在Y相遇 也就是环的第一个节点
 3. 在上一个问题的最后, 将c段中Y点之前的那个节点与Y的链接切断即可.
-4. 如何判断两个单链表是否有交点？先判断两个链表是否有环, 如果一个有环一个没环, 肯定不相交；如果两个都没有环, 判断两个列表的尾部是否相等；如果两个都有环, 判断一个链表上的Z点是否在另一个链表上.
+4. 如何判断两个单链表是否有交点?
+先判断两个链表是否有环, 如果一个有环一个没环, 肯定不相交;
+如果两个都没有环, 判断两个列表的尾部是否相等;
+如果两个都有环, 判断一个链表上的Z点是否在另一个链表上.
 */
 
 class ListNode {
@@ -38,7 +40,7 @@ class ListNode {
 }
 
 public class DetectLinkedListCycle {
-    public static ListNode detectCycle(ListNode head) {
+    public ListNode detectCycle(ListNode head) {
 	    ListNode slow = head;
 	    ListNode fast = head;
 
@@ -62,21 +64,10 @@ public class DetectLinkedListCycle {
 	    }
 
 	    return slow;
-
-	    /* also works
-	    // let fast start walking from head
-	    fast = head;
-	    while (slow != fast) {
-	        slow = slow.next;
-	        fast = fast.next;
-	    }
-
-	    return fast;
-	    */
 	}
 	// with opening an extra hashset memory space
 	public static ListNode detectCycleWithExtraSpace(ListNode head) {
-		HashSet<ListNode> hs = new HashSet<ListNode>();
+		Set<ListNode> hs = new HashSet<ListNode>();
 		ListNode current = head;
 
 		while (current != null) {
