@@ -22,14 +22,14 @@ In principle, the board is infinite, which would cause problems when the active 
 How would you address these problems?
 
 idea:
-first of all, have to define
-State transitions
+1. define state transitions, important
+
 0 : dead to dead
 1 : live to live
 2 : live to dead
 3 : dead to live
 
-1. define eight directions
+eight directions
 |-------|------|----- |
 |(1,-1) |(0,0) |(1,1) |
 |-------|------|----- |
@@ -37,6 +37,7 @@ State transitions
 |-------|------|----- |
 |(-1,-1)|(0,0) |(-1,1)|
 |-------|------|----- |
+
 2. for each cell, check all 8 directions to calculate how many lives
 if cell live == 1 or == 2, live++
 update each cell to be 3 or 2
@@ -58,26 +59,25 @@ public class GameOfLife {
         
         int m = board.length;
         int n = board[0].length;
-        
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                int lives = 0;
+                int liveNeighbors = 0;
                 for (int[] dir : directions) {
                     int x = i + dir[0];
                     int y = j + dir[1];
                     if (x >= 0 && x < m && y >= 0 && y < n) {
                         // board[x][y] == 2 means from live to dead, so count it as live
                         if (board[x][y] == 1 || board[x][y] == 2) {
-                            lives++;
+                            liveNeighbors++;
                         }
                     }
                 }
                 // dead before && live == 3, live now
-                if (board[i][j] == 0 && lives == 3) {
+                if (board[i][j] == 0 && liveNeighbors == 3) {
                     board[i][j] = 3;
                 }
                 // live before && (live < 2 || live > 3), die now
-                if (board[i][j] == 1 && (lives < 2 || lives > 3)) {
+                if (board[i][j] == 1 && (liveNeighbors < 2 || liveNeighbors > 3)) {
                     board[i][j] = 2;
                 }
             }
