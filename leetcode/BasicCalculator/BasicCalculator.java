@@ -10,8 +10,12 @@ Some examples:
 "(1+(4+5+2)-3)+(6+8)" = 23
 
 idea:
-1. sign, number two variables
-sign to signify + -, when case + -, updated sign for next step use
+1. sign to signify + and -
+when case + or -, updated sign for next step
+when case ')', result =
+
+if a value is more than one digits, while to get the value, but i--
+
 2. convert infix to RPN (postfix), calculate the postfix by stack
 */
 
@@ -26,59 +30,41 @@ public class BasicCalculator {
         int result = eg.calculate(s);
         System.out.println(result);
     }
-    // 24 / 37 test cases passed
-    public int calculate(String s) {
-        if (s.equals("0")) {
-            return 0;
-        }
-        String[] matches = s.split("(?=[+-])");
-        int result = 0;
-        for (String match : matches) {
-            result += Integer.parseInt( match.replaceAll("[()\\s]", "") );
-        }
-        return result;
-    }
+
     // method 1
     public int calculate(String s) {
         Stack<Integer> stack = new Stack<Integer>();
         int sign = 1;
-        int number = 0;
         int result = 0;
-
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (Character.isDigit(c)) {
-                number = number * 10 + (int) (c - '0');
-            }
-            else if (c == '+') {
-                result += sign * number;
+                int val = 0;
+                while (i < s.length() && Character.isDigit(s.charAt(i))) {
+                    val = val * 10 + s.charAt(i) - '0';
+                    i++;
+                }
+                result += sign * val;
+                // need to i--, otherwise for loop i++ will skip one i
+                i--;
+            } else if (c == '+') {
                 sign = 1;
-                number = 0;
-            }
-            else if (c == '-') {
-                result += sign * number;
+            } else if (c == '-') {
                 sign = -1;
-                number = 0;
-            }
-            else if (c == '(') {
-                stack.push(result); // saved to stack, so reset result = 0
+            } else if (c == '(') {
+                stack.push(result);
                 stack.push(sign);
                 // reset the sign and result for the value in the parenthesis
-                sign = 1;
                 result = 0;
-            }
-            else if (c == ')') {
-                result += sign * number;
-                number = 0; // set number to signify if last character is )
-                result = stack.pop() * result;
-                result = stack.pop() + result;
+                sign = 1;
+            } else if (c == ')') {
+                // 1st pop is sign, 2nd pop is previous result
+                result = stack.pop() * result + stack.pop();
             }
         }
-        if (number != 0) result += sign * number;
-
         return result;
     }
-
+    // method 2
     public int calculate(String s) {
         String tokens[] = toRPN(s).split("\\s+");
         int returnValue = 0;
@@ -147,8 +133,8 @@ public class BasicCalculator {
         while (!stack.isEmpty()) {
             out.append(' ');
             out.append(stack.pop());
-
         }
+
         return out.toString();
     }
 }
