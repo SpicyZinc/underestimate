@@ -1,8 +1,7 @@
 /*
-
 Implement a basic calculator to evaluate a simple expression string.
-
-The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should truncate toward zero.
+The expression string contains only non-negative integers, +, -, *, / operators and empty spaces.
+The integer division should truncate toward zero.
 
 You may assume that the given expression is always valid.
 
@@ -15,36 +14,42 @@ Note: Do not use the eval built-in library function.
 idea:
 http://www.programcreek.com/2014/05/leetcode-basic-calculator-ii-java/
 +5+6 every number must be associated an operator
-stack is used, positive number push back
+only for + and -
+positive number push to stack as itself
 negative push -number
-for * /, pop, then push back the result of the popped with the current
 
+there is not some rule for this question
+when current char is an operator, time to calculate the previous
+for + -, push to stack with sign
+for * /, pop to calculate and push back
 */
+
 public class BasicCalculator {
     public int calculate(String s) {
-    	int res = 0;
-    	int d = 0;
-    	int sign = '+';
+        int res = 0;
         Stack<Integer> stack = new Stack<Integer>();
+        int number = 0;
+        int preOperator = '+';
         for (int i = 0; i < s.length(); i++) {
-        	char ch = s.charAt(i);
-        	if (ch >= '0') {
-        		d = d * 10 + ch - '0';
-        	}
-        	if (isOperator(ch) || i == s.length() - 1) {
-        		if (sign == '+') {
-        			stack.push(d);
-        		}
-        		if (sign == '-') {
-        			stack.push(-d);
-        		}
-        		if (sign == '*' || sign == '/') {
-        			int tmp = sign == '*' ? stack.pop() * d : stack.pop() / d;
-        			stack.push(tmp);
-        		}
-        		sign = ch;
-        		d = 0;
-        	}
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                number = number * 10 + c - '0';
+            }
+            // current char is operator or last digit, need to calculate previous
+            if (isOperator(c) || i == s.length() - 1) {
+                if (preOperator == '+') {
+                    stack.push(number);
+                }
+                if (preOperator == '-') {
+                    stack.push(-number);
+                }
+                if (preOperator == '*' || preOperator == '/') {
+                    int tmp = preOperator == '*' ? stack.pop() * number : stack.pop() / number;
+                    stack.push(tmp);
+                }
+                preOperator = c;
+                number = 0;
+            }
         }
         while (!stack.empty()) {
             res += stack.pop();
@@ -56,5 +61,43 @@ public class BasicCalculator {
     public boolean isOperator(char operator) {
     	String s = "+-*/";
     	return s.indexOf(operator) != -1;
+    }
+
+    // fails "1-1+1"
+    // 86 / 109 test cases passed
+    public int calculate(String s) {
+        Stack<Integer> nums = new Stack<Integer>();
+        Stack<Character> operators = new Stack<Character>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                int val = 0;
+                while (i < s.length() && Character.isDigit(s.charAt(i))) {
+                    val = val * 10 + s.charAt(i) - '0';
+                    i++;
+                }
+                nums.push(val);
+                if (!operators.isEmpty() && (operators.peek() == '*' || operators.peek() == '/')) {
+                    char operator = operators.pop();
+                    int first = nums.pop();
+                    int second = nums.pop();
+                    int temp = operator == '*' ? second * first : second / first;
+                    nums.push(temp);
+                }
+                i--;
+            } else if (isOperator(c)) {
+                operators.push(c);
+            }
+        }
+        while (!operators.isEmpty()) {
+            char operator = operators.pop();
+            int first = nums.pop();
+            int second = nums.pop();
+            int temp = operator == '+' ? second + first : second - first;
+            nums.push(temp);
+        }
+
+        return nums.peek();
     }
 }

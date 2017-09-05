@@ -34,8 +34,8 @@ public class BasicCalculator {
     // method 1
     public int calculate(String s) {
         Stack<Integer> stack = new Stack<Integer>();
-        int sign = 1;
         int result = 0;
+        int sign = 1;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (Character.isDigit(c)) {
@@ -44,6 +44,7 @@ public class BasicCalculator {
                     val = val * 10 + s.charAt(i) - '0';
                     i++;
                 }
+                // one place to calculate result
                 result += sign * val;
                 // need to i--, otherwise for loop i++ will skip one i
                 i--;
@@ -59,6 +60,7 @@ public class BasicCalculator {
                 sign = 1;
             } else if (c == ')') {
                 // 1st pop is sign, 2nd pop is previous result
+                // another place to calculate result
                 result = stack.pop() * result + stack.pop();
             }
         }

@@ -12,12 +12,15 @@ Input: [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
 Output: [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
 
 idea:
-sort the 2d array based on height number descending, if the same height, sort by number ascending
-[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]] =>
-[[7,1], [7,0], [6,1], [5,2], [5,0], [4,4]] (this is wrong)
-[[7,0], [7,1], [6,1], [5,0], [5,2], [4,4]]
-otherwise list.add() will raise "IndexOutOfBoundary" error
+basically this is a sorting problem
+sort the array based on height number descending,
+if the same height, sort by number ascending
 
+Comparator could be used, bubble sort could be used
+[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]] =>
+[[7,0], [7,1], [6,1], [5,0], [5,2], [4,4]]
+
+After sort, the number of people k in ([h, k]) is the exact position for this person to be at
 note:
 list.add(index, element)
 */
@@ -35,19 +38,18 @@ public class QueueReconstructionByHeight {
         Arrays.sort(people, new Comparator<int[]>() {
             @Override
             public int compare(int[] p1, int[] p2) {
-                return p1[0] != p2[0] ? Integer.compare(p2[0], p1[0]): Integer.compare(p1[1], p2[1]);
+                return p1[0] != p2[0] ? Integer.compare(p2[0], p1[0]) : Integer.compare(p1[1], p2[1]);
             }
         });
 
-        List<int[]> list = new LinkedList();
-        for (int[] ppl: people) {
-            int cntPPLHigher = ppl[1]; // exactly array index
-            list.add(cntPPLHigher, ppl);
+        List<int[]> result = new ArrayList<int[]>();
+        for (int[] person : people) {
+            // person[1] exact position to add
+            result.add(person[1], person);
         }
 
-        return list.toArray(new int[people.length][]);
+        return result.toArray(new int[people.length][]);
     }
-
     // using bubble sort
     public int[][] reconstructQueue(int[][] people) {
     	if (people == null || people.length == 0 || people[0].length == 0) {
