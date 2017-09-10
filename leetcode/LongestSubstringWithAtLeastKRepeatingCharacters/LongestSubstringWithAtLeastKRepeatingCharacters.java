@@ -1,5 +1,6 @@
 /*
-Find the length of the longest substring T of a given string (consists of lowercase letters only) such that every character in T appears no less than k times.
+Find the length of the longest substring T of a given string (consists of lowercase letters only)
+such that every character in T appears no less than k times.
 
 Example 1:
 Input: s = "aaabb", k = 3
@@ -12,16 +13,14 @@ Output: 5
 The longest substring is "ababb", as 'a' is repeated 2 times and 'b' is repeated 3 times.
 
 idea:
-note: the basic idea is recursion
+recursion
 
-In each step, find the infrequent elements (appear less than k times) as splits since any of these infrequent elements couldn't be any part of the substring we want.
-make sure you really understand the meaning of the problem
+In each step, find the infrequent elements (appear less than k times) as splits
+since any of these infrequent elements couldn't be any part of the substring we want.
 
 my idea ignores a fact that using character of less than k to split the string,
 the characters of >= k will spread into the arrays, cannot guarantee T has at least k times
 */
-
-import java.util.*;
 
 public class LongestSubstringWithAtLeastKRepeatingCharacters {
 	public static void main(String[] args) {
@@ -30,37 +29,43 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
 		System.out.println("max == " + max);
 	}
 	// self written recent
-	public int longestSubstring(String s, int k) {
+    public int longestSubstring(String s, int k) {
         if (s.length() == 0 || s == null) return 0;
         if (k == 0) return s.length();
         // record each character appearing times, can also use letters[26] as hash
         Map<Character, Integer> hm = new HashMap<Character, Integer>();
         for (int i = 0; i < s.length(); i++) {
-            hm.put(s.charAt(i), hm.getOrDefault(s.charAt(i), 0) + 1);
+            char c = s.charAt(i);
+            hm.put(c, hm.getOrDefault(c, 0) + 1);
         }
         // there is no letter appearing < k times
-        boolean noLetterLessThanKTimes = true;
+        boolean noCharLessThanKTime = true;
         for (int frequency : hm.values()) {
-            if (frequency < k) noLetterLessThanKTimes = false;
+            if (frequency < k) {
+                noCharLessThanKTime = false;
+            }
         }
-        if (noLetterLessThanKTimes) return s.length();
+        if (noCharLessThanKTime) return s.length();
         
         int maxLen = 0;
-        int start = 0;
-        int idx = 0;
-        while (idx < s.length()) {
-            // find a letter appearing less than k times 
-            if (hm.get(s.charAt(idx)) < k) {
-                String substr = s.substring(start, idx);
-                maxLen = Math.max(maxLen, longestSubstring(substr, k));
-                start = idx + 1;
+        int left = 0;
+        // because loop from i = 0, first char less than k times,
+        // substring before this char guarantees that no char in this substring less than k times
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            int frequency = hm.get(c);
+            // find a letter appearing less than k times
+            if (frequency < k) {
+                String precedingSubstr = s.substring(left, i);
+                maxLen = Math.max(maxLen, longestSubstring(precedingSubstr, k));
+                left = i + 1;
             }
-            idx++;
         }
         // not forget last one
-        return Math.max(maxLen, longestSubstring(s.substring(start), k));
+        return Math.max(maxLen, longestSubstring(s.substring(left), k));
     }
-    // my idea, ignore a fact
+
+    // my idea
     public int longestSubstring(String s, int k) {
     	if (s.length() == 0 || s == null) {
     		return 0;
