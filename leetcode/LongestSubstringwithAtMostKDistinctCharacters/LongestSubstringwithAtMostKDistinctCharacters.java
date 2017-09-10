@@ -3,7 +3,7 @@ Given a string, find the longest substring that contains only two unique charact
 For example, given "abcbbbbcccbdddadacb", the longest substring that contains 2 unique character is "bcbbbbcccb".
 
 idea:
-how to compare against K, hash map size is a good way to get k distinct characters
+how to know it is K characters, hash map size is a good way to get k distinct characters
 */
 
 import java.util.*;
@@ -28,12 +28,12 @@ public class LongestSubstringwithAtMostKDistinctCharacters {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			hm.put(c, hm.getOrDefault(c, 0) + 1);
-			// have to put calculation of maxLen here, just use i, otherwise (i-1) - start + 1
+			// have to calculate maxLen here, (i - 1) - start + 1
 			if (i - start > maxLen) {
 				maxLen = i - start;
-				longestSubstring = s.substring(start, i);
+				longestSubstring = s.substring(start, (i - 1) + 1);
 			}
-			// if time of unique characters bigger than k, against the rule at most k distinct characters
+			// if the number of unique characters bigger than k, against the rule at most k distinct characters
 			while (hm.size() > k) {
 				char charAtStart = s.charAt(start);
 				int cnt = hm.get(charAtStart);
@@ -55,24 +55,31 @@ public class LongestSubstringwithAtMostKDistinctCharacters {
 
 
 	public int lengthOfLongestSubstringKDistinct(String s, int k) {
-	    int[] count = new int[256];
-	    int i = 0;  // i will be behind j
-	    int num = 0;
-	    int res = 0;
-	    for (int j = 0; j < s.length(); j++) {
-	    	// if count[s.charAt(j)] == 0, it is a distinct character
-	        if (count[s.charAt(j)] == 0) num++;
-	        count[s.charAt(j)]++;
-	        while (num > k && i < s.length()) {
-	            count[s.charAt(i)]--;
-	            if (count[s.charAt(i)] == 0){ 
-	                num--;
-	            }
-	            i++;
-	        }
-	        res = Math.max(res, j - i + 1);
-	    }
+		int[] letters = new int[256];
+		int maxLen = k;
+		String longestSubstring = "";
+		int start = 0;
+		int uniqueCnt = 0;
+		for (int i = 0; i < s.length(); i++) {
+			// a new unique character appears, so uniqueCnt++
+			if (letters[s.charAt(i)] == 0) {
+				uniqueCnt++;
+			}
+			letters[s.charAt(i)]++;
 
-	    return res;    
-    }
+			char c = s.charAt(start);
+			while (uniqueCnt > k && start < s.length()) {
+				if (--letters[c] == 0) uniqueCnt--;
+				c = s.charAt(++start);
+			}
+
+			if (i - start + 1 > maxLen) {
+				maxLen = i - start + 1;
+				// note, it is i + 1
+				longestSubstring = s.substring(start, i + 1);
+			}
+		}
+
+		return maxLen;
+	}
 }
