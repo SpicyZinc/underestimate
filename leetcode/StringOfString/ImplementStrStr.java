@@ -1,60 +1,43 @@
 /*
-Implement strStr().
-
 Returns a pointer to the first occurrence of needle in haystack, or null 
 if needle is not part of haystack.
 
 idea:
-
-make sure understand the question
-if found out the needle in the haystack, 
-return the sub string containg the needle and all the rest of the haystack
-
-Best self passed version
-
+1. substring() and equals()
+2. brute force, two for loops
 */
 
 public class ImplementStrStr {
-    public String strStr(String haystack, String needle) {
-        if (haystack == null || needle == null || needle.length() == 0) {
-            return haystack;
+    public int strStr(String haystack, String needle) {
+        if (needle.length() == 0) return 0; 
+        if (haystack.length() == 0) return -1;
+        if (needle.length() > haystack.length()) return -1;
+
+        for (int i = 0; i <= haystack.length() - needle.length(); i++) {
+            int k = i + needle.length();
+            if ( haystack.substring(i, k).equals(needle) ) return i; 
         }
-        int h = haystack.length();
-        int n = needle.length();
-        if (n > h) {
-            return null;
-        }
-        
-        for (int i = 0; i < h; i++) {
-            int k = i + n;
-            String s = "";
-            if (k <= h) {
-                s = haystack.substring(i, k);  
-            }
-            if (s.equals(needle)) {
-                return haystack.substring(i);
-            }
-        }
-        return null;
+        return -1;
     }
 
     // better brute force version
-    public String strStr(String haystack, String needle) {
-        if (haystack==null || needle == null || needle.length()==0)
-            return haystack;
-        if (needle.length()>haystack.length())
-            return null;
-        for (int i=0; i<=haystack.length()-needle.length(); i++) {
-            boolean successFlag = true;
-            for (int j=0; j<needle.length(); j++) {
-                if (haystack.charAt(i+j) != needle.charAt(j)) {
-                    successFlag = false;
-                    break;
-                }
-            }
-            if (successFlag)
-                return haystack.substring(i);
+    public int strStr(String haystack, String needle) {
+        if (haystack == null || needle == null) {
+            return -1;
         }
-        return null;
+        if (needle.length() > haystack.length()) {
+            return -1;
+        }
+        int h = haystack.length();
+        int n = needle.length();
+        for (int i = 0; i <= h - n; i++) {
+            int j = 0;
+            for (j = 0; j < n; j++) {
+                if (haystack.charAt(i + j) != needle.charAt(j)) break;
+            }
+            if (j == n) return i;
+        }
+        
+        return -1;
     }
 }
