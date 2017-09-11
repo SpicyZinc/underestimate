@@ -1,46 +1,91 @@
 /*
-Given a string, find the length of the longest substring without repeating characters. 
-For example, the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3.
-For "bbbbb" the longest substring is "b", with the length of 1.
+Given a string, find the length of the longest substring without repeating characters.
+
+Examples:
+Given "abcabcbb", the answer is "abc", which the length is 3.
+Given "bbbbb", the answer is "b", with the length of 1.
+Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
 similar:
-Substring with Concatenation of All Words，Minimum Window Substring
+Substring with Concatenation of All Words, Minimum Window Substring
 
 idea:
+1. 187 ms
+longest unique substring should be based on a fact that
+e.g. ABCDEC... first candidate ABCDE, then next candidate should starts from D
 
-no matter map or char[] is used, key - value pair value is boolean
+hashmap to record char <-> index pair
+whenever there is duplicate char, get index, for loop will get index + 1
+then start from index + 1
 
------second time to think over
+note: not forget the whole string could be a unique string, so Math.max(maxLen, s.length());
+
+2. 45 ms
+char <-> boolean pair, and value is boolean
 sliding window
-if found out a character which appears before
-AB------A
+ABCDE------A
 start will be moved to A's position
-meanwhile all B to second A not inclusive will be set false, since the new substring is starting from 2nd A 
-use hashmap<Character, Integer> or boolean[] to record
-
------1st time to think over
-Greedy algorithm, from the starting point to ending point, it takes O(n)
-use a boolean array "isExist[]" to record if a character appears or not
-
-loop through the char array
-遇到没有出现过的字符, 将isExist[]对应位置标记, 并且子串长度+1
-if this char not appears before, now it appears, mark boolean array to be "true"
-else meeting a char which appears before, 
-	loop from j through i exclusive, find which position is the one appearing before
-	set isExist[] back to be false, and j starts from k+1
-	re-calculate the max length of the longest substring without repeating characters
-	Math.max(i - j, maxLen)
-
-O(n) algorithm:
-http://blog.csdn.net/linhuanmars/article/details/19949159
+meanwhile all B and other chars to second A not inclusive will be set false, j starts from left + 1
 */
+
 public class LongestSubstringWithoutRepeatingChars {
-    // self written using hashset, hashset only contains unique character or no repeating chars
+    // method 1
+    public int lengthOfLongestSubstring(String s) {
+        if (s.length() == 0 || s == null) return 0;
+        
+        int maxLen = 0;
+        Map<Character, Integer> hm = new HashMap<Character, Integer>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (hm.containsKey(c)) {
+                // reset i, because for loop i++, so it will start from i + 1
+                i = hm.get(c);
+                maxLen = Math.max(maxLen, hm.size());
+                hm.clear();
+            } else {
+                hm.put(c, i);
+            }
+        }
+        
+        return Math.max(maxLen, hm.size());
+    }
+    // method 2
+    public int lengthOfLongestSubstring(String s) {
+        if (s.length() == 0 || s == null) return 0;
+
+        boolean[] letters = new boolean[256];
+        int left = 0;
+        int maxLen = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (letters[c]) {
+                // find the new window left position
+                for (int j = left; j < i; j++) {
+                    if (c == s.charAt(j)) {
+                        // update the window start position
+                        left = j + 1;
+                        // it has to break early, in the new substring, c still in map
+                        // otherwise set to false
+                        break;
+                    }
+                    // window left moves, so remove all chars to left of the window from map
+                    letters[s.charAt(j)] = false;
+                }
+            } else {
+                letters[c] = true;
+            }
+            maxLen = Math.max(maxLen, i - left + 1);
+        }
+        
+        return maxLen;
+    }
+
+    // hashset
     public int lengthOfLongestSubstring(String s) {
         if (s == null || s.length() == 0) return 0;
         int startsHere = 0;
-        int max = 0;
-        HashSet<Character> hs = new HashSet<Character>();
+        int maxLen = 0;
+        Set<Character> hs = new HashSet<Character>();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (hs.contains(c)) {
@@ -51,44 +96,15 @@ public class LongestSubstringWithoutRepeatingChars {
                     }
                     hs.remove(s.charAt(j));
                 }
-            }
-            else {
+            } else {
                 hs.add(c);
             }
-            max = Math.max(max, i - startsHere + 1);
+            maxLen = Math.max(maxLen, i - startsHere + 1);
         }
 
-        return max;
+        return maxLen;
     }
 
-    public int lengthOfLongestSubstring(String s) {
-        if (s == null || s.length() == 0) return 0;
-        int maxLength = 0;
-        int windowStart = 0;
-        HashMap<Character, Boolean> hm = new HashMap<Character, Boolean>();
-        
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (hm.get(c) != null && hm.get(c)) {
-                for (int j = windowStart; j < i; j++) {
-                    if (s.charAt(j) == c) {
-                        windowStart = j + 1;
-                        break;
-                    }
-                    hm.put(s.charAt(j), false);
-                }
-            }
-            else {
-                hm.put(c, true);
-            }
-            maxLength = Math.max( i - windowStart + 1, maxLength );
-        }
-        
-        return maxLength;
-    }
-
-    // self written version, no need to c - '0'
-    // not as index - boolean, it is index - integer (frequency)
     public int lengthOfLongestSubstring(String s) {
         if (s == null || s.length() == 0) return 0;
         int[] letters = new int[256];
@@ -97,46 +113,18 @@ public class LongestSubstringWithoutRepeatingChars {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (letters[c] >= 1) {
-                // find new start
                 for (int j = start; j < i; j++) {
                     if (s.charAt(j) == c) {
-                        // update the start position
                         start = j + 1;
                         break;
                     }
-                    // those logged letter corresponding minus 1
                     letters[s.charAt(j)]--;
                 }
-            }
-            else {
+            } else {
                 letters[c]++;
             }
             maxLen = Math.max(maxLen, i - start + 1);
         }
         return maxLen;
-    }
-    // use hashmap to contain <Character, Index>, time out, O(n^3)
-    public int lengthOfLongestSubstring(String s) {
-        if (s.length() == 0 || s == null) {
-            return 0;
-        }
-
-        char[] chars = s.toCharArray();
-        HashMap<Character, Integer> hm = new HashMap<Character, Integer>();
- 		int maxLength = 0;
-
- 		for (int i = 0; i < chars.length; i++) {
- 			char c = chars[i];
- 			if ( hm.containsKey(c) ) {
- 				i = hm.get( c );
- 				maxLength = Math.max(maxLength, hm.size());
- 				hm.clear();
- 			}
- 			else {
- 				hm.put( c, i );
- 			}
- 		}
-        
-        return maxLength;
     }
 }
