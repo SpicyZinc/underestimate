@@ -2,40 +2,38 @@
 Given a list of non negative integers, arrange them such that they form the largest number.
 For example, given [3, 30, 34, 5, 9], the largest formed number is 9534330.
 
-Note: The result may be very large, 
-so you need to return a string instead of an integer.
+Note: The result may be very large, so you need to return a string instead of an integer.
 
 idea:
-sort string array using comparator
-
 http://blog.csdn.net/u013027996/article/details/42773431
-write your own comparator
+sort string array using self-defied comparator
+e.g. 3 > 30 because '330' > '303'
 */
 
 public class LargestNumber {
     public String largestNumber(int[] nums) {
-        String[] s = new String[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            s[i] = String.valueOf(nums[i]);
+        if (nums.length == 0 || nums == null) {
+            return "";
         }
-        Arrays.sort(s, new MyComparator());
+
+        int size = nums.length;
+        String[] strArray = new String[size];
+        for (int i = 0; i < size; i++) {
+            strArray[i] = String.valueOf(nums[i]);
+        }
+        Arrays.sort(strArray, new Comparator<String>() {
+            @Override
+            public int compare(String s, String t) {
+                return (t + s).compareTo(s + t);
+            }
+        });
         
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < s.length; i++) {
-            sb.append(s[i]);
+        String largestNum = "";
+        for (String str : strArray) {
+            largestNum += str;
         }
-        String result = sb.toString();
-        if ("".equals(result.replace("0", ""))) {
-            return "0";
-        }
-        return result;
+        if (largestNum.charAt(0) == '0') return "0";
         
-    }
-    
-    class MyComparator implements Comparator<String> {
-        @Override
-        public int compare(String a, String b) {
-            return (b+a).compareTo(a+b);
-        }
+        return largestNum;
     }
 }
