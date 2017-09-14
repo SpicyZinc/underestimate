@@ -35,8 +35,8 @@ public class WildcardMatching {
     public boolean isMatch(String str, String pattern) {
         int s = 0;
         int p = 0;
-        int starIdx = -1; // once we found a star, we want to record the place of the star.
-        int match = 0; // once we found a star, we want to start to match the rest of pattern with str,
+        int starIdx = -1; // once we found a '*', we want to record the place of the '*'.
+        int match = 0; // once we found a '*', we want to start to match the rest of pattern with str,
         // starting from match; this is for remembering the place where we need to start.
          
         // we check and match every char for str.
@@ -141,7 +141,7 @@ public class WildcardMatching {
         }
         
         if (p.charAt(r) == '*') {
-            // find the non-start position char in pattern
+            // find the non-star position char in pattern
             while (r < p.length() && p.charAt(r) == '*') r++;
             while (l < s.length()) {
                 if (helper(s, p, l, r)) {

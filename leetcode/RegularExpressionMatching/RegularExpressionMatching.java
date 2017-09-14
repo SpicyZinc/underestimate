@@ -33,9 +33,8 @@ public class RegularExpressionMatching {
  
         if (p.length() == 0) {
             return s.length() == 0;
-        }            
-        // p.length == 1 is a special case
-        // Second character of p is not '*'
+        }
+        // second character of p is not '*' or p.length == 1 is a special case
         if (p.length() == 1 || p.charAt(1) != '*') {
             // if first character of p is not '.' and p.charAt(0) != s.charAt(0) return false
             // else keep matching
@@ -44,11 +43,12 @@ public class RegularExpressionMatching {
             }
             return isMatch( s.substring(1), p.substring(1) );        
         }
-        else { // Second character of p is '*'
+        else { // second character of p is '*'
             int i = -1;
-            // first character of p equals first character of s, because second char of p is *,
-            // so s[i], s[i+1], ... s[i+k] could match p, give a try for all possibilities, recursion in while loop
-            // i starts from -1
+            // while first character of p equals first character of s, p.charAt(0) == s.charAt(i) or p.charAt(0) == '.'
+            // because second char of p is *, can cover to match all repeating i chars in s
+            // so if rest chars in s s[i], s[i+1], ... s[i+k] match rest chars in p, then the whole s and p are matching
+            // give a try for all possibilities, recursion in while loop, i starts from -1
             while ( i < s.length() && ( i == -1 || p.charAt(0) == '.' || p.charAt(0) == s.charAt(i) ) ) {
                 if ( isMatch(s.substring(i + 1), p.substring(2)) ) {
                     return true;
@@ -64,18 +64,18 @@ public class RegularExpressionMatching {
             return s.length() == 0;
         }
 
-        int slen = s.length();
-        int plen = p.length();
+        int sLen = s.length();
+        int pLen = p.length();
         // two cases
-        if (plen == 1 || p.charAt(1) != '*' ) {
-            if (slen == 0 || (p.charAt(0) != '.' && p.charAt(0) != s.charAt(0))) {
+        if (pLen == 1 || p.charAt(1) != '*' ) {
+            if (sLen == 0 || (p.charAt(0) != '.' && p.charAt(0) != s.charAt(0))) {
                 return false;
             }
             return isMatch(s.substring(1), p.substring(1));
         }
         else {
             int i = -1;
-            while ( i == -1 || i < slen && ( p.charAt(0) == '.' || p.charAt(0) == s.charAt(i) ) ) {
+            while ( i == -1 || i < sLen && ( p.charAt(0) == '.' || p.charAt(0) == s.charAt(i) ) ) {
                 if (isMatch(s.substring(i + 1), p.substring(2))) {
                     return true;
                 }
@@ -91,7 +91,7 @@ public class RegularExpressionMatching {
         if (p.isEmpty()) return false;
         char c1 = s.charAt(0);
         char c2 = p.charAt(0);
-        char c2next = p.length()>1 ? p.charAt(1) : 'x';
+        char c2next = p.length() > 1 ? p.charAt(1) : 'x';
         if (c2next == '*') {
             if (isSame(c1,c2)) {
                 return isMatch(s.substring(1), p) || isMatch(s, p.substring(2));
@@ -101,7 +101,7 @@ public class RegularExpressionMatching {
             }
         }
         else {
-            if (isSame(c1,c2)) {
+            if (isSame(c1, c2)) {
                 return isMatch(s.substring(1), p.substring(1));
             }
             else {
