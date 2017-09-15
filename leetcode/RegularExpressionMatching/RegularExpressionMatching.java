@@ -28,54 +28,36 @@ dp version
 https://gist.github.com/chenwu054/6978342
 */
 public class RegularExpressionMatching {
+    // method 1 with better understanding
     public boolean isMatch(String s, String p) {
-        assert( p != null && (p.length() == 0 || p.charAt(0) != '*') );
- 
-        if (p.length() == 0) {
-            return s.length() == 0;
-        }
-        // second character of p is not '*' or p.length == 1 is a special case
+        if (p.length() == 0) return s.length() == 0;
+        // two cases
+        // 1. 2nd char of p is NOT *
+        // 2. 2nd char of p is *
         if (p.length() == 1 || p.charAt(1) != '*') {
-            // if first character of p is not '.' and p.charAt(0) != s.charAt(0) return false
-            // else keep matching
-            if ( s.length() == 0 || (p.charAt(0) != '.' && p.charAt(0) != s.charAt(0)) ) {
+            // 1st of pattern is '.' or equals 1st of s
+            if (s.length() > 0 && (p.charAt(0) == '.' || p.charAt(0) == s.charAt(0))) {
+                return isMatch(s.substring(1), p.substring(1));
+            } else {
                 return false;
             }
-            return isMatch( s.substring(1), p.substring(1) );        
-        }
-        else { // second character of p is '*'
+            // if ( s.length() == 0 || (p.charAt(0) != '.' && p.charAt(0) != s.charAt(0)) ) {
+            //     return false;
+            // }
+            // return isMatch( s.substring(1), p.substring(1) );   
+        } else {
+            // i == -1 is to cover the whole s
+            // because 2nd char of p is '*', e.g. "aab", "c*a*b" 
             int i = -1;
+            
             // while first character of p equals first character of s, p.charAt(0) == s.charAt(i) or p.charAt(0) == '.'
             // because second char of p is *, can cover to match all repeating i chars in s
             // so if rest chars in s s[i], s[i+1], ... s[i+k] match rest chars in p, then the whole s and p are matching
             // give a try for all possibilities, recursion in while loop, i starts from -1
-            while ( i < s.length() && ( i == -1 || p.charAt(0) == '.' || p.charAt(0) == s.charAt(i) ) ) {
-                if ( isMatch(s.substring(i + 1), p.substring(2)) ) {
-                    return true;
-                }                    
-                i++;
-            }
-            return false;
-        }
-    }
-    // self written with understanding
-    public boolean isMatch(String s, String p) {
-        if (p.length() == 0) {
-            return s.length() == 0;
-        }
-
-        int sLen = s.length();
-        int pLen = p.length();
-        // two cases
-        if (pLen == 1 || p.charAt(1) != '*' ) {
-            if (sLen == 0 || (p.charAt(0) != '.' && p.charAt(0) != s.charAt(0))) {
-                return false;
-            }
-            return isMatch(s.substring(1), p.substring(1));
-        }
-        else {
-            int i = -1;
-            while ( i == -1 || i < sLen && ( p.charAt(0) == '.' || p.charAt(0) == s.charAt(i) ) ) {
+            
+            while (i < s.length() && (i == -1 || p.charAt(0) == '.' || p.charAt(0) == s.charAt(i))) {
+                // each i match once, because the part till 2nd char of p (*) have been matched
+                // if rest match, then p and s match
                 if (isMatch(s.substring(i + 1), p.substring(2))) {
                     return true;
                 }
