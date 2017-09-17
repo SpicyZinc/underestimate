@@ -19,7 +19,7 @@ idea:
 https://longwayjade.wordpress.com/2015/04/26/leetcode-recursion-dp-greedy-wildcard-matching/
 
 1. greedy algorithm
-p = starIdx + 1;
+j = starIdx + 1;
 
 2. DP
 (1) 1D DP
@@ -32,76 +32,47 @@ http://gongxuns.blogspot.com/2013/01/leetcode-wildcard-matching.html
 */
 
 public class WildcardMatching {
-    public boolean isMatch(String str, String pattern) {
-        int s = 0;
-        int p = 0;
-        int starIdx = -1; // once we found a '*', we want to record the place of the '*'.
-        int match = 0; // once we found a '*', we want to start to match the rest of pattern with str,
-        // starting from match; this is for remembering the place where we need to start.
-         
-        // we check and match every char for str.
-        while (s < str.length()) {
-            // 1. case 1: p matches s one character 
-            if (p < pattern.length() && (str.charAt(s) == pattern.charAt(p) || pattern.charAt(p) == '?')) {
-                p++;
-                s++;
-            } // 2. case 2: we are currently at a '*'
-            else if (p < pattern.length() && pattern.charAt(p) == '*') {
-                starIdx = p;
-                p++;
-                match = s;
-            } // 3. case 3: NOT case 1, NOT case 2, but the last matched is a *, not case 1 and 2, so greedy algorithm, so advance pointer in string
-            else if (starIdx != -1) {
-                match++;
-                s = match;
-                p = starIdx + 1;
-            } // 4. case 4: they do not match, do not currently at a *, and last matched is not a *, then the answer is false;
-            else {
-                return false;
-            }
-        }
-        // when we finish matching all characters in str, is pattern also finished? 
-        // we could only allow '*' at the rest of pattern
-        while (p < pattern.length() && pattern.charAt(p) == '*') {
-            p++;
-        }
-   
-        return p == pattern.length();
-    }
-    // self written greedy algorithm
+    // because * is to match zero or any number of chars, one time loop is okay
     public boolean isMatch(String s, String p) {
+        if (p.length() == 0) return s.length() == 0;
+        
         int sLen = s.length();
         int pLen = p.length();
-        if (pLen == 0) {
-            return sLen == 0;
-        }
+        
         int i = 0;
         int j = 0;
-        int matchStart = 0;
-        int starPos = -1;
-        
+        int matchStartInString = 0; // this is to remember where we need to start match in s
+        int starIdx = -1; // the position of star in p
+                
+        // check and match every char in s
         while (i < sLen) {
+            // case 1, p matches s by one char
             if (j < pLen && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '?')) {
                 i++;
                 j++;
-            }
-            else if (j < pLen && p.charAt(j) == '*') {
-                starPos = j++;
-                matchStart = i;
-            }
-            else if (starPos != -1) {
-                i = ++matchStart;
-                j = starPos + 1;
-            }
-            else {
+            } else if (j < pLen && p.charAt(j) == '*') { // case 2, meet * in p, update '*' position and matchStartInString
+                matchStartInString = i;
+                starIdx = j++;
+            } else if (starIdx != -1) { // case 3, last matched is a *, since j++ in case 2, must run into this case, update i, j pointers in s and p
+                i = ++matchStartInString;
+                j = starIdx + 1;
+            } else {
+                // if s and p not match by one char
+                // if p not currently at * position
+                // if last seen star position is NOT -1
+                // return false
                 return false;
             }
         }
+        // after matching all chars in s, is p finished?
+        // if p not finished, only allow * as the rest of p
         while (j < pLen && p.charAt(j) == '*') {
             j++;
         }
+        
         return j == pLen;
     }
+
     // 2D DP
     // dp[i][j] represents boolean status if to j in pattern matches to i in str
     // although not passed OJ, get the DP is more important
