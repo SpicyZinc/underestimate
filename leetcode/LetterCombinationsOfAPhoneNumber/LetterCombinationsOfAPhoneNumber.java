@@ -66,40 +66,40 @@ public class LetterCombinationsOfAPhoneNumber {
         }
     }
 
-    // method 2, follow my pattern
+    // method 2
    	public List<String> letterCombinations(String digits) {
- 		List<String> result = new ArrayList<String>();
-        if (digits.length() == 0 || digits == null) {
+        List<String> result = new ArrayList<String>();
+        if (digits == null || digits.length() == 0) {
             return result;
         }
-		combine(result, digits, 0, new StringBuffer());
-		return result;
+        combine(result, digits, 0, new StringBuilder());
+        return result;
     }
-    
-    private void combine(List<String> result, String digits, int i, StringBuffer sb) {
-    	char[][] map = {
-			{},
-			{}, 
-			{'a','b','c'},
-			{'d','e','f'},
-			{'g','h','i'},
-			{'j','k','l'},
-			{'m','n','o'}, 
-			{'p','q','s','r'}, 
-			{'t','u','v'},
-			{'w','x','y','z'}
-	    };
 
-        if (i == digits.length()) {
-            result.add(sb.toString());
+    public void combine(List<String> result, String digits, int index, StringBuilder sb) {
+        char[][] map = {
+            {},
+            {}, 
+            {'a','b','c'},
+            {'d','e','f'},
+            {'g','h','i'},
+            {'j','k','l'},
+            {'m','n','o'}, 
+            {'p','q','s','r'}, 
+            {'t','u','v'},
+            {'w','x','y','z'}
+        };
+
+        if (index == digits.length()) {
+            result.add(new String(sb.toString()));
             return;
         }
-        
-        int index = digits.charAt(i) - '0';
-        int len = map[index].length;
-        for (int j = 0; j < len; j++) {
-            sb.append(map[index][j]);
-            combine(result, digits, i+1, sb);
+
+        int key = digits.charAt(index) - '0';
+        char[] chars = map[key];
+        for (int i = 0; i < chars.length; i++) {
+            sb.append(chars[i]);
+            combine(result, digits, index + 1, sb);
             sb.deleteCharAt(sb.length() - 1);
         }
     }
