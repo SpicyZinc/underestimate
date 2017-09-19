@@ -15,11 +15,51 @@ Output:
 35
 
 idea:
-no idea
+https://discuss.leetcode.com/topic/92854/java-solution-result-array/3
+https://www.cnblogs.com/grandyang/p/7076026.html
+
+rethink, based on the description, the smallest,
+so the biggest factor should be in the last position
+start from 9 through 2, divides input a
 */
 
+import java.util.*;
+
 public class MinimumFactorization {
+	public static void main(String[] args) {
+		MinimumFactorization eg = new MinimumFactorization();
+		int num1 = 48;
+		int num2 = 15;
+
+		int smallest1 = eg.smallestFactorization(num1);
+		int smallest2 = eg.smallestFactorization(num2);
+
+		System.out.println(smallest1 + " " + smallest2);
+	}
+
     public int smallestFactorization(int a) {
-        
+        if (a < 10) {
+        	return a;
+        }
+	
+		List<Integer> result = new ArrayList<Integer>();
+        for (int i = 9; i > 1; i--) {
+        	while (a % i == 0) {
+        		result.add(i);
+        		a /= i;
+        	}
+        }
+        // can divide exactly, should be 1; if not, return 0
+        if (a != 1) return 0;
+
+        long smallest = 0;
+        for (int i = result.size() - 1; i >= 0; i--) {
+        	smallest = smallest * 10 + result.get(i);
+        	if (smallest > Integer.MAX_VALUE) {
+        		return 0;
+        	}
+        }
+
+        return (int) smallest;
     }
 }
