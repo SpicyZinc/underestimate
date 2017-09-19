@@ -1,0 +1,58 @@
+/*
+Given a string containing only three types of characters: '(', ')' and '*', write a function to check whether this string is valid.
+We define the validity of a string by these rules:
+
+Any left parenthesis '(' must have a corresponding right parenthesis ')'.
+Any right parenthesis ')' must have a corresponding left parenthesis '('.
+Left parenthesis '(' must go before the corresponding right parenthesis ')'.
+'*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty string.
+An empty string is also valid.
+
+Example 1:
+Input: "()"
+Output: True
+
+Example 2:
+Input: "(*)"
+Output: True
+
+Example 3:
+Input: "(*))"
+Output: True
+
+Note:
+The string size will be in the range [1, 100].
+
+idea:
+this is variation of valid parenthesis string check
+if no *,
+meet '(' count++
+meet ')' count-- if count < 0 return false
+return count == 0
+now it has *, recursion
+*/
+class ValidParenthesisString {
+    public boolean checkValidString(String s) {
+        return check(s, 0, 0);
+    }
+
+    public boolean check(String s, int start, int count) {
+        if (count < 0) {
+            return false;
+        }
+
+        for (int i = start; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                count++;
+            } else if (c == ')') {
+                count--;
+                if (count < 0) return false;
+            } else if (c == '*') {
+                return check(s, i + 1, count) || check(s, i + 1, count + 1) || check(s, i + 1, count - 1);
+            }
+        }
+
+        return count == 0;
+    }
+}
