@@ -1,5 +1,4 @@
 /*
-
 We are playing the Guess Game. The game is as follows:
 I pick a number from 1 to n. You have to guess which number I picked.
 Every time you guess wrong, I'll tell you whether the number is higher or lower.
@@ -14,8 +13,7 @@ Return 6.
 
 idea:
 binary search
-
-
+recursion or iteration
 */
 
 /* The guess API is defined in the parent class GuessGame.
@@ -25,19 +23,37 @@ binary search
 
 public class GuessNumberHigherOrLower extends GuessGame {
     public int guessNumber(int n) {
-    	int start = 1;
+        int start = 1;
         int end = n;
+        
         while (start < end) {
-            int mid = (start + end) / 2;
+            int mid = start + ( end - start ) / 2;
             int guess = guess(mid);
-            if (guess == 0) {
-                return mid;
-            } else if (guess == -1) {
-                end = mid;
-            } else {
+            if (guess == 1) {
                 start = mid + 1;
+            } else if (guess == -1) {
+                end = mid - 1;
+            } else {
+                return mid;
             }
         }
         return start;
+    }
+
+    // recursion
+    public int guessNumber(int n) {
+        return guessNumber(1, n);
+    }
+    
+    public int guessNumber(int low, int high) {
+        int mid = low + (high - low) / 2;
+        int guessed = guess(mid);
+        if (guessed == 1) {
+            return guessNumber(mid + 1, high);
+        } else if (guessed == -1) {
+            return guessNumber(low, mid - 1);
+        } else {
+            return mid;
+        }
     }
 }
