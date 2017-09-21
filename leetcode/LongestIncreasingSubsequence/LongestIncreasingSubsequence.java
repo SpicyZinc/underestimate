@@ -35,17 +35,21 @@ public class LongestIncreasingSubsequence {
     // 20 / 24 test cases passed
     // failed [10,9,2,5,3,4]
     public int lengthOfLIS(int[] nums) {
-        for (int i = 0; i < nums.length; i++) {
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+        int max = 1;
+        for (int i = 0; i < n; i++) {
             int curr = nums[i];
-            int cnt = 0;
-            for (int j = i + 1; j < nums.length; j++) {
-                int next = nums[j];
-                if (next > curr) {
-                    curr = next;
+            int cnt = 1;
+            for (int j = i + 1; j < n; j++) {
+                if (nums[j] > curr) {
+                    curr = nums[j];
                     cnt++;
                 }
+                max = Math.max(max, cnt);
             }
-            max = Math.max(max, cnt);
         }
 
         return max;
@@ -74,22 +78,22 @@ public class LongestIncreasingSubsequence {
 	}
     // dp[i] represents array[0, i] inclusive, the length of longest increasing substring until i inclusively
     public int lengthOfLIS(int[] nums) {
-        if (nums == null || nums.length == 0) {
+        int n = nums.length;
+        if (n == 0) {
             return 0;
         }
         int max = 1;
-        int[] dp = new int[nums.length];
-        dp[0] = 1;
-        for ( int i = 1; i < nums.length; i++ ) {
+        int[] dp = new int[n];
+        for (int i = 0; i < n; i++) {
             dp[i] = 1;
-            for ( int j = i - 1; j >= 0; j-- ) {
-                if ( nums[i] > nums[j] ) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[i] > nums[j]) {
                     dp[i] = Math.max(dp[i], dp[j] + 1);
                 }
             }
             max = Math.max(max, dp[i]);
         }
-
+        
         return max;
     }
     // length of longest increasing subsequence path
