@@ -15,36 +15,31 @@ idea:
 recursion backtracking
 typical and classical
 
-unique array to keep to see if duplicates on layer recursion
+unique array to keep to see if duplicates on the same layer
+e.g. 4, 6, 7, 7, 8, no need to go the next level recursion, avoid duplicate on this level, avoid 2nd 7
 */
 
 public class IncreasingSubsequences {
     public List<List<Integer>> findSubsequences(int[] nums) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
-        dfs(0, nums, new ArrayList<Integer>(), result);
+        List<List<Integer>> result = new ArrayList<>();
+        dfs(nums, 0, new ArrayList<Integer>(), result);
         return result;
     }
 
-    public void dfs(int index, int[] nums, List<Integer> list, List<List<Integer>> result) {
-        if (list.size() >= 2) {
-        	result.add(new ArrayList<Integer>(list));
+    public void dfs(int[] nums, int index, List<Integer> path, List<List<Integer>> result) {
+        if (path.size() > 1) {
+            result.add(new ArrayList<Integer>(path));
         }
-        List<Integer> unique = new ArrayList<Integer>();
+        Set<Integer> hs = new HashSet<Integer>();
         for (int i = index; i < nums.length; i++) {
-        	int current = nums[i];
-        	// decreasing sequence, continue
-        	if (index > 0 && current < nums[index - 1]) {
-        		continue;
-        	}
-        	// skip the duplicate, if not skip, must i++
-        	if (unique.contains(current)) {
-        		continue;
-        	}
-        	unique.add(current);
-        	list.add(current);
-        	dfs(i + 1, nums, list, result);
-        	list.remove(list.size() - 1);
+            // skip the duplicate, if not skip, must i++
+            if (hs.contains(nums[i])) continue;
+            if (index == 0 || index > 0 && nums[i] >= nums[index - 1]) {
+                hs.add(nums[i]);
+                path.add(nums[i]);
+                dfs(nums, i + 1, path, result);
+                path.remove(path.size() - 1);
+            }
         }
     }
 }
-
