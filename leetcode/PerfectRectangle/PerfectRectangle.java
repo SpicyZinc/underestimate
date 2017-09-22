@@ -47,69 +47,68 @@ A----D
 |    |   
 B----C
 
-4 points in the final rectangle only appear once in all the given points
-so use hashset to add and remove duplicate points, all duplicate point must appear in pair
-and total area must be all small rectangles' area sum together
+4 points in the final rectangle only appear only once in all given points
+because duplicate points appear in pair, once found hs has this point, remove it; thus finally only 4 points left
+there should be 4 points left
+totalArea should be equal to sum of all small ones
 
-count the only 4 point did not pass OJ because object address is different
+note: cannot use Point, because address is different
+
+tr == top right
+bl == bottom left
 */
-
 
 public class PerfectRectangle {
     public boolean isRectangleCover(int[][] rectangles) {
-        int blX = Integer.MAX_VALUE;                
-        int blY = Integer.MAX_VALUE;                
-        int trX = Integer.MIN_VALUE;                
-        int trY = Integer.MIN_VALUE;
+        int minBLX = Integer.MAX_VALUE;
+        int minBLY = Integer.MAX_VALUE;
+        int maxTRX = Integer.MIN_VALUE;
+        int maxTRY = Integer.MIN_VALUE;
 
         int totalArea = 0;
-        HashSet<String> hs = new HashSet<String>();
-        for (int i = 0; i < rectangles.length; i++) {
-            int[] rectangle = rectangles[i];
-            totalArea += getRectangleArea(rectangle);
+        Set<String> hs = new HashSet<String>();
 
-            blX = Math.min(blX, rectangle[0]);
-            blY = Math.min(blY, rectangle[1]);
-            trX = Math.max(trX, rectangle[2]);
-            trY = Math.max(trY, rectangle[3]);
+        for (int[] rectangle : rectangles) {
+            totalArea += area(rectangle);
+
+            int blX = rectangle[0];
+            int blY = rectangle[1];
+            int trX = rectangle[2];
+            int trY = rectangle[3];
             
-            String A = representPoint(rectangle[0], rectangle[3]);
-            String B = representPoint(rectangle[0], rectangle[1]);
-            String C = representPoint(rectangle[2], rectangle[1]);
-            String D = representPoint(rectangle[2], rectangle[3]);
+            String A = representingPoint(blX, blY);
+            String B = representingPoint(trX, blY);
+            String C = representingPoint(trX, trY);
+            String D = representingPoint(blX, trY);
 
-            String[] points = new String[] {A, B, C, D};
-            for (int idx = 0; idx < points.length; idx++) {
-                if (hs.contains(points[idx])) {
-                    hs.remove(points[idx]);
-                }
-                else {
-                    hs.add(points[idx]);
+            if (!hs.add(A)) hs.remove(A);
+            if (!hs.add(B)) hs.remove(B);
+            if (!hs.add(C)) hs.remove(C);
+            if (!hs.add(D)) hs.remove(D);
 
-                }
-            }
+            minBLX = Math.min(minBLX, blX);
+            minBLY = Math.min(minBLY, blY);
+            maxTRX = Math.max(maxTRX, trX);
+            maxTRY = Math.max(maxTRY, trY);
         }
 
-
-        if (hs.size() == 4 && 
-            hs.contains(representPoint(blX, trY)) &&
-            hs.contains(representPoint(blX, blY)) &&
-            hs.contains(representPoint(trX, blY)) &&
-            hs.contains(representPoint(trX, trY))
+        if (hs.size() == 4 &&
+            hs.contains(representingPoint(minBLX, minBLY)) &&
+            hs.contains(representingPoint(minBLX, maxTRY)) &&
+            hs.contains(representingPoint(maxTRX, minBLY)) &&
+            hs.contains(representingPoint(maxTRX, maxTRY))
         ) {
-            return totalArea == (trX - blX) * (trY - blY);
+            return totalArea == (maxTRX - minBLX) * (maxTRY - minBLY);
         }
 
         return false;
     }
 
-    public int getRectangleArea(int[] rectangle) {
-        int length = rectangle[2] - rectangle[0];
-        int width = rectangle[3] - rectangle[1];
-        return length * width;
+    public int area(int[] rectangle) {
+        return (rectangle[2] - rectangle[0]) * (rectangle[3] - rectangle[1]);
     }
-
-    public String representPoint(int x, int y) {
-        return x + "-" + y;
+    
+    public String representingPoint(int x, int y) {
+        return x + "_" + y;
     }
 }
