@@ -5,13 +5,12 @@ given n = 12, return 3 because 12 = 4 + 4 + 4;
 given n = 13, return 2 because 13 = 4 + 9.
 
 idea:
-good summary, 
 http://bookshadow.com/weblog/2015/09/09/leetcode-perfect-squares/
 http://www.cnblogs.com/grandyang/p/4800552.html
 
-1 recursion
-starting from 2, if n can be divided exactly, count the number
-if not, get the remaining number, recursively passing in the function again.
+1 recursion is the natural way to tackle this problem
+i starting from 2, if n can be divided exactly, count the number
+if not, get the remaining number, recursively passing in the function again
 
 2. dynamic programming
 create an array of length n + 1, dp[i] the smallest number of square numbers for i
@@ -29,17 +28,19 @@ public class PerfectSquares {
 		System.out.println(eg.numSquares(12));
 	}
 	// method 1
-    public int numSquares(int n) {
-        int result = n, num = 2;
-        while ( num * num <= n ) {
-            int number = n / (num * num);
-            int remaining = n % (num * num);
-            result = Math.min(result, number + numSquares(remaining));
-            num++;
+	public int numSquares(int n) {
+        int minNum = n;
+        int i = 2;
+        while (i * i <= n) {
+            int num = n / (i * i);
+            int remaining = n % (i * i);
+            minNum = Math.min(minNum, num + numSquares(remaining));
+            i++;
         }
-
-        return result;
+        
+        return minNum;
     }
+
     // method 2
     public int numSquares(int n) {
     	int[] dp = new int[n + 1];
@@ -52,19 +53,5 @@ public class PerfectSquares {
     	}
 
        	return dp[n];
-    }
-    // method 3, 400 / 586 test cases passed
-    public int numSquares(int n) {
-        while (n % 4 == 0) n /= 4;
-        if (n % 8 == 7) {
-            return 4;
-        }
-        for (int i = 0; i * i < n; i++) {
-            int j = (int) Math.sqrt(n - i * i);
-            if ( i * i + j * j == n ) {
-                return (i ^ 1) == 0 ? 0 : 1 + (j ^ 1) == 0 ? 0 : 1;
-            }
-        }
-        return 3;
     }
 }
