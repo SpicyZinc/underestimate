@@ -41,92 +41,77 @@ then the rest are straightforward, implement them as requested
 */
 
 public class Twitter {
-    private Map<Integer, List<Integer>> followMap;
-    private Map<Integer, List<Integer>> tweetMap;
-    private List<Integer> tweetList;
-
-    /**
-     * Initialize your data structure here.
-     */
+    Map<Integer, List<Integer>> userTweetsMap;
+    Map<Integer, List<Integer>> followMap;
+    List<Integer> tweetsList;
+    /** Initialize your data structure here. */
     public Twitter() {
+        userTweetsMap = new HashMap<Integer, List<Integer>>();
         followMap = new HashMap<Integer, List<Integer>>();
-        tweetMap = new HashMap<Integer, List<Integer>>();
-        tweetList = new ArrayList<Integer>();
+        tweetsList = new ArrayList<Integer>();
     }
-
-    /**
-     * Compose a new tweet.
-     */
+    
+    /** Compose a new tweet. */
     public void postTweet(int userId, int tweetId) {
-        List<Integer> list = new ArrayList<Integer>();
-        if (tweetMap.containsKey(userId)) {
-            list = tweetMap.get(userId);
+        // userTweetsMap.put(userId, userTweetsMap.getOrDefault(userId, new ArrayList<Integer>()).add(tweetId));
+        List<Integer> postedTweets = userTweetsMap.get(userId);
+        if (postedTweets == null) {
+            postedTweets = new ArrayList<Integer>();
         }
-        list.add(tweetId);
-        tweetMap.put(userId, list);
-        tweetList.add(tweetId);
+        postedTweets.add(tweetId);
+        userTweetsMap.put(userId, postedTweets);
+        tweetsList.add(tweetId);
     }
-
-    /**
-     * Retrieve the 10 most recent tweet ids in the user's news feed.
-     * Each item in the news feed must be posted by users who the user followed or by the user herself.
-     * Tweets must be ordered from most recent to least recent.
-     */
+    
+    /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
     public List<Integer> getNewsFeed(int userId) {
-        List<Integer> list = new ArrayList<Integer>();
-        if (tweetMap.containsKey(userId)) {
-            list = tweetMap.get(userId);
+        // self posted tweets
+        List<Integer> selfPosted = userTweetsMap.get(userId);
+        if (selfPosted == null) {
+            selfPosted = new ArrayList<Integer>();
         }
-        List<Integer> allList = new ArrayList<Integer>(list);
-        List<Integer> followees = new ArrayList<Integer>();
+        // all possible tweets to feed this userId
+        List<Integer> allTweets = new ArrayList<Integer>(selfPosted);
+        // followees posted tweets
         if (followMap.containsKey(userId)) {
-            followees = followMap.get(userId);
-        }
-        for (int i = 0; i < followees.size(); i++) {
-            int followee = followees.get(i);
-            if (tweetMap.containsKey(followee)) {
-                allList.addAll(tweetMap.get(followee));
+            for (int followee : followMap.get(userId)) {
+                if (userTweetsMap.containsKey(followee)) {
+                    allTweets.addAll(userTweetsMap.get(followee));
+                }
             }
         }
-        // all tweets posted by self and followees
-        Set<Integer> set = new HashSet<Integer>(allList);
-        List<Integer> feedList = new ArrayList<Integer>();
-        int k = 0;
-        for (int i = tweetList.size() - 1; i >= 0; i--) {
-            if (k == 10) {
-                break;
+        // get the 10 most recent, use set to avoid duplicate
+        Set<Integer> hs = new HashSet<Integer>();
+        List<Integer> recentFeed = new ArrayList<Integer>();
+        for (int i = tweetsList.size() - 1; i >= 0; i--) {
+            // the most recent
+            Integer tweetId = tweetsList.get(i);
+            if (hs.add(tweetId) && allTweets.contains(tweetId)) {
+                recentFeed.add(tweetId);
             }
-            int tweetId = tweetList.get(i);
-            if (set.contains(tweetId)) {
-                feedList.add(tweetId);
-                k++;
-            }
+            if (recentFeed.size() == 10) break; 
         }
-        return feedList;
+        
+        return recentFeed;
     }
-
-    /**
-     * Follower follows a followee. If the operation is invalid, it should be a no-op.
-     */
+    
+    /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
     public void follow(int followerId, int followeeId) {
-        List<Integer> list = new ArrayList<Integer>();
-        if (followMap.containsKey(followerId)) {
-            list = followMap.get(followerId);
+        // followMap.put(followerId, followMap.getOrDefault(followerId, new ArrayList<Integer>()).add(followeeId));
+        List<Integer> followees = followMap.get(followerId);
+        if (followees == null) {
+            followees = new ArrayList<Integer>();
         }
-        if (!list.contains(followeeId)) {
-            list.add(followeeId);
-        }
-        followMap.put(followerId, list);
+        followees.add(followeeId);
+        followMap.put(followerId, followees);
     }
-
-    /**
-     * Follower unfollows a followee. If the operation is invalid, it should be a no-op.
-     */
+    
+    /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
     public void unfollow(int followerId, int followeeId) {
-        if (followMap.containsKey(followerId)) {
-            List<Integer> list = followMap.get(followerId);
-            list.remove((Integer) followeeId);
-            followMap.put(followerId, list);
+        List<Integer> followees = followMap.get(followerId);
+        if (followees != null) {
+            followees.remove((Integer) followeeId);
+            followMap.put(followerId, followees);
         }
     }
 }
