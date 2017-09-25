@@ -1,12 +1,35 @@
 /*
-http://www.programcreek.com/2013/03/leetcode-lru-cache-java/
+Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and put.
+
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+put(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity,
+it should invalidate the least recently used item before inserting a new item.
+
+Follow up:
+Could you do both operations in O(1) time complexity?
+
+Example:
+
+LRUCache cache = new LRUCache(2); // capacity
+
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // returns 1
+cache.put(3, 3);    // evicts key 2
+cache.get(2);       // returns -1 (not found)
+cache.put(4, 4);    // evicts key 1
+cache.get(1);       // returns -1 (not found)
+cache.get(3);       // returns 3
+cache.get(4);       // returns 4
+
 
 idea:
+
+http://www.cnblogs.com/feiling/p/3426967.html
+http://www.programcreek.com/2013/03/leetcode-lru-cache-java/
+
+// use LinkedHashMap
 http://www.codewalk.com/2012/04/least-recently-used-lru-cache-implementation-java.html
-
-http://www.acmerblog.com/leetcode-lru-cache-lru-5745.html
-best: http://www.cnblogs.com/feiling/p/3426967.html
-
 http://blog.csdn.net/whuwangyi/article/details/15495845
 
 
@@ -15,18 +38,18 @@ set == inserted
 either visited or inserted will hoist the value to list head
 
 lookup (get):
-根据键值查询hashmap，若命中，则返回节点，否则返回null
-从双向链表中删除命中的节点，将其重新插入到表头
+根据键值查询hashmap, 若命中, 则返回节点, 否则返回null
+从双向链表中删除命中的节点, 将其重新插入到表头
 
 insert (set):
-如果cache满了，删除双向链表的尾节点，同时删除Hashmap对应的记录
+如果cache满了, 删除双向链表的尾节点, 同时删除Hashmap对应的记录
 将新的节点关联到Hashmap
 将新的节点插入到双向链表头部
 
 delete:
 从双向链表和Hashmap中同时删除对应的记录。
 */
-// self written passed test
+
 public class LRUCache {
 	private class DLLNode {
 		int key;
@@ -70,7 +93,8 @@ public class LRUCache {
         	existingNode.value = value;
         	remove(existingNode);
         	insertAtHead(existingNode);
-        	// no need to update hm since DLLNode object address is not changed, only pointers pointing to it changed or its contents (prev, next) get updated
+        	// no need to update hm since DLLNode object address is not changed
+        	// only pointers pointing to it changed or its contents (prev, next) get updated
         }
         else {
         	DLLNode newNode = new DLLNode(key, value);
