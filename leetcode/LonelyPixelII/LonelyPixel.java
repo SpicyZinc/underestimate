@@ -30,10 +30,10 @@ Note:
 The range of width and height of the input 2D array is [1,200].
 
 idea:
+https://www.cnblogs.com/grandyang/p/6754987.html
 record each row and column how many 'B'
 based on rules, for rows whose column' B == N, equal to the ith row
 reset colcnt[j] = 0
-https://www.cnblogs.com/grandyang/p/6754987.html
 */
 
 import java.util.*;
@@ -51,45 +51,50 @@ public class LonelyPixel {
 		int result = eg.findBlackPixel(picture, N);
 		System.out.println("result == " + result);
 	}
+
     public int findBlackPixel(char[][] picture, int N) {
-    	if (picture.length == 0 || picture[0].length == 0) {
-    		return 0;
-    	}
-    	int m = picture.length;
-    	int n = picture[0].length;
-    	int[] rowcnt = new int[m];
-    	int[] colcnt = new int[n];
-    	String[] rows = new String[m];
-    	for (int i = 0; i < m; i++) {
-    		rows[i] = new String(picture[i]);
-    		for (int j = 0; j < n; j++) {
-    			if (picture[i][j] == 'B') {
-    				rowcnt[i]++;
-    				colcnt[j]++;
-    			}
-    		}
-    	}
-    	int cnt = 0;
-    	int k = 0;
-    	for (int i = 0; i < m; i++) {
-    		for (int j = 0; j < n; j++) {
-    			if (rowcnt[i] == N && colcnt[j] == N) {
-    				for (k = 0; k < m; k++) {
-    					// the rows that have black pixel 
-    					if (picture[k][j] == 'B') {
-    						if (!rows[k].equals(rows[i])) {
-    							break;
-    						}
-    					}
-    				}
-    				if (k == m) {
-    					cnt += colcnt[j];
-    					// set this column to be zero
-    					colcnt[j] = 0;
-    				}
-    			}
-    		}
-    	}
-    	return cnt;
+        if (picture == null) return 0;
+        int m = picture.length;
+        int n = picture[0].length;
+        if (m == 0 || n == 0) return 0;
+
+        int[] rowcnt = new int[m];
+        int[] colcnt = new int[n];
+        String[] rows = new String[m];
+
+        for (int i = 0; i < m; i++) {
+            rows[i] = new String(picture[i]);
+            for (int j = 0; j < n; j++) {
+                if (picture[i][j] == 'B') {
+                    rowcnt[i]++;
+                    colcnt[j]++;
+                }
+            }
+        }
+
+        int cnt = 0;
+        int k = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (rowcnt[i] == N && colcnt[j] == N) {
+                    for (k = 0; k < m; k++) {
+                        // the rows that have black pixel
+                        // they should be exactly the same as row R
+                        if (picture[k][j] == 'B') {
+                            if (!rows[k].equals(rows[i])) {
+                                break;
+                            }
+                        }
+                    }
+                    if (k == m) {
+                        cnt += colcnt[j];
+                        // set this column to be zero, avoid duplicate calculation
+                        colcnt[j] = 0;
+                    }
+                }
+            }
+        }
+
+        return cnt;
     }
 }
