@@ -103,7 +103,7 @@ class LRUCache {
             // 2. cache is not full
             DLLNode newNode = new DLLNode(key, value);
             if (currSize >= capacity) {
-                // remove tail from map
+                // remove tail from map, least recently used
                 hm.remove(tail.key);
                 // remove tail from list
                 tail = tail.prev;

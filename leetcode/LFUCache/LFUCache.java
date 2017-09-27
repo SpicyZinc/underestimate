@@ -11,8 +11,8 @@ Follow up:
 Could you do both operations in O(1) time complexity?
 
 Example:
-LFUCache cache = new LFUCache( 2 ); // capacity is 2
 
+LFUCache cache = new LFUCache( 2 ); // capacity is 2
 cache.put(1, 1);
 cache.put(2, 2);
 cache.get(1);       // returns 1
@@ -25,10 +25,10 @@ cache.get(3);       // returns 3
 cache.get(4);       // returns 4
 
 idea:
+http://bookshadow.com/weblog/2016/11/22/leetcode-lfu-cache/
+
 key is page address
 value is value
-
-http://bookshadow.com/weblog/2016/11/22/leetcode-lfu-cache/
 
 head --- FreqNode1 ---- FreqNode2 ---- ... ---- FreqNodeN
               |               |                       |               
@@ -44,14 +44,16 @@ head --- FreqNode1 ---- FreqNode2 ---- ... ---- FreqNodeN
               |
             last
 
-Especially storing all keys with same frequencies in one node, 
+Especially storing all keys with same frequencies in one node,
+LinkedHashSet maintains the insertion order
 
 if one of the keys in that node got hit once more, 
 it will be moved into a new node with (frequency + 1) if the node exits or it will be wrapped into a newly created node with (frequency + 1)
 
-The basic structure is doubly linked list of FrequencyNode
-each node contains frequency, prev, next, LinkedHashSet
-valueHash contains the basic key - value pair
+
+basic structure is doubly linked list of DLLNode, the list is frequency increasing order
+each node, I call it FrequencyNode, beside prev and next for DLLNode, it also has frequency and a LinkedHashset of keys with the same frequency
+valuesMap contains the basic key - value pair
 */
 
 public class LFUCache {
@@ -97,7 +99,7 @@ public class LFUCache {
         if (!valueHash.containsKey(key)) {
             // if already full, remove oldest first
             if (valueHash.size() >= capacity) {
-                // remove the least frequent and least used one
+                // remove the least frequent and least recently used one
                 removeOldest();
             }
             // if not full
