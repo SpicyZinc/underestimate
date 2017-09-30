@@ -10,7 +10,7 @@ You may assume k is always valid, 1 ≤ k ≤ array's length.
 
 idea:
 1. borrow quick sort idea
-2. priority queue
+2. By default the Priority Queue works as min-Heap, which is min at the top
 3. sort the array first
 */
 
@@ -24,56 +24,45 @@ public class FindKthLargest {
 		System.out.println(eg.findKthLargest(nums, 3));
 	}
 
-	// 0. best quick sort
+	// 1. best quick sort
 	public int findKthLargest(int[] nums, int k) {
-        if (k <= 0 || nums == null || nums.length == 0) {
-			return 0;
-		}
-        // Kth largest is n - k + 1 th smallest
+        if (k <= 0 || nums.length == 0 || nums == null) {
+            return 0;
+        }
+        // Kth largest == (n - K + 1)th smallest
         return findKthSmallest(nums, nums.length - k + 1, 0, nums.length - 1);
+        // return getKth(nums, nums.length - k + 1, 0, nums.length - 1);
     }
     
-    // find Kth smallest
     public int findKthSmallest(int[] nums, int k, int start, int end) {
-        // use start as pivot
-        int pivot = start;
+        // imaginary pivot, this case, use start, but start will be still compared
+        int pivotIdx = start;
+        int pivotVal = nums[pivotIdx];
+        
         int i = start;
         int j = end;
         while (i <= j) {
-            while (i <= j && nums[i] <= nums[pivot]) i++; 
-            while (i <= j && nums[j] >= nums[pivot]) j--;
+            while (i <= j && nums[i] <= pivotVal) i++;
+            while (i <= j && nums[j] >= pivotVal) j--;
+            // i j stop moving, but there are still values bigger than pivotVal on the left
+            // or smaller values than pivotVal on the right
             if (i <= j) swap(nums, i, j);
         }
-        swap(nums, pivot, j); // whichever is pivot, swap again
-        if (k == j + 1) {
+        // put the real pivotVal into the position
+        swap(nums, pivotIdx, j);
+        // where recursion applies
+        // j is index, j + 1 is comparable with k
+        if (k > j + 1) {
+            return findKthSmallest(nums, k, j + 1, end);
+        } else if (k < j + 1) {
+            return findKthSmallest(nums, k, start, j - 1);
+        } else {
             return nums[j];
         }
-        else if (k > j + 1) {
-            return findKthSmallest(nums, k, j + 1, end);
-        }
-        else {
-            return findKthSmallest(nums, k, start, j - 1);
-        }
-    }
-    // swap
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
     }
 
-	// 1. quick sort
-    public int findKthLargest(int[] nums, int k) {
-		if (k <= 0 || nums == null || nums.length == 0) {
-			return 0;
-		}
-	 
-		return getKth(nums.length - k + 1, nums, 0, nums.length - 1);
-	}
-	 
-	public int getKth(int k, int[] nums, int start, int end) {
+    public int getKth(int[] nums, int k, int start, int end) {
 		int pivot = nums[end];
-	 
 		int left = start;
 		int right = end;	 
 		while (true) {
@@ -92,24 +81,22 @@ public class FindKthLargest {
 	 
 		if (k == left + 1) {
 			return pivot;
-		} 
-		else if (k < left + 1) {
-			return getKth(k, nums, start, left - 1);
-		} 
-		else {
-			return getKth(k, nums, left + 1, end);
+		} else if (k < left + 1) {
+			return getKth(nums, k, start, left - 1);
+		} else {
+			return getKth(nums, k, left + 1, end);
 		}
 	}
-	 
-	private void swap(int[] nums, int n1, int n2) {
-		int tmp = nums[n1];
-		nums[n1] = nums[n2];
-		nums[n2] = tmp;
-	}
+    
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 
 	// 2. priority queue
 	public int findKthLargest(int[] nums, int k) {
-        final PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
         for (int val : nums) {
             pq.offer(val);
             if (pq.size() > k) {
@@ -123,21 +110,4 @@ public class FindKthLargest {
         Arrays.sort(nums);
         return nums[nums.length - k];
     }
-    // demonstrate how to use priority queue
-	public static void main(String[] args) {
-		FindKthLargest eg = new FindKthLargest();
-		int[] nums = { 3,2,1,5,6,4 };
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
-        for (int val : nums) {
-            pq.offer(val);
-            if (pq.size() > 3) {
-                pq.poll();
-            }
-        }
-
-        while (pq.size() != 0) {
-            int j = pq.remove();
-            System.out.println(j);
-        }
-	}
 }
