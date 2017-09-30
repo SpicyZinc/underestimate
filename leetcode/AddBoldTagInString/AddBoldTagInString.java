@@ -22,76 +22,95 @@ The given dict won't contain duplicates, and its length won't exceed 100.
 All the strings in input have length in range [1, 1000].
 
 idea:
-1. borrow from merge intervals
+borrow idea from merge intervals
+to merge intervals, either extend current interval or create new interval
+
 note: interval's start is where exactly the word starts
 end is one step more then where word ends
 */
 
+import java.util.*;
+
 public class AddBoldTagInString {
+    public static void main(String[] args) {
+        AddBoldTagInString eg = new AddBoldTagInString();
+        // String s = "abcxyz123";
+        String s = "aaabbcc";
+        // String[] dict = {"abc","123"};
+        String[] dict = {"aaa","aab","bc"};
+        String result = eg.addBoldTag(s, dict);
+
+        System.out.println(result);
+    }
+
+    class Interval {
+        int start;
+        int end;
+        public Interval() {
+            this.start = 0;
+            this.end = 0;
+        }
+        public Interval(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+        public String toString() {
+            return "[" + start + " " + end + "]";
+        }
+    }
+
     public String addBoldTag(String s, String[] dict) {
-    	List<Interval> intervals = new ArrayList<Interval>();
+        List<Interval> intervals = new ArrayList<Interval>();
         for (String str : dict) {
-        	for (int i = 0; i < s.length(); i++) {
-        		if (s.startsWith(str, i)) {
-        			intervals.add(new Interval(i, i + str.length()));
-        		} 
-        	}
+            for (int i = 0; i < s.length(); i++) {
+                if (s.startsWith(str, i)) {
+                    intervals.add(new Interval(i, i + str.length()));
+                }
+            }
         }
 
         List<Interval> result = merge(intervals);
         StringBuilder sb = new StringBuilder();
         int last = 0;
         for (Interval interval : result) {
-        	int start = interval.start;
-        	int end = interval.end;
-        	sb.append(s.substring(last, start));
-        	sb.append("<b>");
-        	sb.append(s.substring(start, end));
-        	sb.append("</b>");
-        	last = end;
+            int start = interval.start;
+            int end = interval.end;
+            // append str not in dict
+            sb.append(s.substring(last, start));
+            // append str in dict, wrap it in <b></b>
+            sb.append("<b>");
+            sb.append(s.substring(start, end));
+            sb.append("</b>");
+            last = end;
         }
         sb.append(s.substring(last));
+
         return sb.toString();
     }
+    // merge is either to extend the interval which is already in result
+    // or create new interval
+    public List<Interval> merge(List<Interval> intervals) {
+        List<Interval> merged = new ArrayList<Interval>();
+        if (intervals.size() == 0) return merged;
+        // sort intervals based on the start
+        Collections.sort(intervals, new Comparator<Interval>() {
+            @Override
+            public int compare(Interval i, Interval j) {
+                return i.start - j.start;
+            }
+        });
 
-    class Interval {
-		int start;
-		int end;
-		Interval() { start = 0; end = 0; }
-		Interval(int s, int e) { 
-			start = s; end = e; 
-		}
-		public String toString() {
-			return "[ " + start + " " + end + " ]";
-		}
-	}
+        merged.add(intervals.get(0));
+        for (int i = 1; i < intervals.size(); i++) {
+            Interval prev = merged.get(merged.size() - 1);
+            Interval curr = intervals.get(i);
+            if (curr.start > prev.end) {
+                merged.add(curr);
+            } else {
+                prev.end = Math.max(prev.end, curr.end);
+            }
+        }
 
-	public List<Interval> merge(List<Interval> intervals) {
-    	List<Interval> result = new ArrayList<Interval>();
-    	if (intervals.size() == 0) {
-    		return result;
-    	}
-    	// sort intervals based on the start
-    	Collections.sort(intervals, new Comparator<Interval>() {
-    		@Override
-    		public int compare(Interval a, Interval b) {
-    			return a.start - b.start;
-    		}
-    	});
-    	result.add(intervals.get(0));
-    	for (int i = 1; i < intervals.size(); i++) {
-    		Interval curr = intervals.get(i);
-    		Interval prev = result.get(result.size() - 1);
-    		if (curr.start > prev.end) {
-    			result.add(curr);
-    		}
-    		else {
-    			if (curr.end > prev.end) {
-    				// note: to extend the interval which is already in result or create new interval
-    				prev.end = curr.end;
-    			}
-    		}
-    	}
-    	return result;
+        return merged;
     }
 }
