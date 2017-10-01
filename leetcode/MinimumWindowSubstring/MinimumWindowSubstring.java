@@ -38,47 +38,42 @@ public class MinimumWindowSubstring {
 		System.out.println("minimumWindow == " + minimumWindow);		
 	}
 
-    // self written version passed test
-    public String minWindow(String S, String T) {  
-        if (S == null || S.length() == 0 || T == null || T.length() == 0) {
-            return "";
-        }
-        
+    // newly written version
+    public String minWindow(String s, String t) {
         Map<Character, Integer> hm = new HashMap<Character, Integer>();
-        int tLen = T.length();
-        for (int i = 0; i < tLen; i++) {
-            char c = T.charAt(i);
+        for (int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
             hm.put(c, hm.getOrDefault(c, 0) + 1);
         }
         
-        int sLen = S.length();
-        int minLen = sLen + 1;
+        int size = s.length();
+        int minLen = size + 1;
+        int cntCharsT = 0; // counter for appeared T's character in S
         int windowLeft = 0;
-        int count = 0; // counter for appeared T's character in S
         String window = "";
         
-        for (int j = 0; j < sLen; j++) {
-            char c = S.charAt(j);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
             if (hm.containsKey(c)) {
-                hm.put( c, hm.get(c) - 1 );
-                if (hm.get(c) >= 0) {
-                    count++;
-                }
-                
-                while (count == tLen) {
-                    if (hm.containsKey(S.charAt(windowLeft))) {
-                        // restore the map
-                        hm.put(S.charAt(windowLeft), hm.get(S.charAt(windowLeft)) + 1);
-                        if (hm.get(S.charAt(windowLeft)) >= 1) {
-                            if (minLen > j - windowLeft + 1) {
-                                minLen = j - windowLeft + 1;
-                                window = S.substring(windowLeft, j + 1);
-                            }
-                            count--;
+                hm.put(c, hm.get(c) - 1);   
+                if (hm.get(c) >= 0) cntCharsT++;
+            }
+            while (cntCharsT == t.length()) {
+                char leftChar = s.charAt(windowLeft);
+                if (hm.containsKey(leftChar)) {
+                    // when map values zero, meaning window covers T
+                    // window shrinks, restore map
+                    hm.put(leftChar, hm.get(leftChar) + 1);
+                    if (hm.get(leftChar) >= 1) {
+                        int len = i - windowLeft + 1;
+                        if (minLen > len) {
+                            minLen = len;
+                            window = s.substring(windowLeft, i + 1);
                         }
+                        cntCharsT--;
                     }
-                    windowLeft++;
                 }
+                windowLeft++;
             }
         }
         
