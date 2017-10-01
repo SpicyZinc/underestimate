@@ -19,68 +19,34 @@ when it is an operator, pop two numbers from the stack, do the calculation, and 
 */
 public class EvaluateReversePolishNotation  {
     public int evalRPN(String[] tokens) {
-        String operator = "+-*/";
-
+        String operators = "+-*/";
         Stack<String> stack = new Stack<String>();
-        for (int i = 0; i < tokens.length; i++) {
-        	String tmp = tokens[i];
-        	if (!operator.contains(tmp)) {
-        		stack.push(tmp);
-        	}
-        	else {
-	        	int b = Integer.parseInt( stack.pop() );
-	        	int a = Integer.parseInt( stack.pop() );
-
-        		if ( tmp.equals("+") ) {
-        			stack.push( String.valueOf(a + b) );
-        		}
-        		else if ( tmp.equals("-") ) {
-        			stack.push( String.valueOf(a - b) );
-        		}
-        		else if ( tmp.equals("*") ) {
-        			stack.push( String.valueOf(a * b) );
-        		}
-        		else if ( tmp.equals("/") ) {
-        			stack.push( String.valueOf(a / b) );
-        		}        		
-        	}
-        }
-
-        return Integer.valueOf( stack.pop() );
-    }
-
-    // self written version passed test
-    public class EvaluateReversePolishNotation {
-        public int evalRPN(String[] tokens) {
-            String operators = "+-*/";
-            Stack<String> stack = new Stack<String>();
-            for (int i = 0; i < tokens.length; i++) {
-                String temp = tokens[i];
-                // push all operands into stack
-                if (!operators.contains(temp)) {
-                    stack.push(temp);
-                }
-                else {
-                    int b = Integer.parseInt(stack.pop());
-                    int a = Integer.parseInt(stack.pop());
-                    switch (temp) {
-                        case "+" :
-                            stack.push(a + b + "");
-                            break;
-                        case "-" :
-                            stack.push(a - b + "");
-                            break;
-                        case "*" :
-                            stack.push(a * b + "");
-                            break;
-                        case "/" :
-                            stack.push(a / b + "");
-                            break;
-                    }
+        for (String token : tokens) {
+            // push all operands into stack
+            if (!operators.contains(token)) {
+                stack.push(token);
+            } else {
+                int second = Integer.valueOf(stack.pop());
+                int first = Integer.valueOf(stack.pop());
+                switch(token) {
+                    case "+":
+                        stack.push(String.valueOf(first + second));
+                        break;
+                    case "-":
+                        stack.push(String.valueOf(first - second));
+                        break;
+                    case "*":
+                        stack.push(String.valueOf(first * second));
+                        break;
+                    case "/":
+                        stack.push(String.valueOf(first / second));
+                        break;
+                    default:
+                        break;
                 }
             }
-            
-            return Integer.parseInt(stack.pop());
         }
+        
+        return Integer.parseInt(stack.pop());
     }
 }
