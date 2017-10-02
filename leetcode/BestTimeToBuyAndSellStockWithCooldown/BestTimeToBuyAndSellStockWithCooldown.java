@@ -17,16 +17,18 @@ http://www.programcreek.com/2014/09/leetcode-utf-8-validation-java/
 */
 public class BestTimeToBuyAndSellStockWithCooldown {
     public int maxProfit(int[] prices) {
-        int prev_sell_profit = 0;
-        int sell_profit = 0;
-        int buy_cost = Integer.MIN_VALUE;
-        int prev_buy_cost = 0;
+        int prevSellProfit = 0;
+        int sellProfit = 0;
+        int prevBuyCost = 0;
+        int buyCost = Integer.MIN_VALUE;
+        
         for (int price : prices) {
-            prev_buy_cost = buy_cost;
-            buy_cost = Math.max(prev_buy_cost, prev_sell_profit - price);
-            prev_sell_profit = sell_profit;
-            sell_profit = Math.max(prev_sell_profit, price + prev_buy_cost);
+            prevBuyCost = buyCost;
+            buyCost = Math.max(prevBuyCost, prevSellProfit - price);
+            prevSellProfit = sellProfit;
+            sellProfit = Math.max(prevSellProfit, prevBuyCost + price);
         }
-        return sell_profit;
+        
+        return sellProfit;
     }
 }
