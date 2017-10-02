@@ -13,7 +13,7 @@ transactions = [buy, sell, cooldown, buy, sell]
 
 idea:
 http://www.programcreek.com/2014/09/leetcode-utf-8-validation-java/
-
+http://blog.csdn.net/qq508618087/article/details/51671504
 */
 public class BestTimeToBuyAndSellStockWithCooldown {
     public int maxProfit(int[] prices) {
