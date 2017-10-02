@@ -16,46 +16,29 @@ Note: The n belongs to [1, 10,000].
 
 idea:
 not much, a so weird problem
+
+modification to record how many modification times
+increase modification condition is a[i-1] > a[i]
+meanwhile, really modify the array with two cases, raise or lower
 */
 class NondecreasingArray {
-    public boolean checkPossibility(int[] a) {
-        int modified = 0;
-        int prev = a[0];
-        for (int i = 1; i < a.length; i++) {
-            if (prev > a[i] && modified == 0) {
-            	modified++;
-            } else if (prev > a[i] && modified >= 1) {
-            	return false;
-            }
-            if (prev > a[i] && i - 2 >= 0 && a[i - 2] > a[i]) {
-            	continue;
-            }
-            prev = a[i];
-        }
-
-        return true;
-    }
-
-    public boolean checkPossibility(int[] a) {
-    	int modified = 0;
-    	for (int i = 1; i < a.length; i++) {
-    		if (a[i - 1] > a[i]) {
-                if (modified >= 1) {
+    public boolean checkPossibility(int[] nums) {
+        int modification = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i - 1] > nums[i]) {
+                if (modification++ >= 1) {
                     return false;
-                } else {
-                    modified++;
                 }
-    			// two modification cases:
-    			// 1. lower a[i - 1]
-    			// 2. raise a[i]
-    			if (i - 2 < 0 || a[i - 2] <= a[i]) {
-    				a[i - 1] = a[i];
-    			} else {
-    				a[i] = a[i - 1];
-    			}
-    		}
-    	}
-
-    	return true;
+                // two modification cases:
+                // 1. lower a[i - 1]
+                // 2. raise a[i]
+                if (i < 2 || nums[i - 2] < nums[i]) {
+                    nums[i - 1] = nums[i]; // decrease
+                } else {
+                    nums[i] = nums[i - 1]; // increase
+                }
+            }
+        }
+        return true;   
     }
 }
