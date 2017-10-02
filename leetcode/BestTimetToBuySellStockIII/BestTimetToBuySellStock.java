@@ -9,16 +9,16 @@ You may not engage in multiple transactions at the same time
 idea:
 note: two transactions at most
 
-1. 
+1.
 http://blog.unieagle.net/2012/12/05/leetcode%E9%A2%98%E7%9B%AE%EF%BC%9Abest-time-to-buy-and-sell-stock-iii%EF%BC%8C%E4%B8%80%E7%BB%B4%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/
 http://www.darrensunny.me/leetcode-best-time-to-buy-and-sell-stock-iii/
 Time complexity: O(n)
 
 2.
-Given an i, split the whole array into two parts:
-[0, i] and [i+1, n], it generates two max value based on i, Max(0,i) and Max(i+1,n)
+Given one i, split the whole array into two parts:
+[0, i] and [i + 1, n], it generates two max value based on i, Max(0, i) and Max(i+1, n)
 So, we can define the transformation function as:
-maxProfit = max(Max(0, i) + Max(i+1, n)) (0 <= i < n)
+maxProfit = max(Max(0, i) + Max(i + 1, n)) (0 <= i < n)
 maxProfit = max((Max(0, 0) + Max(1, n)), (Max(0, 1) + Max(2, n)), (Max(0, 2) + Max(3, n)), ... , (Max(0, n-1) + Max(n, n))) 
 (0 <= i < n)
 Preprocessing Max(0, i) might be easy.
@@ -105,7 +105,7 @@ public class BestTimetToBuySellStock {
         return ret;
     }
 	
-	// method 2 Judge Large time limit exceeded
+	// method 2 TLE
 	public int maxProfit(int[] prices) {
 		int max1 = 0;
 		int max2 = 0;
