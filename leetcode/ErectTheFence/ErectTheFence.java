@@ -23,7 +23,7 @@ Input points have NO order. No order required for output.
 
 idea:
 http://blog.csdn.net/u014688145/article/details/72200018
-
+although TLE, I am gonna use this easy-to-understand one for interview
 */
 class Point {
     int x;
