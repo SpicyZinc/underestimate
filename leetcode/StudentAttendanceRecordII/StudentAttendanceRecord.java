@@ -1,9 +1,8 @@
 /*
 Given a positive integer n, return the number of all possible attendance records with length n, which will be regarded as rewardable.
-The answer may be very large, return it after mod 109 + 7.
+The answer may be very large, return it after mod 10^9 + 7.
 
 A student attendance record is a string that only contains the following three characters:
-
 'A' : Absent.
 'L' : Late.
 'P' : Present.
@@ -20,9 +19,11 @@ Note: The value of n won't exceed 100,000.
 
 idea:
 1. my idea is memory limit, or TLE
-2. possibilities[i] represents the length of i without 'A' string's result
-i up to n-1, why, 'A' is also accounted as 1, http://blog.csdn.net/quiteen/article/details/71128911
-3. personally, best answer https://andrew-algorithm.blogspot.com/2017/05/leetcode-oj-student-attendance-record-ii.html
+2. http://blog.csdn.net/quiteen/article/details/71128911
+possibilities[i] represents the length of i without 'A' string's result
+i up to n-1, why, 'A' is also accounted as 1
+3. best: https://andrew-algorithm.blogspot.com/2017/05/leetcode-oj-student-attendance-record-ii.html
+these are all possibilities for any string that can be rewarded
 	a: 0 'A' and ends with 0 'L'
 	b: 0 'A' and ends with 1 'L'
 	c: 0 'A' and ends with 2 'L'
@@ -50,7 +51,6 @@ public class StudentAttendanceRecord {
 		possibilities[2] = 4;
 		for (int i = 2; i < n; i++) {
 			possibilities[i] = (possibilities[i - 2] + possibilities[i - 1] + possibilities[i]) % MOD;
-			System.out.println("possibilities[i] == " + i + " " + possibilities[i]);
 		}
 		int result = possibilities[n];
 		for (int i = 0; i < n; i++) {
@@ -62,24 +62,26 @@ public class StudentAttendanceRecord {
 
 	// method 3
 	public int checkRecord(int n) {
-        if (n == 0) {
-            return 0;
-        }
+        if (n == 0) return 0;
+        if (n == 1) return 3;
         
-        int a = 1;
-        int b = 1;
-        int c = 0;
-        int d = 1;
-        int e = 0;
-        int f = 0;
+        // initialization
+        // when the length of string is 1
+        int a = 1; // 'A'
+        int b = 1; // 'L'
+        int c = 0; // no such string of length 1
+        int d = 1; // 'A'
+        int e = 0; // no such string of length 1
+        int f = 0; // no such string of length 1
+        
         for (int i = 1; i < n; i++) {
-            int newA = sum(a, sum(b, c));
+            int newA = sum(sum(a, b), c);
             int newB = a;
             int newC = b;
-            int newD = sum(a, sum(b, sum(c, sum(d, sum(e,f)))));
+            int newD = sum(sum(sum(sum(sum(a, b), c), d), e), f);
             int newE = d;
             int newF = e;
-            
+
             a = newA;
             b = newB;
             c = newC;
@@ -87,12 +89,12 @@ public class StudentAttendanceRecord {
             e = newE;
             f = newF;
         }
-        return sum(a, sum(b, sum(c, sum(d, sum(e,f)))));
+        
+        return sum(sum(sum(sum(sum(a, b), c), d), e), f);
     }
     
-    private int sum(int x, int y) {
-        int MOD = 1000000007;
-        return (x + y) % MOD;
+    public int sum(int x, int y) {
+        return (x + y) % 1000000007;
     }
 
     // method 1
