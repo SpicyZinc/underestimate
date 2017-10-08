@@ -34,7 +34,7 @@ idea:
 http://blog.jerkybible.com/2017/03/18/LeetCode-514-Freedom-Trail/
 
 1. dfs, easy to understand
-but HashMap<String, Map<Integer, Integer>> cache = new HashMap<>() used to avoid unnecessary repeat
+but Map<String, Map<Integer, Integer>> cache = new HashMap<>() used to avoid unnecessary repeat
 note, this uses rotate array or rotate string 3 steps to rotate
 123436 => 343612
 that's why it's called rotate string
@@ -43,52 +43,74 @@ that's why it's called rotate string
 */
 
 public class FreedomTrail {
-	Map<String, Map<Integer, Integer>> cache = new HashMap<>();
+	// key is ring
+    // value is another map of key is index in ring, value is steps
+    Map<String, Map<Integer, Integer>> cache = new HashMap<>();
 
     public int findRotateSteps(String ring, String key) {
-		if (ring.length() == 0 || ring == null || key.length() == 0 || key == null) {
-			return 0;
-		}
-		return findRotateSteps(ring, key, 0);
+        if (ring.length() == 0 || key.length() == 0) {
+            return 0;
+        }
+        
+        return findRotatedSteps(ring, key, 0);
     }
-
-    public int findRotateSteps(String ring, String key, int index) {
+    
+    public int findRotatedSteps(String ring, String key, int index) {
         if (index == key.length()) {
-        	return 0;
+            return 0;
         }
-        String current = ring;
-        if (cache.containsKey(current) && cache.get(current).containsKey(index)) {
-        	return cache.get(current).get(index);
+        if (cache.containsKey(ring) && cache.get(ring).containsKey(index)) {
+            return cache.get(ring).get(index);
         }
+
         char c = key.charAt(index);
-        int frontPos = current.indexOf(c);
-        int backPos = current.lastIndexOf(c);
-        // steps needed to rotate to the corresponding pos plus the pressing button step
-        int stepsToRotateToFrontPost = 1 + frontPos + findRotateSteps(stringAfterRotate(ring, frontPos), key, index + 1);
-        // don't forget to ring - backPos
-        int stepsToRotateToBackPos = 1 + (ring.length() - backPos) + findRotateSteps(stringAfterRotate(ring, backPos), key, index + 1);
-        int steps = Math.min(stepsToRotateToFrontPost, stepsToRotateToBackPos);
+        int firstPos = ring.indexOf(c);
+        int lastPos = ring.lastIndexOf(c);
+        // the total steps by starting rotating to first position
+        // includes firstPos + press (1) + steps to finish the rest
+        // note, firstPos, not firstPos + 1
+        int stepsToFirstPos = firstPos + 1 + findRotatedSteps(rotate(ring, firstPos), key, index + 1);
+        int stepsToLastPos = (ring.length() - lastPos) + 1 + findRotatedSteps(rotate(ring, lastPos), key, index + 1);
+        int minSteps = Math.min(stepsToFirstPos, stepsToLastPos);
         Map<Integer, Integer> indexToSteps = cache.getOrDefault(ring, new HashMap<Integer, Integer>());
-        indexToSteps.put(index, steps);
-        cache.put(current, indexToSteps);
-
-        return steps;
+        indexToSteps.put(index, minSteps);
+        cache.put(ring, indexToSteps);
+        
+        return minSteps;
+    }
+    
+    // helper to rotate a string by pos
+    // 3 steps to rotate string, typical way
+    public String rotate(String s, int pos) {
+        String front = reverse(s.substring(0, pos));
+        String back = reverse(s.substring(pos));
+        return reverse(front + back);
+    }
+    // helper to reverse a string
+    public String reverse(String s) {
+        return new StringBuilder(s).reverse().toString();
     }
 
-    private String stringAfterRotate(String ring, int index) {
-    	String front = reverse(ring.substring(0, index));
-    	String back = reverse(ring.substring(index));
-    	return reverse(front + back);
-    }
+    // method 2
+    // dp[i][j] key starts from i, ring stars from j, min steps to get key by dialing ring
+    public int findRotateSteps(String ring, String key) {
+        int r = ring.length();
+        int k = key.length();
+        int[][] dp = new int[k + 1][r];
 
-    private String reverse(String str) {
-    	char[] chars = str.toCharArray();
-    	int len = str.length();
-    	for (int i = 0; i < len / 2; i++) {
-    		char temp = chars[i];
-    		chars[i] = chars[len - 1 - i];
-    		chars[len - 1 - i] = temp;
-    	}
-    	return new String(chars);
+        for (int i = k - 1; i >= 0; i--) {
+            for (int j = 0; j < r; j++) {
+                dp[i][j] = Integer.MAX_VALUE;
+                for (int x = 0; x < r; x++) {
+                    if (key.charAt(i) == ring.charAt(x)) {
+                        int diff = Math.abs(j - x);
+                        int minSteps = Math.min(diff, r - diff);
+                        dp[i][j] = Math.min(dp[i][j], dp[i + 1][x] + minSteps);
+                    }
+                }
+            }
+        }
+
+        return dp[0][0] + k;
     }
 }
