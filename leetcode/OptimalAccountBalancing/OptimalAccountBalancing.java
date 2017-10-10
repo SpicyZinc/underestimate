@@ -37,6 +37,13 @@ Therefore, person #1 only need to give person #0 $4, and all debt is settled.
 
 idea:
 https://fisherlei.blogspot.com/2017/07/leetcode-optimal-account-balancing.html
+
+Sarting from first debt debt[0], look for all other debts debt[i] (i >= 1) which have opposite sign to debt[0].
+Then each such debt[i] can make one transaction debt[i] += debt[0] to clear the person with debt debt[0].
+From now on, the person with debt debt[0] is dropped out of the problem and we recursively drop persons one by one until everyone's debt is cleared
+meanwhile updating the minimum number of transactions during DFS.
+
+note: recursion in for loop
 */
 
 import java.util.*;
@@ -45,19 +52,17 @@ class OptimalAccountBalancing {
 	public static void main(String[] args) {
 		OptimalAccountBalancing eg = new OptimalAccountBalancing();
 		int[][] transactions = {
-			// {0,1,10},
-			// {2,0,5},
-
 			{0,1,10},
-			{1,0,1},
-			{1,2,5},
 			{2,0,5},
+			// {0,1,10},
+			// {1,0,1},
+			// {1,2,5},
+			// {2,0,5},
 		};
 		int minimum = eg.minTransfers(transactions);
-		System.out.println(minimum);
 	}
 
-	long[] debt;
+	long[] debts;
 	public int minTransfers(int[][] transactions) {
 		Map<Integer, Long> balance = new HashMap<Integer, Long>();
 		for (int[] transaction : transactions) {
@@ -75,31 +80,33 @@ class OptimalAccountBalancing {
 				list.add(val);
 			}
 		}
-		debt = new long[list.size()];
+		debts = new long[list.size()];
 		int i = 0;
 		for (long val : list) {
-			debt[i++] = val;
+			debts[i++] = val;
 		}
 
 		return dfs(0, 0);
 	}
 
-	public int dfs(int s, int cnt) {
-		while (s < debt.length && debt[s] == 0) {
-			s++;
+	public int dfs(int index, int cnt) {
+		while (index < debts.length && debts[index] == 0) {
+			index++;
 		}
-		int res = Integer.MAX_VALUE;
+		int minTransactions = Integer.MAX_VALUE;
 		long prev = 0;
-		for (int i = s + 1; i < debt.length; i++) {
+		for (int i = index + 1; i < debts.length; i++) {
 			// skip same value or same sign debt
-			if (debt[i] != prev && debt[s] * debt[i]  < 0) {
-				debt[i] += debt[s];
-				res = Math.min(res, dfs(s + 1, cnt + 1));
-				debt[i] -= debt[s];
-				prev = debt[i];
+			if (debts[i] != prev && debts[index] * debts[i] < 0) {
+				// add debts[index]
+				debts[i] += debts[index];
+				minTransactions = Math.min(minTransactions, dfs(index + 1, cnt + 1));
+				// remove debts[index]
+				debts[i] -= debts[index];
+				prev = debts[i];
 			}
     	}
 
-    	return res == Integer.MAX_VALUE ? cnt : res;
+		return minTransactions == Integer.MAX_VALUE ? cnt : minTransactions;
 	}
 }
