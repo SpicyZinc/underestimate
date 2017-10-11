@@ -52,7 +52,18 @@ Explanation:
 The output consists of two word squares. The order of output does not matter (just the order of words in each word square matters).
 
 idea:
+dfs
+based on first 2 rows 3rd column
+l 1st row
+e 2nd row
+le as prefix to get 3rd row candidates, for each candidates, dfs()
 
+ball
+area
+lead
+lady
+
+good analysis: https://discuss.leetcode.com/topic/63516/explained-my-java-solution-using-trie-126ms-16-16
 */
 
 import java.util.*;
@@ -93,24 +104,25 @@ class WordSquares {
 		return result;
 	}
 
-	public void dfs(int index, int n, Map<String, Set<String>> hm, List<String> path, List<List<String>> result) {
-		if (index == n) {
-			result.add(new ArrayList<String>(path));
+	public void dfs(int pos, int n, Map<String, Set<String>> hm, List<String> square, List<List<String>> result) {
+		if (pos == n) {
+			result.add(new ArrayList<String>(square));
 			return;
 		}
 
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < index; i++) {
-			sb.append(path.get(i).charAt(index));
+		for (int i = 0; i < pos; i++) {
+			// different rows, but the same column (pos)
+			sb.append(square.get(i).charAt(pos));
 		}
-		Set<String> candidate = hm.get(sb.toString());
-		if (candidate == null) {
+		Set<String> candidates = hm.get(sb.toString());
+		if (candidates == null) {
 			return;
 		}
-		for (String s : candidate) {
-			path.add(s);
-			dfs(index + 1, n, hm, path, result);
-			path.remove(path.size() - 1);
+		for (String s : candidates) {
+			square.add(s);
+			dfs(pos + 1, n, hm, square, result);
+			square.remove(square.size() - 1);
 		}
 	}
 }
