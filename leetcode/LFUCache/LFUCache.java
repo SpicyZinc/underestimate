@@ -50,6 +50,11 @@ Especially storing all keys with same frequencies in one node
 basic structure is doubly linked list of DLLNode, the list is frequency increasing order
 each node, I call it FrequencyNode, beside prev and next for DLLNode, it also has frequency and a LinkedHashset of keys with the same frequency
 valuesMap contains the basic key - value pair
+
+For example, if cache size is 3, the data access sequence as:
+set(2,2), set(1,1), get(2), get(1), get(2), set(3,3), set(4,4)
+LFU will eliminate (3, 3)
+LRU will eliminate (1, 1)
 */
 
 class LFUCache {
@@ -137,8 +142,7 @@ class LFUCache {
         }
     }
     
-    // the oldest key should be
-    // head in DLL
+    // the oldest key should be head in DLL
     // in head.keys linked hashset, it is the first one added to set
     public void removeOldest() {
         int oldestKey = 0;
