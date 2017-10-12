@@ -26,9 +26,8 @@ Note:
 You may assume k is always valid, ie: 1 ≤ k ≤ input array's size for non-empty array.
 
 idea:
-
 1. direct thought
-2. use minHeap and maxHeap, like https://leetcode.com/submissions/detail/44226667/
+2. use minHeap and maxHeap, https://leetcode.com/submissions/detail/44226667/
 tried to debug why heap is empty after first element gets in,
 how could I did not think of poll() in getMedian() instead of peek()
 because getMedian() called frequently, heap is empty.
@@ -69,77 +68,81 @@ public class SlidingWindowMedian {
     	double median;
 		if (numArray.length % 2 == 0) {
 		    median = ((double)numArray[numArray.length/2] + (double)numArray[numArray.length/2 - 1])/2;
-		}
-		else {
+		} else {
 		    median = (double) numArray[numArray.length/2];
 		}
 
 		return median;
     }
+
     // method 2
+
+    PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(new Comparator<Integer>() {
+        @Override
+        public int compare(Integer a, Integer b) {
+            return b.compareTo(a);
+        }
+    });
+
     public double[] medianSlidingWindow(int[] nums, int k) {
-    	if (nums.length < k) {
-    		return new double[] {0};
-    	}
-    	double[] result = new double[nums.length - k + 1];
-    	PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
-    	PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(new Comparator<Integer>() {
-    	    @Override
-    	    public int compare(Integer a, Integer b) {
-    	        return b.compareTo(a);
-    	    }
-    	});
-    	for (int i = 0; i <= nums.length; i++) {
-    		if (i >= k) {
-	    		result[i - k] = getMedian(minHeap, maxHeap);
-	    		remove(nums[i - k], minHeap, maxHeap);
-    		}
-    		if (i < nums.length) {
-    			add(nums[i], minHeap, maxHeap);
-    		}
-    	}
-    	return result;
+        int n = nums.length;
+        if (k > n) {
+            return new double[] {0};
+        }
+        
+        double[] medians = new double[n - k + 1];
+        for (int i = 0; i <= n; i++) {
+            if (i >= k) {
+                medians[i - k] = getMedian();
+                remove(nums[i - k]);
+            }
+            if (i < n) {
+                add(nums[i]);
+            }
+        }
+        return medians;
     }
-
-    private void add(int num, PriorityQueue<Integer> minHeap, PriorityQueue<Integer> maxHeap) {
-    	if (num < getMedian(minHeap, maxHeap)) {
-    	    maxHeap.add(num);   
-    	} else {
-    	    minHeap.add(num);
-    	}
-    	// balance the two heaps
-    	if (minHeap.size() < maxHeap.size()) {
-    		minHeap.add(maxHeap.poll());
-    	}
-    	if (minHeap.size() > maxHeap.size() + 1) {
-    		maxHeap.add(minHeap.poll());
-    	}
+    
+    public void add(int num) {
+        if (num < getMedian()) {
+            maxHeap.add(num);
+        } else {
+            minHeap.add(num);
+        }
+        // balance two heaps
+        balance();
     }
-    private void remove(int num, PriorityQueue<Integer> minHeap, PriorityQueue<Integer> maxHeap) {
-    	if (num < getMedian(minHeap, maxHeap)) {
-    	    maxHeap.remove(num);
-    	} else {
-    	    minHeap.remove(num);
-    	}
-    	// balance the two heaps
-    	if (minHeap.size() < maxHeap.size()) {
-    		minHeap.add(maxHeap.poll());
-    	}
-    	if (minHeap.size() > maxHeap.size() + 1) {
-    		maxHeap.add(minHeap.poll());
-    	}
+    
+    
+    public void remove(int num) {
+        if (num < getMedian()) {
+            maxHeap.remove(num);
+        } else {
+            minHeap.remove(num);
+        }
+        // balance two heaps
+        balance();
     }
-
-
-    private double getMedian(PriorityQueue<Integer> minHeap, PriorityQueue<Integer> maxHeap) {
-    	if (minHeap.isEmpty() && maxHeap.isEmpty()) {
-    		return 0;
-    	}
-    	if (minHeap.size() == maxHeap.size()) {
-    // 		return ( (double) (minHeap.peek() + maxHeap.peek()) / 2.0 );
-            return ((double)maxHeap.peek() + (double)minHeap.peek()) / 2.0;
-    	} else {
-    	    return (double)minHeap.peek();
-    	}
+    
+    // always minHeap equal with or one more than the maxHeap
+    public void balance() {
+        if (minHeap.size() < maxHeap.size()) {
+            minHeap.add(maxHeap.poll());
+        }
+        if (minHeap.size() > maxHeap.size() + 1) {
+            maxHeap.add(minHeap.poll());
+        }
+    }
+    
+    public double getMedian() {
+        if (minHeap.isEmpty() && maxHeap.isEmpty()) {
+            return 0;
+        }
+        if (minHeap.size() > maxHeap.size()) {
+            return (double) minHeap.peek();
+        } else {
+            return ( (double) minHeap.peek() + (double) maxHeap.peek() ) / 2.0;
+        }
     }
 }
