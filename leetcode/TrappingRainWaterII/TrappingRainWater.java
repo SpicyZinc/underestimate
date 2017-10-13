@@ -28,34 +28,35 @@ create a cell class to wrap x, y and height, and declare comparator
 of course, directions = {{1,0}, {0,1}, {-1,0}, {0,-1}}
 */
 
-public class TrappingRainWater {
+class Solution {
+
     class Cell {
-    	int x;
-    	int y;
-    	int h;
-    	public Cell(int x, int y, int h) {
-    		this.x = x;
-    		this.y = y;
-    		this.h = h;
-    	}
+        int x;
+        int y;
+        int h;
+        public Cell(int x, int y, int h) {
+            this.x = x;
+            this.y = y;
+            this.h = h;
+        }
     }
-    static class PQsort implements Comparator<Cell> {
-		public int compare(Cell a, Cell b) {
-			return a.h - b.h;
-		}
-	}
 
     public int trapRainWater(int[][] heightMap) {
 		if (heightMap.length == 0 || heightMap[0].length == 0 || heightMap == null) {
 			return 0;
 		}
 
-		PriorityQueue<Cell> queue = new PriorityQueue<Cell>(1, new PQsort());
+		PriorityQueue<Cell> queue = new PriorityQueue<Cell>(1, new Comparator<Cell>() {
+			@Override
+			public int compare(Cell a, Cell b) {
+				return a.h - b.h;
+			}
+		});
 		int m = heightMap.length;
 		int n = heightMap[0].length;
 		boolean[][] visited = new boolean[m][n];
 
-		// first put four sides into queue
+		// first put four sides of the matrix into queue
 		for (int i = 0; i < m; i++) {
 			visited[i][0] = true;
 			visited[i][n - 1] = true;
