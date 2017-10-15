@@ -23,6 +23,7 @@ public class LongestSubstringwithAtMostKDistinctCharacters {
 		// map to keep character - frequency pair
 		Map<Character, Integer> hm = new HashMap<Character, Integer>();
 		int start = 0;
+		// the worst case all characters are different, so the length is k
 		int maxLen = k;
 		String longestSubstring = "";
 		for (int i = 0; i < s.length(); i++) {
@@ -39,17 +40,18 @@ public class LongestSubstringwithAtMostKDistinctCharacters {
 				int cnt = hm.get(charAtStart);
 				if (cnt >= 2) {
 					hm.put(charAtStart, cnt - 1);
-				}
-				else {
+				} else {
 					hm.remove(charAtStart);
 				}
 				start++;
 			}
 		}
+		// last check out of for loop
 		if (s.length() - start > maxLen) {
 			longestSubstring = s.substring(start);
 		}
 		System.out.println(longestSubstring);
+
 		return Math.max(maxLen, s.length() - start);
 	}
 
