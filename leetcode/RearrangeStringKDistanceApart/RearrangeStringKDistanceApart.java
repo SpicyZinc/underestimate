@@ -43,8 +43,9 @@ public class RearrangeStringKDistanceApart {
 			return str;
 		}
 
-		HashMap<Character, Integer> hm = new HashMap<Character, Integer>();
-		for (int i = 0; i < str.length(); i++) {
+		int len = str.length();
+		Map<Character, Integer> hm = new HashMap<Character, Integer>();
+		for (int i = 0; i < len; i++) {
 			char c = str.charAt(i);
 			hm.put(c, hm.getOrDefault(c, 0) + 1);
 		}
@@ -54,21 +55,22 @@ public class RearrangeStringKDistanceApart {
 			public int compare(Character a, Character b) {
 				if (hm.get(a) != hm.get(b)) {
 					return hm.get(b) - hm.get(a);
-				}
-				else {
+				} else {
 					return a.compareTo(b);
 				}
 			}
 		});
 
 		StringBuilder sb = new StringBuilder();
-		int len = str.length();
+		// first, put all different characters into the queue
+		// take this as base unit
 		for (char c : hm.keySet()) {
 			queue.offer(c);
 		}
+
 		while (!queue.isEmpty()) {
 			int cnt = Math.min(k, len);
-			List<Character> list = new ArrayList<Character>();
+			List<Character> repeatingUnit = new ArrayList<Character>();
 			for (int i = 0; i < cnt; i++) {
 				if (queue.isEmpty()) {
 					return "";
@@ -76,16 +78,19 @@ public class RearrangeStringKDistanceApart {
 				char ch = queue.poll();
 				sb.append(ch);
 				hm.put(ch, hm.get(ch) - 1);
-				// note, important
-				// if a character is used up, cannot add to list, thus add to the queue, because next while will this character to return string
-				// in addition, it will return '' based on queue if empty
-				if (hm.get(ch) > 0) {
-					list.add(ch);
-				}
+				// append one character, length--, because reconstruct string, the biggest length it could be is the original length.
 				len--;
+				// note
+				// if a character is used up, cannot add it to repeatingUnit, which will cause this char to be added to the queue
+				// because next while will add this character to return string
+				// in addition, return '' if the queue is empty
+				if (hm.get(ch) > 0) {
+					repeatingUnit.add(ch);
+				}
 			}
-			for (char newC : list) {
-				queue.offer(newC);
+			// use priority queue to get the same order in the repeating unit
+			for (char c : repeatingUnit) {
+				queue.offer(c);
 			}
 		}
 
