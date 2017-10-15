@@ -48,7 +48,7 @@ A----D
 B----C
 
 4 points in the final rectangle only appear only once in all given points
-because duplicate points appear in pair, once found hs has this point, remove it; thus finally only 4 points left
+because duplicate points appear in pair, once the set has this point, remove it; thus finally only 4 points left
 there should be 4 points left
 totalArea should be equal to sum of all small ones
 
