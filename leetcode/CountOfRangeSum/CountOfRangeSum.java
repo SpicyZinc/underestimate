@@ -3,7 +3,7 @@ Given an integer array nums, return the number of range sums that lie in [lower,
 Range sum S(i, j) is defined as the sum of the elements in nums between indices i and j (i ≤ j), inclusive.
 
 Note:
-A naive algorithm of O(n2) is trivial. You MUST do better than that.
+A naive algorithm of O(n^2) is trivial. You MUST do better than that.
 
 Example:
 Given nums = [-2, 5, -1], lower = -2, upper = 2,
@@ -12,14 +12,14 @@ The three ranges are : [0, 0], [2, 2], [0, 2] and their respective sums are: -2,
 
 idea:
 http://blog.csdn.net/zdavb/article/details/51842977
-1. naive 2 for loop O(n^2)
+1. naive 2 for loops O(n^2)
 2. binary search
-these two are all based on accumulative sum
+first two are all based on accumulative sum
 3. https://discuss.leetcode.com/topic/33738/share-my-solution
 */
 
 public class CountOfRangeSum {
-	// TLE
+	// brute force, TLE
     public int countRangeSum(int[] nums, int lower, int upper) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -41,43 +41,44 @@ public class CountOfRangeSum {
         }
         return count;
     }
-}
 
-
-public class CountOfRangeSum {
-	// passed oj
+    // binary, divide and conquer
     public int countRangeSum(int[] nums, int lower, int upper) {
-        if (nums == null || nums.length == 0) {
+        if (nums.length == 0 || nums == null) {
             return 0;
         }
+        
         int n = nums.length;
         long[] sums = new long[n];
         sums[0] = nums[0];
         for (int i = 1; i < n; i++) {
-            sums[i] = sums[i-1] + nums[i];
+            sums[i] = sums[i - 1] + nums[i];
         }
-
+        
         return countNum(nums, sums, 0, n - 1, lower, upper);
     }
-
-    private int countNum(int[] nums, long[] sums, int left, int right, int lower, int upper) {
+    
+    public int countNum(int[] nums, long[] sums, int left, int right, int lower, int upper) {
         if (left == right) {
             if (nums[left] >= lower && nums[right] <= upper) {
                 return 1;
             }
             return 0;
         }
-        int mid = (left + right) / 2;
-        int total = 0;
+        
+        int cnt = 0;
+        // lower only in left part
+        // upper only in right part
+        int mid = left + (right - left) / 2;
         for (int i = left; i <= mid; i++) {
             for (int j = mid + 1; j <= right; j++) {
-                long tmpNum = sums[j] - sums[i] + nums[i];
-                if (tmpNum >= lower && tmpNum <= upper) {
-                   	total++;
+                long sum = sums[j] - sums[i] + nums[i];
+                if (sum >= lower && sum <= upper) {
+                    cnt++;
                 }
             }
         }
-
-        return total + countNum(nums, sums, left, mid, lower, upper) + countNum(nums, sums, mid + 1, right, lower, upper);
+        // both lower and upper in left + both lower and upper in right
+        return cnt + countNum(nums, sums, left, mid, lower, upper) + countNum(nums, sums, mid + 1, right, lower, upper);
     }
 }
