@@ -1,5 +1,7 @@
 /*
-Given two arrays of length m and n with digits 0-9 representing two numbers. Create the maximum number of length k <= m + n from digits of the two. The relative order of the digits from the same array must be preserved. Return an array of the k digits. You should try to optimize your time and space complexity.
+Given two arrays of length m and n with digits 0-9 representing two numbers.
+Create the maximum number of length k <= m + n from digits of the two. The relative order of the digits from the same array must be preserved.
+Return an array of the k digits. You should try to optimize your time and space complexity.
 
 Example 1:
 nums1 = [3, 4, 6, 5]
@@ -23,7 +25,7 @@ idea:
 http://www.hrwhisper.me/leetcode-create-maximum-number/
 
 this problem consists of 3 different problems
-1. find k largest numbers from an array 
+1. find k largest numbers from an array
 when the stack is not empty, and current integer in the array is greater than current stack peek(),
 pop the stack, as long as the rest of the array can guarantee to provide enough integers to form an integer of k bits, relative order not change
 (1) it is smaller than nums[i]
@@ -39,7 +41,7 @@ public class CreateMaximumNumber {
 		CreateMaximumNumber eg = new CreateMaximumNumber();
 		int[] nums = {1, 1, 1, 9};
 		int k = 3;
-		int[] results = eg.maxArray(nums, k);
+		int[] results = eg.maxKElementsArray(nums, k);
 		for (int i : results) {
 			System.out.print(i + "  ");
 		}
@@ -52,29 +54,31 @@ public class CreateMaximumNumber {
         int[] result = new int[k];
         // note: equal sign
         for (int i = Math.max(0, k - n); i <= k && i <= m; i++) {
-            int[] candidate = merge(maxArray(nums1, i), maxArray(nums2, k - i), k);
+            int[] candidate = merge(maxKElementsArray(nums1, i), maxKElementsArray(nums2, k - i), k);
             if (greater(candidate, 0, result, 0)) {
                 result = candidate;
             }
         }
         return result;
     }
-
-    private int[] maxArray(int[] nums, int k) {
+    // get K largest numbers array, relative order preserved
+    private int[] maxKElementsArray(int[] nums, int k) {
         int n = nums.length;
-        int[] answers = new int[k];
+        int[] topKElementsArray = new int[k];
         // j is the pointer in the maxKElementsArray
         for (int i = 0, j = 0; i < n; i++) {
-            while (n - i + j > k && j > 0 && answers[j - 1] < nums[i]) {
+            // n - i leftover in nums, j currently in topKElementsArray, if still > k
+            // see if enough to fill to k elements
+            while (n - i + j > k && j > 0 && topKElementsArray[j - 1] < nums[i]) {
                 j--;
             }
             if (j < k) {
-                answers[j] = nums[i];
+                topKElementsArray[j] = nums[i];
                 j++;
             }
         }
 
-        return answers;
+        return topKElementsArray;
     }
 
     private int[] merge(int[] nums1, int[] nums2, int k) {
@@ -85,6 +89,7 @@ public class CreateMaximumNumber {
         return ans;
     }
 
+    // supposed nums2.length <= nums1.length
     private boolean greater(int[] nums1, int i, int[] nums2, int j) {
         while (i < nums1.length && j < nums2.length && nums1[i] == nums2[j]) {
             i++;
