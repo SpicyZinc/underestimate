@@ -13,8 +13,10 @@ To the right of 1 there is 0 smaller element.
 Return the array [2, 1, 1, 0].
 
 idea:
-1. Brute force
-2. construct binary search tree
+1. use search insert position, which contains binary search
+maintain a sorted list which contains all visited number
+2. Brute force
+3. construct binary search tree
 
   1(0, 1)
    \
@@ -33,7 +35,7 @@ public class CountOfSmallerNumbersAfterSelf {
         int[] nums = new int[] {5, 2, 6, 1};
         eg.countSmaller(nums);
     }
-    // brute force
+    // method 2
     // 15 / 16 test cases passed
     public List<Integer> countSmaller(int[] nums) {
         List<Integer> list = new ArrayList<Integer>();
@@ -55,6 +57,8 @@ public class CountOfSmallerNumbersAfterSelf {
         }
         return cnt;
     }
+
+    // method 3
     // passed OJ 
     class Node {
         int val;
@@ -103,32 +107,36 @@ public class CountOfSmallerNumbersAfterSelf {
         return node;
     }
 
-    // binary search method
-    // maintain a sorted list which contains all visited number
+    // method 1
     public List<Integer> countSmaller(int[] nums) {
-        Integer[] result = new Integer[nums.length];
         List<Integer> sorted = new ArrayList<Integer>();
-        for (int i = nums.length - 1; i >= 0; i--) {
-            int num = nums[i];
-            int index = searchInsertPos(sorted, num);
-            result[i] = index; // index is the number of smaller
-            sorted.add(index, num);
+        int n = nums.length;
+        Integer[] counts = new Integer[n];
+        // from back to front, this way, guarantee that inserted index will the number of smaller values after inserted value
+        for (int i = n - 1; i >= 0; i--) {
+            int index = searchInsertPos(sorted, nums[i]);
+            counts[i] = index;
+            // add to sorted array at the last step
+            sorted.add(index, nums[i]);
         }
-        return Arrays.asList(result);
+        
+        return Arrays.asList(counts);
     }
     
+    // search insert position in a list
     public int searchInsertPos(List<Integer> nums, int target) {
         int left = 0;
         int right = nums.size() - 1;
+        
         while (left <= right) {
             int mid = left + (right - left) / 2;
             if (nums.get(mid) < target) {
                 left = mid + 1;
-            }
-            else {
+            } else {
                 right = mid - 1;
             }
         }
+        
         return left;
     }
 }
