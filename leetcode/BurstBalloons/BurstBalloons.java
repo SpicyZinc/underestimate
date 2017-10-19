@@ -18,47 +18,41 @@ Return 167
 
 idea:
 when to use DP:
-solve the big problem from small subproblem.
+solve the big problem from small subproblems.
 It is clear that the current result relies on the previous steps.
 
 first build a new array with two extra 1's at both ends of the original array to facilitate the calculation
 the base case there is one balloon in the array, which is the span of k = 2
-gradually, k = 3
 
-0 1 2 3 4 5 6 7 8 9
--------
-  -------
-    -------
-      -------
-        -------
-          -------
-            -------
-l starts at index 0
-at most goes to index 6
+e.g., 0, 1, 2,
+k = 2, left = 0, right = 2
+left + k = right
+start from left + 1, < right
 
-dp[l][r] l - r = k; l, r exclusive
-the maximum coins to burst balloon from l to r, l, r not included
+dp[l][r], the maximum coins to burst balloon from l to r; l, r exclusive, l - r = k
 */
 
 public class BurstBalloons {
     public int maxCoins(int[] nums) {
-        int[] copy = new int[nums.length + 2];
-        for (int i = 0; i < nums.length; i++) {
-            copy[i+1] = nums[i];
+        int m = nums.length;
+        // copy version of nums with new front and end element as 1
+        int[] copy = new int[m + 2];
+        for (int i = 0; i < m; i++) {
+            copy[i + 1] = nums[i];
         }
-        copy[0] = copy[nums.length + 1] = 1;
-        
+        copy[0] = copy[m + 1] = 1;
+
         int n = copy.length;
         int[][] dp = new int[n][n];
-        for (int k = 2; k < n; k++) {
-            for (int l = 0; l < n - k; l++) {
-                int r = l + k;
-                for (int m = l + 1; m < r; m++) {
-                    dp[l][r] = Math.max(dp[l][r], copy[l] * copy[m] * copy[r] + dp[l][m] + dp[m][r]);
+        for (int span = 2; span < n; span++) {
+            for (int left = 0; left < n - span; left++) {
+                int right = left + span;
+                for (int mid = left + 1; mid < right; mid++) {
+                    dp[left][right] = Math.max(dp[left][right], dp[left][mid] + copy[left] * copy[mid] * copy[right] + dp[mid][right]);
                 }
             }
         }
-        
+
         return dp[0][n - 1];
     }
 }
