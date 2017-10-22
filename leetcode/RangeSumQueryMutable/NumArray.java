@@ -25,6 +25,7 @@ https://www.hackerearth.com/notes/binary-indexed-tree-made-easy-2/
 */
 
 public class NumArray {
+    // BIT
 	int[] nums;
     int[] bit;
     public NumArray(int[] nums) {
@@ -63,17 +64,7 @@ public class NumArray {
     private int lowbit(int pos) {
         return pos & (-pos);
     }
-}
-
-// Your NumArray object will be instantiated and called as such:
-// NumArray numArray = new NumArray(nums);
-// numArray.sumRange(0, 1);
-// numArray.update(1, 10);
-// numArray.sumRange(1, 2);
-
-
-// square root method
-class NumArray {
+    // square root method
     int[] nums;
     int[] blocks;
     int cnt;
@@ -102,12 +93,43 @@ class NumArray {
             for (int k = i; k <= j; k++) {
                 sum += nums[k];
             }
-        }
-        else {
+        } else {
             for (int k = i; k <= (start + 1) * cnt - 1; k++) sum += nums[k];
             for (int k = start + 1; k <= end - 1; k++) sum += blocks[k];
             for (int k = end * cnt; k <= j; k++) sum += nums[k];
         }
+
         return sum;
     }
+    // TLE, but 2D is okay
+    private int[] nums;
+    private int[] sums;
+
+    public NumArray(int[] nums) {
+        this.nums = nums;
+        sums = new int[nums.length + 1];
+        for ( int i = 1; i < sums.length; i++ ) {
+            sums[i] = sums[i-1] + nums[i-1];
+        }
+    }
+    
+    public void update(int i, int val) {
+        for (int j = sums.length - 1; j >= 0; j--) {
+            if (j >= i + 1) {
+                sums[j] = sums[j] - nums[i] + val;
+            }
+        }
+        nums[i] = val;
+    }
+    
+
+    public int sumRange(int i, int j) {
+        return sums[j + 1] - sums[i];
+    }
 }
+
+// Your NumArray object will be instantiated and called as such:
+// NumArray numArray = new NumArray(nums);
+// numArray.sumRange(0, 1);
+// numArray.update(1, 10);
+// numArray.sumRange(1, 2);
