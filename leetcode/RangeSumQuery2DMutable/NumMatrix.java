@@ -42,7 +42,7 @@ public class NumMatrix {
 
 		NumMatrix nm = new NumMatrix(matrix);
 		int before = nm.sumRegion(2, 1, 4, 3);
-		nm.update(3, 2, 3);
+		nm.update(3, 2, 2);
 		int after = nm.sumRegion(2, 1, 4, 3);
 
 		System.out.println("Before === " + before + " => After === " + after);
@@ -59,9 +59,10 @@ public class NumMatrix {
 		this.matrix = matrix;
 		int m = matrix.length;
 		int n = matrix[0].length;
+		// colSum[i][j] = matrix[0][j] + matrix[1][j] + ... + matrix[i][j]
 		colSum = new int[m][n];
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
+		for (int j = 0; j < n; j++) {
+			for (int i = 0; i < m; i++) {
 				colSum[i][j] = matrix[i][j] + (i == 0 ? 0 : colSum[i - 1][j]);
 			}
 		}
