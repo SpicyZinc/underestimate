@@ -35,8 +35,39 @@ public class CountOfSmallerNumbersAfterSelf {
         int[] nums = new int[] {5, 2, 6, 1};
         eg.countSmaller(nums);
     }
-    // method 2
-    // 15 / 16 test cases passed
+    // method 1
+    public List<Integer> countSmaller(int[] nums) {
+        List<Integer> sorted = new ArrayList<Integer>();
+        int n = nums.length;
+        Integer[] counts = new Integer[n];
+        // from back to front, this way, guarantee that inserted index will the number of smaller values after inserted value
+        for (int i = n - 1; i >= 0; i--) {
+            int index = searchInsertPos(sorted, nums[i]);
+            counts[i] = index;
+            // add to sorted array at the last step
+            sorted.add(index, nums[i]);
+        }
+        
+        return Arrays.asList(counts);
+    }
+    
+    // search insert position in a list
+    public int searchInsertPos(List<Integer> nums, int target) {
+        int left = 0;
+        int right = nums.size() - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return left;
+    }
+    // method 2, 15 / 16 test cases passed
     public List<Integer> countSmaller(int[] nums) {
         List<Integer> list = new ArrayList<Integer>();
         if (nums.length == 0 || nums == null) {
@@ -58,8 +89,7 @@ public class CountOfSmallerNumbersAfterSelf {
         return cnt;
     }
 
-    // method 3
-    // passed OJ 
+    // method 3, passed OJ 
     class Node {
         int val;
         int leftSmaller;
@@ -105,38 +135,5 @@ public class CountOfSmallerNumbersAfterSelf {
         }
 
         return node;
-    }
-
-    // method 1
-    public List<Integer> countSmaller(int[] nums) {
-        List<Integer> sorted = new ArrayList<Integer>();
-        int n = nums.length;
-        Integer[] counts = new Integer[n];
-        // from back to front, this way, guarantee that inserted index will the number of smaller values after inserted value
-        for (int i = n - 1; i >= 0; i--) {
-            int index = searchInsertPos(sorted, nums[i]);
-            counts[i] = index;
-            // add to sorted array at the last step
-            sorted.add(index, nums[i]);
-        }
-        
-        return Arrays.asList(counts);
-    }
-    
-    // search insert position in a list
-    public int searchInsertPos(List<Integer> nums, int target) {
-        int left = 0;
-        int right = nums.size() - 1;
-        
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums.get(mid) < target) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
-        
-        return left;
     }
 }
