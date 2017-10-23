@@ -6,10 +6,9 @@ An island is surrounded by water and is formed by connecting adjacent lands hori
 You may assume all four edges of the grid are all surrounded by water.
 
 idea:
-I don't know what is union-find, it uses union-find
+union-find
 note: roots[roots[roots[roots[c]]]] ... until roots[c] = c;
 best explanation: https://discuss.leetcode.com/topic/29613/easiest-java-solution-with-explanations/2
-
 */
 
 import java.util.*;
@@ -32,6 +31,7 @@ class NumberOfIslands {
 
 		int[][] directions = {{0,1}, {0,-1}, {1,0}, {-1,0}};
 		int cnt = 0;
+
 		for (int[] position : positions) {
 			cnt++;
 
