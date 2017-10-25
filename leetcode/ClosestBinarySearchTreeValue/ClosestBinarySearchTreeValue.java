@@ -14,7 +14,6 @@ easy to understand
 http://www.programcreek.com/2014/05/leetcode-closest-binary-search-tree-value-java/
 */
 public class ClosestBinarySearchTreeValue {
-
 	// method 1
     public int closestValue(TreeNode root, double target) {
     	TreeNode current = target < root.val ? root.left : root.right;
