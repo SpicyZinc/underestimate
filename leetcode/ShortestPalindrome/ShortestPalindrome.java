@@ -7,8 +7,7 @@ Given "aacecaaa", return "aaacecaaa".
 Given "abcd", return "dcbabcd".
 
 idea:
-
-from a certain character go to both sides, if it can go to the start of the string,
+from a certain character go to both sides, if it can go to the start of the string, by 'can' it means it is equal char centered on this certain char
 and if there are some characters left at the back, reverse it and prepend it to the start of the string
 
 notes:
@@ -60,6 +59,8 @@ public class ShortestPalindrome {
         for (i = n; i >= 0; i--) {
             // this is a way to check if palindrome
             // after reverse, still equal, meaning before reverse, it is palindrome
+            // abbae when i = 4 substring(0, 4) === abba
+            // eabba when i = 4 substring(1) === abba
             if ( s.substring(0, i).equals(reversedS.substring(n - i)) ) {
                 break;
             }
