@@ -33,4 +33,26 @@ public class ReadNCharactersGivenRead4 extends Reader4 {
 		// till here, buf has been populated
 		return size;
 	}
+
+
+
+
+	int read(char *buf, int n) {
+        char _buf[4];   // the buffer for read4()
+        int _n = 0;     // the return for read4()
+        int len = 0;    // total buffer read from read4()
+        int size = 0;   // how many bytes need be copied from '_buf' to 'buf'
+        while ((_n = read4(_buf)) > 0) {
+            // check the space of 'buf' whether enough or not
+            size = len + _n > n ? n-len : _n;
+            strncpy(buf + len, _buf, size);
+            len += size;
+            // buffer is full
+            if (len >= n) {
+                break;
+            }
+        }
+
+        return len;
+    }
 }
