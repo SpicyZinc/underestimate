@@ -28,24 +28,25 @@ https://segmentfault.com/a/1190000003786782
 https://codechen.blogspot.com/2015/06/leetcode-skyline-problem.html
 
 1. convert rectangle [Li, Ri, Hi] into [Li, -Hi], [Ri, Hi], and save to a list
-2. sort based on x-axis, if x-axis is the same, sort based on y-axis
+2. sort list based on x-axis, if x-axis is the same, sort based on y-axis
 3. heap == priorityQueue(11, comparator), y-axis from big to small order
-4. offer horizon 0 to pq at first
+4. add horizon 0 to pq at first
 5. top left point into queue
 6. top right point out queue 
-7. only prev != cur, meaning a new keypoint, add to result list 
+7. only prev != cur, meaning a new key point, add to result list 
 */
 
 public class TheSkylineProblem {
     public List<int[]> getSkyline(int[][] buildings) {
         List<int[]> result = new ArrayList<>();
-        List<int[]> height = new ArrayList<>();
-        for (int[] b : buildings) {
-            height.add(new int[]{b[0], -b[2]});
-            height.add(new int[]{b[1], b[2]});
+        List<int[]> heights = new ArrayList<>();
+        for (int[] building : buildings) {
+            heights.add(new int[] {building[0], -building[2]});
+            heights.add(new int[] {building[1], building[2]});
         }
 
-        Collections.sort(height, new Comparator<int[]>() {
+        Collections.sort(heights, new Comparator<int[]>() {
+            @Override
             public int compare(int[] a, int[] b) {
                 if (a[0] != b[0]) {
                     return a[0] - b[0];
@@ -54,26 +55,33 @@ public class TheSkylineProblem {
                 }
             }
         });
+
+        // heights priority queue
         Queue<Integer> pq = new PriorityQueue<Integer>(11, new Comparator<Integer>() {
+            @Override
             public int compare(Integer i1, Integer i2) {
                 return i2 - i1;
             }
         });
+
         int horizon = 0;
-        pq.offer(horizon);
         int prev = horizon;
-        for (int[] h : height) {
-            if (h[1] < 0) {
-                pq.offer(-h[1]);
+        pq.offer(horizon);
+
+        for (int[] height : heights) {
+            int h = height[1];
+            if (h < 0) {
+                pq.offer(-h);
             } else {
-                pq.remove(h[1]);
+                pq.remove(h);
             }
-            int cur = pq.peek();
-            if (prev != cur) {
-                result.add(new int[]{h[0], cur});
-                prev = cur;
+            int curr = pq.peek();
+            if (prev != curr) {
+                result.add(new int[] {height[0], curr});
+                prev = curr;
             }
         }
+
         return result;
     }
 }
