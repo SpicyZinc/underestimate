@@ -18,24 +18,21 @@ read4 returns the number of characters actually left in the file
 public class ReadNCharactersGivenRead4 extends Reader4 {
 	public int read(char[] buf, int n) {
 		int size = 0;
-		char[] tempHolder = new char[4];
+		char[] tempBuffer = new char[4];
 		while (true) {
-			int len = read4(tempHolder);
+			int len = read4(tempBuffer);
 			// if no characters left, return 0
 			if (len == 0) {
 				return size;
 			}
 			// require read n characters so size must < n
 			for (int i = 0; i < len && size < n; i++) {
-				buf[size++] = tempHolder[i];
+				buf[size++] = tempBuffer[i];
 			}
 		}
 		// till here, buf has been populated
 		return size;
 	}
-
-
-
 
 	int read(char *buf, int n) {
         char _buf[4];   // the buffer for read4()
