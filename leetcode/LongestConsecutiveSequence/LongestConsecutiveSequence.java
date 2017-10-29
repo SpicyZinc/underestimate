@@ -6,10 +6,11 @@ A. sacrifice space for time
 since this is to get consecutive, manually increment and decrement target
 
 1. sort the array, loop it,
-if any two next-to integers are NOT consecutive,
+if any two adjacent integers are NOT consecutive,
 update the maxLength and maxLength start, reset the start
-2. HashSet
-put all integers into HashSet
+note: if any two adjacent integers are equal, increase both start and end by 1
+
+2. put all integers into HashSet
 for each integer in array i, keep i-- and keep i++, this will find the consecutive sequence, and record the length
 if use HashSet, also can use recursive
 3. HashMap, but need a visited boolean array to mark which element already visited before
@@ -18,7 +19,7 @@ for each num
 	i, check whether num - 1 is in the map  (while loop)
 	ii, check whether num + 1 is in the map  (while loop)
 
-4. if only want the length of Longest Increase Sequence (LIS), dynamic programming
+4. if only want the length of Longest Increase Sequence (LIS), dp
 original order not change
 Let arr[0..n-1] be the input array and L(i) be the length of the LIS till index i such that arr[i] is part of LIS and arr[i] is the last element in LIS,
 */
@@ -38,54 +39,60 @@ class LongestConsecutiveSequence {
 		}
 	}
 	// method 1
-	public int[] find(int[] a) {
-		Arrays.sort(a);
-		int maxLength = 1;
-		int tempLength = 1;
+	public int longestConsecutive(int[] nums) {
+		if (nums.length == 0 || nums == null) {
+			return 0;
+		}
+
+		Arrays.sort(nums);
+
+		int maxLen = 1;
 		int maxStart = 0;
 		int start = 0;
 		int end = 0;
 
-		for (int i = 1; i < a.length; i++) {
-			if (a[i] == a[i-1] + 1) {
+		for (int i = 1; i < nums.length; i++) {
+			if (nums[i] == nums[i - 1] + 1) {
 				end = i;
-			}
-			else {
-				tempLength = end - start + 1;
-				if (maxLength < tempLength) {
-					maxLength = tempLength;
+			} else if (nums[i] == nums[i - 1]) {
+				start++;
+				end++;
+			} else {
+				int len = end - start + 1;
+				if (maxLen < len) {
+					maxLen = len;
 					maxStart = start;
 				}
+				// update start and end
 				start = i;
 				end = i;
 			}
 		}
-		int[] result = {maxStart, maxLength};
 
-		return result;
+		return Math.max(maxLen, end - start + 1);
 	}
 	// method 2
 	public int longestConsecutive(int[] nums) {
-		HashSet<Integer> hs = new HashSet<Integer>();
+		Set<Integer> hs = new HashSet<Integer>();
 		for (int i : nums) {
 			hs.add(i);
 		}
 
 		int max = 0;
-		for (int i : nums) {
+		for (int num : nums) {
 			int cnt = 1;
-			int temp = i;
-			hs.remove(temp);
-			while (hs.contains(temp - 1)) {
-				hs.remove(temp - 1);
+			int curr = num;
+			hs.remove(curr);
+			while (hs.contains(curr - 1)) {
+				hs.remove(curr - 1);
+				curr--;
 				cnt++;
-				temp--;
 			}
-			temp = i;
-			while (hs.contains(temp + 1)) {
-				hs.remove(temp + 1);
+			curr = num;
+			while (hs.contains(curr + 1)) {
+				hs.remove(curr + 1);
+				curr++;
 				cnt++;
-				temp++;
 			}
 
 			max = Math.max(max, cnt);
@@ -93,41 +100,41 @@ class LongestConsecutiveSequence {
 
 		return max;
 	}
-	// method 2', iterative method can be converted to recursive method 
-    public int longestConsecutive(int[] num) {
+	// method 2, iterative method can be converted to recursive method 
+    public int longestConsecutive(int[] nums) {
         Set<Integer> hs = new HashSet<Integer>();
-        for (int v : num) {
+        for (int v : nums) {
 			hs.add(v);
         }
 			
-        int ans = 0;        
-        for (int v : num) {
-			if (hs.contains(v)) {
-				ans = Math.max(ans, getCount(hs, v, false) + getCount(hs, v+1, true));
+        int ans = 0;
+        for (int num : nums) {
+			if (hs.contains(num)) {
+				ans = Math.max(ans, getCount(hs, num, false) + getCount(hs, num + 1, true));
 			}
         }
 				
-        return ans; 
+        return ans;
     }
-	public int getCount(Set<Integer> hs, int v, boolean asc){
-        int count = 0;
-        while (hs.contains(v)) {
-            hs.remove(v);
+
+	public int getCount(Set<Integer> hs, int v, boolean asc) {
+		int count = 0;
+		while (hs.contains(v)) {
+			hs.remove(v);
             count++;
             if (asc) {
-				v++; 
-            }
-			else {
+				v++;
+            } else {
 				v--;
 			}
         }
 		
         return count;
-    }
-    
+	}
+	
 	// method 3
 	public int longestConsecutive(int[] nums) {
-		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
 		int index = 0;
 		for (int i : nums) {
 			hm.put(i, index++);
@@ -156,28 +163,6 @@ class LongestConsecutiveSequence {
 			}
 
 			max = Math.max(max, cnt);
-		}
-
-		return max;
-	}
-
-	// method 4, DP
-	public int LongestIncreaseSubsequenceLength(int[] nums) {
-		int n = nums.length;
-		if (n == 0 || nums == null) {
-			return 0;
-		}
-		int[] LIS = new int[n];
-		LIS[0] = 1;
-		int max = 1;
-		for (int i = 1; i < n; i++) {
-		    LIS[i] = 1;
-			for (int j = 0; j < i; j++) {
-				if (nums[i] > nums[j]) {
-					LIS[i] = Math.max(LIS[i], LIS[j] + 1);
-					max = Math.max(max, LIS[i]);
-				}
-			}
 		}
 
 		return max;
