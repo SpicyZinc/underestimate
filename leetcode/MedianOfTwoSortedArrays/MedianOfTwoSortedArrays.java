@@ -67,7 +67,8 @@ public class MedianOfTwoSortedArrays {
         // always assume that a is equal or smaller than b
         if (m > n) return findKth(b, s2, e2, a, s1, e1, k); 
         if (s1 > e1) return b[s2 + k - 1];   
-        if (s2 > e2) return a[s1 + k - 1];  
+        if (s2 > e2) return a[s1 + k - 1];
+        // note k == 1, a good stopping case
         if (k == 1) return Math.min(a[s1], b[s2]);  
 
         int midA = Math.min(k / 2, m), midB = k - midA;
