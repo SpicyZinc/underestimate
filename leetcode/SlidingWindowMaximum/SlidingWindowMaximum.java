@@ -26,39 +26,44 @@ Hint:
 How about using a data structure such as deque (double-ended queue)?
 
 idea:
-https://segmentfault.com/a/1190000003903509
-double ended queue
+https://segmentfault.com/a/1190000003903509, double ended queue
 
 Each element in the queue is being inserted and then removed at most once. 
-Therefore, the total number of insert and delete operations is 2n. It is an O(n) solution.
+The total number of insert and delete operations is 2n; therefore, it is an O(n) solution.
 
 sliding window length = (length - 1) - (k - 1) + 1 = length - k + 1
-
 maintain a queue less than or equal to k, this guarantees window of size k
 */
 public class SlidingWindowMaximum {
     // best solution
     public int[] maxSlidingWindow(int[] nums, int k) {
-        if (nums.length == 0 || nums == null) return nums;
-        int[] ans = new int[nums.length - k + 1];
+        if (nums.length == 0 || nums == null) {
+            return nums;
+        }
+        
+        int n = nums.length;
+        int[] maxs = new int[n - k + 1];
+        // double end queue stores the indices of values in nums,
+        // and corresponding values are in decreasing order. This way, the head in queue is always the max
         List<Integer> dequeue = new LinkedList<Integer>();
-        // dequeue stores indices of nums, and corresponding values are in decreasing order. This way, the head in queue is always the max
-        for (int i = 0; i < nums.length; i++) {
+        for (int i = 0; i < n; i++) {
             // 1. remove left most element from queue so queue size is k
             // i - queue.get(0) + 1 = k so queue.get(0) + k > i
-            if (!dequeue.isEmpty() && dequeue.get(0) + k <= i) dequeue.remove(0);
-            // 2. before inserting i into queue, remove indices pointing to value smaller than nums[i] from queue tail to make sure descending order            
+            if (!dequeue.isEmpty() && dequeue.get(0) + k == i) {
+                dequeue.remove(0);
+            }
+            // 2. before inserting i into queue, remove indices pointing to value smaller than nums[i] from queue tail
+            // to guarantee descending order
             while (!dequeue.isEmpty() && nums[dequeue.get(dequeue.size() - 1)] < nums[i]) {
                 dequeue.remove(dequeue.size() - 1);
             }
             dequeue.add(i);
-            // 3. i + 1 is the length, start to collect max
+            // length of sliding window >= k, start collecting max
             if (i + 1 >= k) {
-                ans[i + 1 - k] = nums[dequeue.get(0)];
+                maxs[i - k + 1] = nums[dequeue.get(0)];
             }
         }
-        
-        return ans;
+        return maxs;
     }
 
     // direct solution
