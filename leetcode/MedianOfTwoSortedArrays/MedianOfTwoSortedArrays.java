@@ -16,16 +16,48 @@ odd length, K is total/2
 even length, K is total/2, total/2 + 1
 */
 public class MedianOfTwoSortedArrays {
-	// time: O(log(m + n))
-	public double findMedianSortedArrays(int A[], int B[]) {
-		int m = A.length;
-		int n = B.length;
-        int total = A.length + B.length;
-        if (total % 2 == 0) {
-        	return (double) ( findKth(A, 0, m - 1, B, 0, n - 1, total / 2) + findKth(A, 0, m - 1, B, 0, n - 1, total / 2 + 1) ) / 2.0;
+    // O(log(min(M,N)))
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int N1 = nums1.length;
+        int N2 = nums2.length;
+
+        if (N1 < N2) {
+            return findMedianSortedArrays(nums2, nums1);
         }
-        else {
-        	return findKth(A, 0, A.length - 1, B, 0, B.length - 1, total/2 + 1);
+        
+        int lo = 0;
+        int hi = N2 * 2;
+
+        while (lo <= hi) {
+            int mid2 = (lo + hi) / 2;   // Try Cut 2 
+            int mid1 = N1 + N2 - mid2;  // Calculate Cut 1 accordingly
+            
+            double L1 = (mid1 == 0) ? Integer.MIN_VALUE : nums1[(mid1 - 1) / 2];
+            double L2 = (mid2 == 0) ? Integer.MIN_VALUE : nums2[(mid2 - 1) / 2];
+            double R1 = (mid1 == N1 * 2) ? Integer.MAX_VALUE : nums1[(mid1) / 2];
+            double R2 = (mid2 == N2 * 2) ? Integer.MAX_VALUE : nums2[(mid2) / 2];
+            
+            if (L1 > R2) {
+                lo = mid2 + 1;   
+            } else if (L2 > R1) {
+                hi = mid2 - 1;
+            } else {
+                return (Math.max(L1, L2) + Math.min(R1, R2)) / 2;
+            }
+        }
+
+        return -1;
+    }
+
+	// time: O(log(m + n))
+	public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+		int m = nums1.length;
+		int n = nums2.length;
+        int total = m + n;
+        if (total % 2 == 0) {
+        	return (double) ( findKth(nums1, 0, m - 1, nums2, 0, n - 1, total / 2) + findKth(nums1, 0, m - 1, nums2, 0, n - 1, total / 2 + 1) ) / 2.0;
+        } else {
+        	return findKth(nums1, 0, nums1.length - 1, nums2, 0, nums2.length - 1, total/2 + 1);
         }
     }
     // find kth, parameter is k
@@ -38,65 +70,16 @@ public class MedianOfTwoSortedArrays {
         if (s2 > e2) return a[s1 + k - 1];  
         if (k == 1) return Math.min(a[s1], b[s2]);  
 
-        int midA = Math.min(k/2, m), midB = k - midA;   
+        int midA = Math.min(k / 2, m), midB = k - midA;
+        // midA length is found out, so k - midA
         if (a[s1 + midA - 1] < b[s2 + midB - 1]) {
             return findKth(a, s1 + midA, e1, b, s2, e2, k - midA);
-        }
-        else if (a[s1 + midA - 1] > b[s2 + midB - 1]) {
+        } else if (a[s1 + midA - 1] > b[s2 + midB - 1]) { // midB length is found out, so k - midB
             return findKth(a, s1, e1, b, s2 + midB, e2, k - midB);
-        }
-        else {
+        } else {
             return a[s1 + midA - 1];
         }
     }
-    // easy to understand solution, time: O(m + n)
-	public double findMedianSortedArrays(int A[], int B[]) {
-		int m = A.length;
-		int n = B.length;
-
-	    int i = 0, j = 0, total = m + n;
-	    double prev = 0, last = 0;
-
-	    if (total < 2) {
-	        if (m == 0 && n == 0) {
-	        	return 0;
-	        }
-	        if (m == 1) {
-	        	return A[0];
-	        }
-	        else {
-	        	return B[0];
-	        }
-	    }
-
-	    while ( (i + j) <= (total / 2) ) {
-	        prev = last;
-	        if (i >= m) {
-	            last = B[j];
-	            j++;
-	        }
-	        else if (j >= n) {
-	            last = A[i];
-	            i++;
-	        }
-	        else if (A[i] < B[j]) {
-	            last = A[i];
-	            i++;
-	        }
-	        else {
-	            last = B[j];
-	            j++;
-	        }
-	    }
-
-	    if (total % 2 == 0) {
-	        return (prev + last) / 2.0;
-	    }
-	    else {
-	        return last;
-	    }
-	}
-
 	// self direct method, merge two sorted array, then find the median of the array
 	public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int m = nums1.length;
@@ -136,6 +119,53 @@ public class MedianOfTwoSortedArrays {
         }
         else {
             return (double) (nums[n / 2] + nums[n / 2 - 1]) / 2;
+        }
+    }
+    // easy to understand solution, time: O(m + n)
+    public double findMedianSortedArrays(int A[], int B[]) {
+        int m = A.length;
+        int n = B.length;
+
+        int i = 0, j = 0, total = m + n;
+        double prev = 0, last = 0;
+
+        if (total < 2) {
+            if (m == 0 && n == 0) {
+                return 0;
+            }
+            if (m == 1) {
+                return A[0];
+            }
+            else {
+                return B[0];
+            }
+        }
+
+        while ( (i + j) <= (total / 2) ) {
+            prev = last;
+            if (i >= m) {
+                last = B[j];
+                j++;
+            }
+            else if (j >= n) {
+                last = A[i];
+                i++;
+            }
+            else if (A[i] < B[j]) {
+                last = A[i];
+                i++;
+            }
+            else {
+                last = B[j];
+                j++;
+            }
+        }
+
+        if (total % 2 == 0) {
+            return (prev + last) / 2.0;
+        }
+        else {
+            return last;
         }
     }
 }
