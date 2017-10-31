@@ -10,6 +10,7 @@ idea:
 I only can say it is similar to find nth to last node
 http://www.lifeincode.net/programming/leetcode-rotate-list-java/
 */
+
 class ListNode {
     int val;
     ListNode next;

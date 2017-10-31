@@ -12,9 +12,19 @@ For k = 3, you should return: 3->2->1->4->5
 
 idea:
 http://rleetcode.blogspot.com/2014/01/reverse-nodes-in-k-group-java.html
-KEY point to note:
-reverse(ListNode pre, ListNode next) pre and next are EXCLUSIVELY
+note: reverse(ListNode prev, ListNode next) prev and next are EXCLUSIVELY
+
+0->1->2->3->4->5->6
+|           |
+prev        next
+
+after call prev = reverse(prev, next)
+0->3->2->1->4->5->6
+         |  |
+         prev next
+e.g. not same as run case
 */
+
 class ListNode {
     int val;
     ListNode next;
@@ -30,53 +40,36 @@ public class ReverseNodesInKGroup {
             return head;
         }
         
-        ListNode dummy = new ListNode (0);
+        ListNode dummy = new ListNode(0);
         dummy.next = head;
         
-        ListNode pre = dummy;
-        
         int i = 0;
+        ListNode prev = dummy;
         while (head != null) {
             i++;
             if (i % k == 0) {
-                pre = reverse(pre, head.next);
-                head = pre.next;
-            }
-            else {
+                prev = reverse(prev, head.next);
+                head = prev.next;
+            } else {
                 head = head.next;
             }
         }
-
+        
         return dummy.next;
     }
-    /*
-     * Reverse a link list between pre and next EXCLUSIVELY
-     * an example:
-     * a linked list:
-     * 0->1->2->3->4->5->6
-     * |           |   
-     * pre        next
-     * after call pre = reverse(pre, next)
-     * 
-     * 0->3->2->1->4->5->6
-     *          |  |
-     *          pre next
-     * @param pre 
-     * @param next
-     * @return the reversed list's last node, which is the precedence of parameter next
-     */
-    public ListNode reverse(ListNode pre, ListNode next) {
-        ListNode last = pre.next;
-        ListNode cur = last.next;
+    // return the reversed list's last node, which is the precedence of parameter next
+    public ListNode reverse(ListNode prev, ListNode next) {
+        ListNode last = prev.next;
+        ListNode curr = last.next;
         
-        while (cur != next) {
-            last.next = cur.next;
-            cur.next = pre.next;
-            pre.next = cur;
+        while (curr != next) {
+            last.next = curr.next;
+            curr.next = prev.next;
+            prev.next = curr;
             
-            cur = last.next;
+            curr = last.next;
         }
-
+        
         return last;
     }
 }
