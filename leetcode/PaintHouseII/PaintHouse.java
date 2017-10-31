@@ -15,9 +15,10 @@ Could you solve it in O(nk) runtime?
 idea:
 https://segmentfault.com/a/1190000003903965
 
-note: 不同颜色的最小值不是遍历所有不同颜色, 而是用min1和min2来记录之前房子的最小和第二小的花费
-如果当前房子颜色和min1相同, 那么我们用min2对应的值计算, 反之我们用min1对应的值
-The other test is to find the second max in the array
+extension of Paint House
+instead of 3 colors, k colors,
+for each house, find currMin cost and currSecMin cost in k colors (how to find the second min in the array)
+then if current house color is the same as prevMin, then use prevSecMin; otherwise use prevMin
 */
 
 public class PaintHouse {
@@ -31,12 +32,12 @@ public class PaintHouse {
     	int prexIdx = -1;
 
     	for (int i = 0; i < costs.length; i++) {
-
 	    	int currSecMin = Integer.MAX_VALUE;
 	    	int currMin = Integer.MAX_VALUE;
 	    	int currIdx = -1;
-	    	// house i painted with different colors, min cost and second min cost
-	    	// min cost use which color j
+	    	// house i painted with different colors
+	    	// min cost and second min cost
+	    	// min cost uses which color j
 	    	for (int j = 0; j < costs[i].length; j++) {
 	    		// all prev, no current
 	    		// paint another house, if use the same color as previous house uses, use second min
@@ -46,8 +47,7 @@ public class PaintHouse {
 	    			currSecMin = currMin;
 	    			currMin = costs[i][j];
 	    			currIdx = j;
-	    		}
-	    		else if (costs[i][j] < currSecMin) {
+	    		} else if (costs[i][j] < currSecMin) {
 	    			currSecMin = costs[i][j];
 	    		}
 	    	}
