@@ -1,29 +1,31 @@
 /*
-Recover Binary Search Tree
 Two elements of a binary search tree (BST) are swapped by mistake.
 Recover the tree without changing its structure.
+
+Note:
+A solution using O(n) space is pretty straight forward. Could you devise a constant space solution?
 
 idea:
 1. space complexity is O(n), not required O(1) constant space
 in order traversal bst, and save nodes' values into array,
 sort them, then evaluate them
 
-2. in order traverse BST, find this pair of nodes, return as TreeNode[] of length 2
+2. inorder traverse BST, find this pair of nodes, return as TreeNode[] of length 2
 use swap(TreeNode a, TreeNode b) to swap their values.
 How to find this pair of nodes
 
-这一对节点先出现的那个肯定是比其中序后继大的，后出现的那个节点的后继，肯定不大于先出现这个错误节点的值。
+这一对节点先出现的那个肯定是比其中序后继大的, 后出现的那个节点的后继, 肯定不大于先出现这个错误节点的值.
 
-	Space constant的方法就是用递归的方式进行inorder traverse，
-	然后在遍历的过程中记录一个前驱节点，然后比较前驱节点和当前节点的值，将结果存到TreeNode array，最后交换一下就行了。
+	constant space solution 就是用递归的方式进行inorder traverse, 
+	然后在遍历的过程中记录一个前驱节点, 然后比较前驱节点和当前节点的值, 将结果存到TreeNode array, 最后交换一下就行了.
 	
-	in order traverse不存,只存前一个node，比较current与前一个的值。
+	in order traverse不存,只存前一个node, 比较current与前一个的值.
 	如果只有一次不满足 current.val >= previous.val, swap their values.
-	如果有两次不满足，记录第一次的 previous 和第二次的current, swap their values
+	如果有两次不满足, 记录第一次的 previous 和第二次的current, swap their values
 */
+
 import java.util.*;
 
-// Definition for binary tree
 class TreeNode {
 	int val;
 	TreeNode left;
@@ -35,46 +37,6 @@ class TreeNode {
 	}
 }
 // this O(n) space passed the test
-public class RecoverBST {
-	public void recoverTree(TreeNode root) {
-		if (root == null) {
-			return ;
-		}
-		
-		ArrayList<TreeNode> ret = new ArrayList<TreeNode>();
-		ArrayList<Integer> values = new ArrayList<Integer>();
-	    inOrderPrintToArray(root, ret, values);
-	    int[] nums = buildIntArray(values);
-	    Arrays.sort(nums);
-
-		for (int i = 0; i < nums.length; i++) {
-			ret.get(i).val = nums[i];
-		}
-	}
-
-	public void inOrderPrintToArray(TreeNode root, ArrayList<TreeNode> ret, ArrayList<Integer> values) {
-		if (root.left != null) {
-			inOrderPrintToArray(root.left, ret, values);
-		}
-		
-		values.add(root.val);
-		ret.add(root);
-		
-		if (root.right != null) {
-			inOrderPrintToArray(root.right, ret, values);
-		}		
-	}
-	
-	private int[] buildIntArray(ArrayList<Integer> integers) {
-        int[] ints = new int[integers.size()];
-        int i = 0;
-        for (Integer n : integers) {
-            ints[i++] = n;
-        }
-        return ints;
-    }
-}
-
 public class RecoverBST {
 	public static void main(String[] args) {
 		RecoverBST wrongBST = new RecoverBST();
@@ -92,15 +54,93 @@ public class RecoverBST {
 		wrongBST.recoverBST(root);
 		wrongBST.inOrderPrint(root);		
 	}
-	
-	public void recoverBST(TreeNode root) {
+
+	// direct method with O(n) space cost
+	public void recoverTree(TreeNode root) {
 		if (root == null) {
 			return ;
 		}
-        TreeNode[] res = new TreeNode[2];
-        TreeNode last = inorderTraverse(root, null, res);
-		swap(res[0], res[1]);
-        return ;
+		
+		List<TreeNode> nodes = new ArrayList<TreeNode>();
+		List<Integer> values = new ArrayList<Integer>();
+
+		inOrderPrintToArray(root, values, nodes);
+		int[] nums = buildIntArray(values);
+		Arrays.sort(nums);
+
+		for (int i = 0; i < nums.length; i++) {
+			nodes.get(i).val = nums[i];
+		}
+	}
+
+	public void inOrderPrintToArray(TreeNode root, List<Integer> values, List<TreeNode> nodes) {
+		if (root.left != null) {
+			inOrderPrintToArray(root.left, values, nodes);
+		}
+		
+		values.add(root.val);
+		nodes.add(root);
+		
+		if (root.right != null) {
+			inOrderPrintToArray(root.right, values, nodes);
+		}		
+	}
+	
+	private int[] buildIntArray(List<Integer> integers) {
+		int[] ints = new int[integers.size()];
+		int i = 0;
+		for (Integer n : integers) {
+			ints[i++] = n;
+		}
+		return ints;
+	}
+	// method 1
+    TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+    TreeNode[] dislocations = new TreeNode[] { null, null };
+
+	public void recoverTree(TreeNode root) {
+		if (root == null) {
+			return ;
+		}
+
+		inorder(root);
+
+		int tmp = dislocations[0].val;
+		dislocations[0].val = dislocations[1].val;
+		dislocations[1].val = tmp;
+
+		return;
+	}
+
+	public void inorder(TreeNode node) {
+		if (node == null) {
+			return;
+		}
+
+		inorder(node.left);
+
+		if ( dislocations[0] == null && prev.val >= node.val) {
+			 dislocations[0] = prev;
+		}
+		if ( dislocations[0] != null && prev.val >= node.val) {
+			dislocations[1] = node;
+		}
+		prev = node;
+
+		inorder(node.right);
+	}
+	// method 2
+	public void recoverTree(TreeNode root) {
+		if (root == null) {
+			return ;
+		}
+        TreeNode[] dislocations = new TreeNode[2];
+        inorderTraverse(root, null, dislocations);
+		int tmp = dislocations[0].val;
+		dislocations[0].val = dislocations[1].val;
+		dislocations[1].val = tmp;
+
+        return;
 	}
 	
 	public TreeNode inorderTraverse(TreeNode root, TreeNode pre, TreeNode[] res) {
@@ -124,7 +164,7 @@ public class RecoverBST {
         }
         last = inorderTraverse(root.right, root, res);
 		
-        return last == null ? root : last;        
+        return last == null ? root : last;
     }
 		
 	public void inOrderPrint(TreeNode root) {
@@ -138,11 +178,4 @@ public class RecoverBST {
 			inOrderPrint(root.right);
 		}		
 	}
-	
-	public void swap(TreeNode a, TreeNode b) {
-		int tmp = a.val;
-		a.val = b.val;
-		b.val = tmp;
-	}
 }
- 
