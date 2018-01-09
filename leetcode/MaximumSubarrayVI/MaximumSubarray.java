@@ -21,6 +21,6 @@ idea:
 
 public class MaximumSubarray {
 	public int maxXorSubarray(int[] nums) {
-		// write code here
+
 	}
 }

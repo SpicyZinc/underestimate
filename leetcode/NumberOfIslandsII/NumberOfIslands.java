@@ -8,7 +8,8 @@ You may assume all four edges of the grid are all surrounded by water.
 idea:
 union-find
 note: roots[roots[roots[roots[c]]]] ... until roots[c] = c;
-best explanation: https://discuss.leetcode.com/topic/29613/easiest-java-solution-with-explanations/2
+
+https://discuss.leetcode.com/topic/29613/easiest-java-solution-with-explanations/2
 */
 
 import java.util.*;
@@ -38,6 +39,7 @@ class NumberOfIslands {
 			int x = position[0];
 			int y = position[1];
 			int insertIndex = x * n + y;
+			// itself is itself's parent
 			roots[insertIndex] = insertIndex;
 
 			for (int[] dir : directions) {
@@ -47,7 +49,8 @@ class NumberOfIslands {
 				// roots[neighborIndex] != -1 means it is land, visited before, now needs to update
 				if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && roots[neighborIndex] != -1) {
 					int rootIdx = getRootIdx(roots, neighborIndex);
-					// should equal, why because it is current position's 4 neighbors, belonging to the same island, should have the same parent
+					// should equal, why because it is current position's 4 neighbors,
+					// belonging to the same island, should have the same parent
 					// if not, need to update
 					// always use the i == roots[i] in roots to update the current insertIndex's parent root
 					if (insertIndex != rootIdx) {
