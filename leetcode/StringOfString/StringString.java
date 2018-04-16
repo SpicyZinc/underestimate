@@ -1,4 +1,4 @@
-/**
+/*
 Implement strStr()
 Returns a pointer to the first occurrence of needle in haystack, 
 or null if needle is not part of haystack. 
@@ -16,16 +16,12 @@ with i-j+1 return "issippi", which is correct
 some corner cases must be considered for all problems
 
 this one works the best
-
 */
 
 public class StringString {
 	// this is the only one passing big test 
 	// use this one
-	// use this one
 	public String strStr(String haystack, String needle) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
 		if(haystack.length() < needle.length()) {
 			return null;
 		}
@@ -35,21 +31,21 @@ public class StringString {
 		}
 		int i = 0;
 		int j = 0;
-		while(i < haystack.length() && j < needle.length()) {
-			if(haystack.charAt(i) == needle.charAt(j)) {
+		while (i < haystack.length() && j < needle.length()) {
+			if (haystack.charAt(i) == needle.charAt(j)) {
 				i++;
 				j++;
-				if(j == needle.length()) {
+				if (j == needle.length()) {
 					return haystack.substring(i - j);
 				}
-			}			
-			else {
+			} else {
 				// i-j+1 is necessary
 				// i-j is substring, +1 is to move to next letter
 				i = i - j + 1;
 				j = 0;
 			}
 		}
+
 		return null;        
 	}
 }

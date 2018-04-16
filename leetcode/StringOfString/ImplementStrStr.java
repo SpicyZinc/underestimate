@@ -4,7 +4,7 @@ if needle is not part of haystack.
 
 idea:
 1. substring() and equals()
-2. brute force, two for loops
+2. brute force, two for loops, the good part is i + j, use one pointer, instead of start, j
 */
 
 public class ImplementStrStr {
@@ -36,6 +36,41 @@ public class ImplementStrStr {
                 if (haystack.charAt(i + j) != needle.charAt(j)) break;
             }
             if (j == n) return i;
+        }
+        
+        return -1;
+    }
+
+    // self rewrite good one
+    public int strStr(String source, String target) {
+        if (source == null || target == null) {
+            return -1;
+        }
+        int i = 0;
+        int j = 0;
+        int lenS = source.length();
+        int lenT = target.length();
+        if (lenT == 0) {
+            return 0;
+        }
+        
+        for (i = 0; i < lenS;) {
+            int start = i;
+            while (source.charAt(start) == target.charAt(j)) {
+                start++;
+                j++;
+                if (j == lenT) {
+                    return i;
+                }
+                if (start == lenS) {
+                    return -1;
+                }
+            }
+            
+            if (j < lenT - 1) {
+                j = 0;
+            }
+            i++;
         }
         
         return -1;
