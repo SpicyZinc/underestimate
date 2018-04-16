@@ -1,5 +1,4 @@
 /*
-
 In order to pick out useful "?" and ":", we can always begin with the last "?" and the first ":" after the chosen "?".
 Therefore, directly seek for the last "?" (or you can simply put all "?" into a stack) and update the string depending on T or F until no more "?"s.
 
@@ -12,12 +11,12 @@ Since the input is promised to be valid, life is much easier
 Use a stack, check from the end of the string to the front.
 
 As long as the next char is not '?', push it to the stack.
-If we see a '?', check the next char(left of '?' in the string), 
+If we see a '?', check the next char (left of '?' in the string), 
     pop the top 3 elements from the stack.
     if the next char is T
         push the first element of the 3 elements back to stack
     else 
-        pusht the 3rd element of the 3 elements back to stack
+        push the 3rd element of the 3 elements back to stack
 pop the only item left in the stack
 */
 
@@ -36,30 +35,30 @@ public class TernaryExpressionParser {
 	}
 
 	public String parseTernary(String expression) {
-	    if (expression.length() == 0 || expression == null) {
-	    	return null;
-	    }
+		if (expression.length() == 0 || expression == null) {
+			return null;
+		}
 
-	    Stack<Character> stack = new Stack<Character>();
-	    int i = expression.length() - 1;
-	    expression = expression.trim();
-	    while (i >= 0) {
-	    	char c = expression.charAt(i);
-	    	if (!stack.isEmpty() && stack.peek() == '?') {
-	    		// first pop ?
-	    		stack.pop();
-	    		char first = stack.pop();
-	    		// second pop :
-	    		char second = stack.pop();
-	    		char temp = c == 'T' ? first : second;
-	    		stack.push(temp);
-	    	}
-	    	else {
-	    		stack.push(c);
-	    	}
-	    	i--;
-	    }
+		expression = expression.trim();
+		Stack<Character> stack = new Stack<Character>();
+		int i = expression.length() - 1;
+		while (i >= 0) {
+			char c = expression.charAt(i);
+			if (!stack.isEmpty() && stack.peek() == '?') {
+				// first, pop ? out of stack
+				stack.pop();
+				char first = stack.pop();
+				// second, pop : out of stack
+				stack.pop();
+				char second = stack.pop();
+				char evaluatedTernaryExpression = c == 'T' ? first : second;
+				stack.push(evaluatedTernaryExpression);
+			} else {
+				stack.push(c);
+			}
+			i--;
+		}
 
-	    return String.valueOf(stack.peek());
+		return String.valueOf(stack.peek());
 	}
 }
