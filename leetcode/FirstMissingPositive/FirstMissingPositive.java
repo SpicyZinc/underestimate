@@ -19,7 +19,6 @@ The result is 1  2  3  4  2  -1  0, all sorted elements are placed at fore part 
 
 2. direct method:
 sort first
-
 */
 import java.util.*;
 
@@ -30,32 +29,37 @@ public class FirstMissingPositive {
 		
 		System.out.println("\nA_1stMissingPositive == " + aTest.firstMissingPositive(A));
 	}
-		
-    public int firstMissingPositive(int[] A) {
-        for (int i=0; i<A.length; i++) {
-			while (A[i] != i+1) {
-				if (A[i] <= 0 || A[i] > A.length || A[i] == A[A[i]-1]) {
-					break;
-				}
-				// swap
-				int tmp = A[A[i] - 1];
-				A[A[i] - 1] = A[i];
-				A[i] = tmp;
-			}			
-		}
-		// print out array to see what happened
-		for (int i : A) {
-			System.out.print(i + "  ");
-		}
-		for (int i=0; i<A.length; i++) {
-			if (A[i] != i + 1) {
-				return i + 1;
-			}
-		}
-		
-		return A.length + 1;
+	// put i to A[i - 1], so the array looks like: 1, 2, 3, ...
+    public int firstMissingPositive(int[] A) { 
+        for (int i = 0; i < A.length; i++) {
+            while (A[i] != i + 1) {
+				// if ever meeting one of the three circumstances, break while loop and keep walking to next element in the array
+				// 1. negative
+				// 2. A[i] > A.length
+				// 3. already value as index being there
+                if (A[i] <= 0 || A[i] > A.length || A[i] == A[A[i] - 1]) {
+                    break;
+                }
+				// swap(), can be replaced by a swap() function
+				// now (A[i] - 1) != i, a different number j
+				int j = A[i] - 1;
+                int tmp = A[j];
+                A[j] = A[i]; // make it A[i] == A[A[i] - 1]
+                A[i] = tmp;
+            }
+        }
+ 
+        for (int i = 0; i < A.length; i++) {
+			// the 1st missing positive number at the place where A[i] != i + 1
+            if (A[i] != i + 1) {
+                return i + 1;
+            }
+        }
+		// if this array is want 1, 2, 3 in index 0, 1, 2, then return (A.length + 1)
+        return A.length + 1;         
     }
-    // similar to the above, except && == ! ||
+
+    // similar to the above, except && === !||
     public int firstMissingPositive(int[] A) {
         int i = 0;
         while (i < A.length) {
@@ -63,72 +67,45 @@ public class FirstMissingPositive {
                 int tmp = A[A[i] - 1];
                 A[A[i] - 1] = A[i];
                 A[i] = tmp;
-            } else
+            } else {
                 i++;
+            }
         }
         for (i = 0; i < A.length; i++) {
-            if (A[i] != i + 1)
+            if (A[i] != i + 1) {
                 return i + 1;
+            }
         }
+
         return A.length + 1;
     }
 
     // direct method
-    // sort first
-	
 	public int firstMissingPositive(int[] A) {
         if (A.length == 0 || A == null) {
             return 1;
         }
-        
+
         Arrays.sort(A);
         int i = 0;
-		while (i < A.length && A[i] <= 0) {
-			i++;
-		}
-
-		int res = 0;
-		for (; i < A.length; i++) {
-			if (i > 0 && i < A.length && A[i] == A[i-1]) {
-				continue;
-			}
-			if (A[i] - res != 1) {
-				return res+1;
-			}
-			else {
-				res = A[i];
-			}
-		}
-
-		return res+1;
-    }
-
-    // put i to A[i-1], so the array looks like: 1, 2, 3, ...
-    public int firstMissingPositive(int[] A) { 
-        for (int i = 0; i < A.length; i++) {
-            while (A[i] != i+1) {
-				// if ever meeting one of the three circumstances, break while loop and keep walking to next element in the array
-				// 1. negative
-				// 2. A[i] > A.length
-				// 3. alreay value as index being there
-                if (A[i] <= 0 || A[i] > A.length || A[i] == A[A[i] - 1]) {
-                    break;
-                }
-				// swap(), can be replaced by a swap() function
-                int tmp = A[A[i]-1];
-                A[A[i]-1] = A[i];
-                A[i] = tmp;
+        while (i < A.length && A[i] <= 0) {
+            i++;                        
+        }
+        // missing positive, starting from 1
+        int res = 0;
+        for (; i < A.length; i++) {
+            // skip repetitive elements
+            if (i > 0 && A[i] == A[i - 1]) {
+                continue;
+            }
+            // first positive number should be 1
+            if (A[i] != res + 1) {
+                return res + 1;
+            } else {
+                res = A[i];
             }
         }
- 
-        for (int i = 0; i < A.length; i++) {
-			// the 1st missing presence of an element x at index+1 is first missing positive
-			// element x = index+1 
-            if (A[i] != i+1) {
-                return i+1;
-            }
-        }
-		// if this array is want 1, 2, 3 in index 0, 1, 2, then return (A.length+1)
-        return A.length+1;         
+
+        return res + 1;
     }
 }

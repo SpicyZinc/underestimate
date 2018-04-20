@@ -3,27 +3,21 @@ Sqrt(x)
 Implement int sqrt(int x)
 
 idea:
-
-1. binary cut
-// key point pay attention to x < 1 case
+1. binary cut, use long
+note: x < 1 case
 start = 0
 end = x or end = 1 when x < 1
 mid = (start + end) / 2
-while(> tolerance)
-if mid * mid == x
-return mid
-if mid * mid > x
-end = mid;
-else start = mid;
-mid = (start + end) / 2
 
-2. Newton's method
-y = x / 2;
-y = (y + x/y) / 2;
+while (end >= start)
+    return (int) end;
+
+2. Newton's method to approach the guess
+guess = x / 2;
+guess = (guess + x / guess) / 2;
 condition is always (> tolerance)
-Integer version sqrt is exceptional (y * y > x)
-*** common sense: (a half of a number) squre is > this number ***
-
+Integer version sqrt is exceptional (guess * guess > x)
+note: (a half of a number) square is >= this number
 */
 
 public class Sqrt {
@@ -35,43 +29,58 @@ public class Sqrt {
 		System.out.println("3 sqrt == " + sqrt(3));
 	}
 
+    // best
     public int sqrt(int x) {
-		if (x <= 1) 
+        if (x <= 1) {
             return x;
+        }
         
-        int guess = (0 + x) / 2;		
-		while (Math.abs(guess*guess - x) > Integer.MIN_VALUE) {
-			if (guess * guess == x) 
-                return guess;
-			guess = (guess + x / guess) / 2; 
-		}
-		return guess;
+        long left = 0;
+        long right = x;
+
+        while (right >= left) {
+            long mid = left + (right - left) / 2;
+            if (mid * mid > x) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;    
+            }
+        }
+        return (int) right;
     }
-	
-    public int sqrt(int x) {
-        if (x < 0) 
-			return -1;
-        if (x == 0) 
-			return 0;
-        
-        double y = ((double)x) / 2.0;
-		// res * res <= x < (res+1) * (res+1)
-		// use float number to get close to limit
-        while (Math.abs(y * y - x) > 0.0000001) {
-            y = (y + x/y) / 2.0;
-        }		
-        return (int) y;
-    }
-	// Integer version
+
+    // integer version best
     public int sqrt(int x) {
         if (x <= 1) 
             return x;
         
-        int mid = x / 2;        
-        while (mid * mid > x || mid > 46340) {
-            mid = (mid + x / mid) / 2;
+        int guess = x / 2;        
+        while (guess * guess > x || guess > 46340) {
+            guess = (guess + x / guess) / 2;
         }
-		
-        return mid;
-    }	
+        
+        return guess;
+    }
+
+    public int sqrt(int x) {
+        if (x < 0) {
+            return -1;
+        }
+        if (x <= 1) {
+            return x; 
+        }
+        
+        double precision = 0.00001;
+        double guess = x / 2.0;
+        
+        if (guess * guess == x) {
+            return (int) guess;
+        }
+        // use Newton's method to approach precision
+        while (Math.abs(guess * guess - x) > precision) {
+            guess = (guess + x / guess) / 2;
+        }
+        
+        return  (int) guess;
+    }
 }
