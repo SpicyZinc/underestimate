@@ -10,7 +10,7 @@ http://www.programcreek.com/2014/02/leetcode-majority-element-java/
 2. sort the array first, then if an element appear more than half size of the array times, then one of them should be
 in the position length / 2
 3. the easiest and fast method
-if an element appears more than n/2 times, it can only be one element
+if an element appears more than n/2 times, it can only be one element, impossible to have two or more such elements
 */
 
 public class MajorityElement  {
@@ -35,20 +35,20 @@ public class MajorityElement  {
     }
     // best method
     public int majorityElement(int[] nums) {
-        int major = 0;
+        int majorCnt = 0;
         int cnt = 0;
         for (int num : nums) {
             if (cnt == 0) {
-                major = num;
+                majorCnt = num;
                 cnt++;
             }
-            else if (num == major) {
+            else if (num == majorCnt) {
                 cnt++;
             }
             else {
                 cnt--;
             }
         }
-        return major;
+        return majorCnt;
     }
 }

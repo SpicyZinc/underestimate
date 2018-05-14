@@ -20,6 +20,7 @@ Attention:
 Math.abs()
 Math.max()
 */
+
 class TreeNode {
 	int value;
 	TreeNode left;
@@ -39,34 +40,34 @@ public class BalancedBinaryTree {
 		
 		BalancedBinaryTree aTest = new BalancedBinaryTree();
  
-	    if (aTest.isHeightBalanced(root)) {
+	    if (aTest.isBalanced(root)) {
 	    	System.out.print("Tree is balanced");
-	    }
-	    else {
+	    } else {
 	    	System.out.printf("Tree is not balanced"); 
 	    }
 	}
 
-	public boolean isHeightBalanced(TreeNode root) {
-		if (root == null) {
-			return true;
-		}
-		int left = getDepth(root.left);
-		int right = getDepth(root.right);
-		if (Math.abs(left - right) > 1) {
-			return false;
-		}
-		// (Math.abs(left - right) <= 1) should not be missing, it is important
-		return (Math.abs(left - right) <= 1) && isHeightBalanced(root.left) && isHeightBalanced(root.right);
-	}
-	// getDepth of one node 
-	// base case root node: depth 0
-	private int getDepth(TreeNode n) {
-	// Attention: return -1 or 0 is questionable when tree node is null
-		if (n == null) {
-			return 0;
-		}
-
-		return 1 + Math.max(getDepth(n.left), getDepth(n.right));
-	}
+	public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        int leftDepth = getMaxDepth(root.left);
+        int rightDepth = getMaxDepth(root.right);
+        
+        int diff = Math.abs(leftDepth - rightDepth);
+        
+        if (diff > 1) {
+            return false;
+        }
+        // not only from the general, going finer, see if left or righ subtree also balanced
+        return diff <= 1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+    
+    public int getMaxDepth(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        
+        return 1 + Math.max(getMaxDepth(node.left), getMaxDepth(node.right));
+    }
 }

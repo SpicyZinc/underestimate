@@ -2,11 +2,11 @@
 Given an array nums, we call (i, j) an important reverse pair if i < j and nums[i] > 2*nums[j].
 You need to return the number of important reverse pairs in the given array.
 
-Example1:
+Example 1:
 Input: [1,3,2,3,1]
 Output: 2
 
-Example2:
+Example 2:
 Input: [2,4,3,5,1]
 Output: 3
 
@@ -46,7 +46,7 @@ class ReversePairs {
         int cnt = mergeSort(nums, start, mid) + mergeSort(nums, mid + 1, end);
         // 因为已经排好序 所以容易得到符合要求的cnt
         for (int i = start, j = mid + 1; i <= mid; i++) {
-        	// /2.0 is avoid integer overflow
+        	// / 2.0 is avoid integer overflow
             while (j <= end && nums[i] / 2.0 > nums[j]) {
             	j++;
             }

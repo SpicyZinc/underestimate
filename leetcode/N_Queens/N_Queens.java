@@ -61,49 +61,54 @@ public class N_Queens {
 	}
 
 	public List<List<String>> solveNQueens(int n) {
-    	List<List<String>> result = new ArrayList<>();
-        enumerate(result, new int[n], 0);
-
+        List<List<String>> result = new ArrayList<>();
+        dfs(0, new int[n], result);
+        
         return result;
     }
-
-    public void enumerate(List<List<String>> result, int[] q, int index) {
-        int n = q.length;
-        if (index == n) {
-            result.add(constructQueens(q));
+    
+    public void dfs(int pos, int[] path, List<List<String>> result) {
+        int n = path.length;
+        if (pos == n) {
+            result.add(constructSolution(path));
             return;
         } else {
             for (int i = 0; i < n; i++) {
-                q[index] = i;
-                if (isValid(q, index)) {
-                    enumerate(result, q, index + 1);
+                path[pos] = i;
+                if (isValid(path, pos)) {
+                    dfs(pos + 1, path, result);
                 }
             }
         }
     }
+    
+    private List<String> constructSolution(int[] path) {
+        int n = path.length;
 
-    public List<String> constructQueens(int[] q) {
         List<String> solution = new ArrayList<String>();
-        int n = q.length;
         for (int i = 0; i < n; i++) {
+            // for each row, find where the Q is
             StringBuilder sb = new StringBuilder();
             for (int j = 0; j < n; j++) {
-                sb.append(q[i] == j ? 'Q' : '.');
+                sb.append(path[i] == j ? 'Q' : '.');
             }
             solution.add(sb.toString());
-        }  
+        }
         
         return solution;
     }
-
-    // Return true if queen placement q[n] does not conflict with other queens q[0] through q[n-1]
-    // will NOT attack each other
-    public boolean isValid(int[] q, int currentRow) {
+    
+    private boolean isValid(int[] path, int currentRow) {
+        // path[] represents all rows, itself guarantees that same row cannot have two queens
         for (int i = 0; i < currentRow; i++) {
-        	// same column
-            if (q[i] == q[currentRow]) return false;
-            // same major diagonal or minor diagonal
-            if ( Math.abs(q[currentRow] - q[i]) == currentRow - i ) return false;
+            // same column
+            if (path[currentRow] == path[i]) {
+                return false;
+            }
+            // check if on major or minor diagonal by absolute diff value of y1 - y2 == x1 - x2
+            if (Math.abs(path[currentRow] - path[i]) == currentRow - i) {
+                return false;
+            }
         }
 
         return true;

@@ -1,4 +1,4 @@
-/**
+/*
 Given a singly linked list where elements are sorted in ascending order, 
 convert it to a height balanced BST.
 
@@ -39,7 +39,6 @@ class TreeNode {
 	// a way to test if BST, because BST in order print is a sorted list
 	// An in-order traversal of a binary search tree will always result in a sorted list of node items
 	// so think it as left -- root -- right, must be a sorted list
-	// 
 	public void inOrder() {
 		if (this != null) {
 			if (this.left != null) {
@@ -99,7 +98,6 @@ public class SortedListToBST {
         TreeNode res = new TreeNode(cur.val);
 		// all that has to be noticed is that
 		// right and left parts together will length-1, because middle reduce the length by 1
-		//
 		res.left = sortedListToBST(head, length/2);
         res.right = sortedListToBST(cur.next, length - length/2 - 1);        
 		

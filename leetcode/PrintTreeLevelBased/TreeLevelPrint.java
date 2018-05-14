@@ -5,6 +5,16 @@ Attention: when it is not full binary search tree
 
 import java.util.*;
 
+class Tree {
+	public int value;
+	public Tree left;
+	public Tree right;
+	public Tree(int x){
+		value = x;
+		left = right = null;
+	}
+}
+
 public class TreeLevelPrint{
 	public static void main(String[] args) {
 		Tree myTree = new Tree(1);
@@ -55,7 +65,7 @@ public class TreeLevelPrint{
 The remove() and poll() methods remove and return the head of the queue.
 The two methods differ in, if queue is empty, remove() throws an exception, while poll() returns null
 
-poll() this method is very crucial here, because we need return null and remove the head of queue at the same time.
+poll() this method is very crucial here, because we need to return null and remove the head of queue at the same time.
 we keep adding "tree node" and "level" into "trees" and "levels" two queues, respectively. 
 If condition (currentLevel == desire) is not met, poll() and add another pair of right and left tree node, 
 also "level" is changing correspondingly. 
@@ -80,15 +90,5 @@ use currentLevel to control so that to meet desireLevel
 				levels.add(currentLevel + 1);
 			}
 		}
-	}
-}
-
-class Tree {
-	public int value;
-	public Tree left;
-	public Tree right;
-	public Tree(int x){
-		value = x;
-		left = right = null;
 	}
 }

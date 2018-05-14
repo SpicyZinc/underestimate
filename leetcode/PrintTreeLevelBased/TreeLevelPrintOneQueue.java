@@ -1,7 +1,17 @@
 import java.util.*;
 
-public class TreeLevelPrintOneQueue{
-	public static void main(String[] args){
+class Tree {
+	public int value;
+	public Tree left;
+	public Tree right;
+	public Tree(int x) {
+		value = x;
+		left = right = null;
+	}
+}
+
+public class TreeLevelPrintOneQueue {
+	public static void main(String[] args) {
 		Tree myTree = new Tree(1);
 		myTree.left = new Tree(2);
 		myTree.right = new Tree(3);
@@ -12,9 +22,9 @@ public class TreeLevelPrintOneQueue{
 		
 		System.out.print("Only One Queue-based method is ");
 		printTreeLevelOneQueue(myTree);
-		
 	}
-	// method based one queue
+
+	// method based one queue, but only print, no returned list
 	public static void printTreeLevelOneQueue(Tree t) {
 		Queue<Tree> queue = new LinkedList<Tree>();
 		queue.add(t);
@@ -29,15 +39,5 @@ public class TreeLevelPrintOneQueue{
 			queue.add(temp.right);
 			temp = queue.remove();
 		}
-	}
-}
-
-class Tree {
-	public int value;
-	public Tree left;
-	public Tree right;
-	public Tree(int x){
-		value = x;
-		left = right = null;
 	}
 }

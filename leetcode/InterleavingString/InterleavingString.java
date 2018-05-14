@@ -11,10 +11,9 @@ When s3 = "aadbbbaccc", return false.
 
 idea:
 http://blog.csdn.net/u011095253/article/details/9248073
+
 1. recursion
-
 2. DP
-
 one thing to note:
 String's index is based on 0;
 dp[m+1][n+1] is based on 1.
@@ -53,7 +52,7 @@ public class InterleavingString {
             return false;
         }
     }
-    // DP
+
     public boolean isInterleave(String s1, String s2, String s3) {
         int l1 = s1.length();
         int l2 = s2.length();
@@ -85,6 +84,7 @@ public class InterleavingString {
                 }
             }
         }
+
         return dp[l1][l2];
     }
 }

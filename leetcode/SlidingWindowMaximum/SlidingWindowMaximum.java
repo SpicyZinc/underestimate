@@ -92,4 +92,28 @@ public class SlidingWindowMaximum {
 
         return max;
     }
+    // priority queue version
+    public List<Integer> maxSlidingWindow(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer a, Integer b) {
+                return b - a;
+            }
+        });
+        
+        List<Integer> result = new ArrayList<Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            if (pq.size() >= k) {
+                pq.remove(nums[i - k]);
+            }
+            pq.add(num);
+            
+            if (pq.size() >= k) {
+                result.add(pq.peek());
+            }
+        }
+        
+        return result;
+    }
 }

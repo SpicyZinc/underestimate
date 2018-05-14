@@ -25,8 +25,7 @@ public class LinkedListCycleII {
         while (curr != null) {
             if (hs.add(curr)) {
                 curr = curr.next;
-            }
-            else {
+            } else {
                 return curr;
             }
         }
@@ -60,25 +59,30 @@ public class LinkedListCycleII {
         if (head == null || head.next == null) {
             return null;
         }
-
+        
         ListNode slow = head;
         ListNode fast = head;
+        
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
+            
             if (slow == fast) {
                 break;
             }
         }
+        // stop while not because of cycle
+        // because reached to the end
         if (slow != fast) {
             return null;
         }
+        
         ListNode curr = head;
         while (curr != slow) {
             curr = curr.next;
             slow = slow.next;
         }
-
+        
         return slow;
     }
 }

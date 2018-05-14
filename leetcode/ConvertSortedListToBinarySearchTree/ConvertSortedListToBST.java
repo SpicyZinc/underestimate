@@ -1,8 +1,10 @@
 /*
-Convert Sorted List to Binary Search Tree 
+Convert Sorted List to Binary Search Tree
+
 idea:
 1. convert the list to an array, then use Convert Sorted Array to Binary Search Tree
-2. emulate Convert Sorted Array to Binary Search Tree
+2. find mid, pass in length as parameter in recursion function
+
 */
 
 class ListNode {
@@ -19,34 +21,46 @@ class TreeNode {
 
 public class ConvertSortedListToBST  {
     public TreeNode sortedListToBST(ListNode head) {
-		if (head == null) {
-			return null;
-		}
-		ListNode tmp = head;
-		int len = 0;
-		while (tmp != null) {
-			tmp = tmp.next;
-			len++;
-		}
-		return sortedListToBST(head, len);
-	}
+        if (head == null) {
+            return null;
+        }
+        
+        if (head.next == null) {
+            return new TreeNode(head.val);
+        }
+        
+        ListNode curr = head;
+        int len = 0;
+        while (curr != null) {
+            len++;
+            curr = curr.next;
+        }
 
-	public TreeNode sortedListToBST(ListNode head, int len) {
-		if (len <= 0) {
-			return null;
-		}
-		int mid = (1 + len) / 2;
-		int tmp = mid - 1;
-		ListNode current = head;
-		while (tmp > 0) {
-			current = current.next;
-			tmp--;
-		}
+        return sortedListToBST(head, len);
+    }
 
-		TreeNode root = new TreeNode(current.val);
-		root.left = sortedListToBST(head, mid - 1);
-		root.right = sortedListToBST(current.next, len - mid);
+    public TreeNode sortedListToBST(ListNode head, int len) {
+        if (len <= 0) {
+            return null;
+        }
 
-		return root;
-	}
+        ListNode curr = head;
+        int overMidOne = (len + 1) / 2;
+        int leftLast = overMidOne - 1;
+        // use leftLast to reach last of left part
+        while (leftLast > 0) {
+            leftLast--;
+            curr = curr.next;
+        }
+        ListNode middle = curr;
+        
+        ListNode right = curr.next;
+        curr.next = null;
+        
+        TreeNode root = new TreeNode(middle.val);
+        root.left = sortedListToBST(head, overMidOne - 1);
+        root.right = sortedListToBST(right, len - overMidOne);
+        
+        return root;
+    }
 }

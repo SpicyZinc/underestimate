@@ -13,9 +13,9 @@ idea:
 http://www.programcreek.com/2012/12/leetcode-solution-word-break/
 
 2. dp
-Define an array t[] such that t[i] == true => 0-(i-1) can be segmented using dictionary
-Initial state t[0] == true
-
+Define an array dp[] such that dp[i] == true => 0-(i-1) substring(0, i) in dict
+dp[i] i of chars in s can be breakable and found in dict or not
+Initial state dp[0] == true
 */
 
 public class WordBreak {
@@ -32,20 +32,23 @@ public class WordBreak {
         return false;
     }
     // method 2, dp
-    public boolean wordBreak(String s, List<String> wordDict) {
-        // dp[i] i of chars in s can be breakable and found in dict or not
-        boolean[] dp = new boolean[s.length() + 1];
+    public boolean wordBreak(String s, List<String> dict) {
+        int len = s.length();
+        boolean[] dp = new boolean[len + 1];
+        // initialization
         dp[0] = true;
-        for (int i = 1; i <= s.length(); i++) {
+        
+        for (int i = 1; i <= len; i++) {
             for (int j = 0; j < i; j++) {
                 String substr = s.substring(j, i);
                 // f(n) = f(0,i) + f(i,j) + f(j,n)
-                if (dp[j] && wordDict.contains(substr)) {
+                if (dp[j] && dict.contains(substr)) {
                     dp[i] = true;
                     break;
                 }
             }
         }
-        return dp[s.length()];
+        
+        return dp[len];
     }
 }

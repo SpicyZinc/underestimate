@@ -18,33 +18,35 @@ class TreeNode {
 
 public class ConstructBinaryTreefromPreorderInorderTraversal {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        int inStart = 0;
-        int inEnd = inorder.length-1;
         int preStart = 0;
-        int preEnd = preorder.length-1;
- 
-        return buildTree(inorder, inStart, inEnd, preorder, preStart, preEnd);
+        int preEnd = preorder.length - 1;
+        
+        int inStart = 0;
+        int inEnd = inorder.length - 1;
+        
+        return buildTree(preorder, preStart, preEnd, inorder, inStart, inEnd);
     }
- 
-    public TreeNode buildTree(int[] inorder, int inStart, int inEnd, int[] preorder, int preStart, int preEnd) {
-        if (inStart > inEnd || preStart > preEnd) {
-        	return null;
+    
+    public TreeNode buildTree(int[] preorder, int preStart, int preEnd, int[] inorder, int inStart, int inEnd ) {
+        if (preStart > preEnd || inStart > inEnd) {
+            return null;
         }
- 
+        
         int rootValue = preorder[preStart];
         TreeNode root = new TreeNode(rootValue);
- 
+        
+        // find the root in inorder
         int k = 0;
-        for (int i=0; i<inorder.length; i++) {
+        for (int i = 0; i < inorder.length; i++) {
             if (inorder[i] == rootValue) {
                 k = i;
                 break;
             }
         }
- 
-        root.left = buildTree( inorder, inStart, k-1, preorder, preStart+1, preStart + k - inStart );
-        root.right = buildTree( inorder, k+1, inEnd, preorder, preStart + k + 1 - inStart, preEnd );
- 
+        // use in order, get length of left tree, this length then can be used to where to stop at pre_order
+        root.left = buildTree(preorder, preStart + 1, preStart + (k - inStart), inorder, inStart, k - 1);
+        root.right = buildTree(preorder, preStart + (k - inStart) + 1, preEnd, inorder, k + 1, inEnd);
+        
         return root;
     }
 }

@@ -32,7 +32,8 @@ public class Search2DMatrix {
 		Search2DMatrix eg = new Search2DMatrix();
 		System.out.println("Is target in the Matrix: " + eg.searchMatrix(matrix, 20));
 	}
-	// treated as a sorted array, note this is a serpentine 
+	// treated as a sorted array, note this is a serpentine
+	// note: left and right are equal, mid - 1 and mid + 1
 	public boolean searchMatrix(int[][] matrix, int target) {
         if (matrix.length == 0 || matrix[0].length == 0) {
             return false;
@@ -59,44 +60,51 @@ public class Search2DMatrix {
         }
         return false;
     }
-	
+
     public boolean searchMatrix(int[][] matrix, int target) {
-		int rows = matrix.length;        
-        int cols = matrix[0].length;
-		if (rows == 0) return false;
-        if (cols == 0) return false;
-        if (matrix[0][0] > target) return false;
-        if (matrix[rows-1][cols-1] < target) return false;
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+        int m = matrix.length;
+        int n = matrix[0].length;
+		if (matrix[0][0] > target) return false;
+		if (matrix[m - 1][n - 1] < target) return false;
+		
 		// all elements at column 0
-		int[] tmp_rows = new int[rows];
-		for (int i = 0; i < rows; i++) {
-			tmp_rows[i] = matrix[i][0];
+		int[] firstColumn = new int[m];
+		for (int i = 0; i < m; i++) {
+            firstColumn[i] = matrix[i][0];
 		}
 		
-		int r = binarySearch(tmp_rows, target); // row
+		int r = binarySearch(firstColumn, target); // row
 		if (r == -1) {
 			return false;
 		}
 		int c = binarySearch(matrix[r], target); // column
 		
 		return matrix[r][c] == target;
-    }
+	}
 	// if all elements are >= target, return -1
 	// return the index of biggest number which is < target
-	private int binarySearch(int[] a, int x) {
+    private int binarySearch(int[] a, int target) {
 		int start = 0;
-		int end = a.length-1;
+		int end = a.length - 1;
+
 		int ret = -1;
 		while (start <= end) {
-			int mid = (start + end) / 2;
-			if (a[mid] > x) {
-				end = mid - 1;
+			int mid = start + (end - start) / 2;
+			if (a[mid] == target) {
+				return mid;
 			}
-			else {
-				ret = mid; // guarantee the index of biggest number which is < target 
+
+			if (a[mid] > target) {
+				end = mid - 1;
+			} else {
+				ret = mid;
 				start = mid + 1;
 			}
 		}
+
 		return ret;
 	}
 }

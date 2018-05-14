@@ -38,6 +38,7 @@ public class CombinationSum {
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(candidates);
         dfs(candidates, target, 0, new ArrayList<Integer>(), result);
         return result;
     }

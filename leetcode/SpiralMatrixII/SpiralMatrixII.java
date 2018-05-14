@@ -34,120 +34,41 @@ top  < bottom
 O(n)
 */
 public class SpiralMatrixII {
-    public int[][] generateMatrix(int n) {
+	public int[][] generateMatrix(int n) {
         int[][] matrix = new int[n][n];
-
+        
         if (n <= 0) {
-        	return matrix;
-        }
-
-        int top = 0;
-        int right = n - 1;
-        int bottom = n - 1;
-        int left = 0;
-
-        int num = 1;
-        int i;
-
-        while (num <= n * n) {
-        	// top
-        	for (i = left; i <= right; i++) {
-        		matrix[top][i] = num++;
-        	}
-        	// right
-        	for (i = top+1; i <= bottom; i++) {
-        		matrix[i][right] = num++;
-        	}
-        	// bottom
-        	if (top < bottom) {
-        		for (i = right - 1; i >= left; i--) {
-        			matrix[bottom][i] = num++; 
-        		}
-        	}
-        	// left
-        	if (left < right) {
-        		for (i = bottom - 1; i >= top + 1; i--) {
-        			matrix[i][left] = num++; 
-        		}
-        	}
-
-        	top++;
-        	right--;
-        	bottom--;
-        	left++;
-        }
-
-        return matrix;
-    }
-    // self written version passed test
-    public int[][] generateMatrix(int n) {
-        int[][] res = new int[n][n];
-        int num = 1;
-        
-        int top = 0;
-        int right = n - 1;
-        int bottom = n - 1;
-        int left = 0;
-        
-        int i = 0;
-        while (num <= n * n) {
-            for (i = left; i <= right; i++) {
-                res[top][i] = num++;
-            }
-            for (i = top + 1; i <= bottom; i++) {
-                res[i][right] = num++;
-            }
-            if (top < bottom) {
-                for (i = right - 1; i >= left; i--) {
-                    res[bottom][i] = num++;
-                }
-            }
-            if (left < right) {
-                for (i = bottom - 1; i >= top + 1; i--) {
-                    res[i][left] = num++;
-                }
-            }
-            
-            top++;
-            right--;
-            bottom--;
-            left++;
+            return matrix;
         }
         
-        return res;
-    }
-    // self written after 2 years
-    public int[][] generateMatrix(int n) {
-        int[][] matrix = new int[n][n];
+        int topRow = 0;
+        int rightCol = n - 1;
+        int bottomRow = n - 1;
+        int leftCol = 0;
+        
         int val = 1;
-        
-        int top = 0;
-        int right = n - 1;
-        int bottom = n - 1;
-        int left = 0;
-        
-        
         while (val <= n * n) {
             // top
-            for (int i = left; i <= right; i++) {
-                matrix[top][i] = val++;
+            for (int i = leftCol; i <= rightCol; i++) {
+                matrix[topRow][i] = val++;
             }
             // right
-            for (int i = top + 1; i <= bottom; i++) {
-                matrix[i][right] = val++;
+            for (int i = topRow + 1; i <= bottomRow; i++) {
+                matrix[i][rightCol] = val++;
             }
             // bottom
-            for (int i = right - 1; i >= left; i--) {
-                matrix[bottom][i] = val++;
+            for (int i = rightCol - 1; i >= leftCol; i--) {
+                matrix[bottomRow][i] = val++;
             }
             // left
-            for (int i = bottom - 1; i >= top + 1; i--) {
-                matrix[i][left] = val++;
+            for (int i = bottomRow - 1; i >= topRow + 1; i--) {
+                matrix[i][leftCol] = val++;
             }
-            top++;
-            right--;
-            bottom--;
-            left++;
+            
+            topRow++;
+            rightCol--;
+            bottomRow--;
+            leftCol++;
         }
         
         return matrix;

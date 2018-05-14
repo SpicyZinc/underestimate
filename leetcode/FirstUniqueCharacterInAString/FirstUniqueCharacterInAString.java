@@ -10,6 +10,7 @@ return 2.
 
 idea:
 direct thought with 26 length of array, equal to hashmap
+loop again, find the 1st unique character
 */
 public class FirstUniqueCharacterInAString {
     public static void main(String[] args) {
@@ -22,12 +23,12 @@ public class FirstUniqueCharacterInAString {
         int[] letters = new int[26];
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
-            letters[ch-'a']++;
+            letters[ch - 'a']++;
         }
 
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
-            if (letters[ch-'a'] == 1) {
+            if (letters[ch - 'a'] == 1) {
                 return i;
             }
 

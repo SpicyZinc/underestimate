@@ -45,6 +45,13 @@ and when we calculate from f(i, j) to f(i, 0) for the ith iteration.
 2. without DP
 do not understand it at all
 http://gongxuns.blogspot.com/2012/12/leetcodedistinct-subsequences.html
+
+3. best tutorial
+https://www.cnblogs.com/yuzhangcmu/p/4196373.html
+
+若原字符串和子序列都为空时, 返回1, 因为空串也是空串的一个子序列
+若原字符串不为空, 而子序列为空, 返回1, 因为空串也是任意字符串的一个子序列
+若当原字符串为空, 子序列不为空时, 返回0, 因为非空字符串不能当空字符串的子序列
 */
 
 public class DistinctSubsequences {
@@ -69,56 +76,35 @@ public class DistinctSubsequences {
 
         return dp[tLen];
     }
-    // self written 2D dp
-    // dp[i][j] the number of distinct subsequences of first i characters in s, any of the subsequences equal to first j characters in t
-    // dp[i][j] = dp[i][j - 1] + (T[i - 1] == S[j - 1] ? dp[i - 1][j - 1] : 0)
-    // note s.charAt(i - 1) == t.charAt(j - 1)
-    public int numDistinct(String s, String t) {
-       int sLen = s.length();
-       int tLen = t.length();
-
-       int[][] dp = new int[sLen + 1][tLen + 1];
-       dp[0][0] = 1;
-       for (int i = 1; i <= sLen; i++) {
-           dp[i][0] = 1;
-       }
-       for (int j = 1; j <= tLen; j++) {
-           dp[0][j] = 0;
-       }
-       for (int i = 1; i <= sLen; i++) {
-           for (int j = 1; j <= tLen; j++) {
-               dp[i][j] = s.charAt(i - 1) == t.charAt(j - 1) ? dp[i - 1][j] + dp[i - 1][j - 1] : dp[i - 1][j];
-           }
-       }
-       return dp[sLen][tLen];
-    }
     // 2D DP
-    // because it is first i, j characters
-    // T.charAt(i - 1) corresponding to first i 
+    // dp[i][j] the number of distinct subsequences of first j characters in T in first i characters in S
+    // dp[i][j] = dp[i][j - 1] + (T[i - 1] == S[j - 1] ? dp[i - 1][j - 1] : 0)
+    // note, S.charAt(i - 1) == T.charAt(j - 1), because it is first i, j characters, T.charAt(i - 1) corresponding to first i
     public int numDistinct(String S, String T) {
-        int[][] dp = new int[T.length() + 1][S.length() + 1];  
-        dp[0][0] = 1;  
-        for (int i = 1; i <= T.length(); i++) {  
-            dp[i][0] = 0;  
-        }  
-        for (int j = 1; j <= S.length(); j++) {  
-            dp[0][j] = 1;  
-        }  
-        for (int i = 1; i <= T.length(); i++) {  
-            for (int j = 1; j <= S.length(); j++) {  
-                dp[i][j] = dp[i][j - 1];  
-                if (T.charAt(i - 1) == S.charAt(j - 1)) {  
-                    dp[i][j] += dp[i - 1][j - 1];  
-                }  
-            }  
-        } 
+        int sLen = S.length();
+        int tLen = T.length();
+ 
+        int[][] dp = new int[sLen + 1][tLen + 1];
+        dp[0][0] = 1; // note, dp[0][0] has to be 1
 
-        return dp[T.length()][S.length()];
+        for (int i = 1; i <= sLen; i++) {
+            dp[i][0] = 1;
+        }
+        for (int j = 1; j <= tLen; j++) {
+            dp[0][j] = 0;
+        }
+        for (int i = 1; i <= sLen; i++) {
+            for (int j = 1; j <= tLen; j++) {
+                dp[i][j] = S.charAt(i - 1) == T.charAt(j - 1) ? dp[i - 1][j] + dp[i - 1][j - 1] : dp[i - 1][j];
+            }
+        }
+
+        return dp[sLen][tLen];
     }
 
 	// without DP
 	public int numDistinct(String S, String T) {
-        HashMap<Character, ArrayList<Integer>> map = new HashMap<Character, ArrayList<Integer>>();
+        Map<Character, ArrayList<Integer>> map = new HashMap<Character, ArrayList<Integer>>();
         for (int i=0; i<T.length(); i++) {
             if (map.containsKey(T.charAt(i))) {
                 map.get(T.charAt(i)).add(i);
@@ -148,5 +134,40 @@ public class DistinctSubsequences {
         }
 		
         return res[T.length()];
+    }
+
+    public int numDistinct(String S, String T) {
+        if (S == null && T != null) {
+            return 0;
+        }
+        if (T == null) {
+            return 1;
+        }
+
+        return dfs(S, T, 0, 0);
+    }
+
+    public int dfs(String S, String T, int indexS, int indexT) {
+        int sLen = S.length();
+        int tLen = T.length();
+
+        // base case, T is empty
+        if (indexT >= tLen) {
+            return 1;
+        }
+        // S is empty but T is not empty
+        if (indexS >= sLen) {
+            return 0;
+        }
+
+        int count = 0;
+        if (S.charAt(indexS) == T.charAt(indexT)) {
+            count += dfs(S, T, indexS + 1, indexT + 1);
+        }
+
+        // can skip the first character in S
+        count += dfs(S, T, indexS + 1, indexT);
+
+        return count;
     }
 }

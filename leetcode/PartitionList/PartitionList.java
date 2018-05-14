@@ -69,79 +69,55 @@ public class PartitionList {
 		ListNode partitionOne = partition(aListNode, 3);
 		partitionOne.print();		
 	}
-	
-	public ListNode partition(ListNode head, int x) {
-        ListNode left = new ListNode(0);
-		ListNode right = new ListNode(1);
-		
-		ListNode current = head;
-		while (current != null) {
-			if (current.val < x) {
-				ListNode newNode = new ListNode(current.val);
-				ListNode currentL = left;
-				// implementation of append from the back
-				while (currentL.next != null) {
-					currentL = currentL.next;
-				}
-				currentL.next = newNode;
-				// newNode.next = left;
-				// left = newNode;
-			}
-			else {
-				ListNode newNode = new ListNode(current.val);
-				ListNode currentR = right;
-				// implementation of append from the back
-				while (currentR.next != null) {
-					currentR = currentR.next;
-				}
-				currentR.next = newNode;
-				// newNode.next = right;
-				// right = newNode;
-			}
-			current = current.next;
-		}
-		// walk to the end of left partition
-		// current.next = right.next, to skip the first 1 in the right partition which is only a placeholder
-		current = left;
-		while (current.next != null) {
-			current = current.next;
-		}
-		current.next = right.next;
 
-		return left.next;
-    }
-    // self version, one time Accepted yeah
     public ListNode partition(ListNode head, int x) {
-        ListNode left = new ListNode(0);
-        ListNode right = new ListNode(1);
-        
-        ListNode current = head;
-        while (current != null) {
-            if (current.val < x) {
-                append(left, current.val);
-            }
-            else {
-                append(right, current.val);
-            }
-            current = current.next;
+        if (head == null || head.next == null) {
+            return head;
         }
-        // connecting left and right part
-        current = left;
-        while (current.next != null) {
-            current = current.next;
-        }
-        current.next = right.next;
         
-        return left.next;
+        ListNode curr = head;
+        
+        ListNode left = null;
+        ListNode right = null;
+        
+        while (curr != null) {
+            if (curr.val < x) {
+                if (left == null) {
+                    left = new ListNode(curr.val);
+                } else {
+                    appendFromBehind(left, curr.val);
+                }
+            } else {
+                if (right == null) {
+                    right = new ListNode(curr.val);
+                } else {
+                    appendFromBehind(right, curr.val);
+                }
+            }
+            curr = curr.next;
+        }
+
+        // before connecting, check if left is empty
+        // if so, no need to connect
+        if (left == null) {
+            return right;            
+        }
+        // connecting left and right
+        // find end of left
+        curr = left;
+        while (curr.next != null) {
+            curr = curr.next;
+        }
+        curr.next = right;
+        
+        return left;
     }
     
-    public ListNode append(ListNode head, int x) {
-        ListNode current = head;
-        while (current.next != null) {
-            current = current.next;
+    private void appendFromBehind(ListNode head, int x) {
+        ListNode curr = head;
+        while (curr.next != null) {
+            curr = curr.next;
         }
-        current.next = new ListNode(x);
-        
-        return head;
+        curr.next = new ListNode(x);
     }
 }

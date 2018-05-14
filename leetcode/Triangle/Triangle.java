@@ -60,69 +60,80 @@ public class Triangle {
 		int minimum = aTest.minimumTotal(delta);
 		System.out.println(minimum);		
 	}
-	// method 1: uses arraylist as result
-    public int minimumTotal(ArrayList<ArrayList<Integer>> triangle) {
-        if (triangle == null || triangle.size() == 0) {
+	// method 1
+	public int minimumTotal(List<List<Integer>> triangle) {
+		if (triangle == null || triangle.size() == 0) {
 			return 0;
+		}
+
+		int depth = triangle.size();
+        int[][] minSum = new int[depth][depth];
+        // initialize last row, bottom up
+        for (int i = 0; i < triangle.get(depth - 1).size(); i++) {
+            minSum[depth - 1][i] = triangle.get(depth - 1).get(i);
         }
-		// res is used to memorize
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        for (int i=0; i<triangle.size(); i++) {
-            ArrayList<Integer> temp = triangle.get(i);
-			// first
-			// min(left above, right above) left above is virtual, not existing
-			// directly self + temp.get(0)
-			// same when meeting last 
-			// only need to pay attention to the very first beginning, no adding, direct temp.get(0)
-            res.add(0, i > 0 ? temp.get(0) + res.get(0) : temp.get(0));
-            for (int j=1; j<res.size()-1; j++) {
-				res.set(j, Math.min(res.get(j) + temp.get(j), res.get(j + 1) + temp.get(j)));
+        // loop through triangle from second last level from bottom to top
+        for (int i = depth - 2; i >= 0; i--) {
+            for (int j = 0; j <= i; j++) {
+                minSum[i][j] = triangle.get(i).get(j) + Math.min(minSum[i + 1][j], minSum[i + 1][j + 1]);
             }
-			// last
-            if (res.size() > 1) {
-            	res.set(res.size() - 1, res.get(res.size() - 1) + temp.get(res.size() - 1));
+        }
+
+        return minSum[0][0];
+    }
+    // lintcode version
+    public int minimumTotal(int[][] triangle) {
+        if (triangle.length == 0 || triangle[0].length == 0) {
+            return 0;
+        }
+        
+        int height = triangle.length;
+        int[][] minSum = new int[height][height];
+        // initialize the bottom
+        for (int i = 0; i < triangle[height - 1].length; i++) {
+            minSum[height - 1][i] = triangle[height - 1][i];
+        }
+        // transition formula
+        for (int i = height - 2; i >= 0; i--) {
+            // minSum has extra space, not used at all,
+            // triangle has a feature row index + 1 is the length of this row
+            // no need to worry about j + 1 == i + 1 == height - 1 (max), minSum max is height - 1
+            for (int j = 0; j <= i; j++) {
+            // for (int j = 0; j < triangle[i].length; j++) { also work
+                minSum[i][j] = Math.min(minSum[i + 1][j], minSum[i + 1][j + 1]) + triangle[i][j];
             }
         }
         
-        int min = Integer.MAX_VALUE;
-        for (Integer temp : res) {
-            min = Math.min(temp, min);
-        }
-		
-        return min;
+        return minSum[0][0];
     }
 	// method 2: for each row in the triangle, starting from the right to left, and uses array as result
 	// best method and easily understand
 	public int minimumTotal(List<List<Integer>> triangle) {
-		if (triangle.size() == 0) {
-    		return 0;
-		}
-
-		int[] f = new int[triangle.get(triangle.size()-1).size()];
-		f[0] = triangle.get(0).get(0);
+        if (triangle.size() == 0) {
+            return 0;
+        }
+        int[] sum = new int[triangle.get(triangle.size() - 1).size()];
+        sum[0] = triangle.get(0).get(0);
         for (int i = 1; i < triangle.size(); i++) {
-        	List<Integer> level = triangle.get(i);
-        	// note must start from the back of the array
+            List<Integer> level = triangle.get(i);
             for (int j = level.size() - 1; j >= 0; j--) {
                 if (j == 0) {
-					f[j] = f[j] + level.get(j);
+                    sum[j] = sum[j] + level.get(j);
                 }
                 else if (j == level.size() - 1) {
-					f[j] = f[j-1] + level.get(j);
+                    sum[j] = sum[j - 1] + level.get(j);
                 }
                 else {
-                    f[j] = Math.min(f[j-1], f[j]) + level.get(j);
+                    sum[j] = Math.min(sum[j], sum[j - 1]) + level.get(j);
                 }
             }
         }
-                    
-        int ret = Integer.MAX_VALUE;
-        for (int i = 0; i < f.length; i++) {
-            ret = Math.min(ret, f[i]);
+        int min = Integer.MAX_VALUE;
+        for (int a : sum) {
+            min = Math.min(min, a);
         }
-            
-        return ret;
-	}
+        return min;
+    }
 	// method 3: bottom up
 	public int minimumTotal(ArrayList<ArrayList<Integer>> triangle) {
 		if (triangle.size() == 0 || triangle == null) {
@@ -160,32 +171,5 @@ public class Triangle {
         else {
             return 0;
         }
-    }
-    // self written again, passed test
-    public int minimumTotal(List<List<Integer>> triangle) {
-        if (triangle.size() == 0) {
-            return 0;
-        }
-        int[] sum = new int[triangle.get(triangle.size() - 1).size()];
-        sum[0] = triangle.get(0).get(0);
-        for (int i = 1; i < triangle.size(); i++) {
-            List<Integer> level = triangle.get(i);
-            for (int j = level.size() - 1; j >= 0; j--) {
-                if (j == 0) {
-                    sum[j] = sum[j] + level.get(j);
-                }
-                else if (j == level.size() - 1) {
-                    sum[j] = sum[j - 1] + level.get(j);
-                }
-                else {
-                    sum[j] = Math.min(sum[j], sum[j - 1]) + level.get(j);
-                }
-            }
-        }
-        int min = Integer.MAX_VALUE;
-        for (int a : sum) {
-            min = Math.min(min, a);
-        }
-        return min;
     }
 }

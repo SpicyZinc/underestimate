@@ -27,7 +27,7 @@ respectively apply binary search around pivot
 public class SearchInRotatedSortedArray {
     // linear time O(n)
     public int search(int[] A, int target) {
-        for (int i=0; i<A.length; i++) {            
+        for (int i = 0; i < A.length; i++) {            
             if (A[i] == target) {
                 return i;
             }                
@@ -62,6 +62,34 @@ public class SearchInRotatedSortedArray {
                 }
                 else {
                     start = mid + 1;
+                }
+            }
+        }
+        
+        return -1;
+    }
+    // also work
+    public int search(int[] A, int target) {
+        int left = 0;
+        int right = A.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (A[mid] == target) {
+                return mid;                
+            }
+            
+            if (A[mid] > A[left]) { // left sorted
+                if (A[left] <= target && target <= A[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            } else { // right sorted
+                if (A[mid] <= target && target <= A[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
                 }
             }
         }
@@ -164,46 +192,6 @@ public class SearchInRotatedSortedArray {
                 start = mid + 1;
             }
         }
-        return -1;
-    }
-}
-
-
-public class SearchRotatedSortedArray {
-    public int search(int[] nums, int target) {
-        if (nums.length == 0 || nums == null) {
-            return -1;
-        }
-        if (nums.length == 1) {
-            return nums[0] == target ? 0 : -1;
-        }
-        
-        int left = 0;
-        int right = nums.length - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] == target) {
-                return mid;
-            }
-            // note must have equal sign
-            if (nums[left] <= nums[mid]) { // first half is sorted
-                if (nums[left] <= target && target < nums[mid]) {
-                    right = mid - 1;
-                }
-                else {
-                    left = mid + 1;
-                }
-            }
-            else { // second half is sorted
-                if (nums[mid] < target && target <= nums[right]) {
-                    left = mid + 1;
-                }
-                else {
-                    right = mid - 1;
-                }
-            }
-        }
-
         return -1;
     }
 }

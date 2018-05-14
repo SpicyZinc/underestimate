@@ -1,4 +1,4 @@
-/**
+/*
 Given a binary tree, return the zigzag level order traversal of its nodes' values. 
 (from left to right, then right to left for the next level and alternate between).
 
@@ -28,7 +28,7 @@ idea:
 use two stacks: one for currentLevel, one for nextLevel
 a boolean a variable to keep track of the current level's order (whether it is left->right or right->left). 
 
-Stack:(LIFO)
+Stack: (LIFO)
 pop from stack currentLevel and print the node's value. 
 Whenever the current level's order is from left->right, 
 push the node's left child, then its right child to stack nextLevel
@@ -66,44 +66,84 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 		}
 	}
 	
-    public ArrayList<ArrayList<Integer>> zigzagLevelOrder(TreeNode root) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-		if (root == null) 
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+		List<List<Integer>> result = new ArrayList<>();
+		if (root == null) {
 			return result;
+		}
 		
 		Stack<TreeNode> currentLevel = new Stack<TreeNode>();
 		currentLevel.push(root);
 		// because right first popped out, left second
 		// push left in first, then push right in second
-		// 
 		boolean flag = false;
 		while (!currentLevel.isEmpty()) {
 			Stack<TreeNode> nextLevel = new Stack<TreeNode>();
-			ArrayList<Integer> list = new ArrayList<Integer>();
+			List<Integer> path = new ArrayList<Integer>();
 			
 			while (!currentLevel.isEmpty()) {
 				TreeNode pop = currentLevel.pop();
-				list.add(pop.val);
-				if (!flag) {
-					if (pop.left != null) 
-						nextLevel.push(pop.left);
-					if (pop.right != null) 
-						nextLevel.push(pop.right);
+				if (pop == null) {
+				    continue;
 				}
-				else {
-					if (pop.right != null) 
-						nextLevel.push(pop.right);
-					if (pop.left != null) 
-						nextLevel.push(pop.left);
+				
+				path.add(pop.val);
+
+				if (!flag) {
+					nextLevel.push(pop.left);
+					nextLevel.push(pop.right);
+				} else {
+					nextLevel.push(pop.right);
+					nextLevel.push(pop.left);
 				}
 			}
-			
+			if (path.size() > 0) {
+				result.add(path);
+			}
 			flag = !flag;
-			result.add(list);
 			currentLevel = nextLevel;
 		}
-		return result;     
+
+		return result;
+	}
+
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (result == null) {
+            return result;
+        }
+        
+        Queue<TreeNode> currentLvl = new LinkedList<TreeNode>();
+        currentLvl.add(root);
+        int size = currentLvl.size();
+        
+        boolean left2Right = true;
+        
+        while (!currentLvl.isEmpty()) {
+            List<Integer> path = new ArrayList<Integer>();
+
+            for (int i = 0; i < size; i++) {
+            	TreeNode node = currentLvl.poll();
+
+	            if (node == null) {
+	                continue;
+	            }
+
+				if (left2Right) {
+					path.add(node.val);
+				} else {
+					path.add(0, node.val);
+				}
+                
+				currentLvl.add(node.left);
+				currentLvl.add(node.right);
+            }
+            
+            result.add(path);
+            size = currentLvl.size();
+            left2Right = !left2Right;
+        }
+        
+        return result;
     }
 }

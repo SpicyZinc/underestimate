@@ -17,16 +17,15 @@ count(1) = 1
 count(2) = 2
 count(3) = 5
 
-A1, A2, A3, Ak, ... , An (n nodes)
-any node can be root, take Ak as a general case
-Take Ak as root, 
+A1, A2, A3, Ak, ... , An (n nodes), any node can be root
+Take Ak as root, a general case
 left sub tree = k-1 nodes (since it is k, so 'k - 1' the count of nodes left), 
 right sub tree = n-k nodes
 total = (k-1) + (n-k) = n - 1 nodes
 
 2. DP
 outer loop: 1 to n (inclusive) n nodes, use i to loop through
-inner loop: total always i - 1, left == j, right == i-1-j
+inner loop: total nodes is i - 1, left == j, right == i - 1 - j
 */
 
 public class UniqueBinarySearchTrees {

@@ -20,34 +20,29 @@ public class MaximumProductSubarray {
         int max = eg.maxProduct(A);
         System.out.println(max);
     }
-    // self written, passed
+    // easy to understand
     public int maxProduct(int[] nums) {
         if (nums.length == 0 || nums == null) {
             return 0;
         }
-        if (nums.length == 1) {
-            return nums[0];
-        }
         
+        int max = Integer.MIN_VALUE;
         int max_ending_here = 1;
         int min_ending_here = 1;
-        int max = Integer.MIN_VALUE;
         
-        for (int i = 0; i < nums.length; i++) {
-            int num = nums[i];
-            int premax = Math.max(max_ending_here, 1);
+        for (int num : nums) {
+            int prevMax = Math.max(max_ending_here, 1);
             if (num > 0) {
-                max_ending_here = premax * num;
+                max_ending_here = prevMax * num;
                 min_ending_here = min_ending_here * num;
-            }
-            else {
+            } else {
                 max_ending_here = min_ending_here * num;
-                min_ending_here = premax * num;
+                min_ending_here = prevMax * num;
             }
-            
+            // update max
             max = Math.max(max, max_ending_here);
         }
-
+        
         return max;
     }
     // recent easy solution

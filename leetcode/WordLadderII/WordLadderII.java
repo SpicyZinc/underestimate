@@ -80,7 +80,7 @@ public class WordLadderII {
         queue.add(beginWord);
         
         while (!queue.isEmpty()) {
-            // currentleve to hold all strings in queue
+            // currentLevel to hold all strings in queue
             List<String> currentLevel = new ArrayList<String>();
             for (int i = 0; i < queue.size(); i++) {
                 String word = queue.poll();

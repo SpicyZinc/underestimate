@@ -5,6 +5,7 @@ Supposed the linked list is 1 -> 2 -> 3 -> 4 and you are given the third node wi
 the linked list should become 1 -> 2 -> 4 after calling your function.
 
 idea:
+偷梁换柱
 assign the next node value to current which is supposed to delete
 then remove the next node by node.next = node.next.next
 thus realize the result that change the current node to next node, and delete the current node
@@ -18,16 +19,15 @@ class ListNode {
 
 public class DeleteNodeInALinkedList {
     public void deleteNode(ListNode node) {
-    	if ( node == null) {
-    		return;
-    	}
-		if (node.next == null) {
+        if (node == null) {
+            return;
+        }
+        if (node.next == null) {
             node = null;
+            return;
         }
-
-        if ( node.next != null ) {
-            node.val = node.next.val;
-        	node.next = node.next.next;
-        }
+        
+        node.val = node.next.val;
+        node.next = node.next.next;
     }
 }

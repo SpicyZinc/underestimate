@@ -26,6 +26,27 @@ public class OddBeforeEven {
 		System.out.println();
 	}
 
+
+	public void partitionArray(int[] nums) {
+        // write your code here
+        int i = 0;
+        int j = nums.length - 1;
+        
+        while (i < j) {
+            if (nums[i] % 2 == 0 && nums[j] % 2 != 0) {
+                swap(nums, i, j);
+                i++;
+                j--;
+            }
+            if (nums[i] % 2 != 0) {
+                i++;
+            } else if (nums[j] % 2 == 0) {
+                j--;
+            }
+        }
+    }
+
+
 	public void move(int[] nums) {
 		for (int i = 1; i < nums.length - 1; i++) {
 			if (i <= nums.length / 2) {

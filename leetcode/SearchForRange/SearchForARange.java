@@ -114,7 +114,7 @@ public class SearchForARange {
     }
 
     // method 3
-public int[] searchRange(int[] nums, int target) {
+    public int[] searchRange(int[] nums, int target) {
         int[] ret = new int[2];
         ret[0] = searchForLeftMost(nums, target);
         ret[1] = searchForRightMost(nums, target);

@@ -1,4 +1,4 @@
-/**
+/*
 common methods for conversion
 
 Convert String to Integer

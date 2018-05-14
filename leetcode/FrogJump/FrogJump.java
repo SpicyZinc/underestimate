@@ -56,4 +56,39 @@ public class FrogJump {
 
         return false;
     }
+
+    public boolean canCross(int[] stones) {
+        if (stones.length == 1) {
+            return true;
+        }
+        // the first jump must be 1 unit
+        // frog already at stone 1 which is zero-based index of 0
+        // always stones[0] == 0
+        if (stones[1] >= 2) {
+            return false;
+        }
+        int len = stones.length;
+        if (len == 2) {
+            return true;
+        }
+        // not zero based position
+        // now start jumping
+        return dfs(stones, 1, 1);
+    }
+
+    private boolean dfs(int[] stones, int currPos, int lastSteps) {
+        if (currPos == stones.length - 1) {
+            return true;
+        }
+        for (int i = currPos + 1; i < stones.length; i++) {
+            int gap = stones[i] - stones[currPos];
+            if (gap >= lastSteps - 1 && gap <= lastSteps + 1) {
+                if (dfs(stones, i, gap)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
 }

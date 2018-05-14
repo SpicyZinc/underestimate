@@ -6,7 +6,7 @@ For example, the following two linked lists:
 
 A:          a1 → a2
                    ↘
-                     c1 → c2 → c3
+                     c1 → c2 → c3 (common part length is c)
                    ↗            
 B:     b1 → b2 → b3
 
@@ -20,9 +20,11 @@ You may assume there are no cycles anywhere in the entire linked structure.
 Your code should preferably run in O(n) time and use only O(1) memory.
 
 idea:
-1. hashmap is natural option
-2. use the rule when A or B reaches its end, change the pointer to B or A, if they meet (currA == currB),
-that is the intersection node
+1. hashset is natural option
+2. use the rule when A or B reaches its end, change the pointer to B or A,
+if they meet (currA == currB), that should be the intersection node
+两个链表的长度之和, 一定会相等 (a + c + b = b + c + a)
+3. direct method, find the diff in length of two lists, start from the point where A and B are of equal length
 */
 
 class ListNode {
@@ -35,6 +37,43 @@ class ListNode {
 }
 
 public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+
+        Set<ListNode> hs = new HashSet<>();
+        ListNode curr = headA;
+        while (curr != null) {
+            hs.add(curr);
+            curr = curr.next;
+        }
+        
+        curr = headB;
+        while (curr != null) {
+            if (hs.contains(curr)) {
+                return curr;
+            }
+            curr = curr.next;
+        }
+        
+        return null;
+    }
+
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+
+        ListNode a = headA, b = headB;
+        while (a != b) {
+            a = (a != null ? a.next : headB);
+            b = (b != null ? b.next : headA);
+        }
+
+        return a;
+    }
+
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
     	if (headA == null || headB == null) {
     		return null;
@@ -54,42 +93,23 @@ public class Solution {
         	lengthB++;
         	currentB = currentB.next;
         }
-        int diff = lengthA >= lengthB ? (lengthA - lengthB) : (lengthB - lengthA);
-        boolean flag = lengthA >= lengthB ? true : false;
 
-        if (flag) {
-        	currentA = headA;
-        	while (diff > 0) {
-        		diff--;
-        		currentA = currentA.next;
-        	}
-        	currentB = headB;
-        	while (currentA != null && currentB != null) {
-        		if (currentA == currentB) {
-        			return currentA;
-        		}
-        		currentA = currentA.next;
-        		currentB = currentB.next;
-        	}
-
-        	return null;
+        int diff = Math.abs(lengthA - lengthB);
+        ListNode longer = lengthA >= lengthB ? headA : headB;
+        ListNode shorter = lengthA >= lengthB ? headB : headA;
+        // make longer equal length as shorter
+        for (int i = 0; i < diff; i++) {
+            longer = longer.next;
         }
-        else {
-        	currentB = headB;
-        	while (diff > 0) {
-        		diff--;
-        		currentB = currentB.next;
-        	}
-        	currentA = headA;
-        	while (currentA != null && currentB != null) {
-        		if (currentA == currentB) {
-        			return currentA;
-        		}
-        		currentA = currentA.next;
-        		currentB = currentB.next;
-        	}
 
-        	return null;
-        }
+    	while (longer != null && shorter != null) {
+    		if (longer == shorter) {
+    			return longer;
+    		}
+    		longer = longer.next;
+    		shorter = shorter.next;
+    	}
+
+    	return null;
     }
 }

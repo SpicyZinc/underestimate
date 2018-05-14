@@ -29,28 +29,36 @@ class RandomListNode {
 public class CopyListWithRandomPointer {
 	// method 1, hashmap passed test 
     public RandomListNode copyRandomList(RandomListNode head) {
-        if (head == null) return head;
-        RandomListNode current = head;
-        RandomListNode fakeHead = new RandomListNode(0);
-        RandomListNode copyHead = fakeHead;
+        // write your code here
+        if (head == null) {
+            return head;
+        }
         
         Map<RandomListNode, RandomListNode> hm = new HashMap<RandomListNode, RandomListNode>();
-        while (current != null) {
-            RandomListNode node = new RandomListNode(current.label);
-            hm.put(current, node);
-            fakeHead.next = node;
-            fakeHead = fakeHead.next;
-            current = current.next;
+        RandomListNode curr = head;
+        RandomListNode copyDummy = new RandomListNode(0);
+        RandomListNode copyCurr = copyDummy;
+
+        while (curr != null) {
+            RandomListNode newNode = new RandomListNode(curr.label);
+            hm.put(curr, newNode);
+            copyCurr.next = newNode;
+
+            copyCurr = copyCurr.next;
+            curr = curr.next;
         }
-        // re-iterate, reset current pointer
-        current = head;
-        RandomListNode currCopy = copyHead.next;
-        while (current != null) {
-            currCopy.random = current.random == null ? null : hm.get(current.random);
-            current = current.next;
-            currCopy = currCopy.next;
+        
+        curr = head;
+        copyCurr = copyDummy.next;
+        while (curr != null) {
+            RandomListNode copyRandom = hm.get(curr.random);
+            copyCurr.random = copyRandom;
+            
+            curr = curr.next;
+            copyCurr = copyCurr.next;
         }
-        return copyHead.next;
+        
+        return copyDummy.next;
     }
     // method 2
     public RandomListNode copyRandomList(RandomListNode head) {

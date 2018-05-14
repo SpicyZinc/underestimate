@@ -1,7 +1,8 @@
 /*
 Given an unsorted array of integers, find the length of longest increasing subsequence.
-For example, Given [10, 9, 2, 5, 3, 7, 101, 18],
-The longest increasing subsequence is [2, 3, 7, 101], therefore the length is 4.
+For example,
+given [10, 9, 2, 5, 3, 7, 101, 18], the longest increasing subsequence is [2, 3, 7, 101],
+therefore the length is 4.
 Note that there may be more than one LIS combination, it is only necessary for you to return the length.
 
 Your algorithm should run in O(n^2) complexity.
@@ -10,17 +11,12 @@ Follow up: Could you improve it to O(nlogn) time complexity?
 idea:
 https://www.cnblogs.com/grandyang/p/4938187.html
 
-维护dp[]
-其中dp[i]表示以nums[i]为结尾的最长递增子串的长度,
+dp[i]表示以nums[i]为结尾的最长递增子串的长度,
 对于每一个nums[i],
-我们从第一个数再搜索到i,
-如果发现某个数小于nums[i],
-我们更新dp[i],
-更新方法为dp[i] = max(dp[i], dp[j] + 1),
+从第一个数再搜索到i, if 某个数小于nums[i], update dp[i],
+dp[i] = max(dp[i], dp[j] + 1),
 即比较当前dp[i]的值和那个小于num[i]的数的dp值加1的大小,
-我们就这样不断的更新dp数组,
-到最后dp数组中最大的值就是我们要返回的LIS的长度
-
+不断的更新dp数组, 到最后dp数组中最大的值就是LIS的长度
 */
 
 public class LongestIncreasingSubsequence {

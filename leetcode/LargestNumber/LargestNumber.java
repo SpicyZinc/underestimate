@@ -12,28 +12,28 @@ e.g. 3 > 30 because '330' > '303'
 
 public class LargestNumber {
     public String largestNumber(int[] nums) {
-        if (nums.length == 0 || nums == null) {
-            return "";
+        String[] numStrs = new String[nums.length];
+        int i = 0;
+        for (int num : nums) {
+            numStrs[i++] = String.valueOf(num);
         }
-
-        int size = nums.length;
-        String[] strArray = new String[size];
-        for (int i = 0; i < size; i++) {
-            strArray[i] = String.valueOf(nums[i]);
-        }
-        Arrays.sort(strArray, new Comparator<String>() {
+        
+        Arrays.sort(numStrs, new Comparator<String>() {
             @Override
-            public int compare(String s, String t) {
-                return (t + s).compareTo(s + t);
+            public int compare(String a, String b) {
+                return (b + a).compareTo(a + b);
             }
         });
         
-        String largestNum = "";
-        for (String str : strArray) {
-            largestNum += str;
+        // concatenate the sorted str array
+        String largestNumber = "";
+        for (String str : numStrs) {
+            largestNumber += str;
         }
-        if (largestNum.charAt(0) == '0') return "0";
-        
-        return largestNum;
+        // if first char is 0, not valid, thus return zero
+        if (largestNumber.charAt(0) == '0') {
+            return "0";
+        }
+        return largestNumber;
     }
 }

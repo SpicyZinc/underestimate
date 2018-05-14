@@ -49,7 +49,7 @@ class Name implements Comparable<Name> {
     }
 
     public int hashCode() {
-        return 31*firstName.hashCode() + lastName.hashCode();
+        return 31 * firstName.hashCode() + lastName.hashCode();
     }
 
     public String toString() {
