@@ -31,8 +31,7 @@ public class MaximumSubarray  {
         for (int i = 0; i < nums.length; i++) {
             if (sum >= 0) {
                 sum += nums[i];
-            }
-            else {
+            } else {
                 sum = nums[i];
             }
             max = Math.max(max, sum);
@@ -41,17 +40,15 @@ public class MaximumSubarray  {
         return max;
     }
     // understand why this wrong
+    // when put max_ending_here = 0
 	public int maxSubArray(int[] nums) {
 		int max = Integer.MIN_VALUE;
 		int max_ending_here = 0;
-		
 		for (int num : nums) {
 			max_ending_here += num;
+			max = Math.max(max, max_ending_here);
 			if (max_ending_here < 0) {
 				max_ending_here = 0;
-			}
-			if (max < max_ending_here) {
-		    	max = max_ending_here;
 			}
 		}
 

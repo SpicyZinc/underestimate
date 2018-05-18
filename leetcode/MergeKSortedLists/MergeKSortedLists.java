@@ -65,13 +65,13 @@ public class MergeKSortedLists {
             }
         });
 
-        for (ListNode list : lists) {
-            if (list != null) {
-                pq.add(list);    
+        for (ListNode head : lists) {
+            if (head != null) {
+                pq.add(head);
             }
         }
-        ListNode merged = new ListNode(0);
-        ListNode current = merged;
+        ListNode dummyMerged = new ListNode(0);
+        ListNode current = dummyMerged;
         while (!pq.isEmpty()) {
             ListNode currMin = pq.poll();
             current.next = currMin;
@@ -81,11 +81,11 @@ public class MergeKSortedLists {
             }
         }
         
-        return merged.next;
+        return dummyMerged.next;
     }
 
     // method 2 without creating extra space, timeout
-    public ListNode mergeKLists(ArrayList<ListNode> lists) {
+    public ListNode mergeKLists(List<ListNode> lists) {
 		if (lists.size() == 0) {
 			return null;
 		}
