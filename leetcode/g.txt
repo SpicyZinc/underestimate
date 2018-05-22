@@ -67,6 +67,52 @@ Smallest Rectangle Enclosing Black Pixels
 Number of Islands II
 Range Sum Query 2D - Mutable
 Best Time to Buy and Sell Stock with Cooldown
+Minimum Height Trees
+Burst Balloons
+Super Ugly Number
+Binary Tree Vertical Order Traversal
+Count of Smaller Numbers After Self
+Remove Duplicate Letters
+Shortest Distance from All Buildings
+Maximum Product of Word Lengths
+Generalized Abbreviation
+Create Maximum Number
+Number of Connected Components in an Undirected Graph
+Wiggle Sort II
+Power of Three
+Count of Range Sum
+Longest Increasing Path in a Matrix
+Patching Array
+Verify Preorder Serialization of a Binary Tree
+Reconstruct Itinerary
+Palindrome Pairs
+Longest Substring with At Most K Distinct Characters
+Flatten Nested List Iterator
+Reverse Vowels of a String
+Moving Average from Data Stream
+Design Tic-Tac-Toe
+Android Unlock Patterns
+Design Snake Games
+Russian Doll Envelopes
+Line Reflection
+Count Numbers with Unique Digits
+Rearrange String k Distance Apart
+Logger Rate Limiter
+Sort Transformed Array
+Bomb Enemy
+Design Hit Counter
+Max Sum of Rectangle No Larger Than K
+Largest Divisible Subset
+Plus One Linked List
+Range Addition
+Find K Pairs with Smallest Sums
+Guess Number Higher or Lower
+Guess Number Higher or Lower II
+Combination Sum IV
+Kth Smallest Element in a Sorted Matrix
+Design Phone Directory
+Insert Delete GetRandom O(1)
+Linked List Random Node
 
 
 
