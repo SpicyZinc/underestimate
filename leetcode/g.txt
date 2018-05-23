@@ -113,6 +113,46 @@ Kth Smallest Element in a Sorted Matrix
 Design Phone Directory
 Insert Delete GetRandom O(1)
 Linked List Random Node
+Longest Absolute File Path
+Find the Difference
+Perfect Rectangle
+UTF-8 Validation
+Decode String
+Integer Replacement
+Evaluation Division
+Nth Digit
+Binary Watch
+Remove K Digits
+Queue Reconstruction by Height
+Trapping Rain Water II
+Valid Word Abbreviation
+Longest Palindrome
+Minimum Unique Word Abbreviation
+Add Strings
+Pacific Atlantic Water Flow
+Sentence Screen Fitting
+Maximum XOR of Two Numbers in an Array
+Valid Word Square
+Word Squares
+Sequence Reconstruction
+Number of Boomerangs
+Find All Numbers Disappeared in an Array
+Sort Characters By Frequency
+Repeated Substring Pattern
+LFU Cache
+Island Perimeter
+Optimal Accounting Balancing
+Convex Polygon
+Encode String with Shortest Length
+Ones and Zeros
+Heaters
+Sliding Window Median
+Magic String
+License Key Formatting
+Smallest Good Base
+Find Permutation
+Max Consecutive Ones
+Predict the Winner
 
 
 
