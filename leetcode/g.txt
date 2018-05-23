@@ -153,3 +153,68 @@ Smallest Good Base
 Find Permutation
 Max Consecutive Ones
 Predict the Winner
+Max Consecutive Ones II
+The Maze
+Reverse Pairs
+Target Sum
+Diagonal Traverse
+Find Mode in Binary Search Tree
+Next Greater Element II
+The Maze II
+Relative Ranks
+Freedom Trail
+Detect Capital
+Longest Uncommon Subsequence I
+Longest Uncommon Subsequence II
+Longest Word in Dictionary through Deleting
+Beautiful Arrangement
+Word Abbreviation
+Minimum Absolute Difference in BST
+Lonely Pixel I
+Lonely Pixel II
+Encode and Decode TinyURL
+Reverse String II
+01 Matrix
+Diameter of Binary Tree
+Output Contest Matches
+Boundary of Binary Tree
+Binary Tree Longest Consecutive Sequence II
+Student Attendance Record I
+Student Attendance Record II
+Subarray Sum Equals K
+Longest Line of Consecutive One in Matrix
+Maximum Vacation Days
+Shortest Unsorted Continuous Subarray
+Delete Operation for Two Strings
+Erect the Fence
+Design Compressed String Iterator
+Add Bold Tag in String
+Shopping Offers
+Maximum Average Subarray I
+Maximum Average Subarray II
+4 Keys Keyboard
+Find Duplicate Subtrees
+Coin Path
+Judge Route Circle
+Find K Closest Elements
+Split Array into Consecutive Subsequences
+Non-decreasing Array
+Beautiful Arrangement II
+Kth Smallest Number In Multiplication Table
+Implement Magic Dictionary
+24 Game
+Next Closest Time
+K Empty Slots
+Redundant Connection
+Redundant Connection II
+Repeated String Match
+Longest Univalue Path
+Maximum Sum of 3 Non-Overlapping Subarrays
+Find K-th Smallest Pair Distance
+Number of Atoms
+Minimum Window Subsequence
+My Calendar I
+My Calendar II
+My Calendar III
+Sentence Similarity
+Sentence Similarity II
