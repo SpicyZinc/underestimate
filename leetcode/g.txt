@@ -153,12 +153,3 @@ Smallest Good Base
 Find Permutation
 Max Consecutive Ones
 Predict the Winner
-
-
-
-
-
-
-
-
-
