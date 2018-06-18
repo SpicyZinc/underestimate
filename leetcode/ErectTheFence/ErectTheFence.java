@@ -43,10 +43,11 @@ class ErectTheFence {
 		int n = points.length;
 		for (int i = 0; i < n; i++) {
 			for (int j = i + 1; j < n; j++) {
-				// line i-j
+				// line i - j, taking up two points
 				int cntLeftSide = 0;
 				int cntRightSide = 0;
 				for (int k = 0; k < n; k++) {
+					// the rest (n - 2) points
 					if (k != i && k != j) {
 						int whichSide = onWhichSide(points[i], points[j], points[k]);
 						if (whichSide > 0) {
@@ -56,10 +57,12 @@ class ErectTheFence {
 						}
 					}
 				}
+				// all n - 2 points on the left or on the line of i - j
 				if (cntLeftSide == n - 2 || cntLeftSide == 0) {
 					convex.add(points[i]);
 					convex.add(points[j]);
 				}
+				// all n - 2 points on the right or on the line of i - j
 				if (cntRightSide == n - 2 || cntRightSide == 0) {
 					convex.add(points[i]);
 					convex.add(points[j]);
@@ -70,7 +73,7 @@ class ErectTheFence {
 	}
 
 	// helper to detect c on which side of line a-b
-	// >0 left side, <0 right side
+	// > 0 left side, < 0 right side
 	private int onWhichSide(Point a, Point b, Point c) {
 		return a.x * b.y + b.x * c.y + c.x * a.y - c.x * b.y - b.x * a.y - a.x * c.y; 
 	}

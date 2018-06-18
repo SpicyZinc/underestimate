@@ -19,29 +19,43 @@ Explanation: The only heater was placed in the position 2, and if we use the rad
 Example 2:
 Input: [1,2,3,4],[1,4]
 Output: 1
-Explanation: The two heater was placed in the position 1 and 4. We need to use radius 1 standard, then all the houses can be warmed.
+Explanation: The two heaters were placed in the position 1 and 4. We need to use radius 1 standard, then all the houses can be warmed.
 
-idea: for each house find the nearest heater, calculate the distance between the house and this heater,
+idea:
+for each house find the nearest heater, calculate the distance between the house and this heater,
 keep track of the bigger one
 
 or
 https://discuss.leetcode.com/topic/71460/short-and-clean-java-binary-search-solution
+
+https://www.cnblogs.com/grandyang/p/6181626.html
 */
 
 public class Heaters {
     public int findRadius(int[] houses, int[] heaters) {
         Arrays.sort(houses);
         Arrays.sort(heaters);
-
-        int i = 0;
+        
         int minRadius = 0;
+        
+        int len = heaters.length;
+        int i = 0;
+        
         for (int housePosition : houses) {
-        	while (i < heaters.length - 1 && heaters[i] + heaters[i + 1] <= housePosition * 2) {
-        		i++;
-        	}
-        	minRadius = Math.max(minRadius, Math.abs(heaters[i] - housePosition));
+            while (i < len - 1) {
+                // no difference, no radius needed, find the smallest difference
+                int diffWithPrevHouse = Math.abs(housePosition - heaters[i]);
+                int diffWithNextHouse = Math.abs(housePosition - heaters[i + 1]);
+                if (diffWithPrevHouse >= diffWithNextHouse) {
+                    i++;
+                } else {
+                    break;
+                }
+            }
+            // 最大的minRadius
+            minRadius = Math.max(minRadius, Math.abs(housePosition - heaters[i]));
         }
-
+        
         return minRadius;
     }
 }

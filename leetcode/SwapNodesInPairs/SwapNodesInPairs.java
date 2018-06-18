@@ -13,7 +13,9 @@ idea:
 1. iterative version
 
 a fake header is needed,
-and while (n2 != null && n2.next != null) 
+and while (n2 != null && n2.next != null)
+faker 1 2 is small group to do the swap
+set aside 3 by n2.next.next
 
 faker --> 1 --> 2 --> 3 --> 4 --> 5
   |       | 
@@ -32,10 +34,8 @@ faker --> 2 --> 1 --> 3 --> 4 --> 5
 (1) swap the first single pair of nodes
 (2) then the rest keep calling swapSinglePair(StartingNodeInnextPair)
     assign it to node.next.next
-
-
 */
-// Definition for singly-linked list
+
 class ListNode {
     int val;
     ListNode next;
@@ -54,7 +54,6 @@ public class SwapNodesInPairs {
           
         return swapSinglePair(head);  
     } 
-    // 
     private ListNode swapSinglePair(ListNode node) {
         if (node == null || node.next == null) {
             return node;
@@ -73,20 +72,22 @@ public class SwapNodesInPairs {
     
     // iterative version
     public ListNode swapPairs(ListNode head) {
-        ListNode helper = new ListNode(0);
-        helper.next = head;
-        ListNode n1 = helper, n2 = head;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        
+        ListNode n1 = dummy;
+        ListNode n2 = head;
         
         while (n2 != null && n2.next != null) {
-            ListNode temp = n2.next.next;
+            ListNode n3 = n2.next.next;
             n2.next.next = n1.next;
             n1.next = n2.next;
-            n2.next = temp;
+            n2.next = n3;
             
             n1 = n2;
-            n2 = n1.next;
+            n2 = n2.next;
         }
         
-        return helper.next;
+        return dummy.next;
     }
 }

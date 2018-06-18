@@ -33,11 +33,29 @@ Output: "2[2[abbb]c]"
 Explanation: "abbbabbbc" occurs twice, but "abbbabbbc" can also be encoded to "2[abbb]c", so one answer can be "2[2[abbb]c]".
 
 idea:
-DP again, need to come back
-
+https://www.cnblogs.com/grandyang/p/6194403.html
+DP again
+note, dp[i][j]表示[i, j] substring compressed format e.g. 2[ab] 
+这道题关键是找sub = abcabc这种可压缩的情况
+其中sub = s[i,j]
+用sub+sub = abcabcabcabc
+找第二个s在s+s里出现的位置
+如果不是len(sub)
+则说明sub有重复
+那么就要压缩这个sub
+重复次数是len(sub) / indexOf(sub, 1)
+重复的string用的是之前压缩过的dpi
+index = indexOf(sub, 1)。
 */
 
 class EncodeStringWithShortestLength {
+    public static void main(String[] args) {
+        String s = "abbbabbbcabbbabbbc";
+        EncodeStringWithShortestLength eg = new EncodeStringWithShortestLength();
+        String encoded = eg.encode(s);
+        System.out.println(encoded);
+    }
+
     public String encode(String s) {
         int n = s.length();
         String[][] dp = new String[n][n];
@@ -45,25 +63,27 @@ class EncodeStringWithShortestLength {
         for (int l = 0; l < n; l++) {
             for (int i = 0; i < n - l; i++) {
                 int j = i + l;
-                String substr = s.substring(i, j+1);
-                // Checking if string length < 5. In that case, we know that encoding will not help.
+                String substr = s.substring(i, j + 1);
+                int subLen = j + 1 - i;
+                // Checking if string length < 5. In that case, encoding will not help.
                 if (j - i < 4) {
                     dp[i][j] = substr;
                 } else {
                     dp[i][j] = substr;
-                    // Loop for trying all results that we get after dividing the strings into 2 and combine the   results of 2 substrings
-                    for (int k = i; k<j;k++) {
-                        if ((dp[i][k] + dp[k+1][j]).length() < dp[i][j].length()) {
-                            dp[i][j] = dp[i][k] + dp[k+1][j];
+                    // Loop for trying all results that we get after dividing the strings into 2 and combine the results of 2 substrings
+                    for (int k = i; k < j; k++) {
+                        if ((dp[i][k] + dp[k + 1][j]).length() < dp[i][j].length()) {
+                            dp[i][j] = dp[i][k] + dp[k + 1][j];
                         }
                     }
-                    // Loop for checking if string can itself found some pattern in it which could be repeated.
-                    for (int k = 0; k < substr.length(); k++) {
-                        String repeatStr = substr.substring(0, k+1);
-                        if (repeatStr != null && substr.length()%repeatStr.length() == 0 && substr.replaceAll(repeatStr, "").length() == 0) {
-                                String ss = substr.length() / repeatStr.length() + "[" + dp[i][i+k] + "]";
-                                if (ss.length() < dp[i][j].length()) {
-                                    dp[i][j] = ss;
+                    // Loop for checking if string can itself find some pattern in it which could be repeated.
+                    for (int k = 0; k < subLen; k++) {
+                        String repeatStr = substr.substring(0, k + 1);
+                        int repeatStrLen = k + 1;
+                        if (repeatStr != null && subLen % (k + 1) == 0 && substr.replaceAll(repeatStr, "").length() == 0) {
+                                String duplicateCompressed = subLen / (k + 1) + "[" + dp[i][i + k] + "]";
+                                if (duplicateCompressed.length() < dp[i][j].length()) {
+                                    dp[i][j] = duplicateCompressed;
                                 }
                         }
                     }
@@ -71,6 +91,6 @@ class EncodeStringWithShortestLength {
             }
         }
         
-        return dp[0][n-1];
+        return dp[0][n - 1];
     }
 }

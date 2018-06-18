@@ -16,11 +16,32 @@ Given nums = [4, 6], return 6
 The subarray [6] has maximum XOR value
 
 idea:
-
+direct two loops to xor each element
 */
 
 public class MaximumSubarray {
-	public int maxXorSubarray(int[] nums) {
+	public static void main(String[] args) {
+		MaximumSubarray eg = new MaximumSubarray();
+		int[] a1 = {1,2,3,4};
+		int[] a2 = {8, 1, 2, 12, 7, 6};
+		int[] a3 = {4, 6};
+		int xor1 = eg.maxXorSubarray(a1);
+		int xor2 = eg.maxXorSubarray(a2);
+		int xor3 = eg.maxXorSubarray(a3);
 
+		System.out.println(xor1 + " " + xor2 + " " + xor3);
+	}
+
+	public int maxXorSubarray(int[] nums) {
+		int max = Integer.MIN_VALUE;
+		for (int i = 0; i < nums.length; i++) {
+			int xor = 0;
+			for (int j = i; j < nums.length; j++) {
+				xor ^= nums[j];
+				max = Math.max(max, xor);
+			}
+		}
+
+		return max;
 	}
 }

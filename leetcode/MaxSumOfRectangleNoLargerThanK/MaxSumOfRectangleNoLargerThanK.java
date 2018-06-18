@@ -26,7 +26,8 @@ https://discuss.leetcode.com/topic/48923/2-accepted-java-solution/2
 sum(i, j) represents sum from (0, 0) to (i,j) inclusive
 four layers loop
 first two loops to get sum[i][j]
-meanwhile, second two loops to get the all possible sub-matrix sum
+after first two loops,
+second two loops to get the all possible sub-matrix sum
 
 3. use treeset
 http://www.programcreek.com/2014/08/leetcode-max-sum-of-rectangle-no-larger-than-k-java/
@@ -36,53 +37,6 @@ https://discuss.leetcode.com/topic/49625/java-233mm-solution-with-dynamic-progra
 */
 
 public class MaxSumOfRectangleNoLargerThanK {
-	// don't know why not passed
-    public int maxSumSubmatrix(int[][] matrix, int k) {
-		if (matrix.length == 0 || matrix == null) {
-			return 0;
-		}
-
-		int m = matrix.length;
-		int n = matrix[0].length;
-		int res = Integer.MIN_VALUE;
-		int[][] sum = new int[m][n];
-
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				int value = matrix[i][j];
-				if (i >= 1) {
-					value += sum[i - 1][j];
-				}
-				if (j >= 1) {
-					value += sum[i][j - 1];	
-				}
-				if (i >= 1 && j >= 1) {
-					value -= sum[i - 1][j - 1];	
-				}
-				sum[i][j] = value;
-				for (int r = 0; r <= i; r++) {
-					for (int c = 0; c <= j; c++) {
-						int area = sum[i][j];
-						if (r >= 1) {
-							area -= sum[r-1][c];
-						}
-						if (c >= 1) {
-							area -= sum[r][c-1];
-						}
-						if (r >= 1 && c >= 1) {
-							area += sum[r-1][c-1];	
-						}
-						if (area <= k) {
-							res = Math.max(area, res);
-						}
-					}
-				}
-			}
-		}
-    
-    	return res;
-    }
-    // passed OJ
     public int maxSumSubmatrix(int[][] matrix, int k) {
 		if (matrix.length == 0 || matrix == null) {
 			return 0;
@@ -115,13 +69,13 @@ public class MaxSumOfRectangleNoLargerThanK {
 					for (int c = j; c < n; c++) {
 						int area = sum[r][c];
 						if (i >= 1) {
-							area -= sum[i-1][c];
+							area -= sum[i - 1][c];
 						}
 						if (j >= 1) {
-							area -= sum[r][j-1];
+							area -= sum[r][j - 1];
 						}
 						if (i >= 1 && j >= 1) {
-							area += sum[i-1][j-1];	
+							area += sum[i - 1][j - 1];	
 						}
 						if (area <= k) {
 							res = Math.max(area, res);
@@ -130,7 +84,7 @@ public class MaxSumOfRectangleNoLargerThanK {
 				}
 			}
 		}
-    
-    	return res;
-    }
+
+		return res;
+	}
 }

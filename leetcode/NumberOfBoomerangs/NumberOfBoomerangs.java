@@ -18,36 +18,38 @@ based on permutation, n * n-1 to get result
 
 public class NumberOfBoomerangs {
     public int numberOfBoomerangs(int[][] points) {
-        int res = 0;
+        int result = 0;
         if (points.length == 0 || points == null) {
-        	return res;
+            return result;
         }
+
         Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        
         for (int i = 0; i < points.length; i++) {
-        	for (int j = 0; j < points.length; j++) {
-        		if (i == j) continue;
-        		int distance = getDistance(points[i], points[j]);
-        		Integer number = hm.get(distance);
-        		if (number == null) {
-        			hm.put(distance, 1);
-        		}
-        		else {
-        			hm.put(distance, number + 1);
-        		}
-        	}
-        	for (int number : hm.values()) {
-        		res += number * (number - 1);
-        	}
-        	hm.clear();
+            for (int j = 0; j < points.length; j++) {
+                if (i == j) {
+                    continue;
+                }
+                
+                int distance = getDistance(points[i], points[j]);
+                hm.put(distance, hm.getOrDefault(distance, 0) + 1);
+            }
+            
+            for (int num : hm.values()) {
+                // P, choose 2 from n, how many ways
+                result += num * (num - 1);
+            }
+            
+            hm.clear();
         }
-
-        return res;
+        
+        return result;
     }
-
-    private int getDistance(int[] a, int[] b) {
-    	int dx = a[0] - b[0];
-    	int dy = a[1] - b[1];
-
-    	return dx * dx + dy * dy;
+    
+    public int getDistance(int[] a, int[] b) {
+        int m = a[0] - b[0];
+        int n = a[1] - b[1];
+        
+        return m * m + n * n;
     }
 }

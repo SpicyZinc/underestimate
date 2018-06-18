@@ -60,17 +60,16 @@ public class PredictTheWinner {
     public boolean PredictTheWinner(int[] nums) {
         return getDiffNumbersPickedByPlayers(nums, 0, nums.length - 1) >= 0;
     }
-
-    private int getDiffNumbersPickedByPlayers(int[] nums, int start, int end) {
+    
+    public int getDiffNumbersPickedByPlayers(int[] nums, int start, int end) {
         if (start == end) {
-            return nums[end];
+            return nums[start];
         }
-        else {
-            // player picks up the end
-            int diff1 = nums[end] - getDiffNumbersPickedByPlayers(nums, start, end - 1);
-            // player picks up the start
-            int diff2 = nums[start] - getDiffNumbersPickedByPlayers(nums, start + 1, end);
-            return Math.max(diff1, diff2);
-        }
+        // player picks up the start
+        int diff1 = nums[start] - getDiffNumbersPickedByPlayers(nums, start + 1, end);
+        // player picks up the end
+        int diff2 = nums[end] - getDiffNumbersPickedByPlayers(nums, start, end - 1);
+        
+        return Math.max(diff1, diff2);
     }
 }

@@ -12,19 +12,26 @@ similar to FindAllNumbersDisappearedInAnArray
 there has detailed explanation
 */
 
+import java.util.*;
+
 public class FindAllDuplicatesInAnArray {
+    public static void main(String[] args) {
+        FindAllDuplicatesInAnArray eg = new FindAllDuplicatesInAnArray();
+        int nums[] = {4,3,2,7,8,2,3,1};
+        eg.findDuplicates(nums);
+
+    }
     public List<Integer> findDuplicates(int[] nums) {
         List<Integer> result = new ArrayList<Integer>();
         for (int num : nums) {
             int idx = Math.abs(num) - 1;
             if (nums[idx] > 0) {
                 nums[idx] = -1 * nums[idx];
-            }
-            else {
+            } else {
                 result.add(idx + 1);
             }
         }
-        
+
         return result;
     }
 }

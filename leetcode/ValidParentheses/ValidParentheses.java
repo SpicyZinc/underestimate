@@ -18,6 +18,45 @@ public class ValidParentheses {
         boolean result = eg.isValid("()");
         System.out.println(result);
     }
+    // Bloomberg KYC 
+    public boolean isValid(String s) {
+        if (s.length() == 0 || s == null) {
+            return true;
+        }
+
+        if (s.length() % 2 == 1) {
+            return false;
+        }
+
+        Stack<Character> stack = new Stack<Character>();
+        Map<Character, Character> hm = new HashMap<Character, Character>();
+        hm.put(')', '(');
+        hm.put(']', '[');
+        hm.put('}', '{');
+        
+        String openParts = "([{";
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (stack.isEmpty() && openParts.indexOf(c) == -1) {
+                return false;
+            } else if (openParts.indexOf(c) != -1) {
+                stack.push(c);
+            } else {
+                char supposedMatch = hm.get(c);
+                char top = stack.peek();
+                
+                if (top != supposedMatch) {
+                    return false;
+                } else {
+                    stack.pop();
+                }
+            }
+        }
+
+        return stack.isEmpty();        
+    }
+
+
     // self recent written
     public boolean isValid(String s) {
         if (s.length() == 0 || s == null) {

@@ -9,6 +9,7 @@ You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
 Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
 
 idea:
+List<Integer>[]
 use hashmap to record frequency of each value
 then frequency as key, the value will be another ArrayList containing all values appear "frequency" times
 most frequent elements can never be greater than the length of array
@@ -21,13 +22,9 @@ top k, must create the length of nums.length + 1
 */
 public class TopKFrequentElements {
     public List<Integer> topKFrequent(int[] nums, int k) {
-        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
         for (int i : nums) {
-            if (hm.containsKey(i)) {
-                hm.put(i, hm.get(i) + 1);
-            } else {
-                hm.put(i, 1);
-            }
+            hm.put(i, hm.getOrDefault(i, 0) + 1);
         }
         List<Integer>[] frequencyToElements = new ArrayList[nums.length + 1];
         for (Map.Entry<Integer, Integer> entry : hm.entrySet()) {
@@ -37,6 +34,7 @@ public class TopKFrequentElements {
             }
             frequencyToElements[frequency].add(entry.getKey());
         }
+
         List<Integer> res = new ArrayList<Integer>();
         for (int i = nums.length; i >= 1 && res.size() < k; i--) {
             if (frequencyToElements[i] != null) {

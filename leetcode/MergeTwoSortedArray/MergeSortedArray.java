@@ -6,11 +6,9 @@ Note:
 You may assume that A has enough space (size that is greater or equal to m + n) to hold additional elements from B. 
 The number of elements initialized in A and B are m and n respectively.
 
-
 idea:
-this version has less code
-if array B is empty, then we finished merge
-since B merged to A, no need to change A
+from the back of array to do the merge
+位置个数正好 剩下的在A的不动就可以了
 */
 
 public class MergeSortedArray {

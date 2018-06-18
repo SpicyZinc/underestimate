@@ -29,9 +29,12 @@ public class Pow {
 		System.out.println("power(0, 1) == " + pow(0, 1));
 	}
 	// good to use
-    public double pow(double x, int n) {
+	public double myPow(double x, int n) {
 		if (n == 0) {
-			return 1;
+			return 1.0;
+		}
+		if (x > 1 && n <= Integer.MIN_VALUE) {
+			return 0.0;
 		}
 		/*
 		too deep recursion leads to stackoverflow
@@ -40,28 +43,45 @@ public class Pow {
 		}
 		*/
 		if (n < 0) {
-            n = -n;
-            x = 1.0 / x;
-        }		
-		double tmp = pow(x, n / 2);  
+			n = -n;
+			x = 1.0 / x;
+		}
+		double tmp = myPow(x, n / 2);  
 		if (n % 2 == 0) {
 			return tmp * tmp;
+		} else {
+			return x * tmp * tmp;
 		}
-		else {
-			return tmp * tmp * x;
-		}
+	}
+
+	public double myPow(double x, int n) {
+        if (n == 0) return 1.0;
+        if (x > 1 && n <= Integer.MIN_VALUE) {
+            return 0.0;
+        }
+        
+        if (n < 0) {
+            n = -n;
+            x = 1.0 / x;
+        }
+        if (n % 2 == 0) {
+            return myPow(x * x, n / 2);
+        } else {
+            return x * myPow(x * x, n / 2);
+        }
     }
 /*	
 	// direct recursion
-	public double pow(double x, int n) { 
+	public double myPow(double x, int n) { 
 		if (n == 0) {
-    		return 1.0;
+			return 1.0;
 		}
 		if (n < 0) {
-			return 1.0 / pow(x, -n);
+			n = -n;
+			x = 1.0 / x;
 		}
 		
-		return x * pow(x, n-1);
+		return x * myPow(x, n - 1);
 	}
 
 	// binary cut version 1
@@ -112,8 +132,8 @@ public class Pow {
         
         double res = 1.0;
         while(n > 0) {
-            if (n%2 == 1) 
-            // if((n&1) == 1) 
+            if (n % 2 == 1) 
+            // if((n & 1) == 1) 
                 res *= x;
             x *= x;
             n >>= 1;

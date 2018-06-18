@@ -59,7 +59,7 @@ public class BalancedBinaryTree {
         if (diff > 1) {
             return false;
         }
-        // not only from the general, going finer, see if left or righ subtree also balanced
+        // not only from the general, going finer, see if left or right subtree also balanced
         return diff <= 1 && isBalanced(root.left) && isBalanced(root.right);
     }
     

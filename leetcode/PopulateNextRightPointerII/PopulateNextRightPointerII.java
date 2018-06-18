@@ -24,12 +24,35 @@ After calling your function, the tree should look like:
 
 	
 idea:
-
-
+use queue typical bfs
 */
 public class PopulateNextRightPointerII {
+	// recent best 06/03/2018
+	public void connect(TreeLinkNode root) {
+        if (root == null) {
+            return;
+        }
+
+        Queue<TreeLinkNode> queue = new LinkedList<TreeLinkNode>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeLinkNode node = queue.poll();
+                if (i < size - 1) {
+                    node.next = queue.peek();
+                }
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+        }
+    }
 	// iterative
-	//
 	public void connect(TreeLinkNode root) {
 		TreeLinkNode currentBegin = root, prevBegin = null;
 		while (currentBegin != null) {
@@ -73,15 +96,13 @@ public class PopulateNextRightPointerII {
 	}
 
 	// recursive
-	//
     public void connect(TreeLinkNode root) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
 		if (root == null) 
 			return;
         if (root.left != null) {
-            if (root.right != null) 
+            if (root.right != null) {
 				root.left.next = root.right;
+            }
 			else {
 				tryConnect(root, root.left);
 			}

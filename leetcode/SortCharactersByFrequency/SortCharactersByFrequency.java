@@ -35,40 +35,84 @@ public class SortCharactersByFrequency {
 		// String tt = eg.frequencySort("Aabb");	
 		System.out.println(tt);
 	}
+    // method 1
+    public String frequencySort(String s) {
+        Map<Character, Integer> frequency = new HashMap<Character, Integer>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            frequency.put(c, frequency.getOrDefault(c, 0) + 1);
+        }
 
+        Map<Integer, List<Character>> hm = new HashMap<>();
+        for (Map.Entry<Character, Integer> entry : frequency.entrySet()) {
+            char key = entry.getKey();
+            int value = entry.getValue();
+            
+            List<Character> chars = new ArrayList<Character>();
+            if (hm.containsKey(value)) {
+                chars = hm.get(value);
+            }
+            chars.add(key);
+            hm.put(value, chars);
+        }
+        
+        List<Integer> values = new ArrayList<Integer>();
+        for (int val : hm.keySet()) {
+            values.add(val);
+        }
+        Collections.sort(values, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer a, Integer b) {
+                return b.compareTo(a);
+            }
+        });
+
+        
+        String result = "";
+        for (int i = 0; i <= values.size() - 1; i++) {
+            int fre = values.get(i);
+            List<Character> letters = hm.get(fre);
+            result += compose(letters, fre);
+        }
+        
+        return result;
+    }
+
+    public String compose(List<Character> letters, int times) {
+        StringBuilder sb = new StringBuilder();
+        for (char letter : letters) {
+            for (int i = 0; i < times; i++) {
+                sb.append(letter);
+            }
+        }
+        
+        return sb.toString();
+    }
+    // method 2
     public String frequencySort(String s) {
         if (s.length() == 0 || s == null) {
         	return "";
         }
 
-        HashMap<Character, Integer> hash = new HashMap<Character, Integer>();
+        Map<Character, Integer> hash = new HashMap<Character, Integer>();
         for (int i = 0; i < s.length(); i++) {
         	char c = s.charAt(i);
-        	if (hash.containsKey(c)) {
-        		hash.put(c, hash.get(c) + 1);
-        	}
-        	else {
-        		hash.put(c, 1);
-        	}
+            hash.put(c, hash.getOrDefault(c, 0) + 1);
         }
 
-        HashMap<Integer, ArrayList<Character>> hm = new HashMap<Integer, ArrayList<Character>>();
+        Map<Integer, ArrayList<Character>> hm = new HashMap<Integer, ArrayList<Character>>();
         List<Integer> frequencies = new ArrayList<Integer>();
         for (Map.Entry<Character, Integer> entry : hash.entrySet()) {
         	Character c = entry.getKey();
         	Integer frequency = entry.getValue();
         	if (frequency > 0) {
         		frequencies.add(frequency);
+                ArrayList<Character> list = new ArrayList<Character>();
 	        	if (hm.containsKey( frequency )) {
-	        		ArrayList<Character> list = hm.get(frequency);
-	        		list.add(c);
-	        		hm.put(frequency, list);
+	        		list = hm.get(frequency);
 	        	}
-	        	else {
-	        		ArrayList<Character> list = new ArrayList<Character>();
-	        		list.add(c);
-	        		hm.put(frequency, list);
-	        	}
+                list.add(c);
+                hm.put(frequency, list);
         	}
         }
         Collections.sort(frequencies);

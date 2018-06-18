@@ -40,16 +40,19 @@ typical remaining in the dfs()
 
 public class ShoppingOffers {
     public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
-		int result = Integer.MAX_VALUE;
+		int minCost = Integer.MAX_VALUE;
 	    for (List<Integer> offer : special) {
 	        boolean validOffer = true;
 	        for (int j = 0; j < needs.size(); j++) {
 	            int remaining = needs.get(j) - offer.get(j);
 	            needs.set(j, remaining);
-	            if (validOffer && remaining < 0) validOffer = false; // one item in this offer exceeds than needed is enough to fail this offer
+	            if (validOffer && remaining < 0) {
+	            	validOffer = false; // one item in this offer exceeds than needed is enough to fail this offer
+	            }
 	        }
 	        if (validOffer) {
-	            result = Math.min(result, shoppingOffers(price, special, needs) + offer.get(needs.size()));
+	        	int costForUsingValidOffer = offer.get(needs.size());
+	            minCost = Math.min(minCost, shoppingOffers(price, special, needs) + costForUsingValidOffer);
 	        }
 	        // reset the needs
 	        for (int j = 0; j < needs.size(); j++) {
@@ -62,6 +65,6 @@ public class ShoppingOffers {
 	        nonOfferPrice += price.get(i) * needs.get(i);
 	    }
 
-	    return Math.min(result, nonOfferPrice);
+	    return Math.min(minCost, nonOfferPrice);
 	}
 }

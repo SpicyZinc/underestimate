@@ -22,42 +22,45 @@ native thought
 construct the string first
 then count how many 1's
 
-0 1 2 3 4 5 6 7 8 9 10 11 12  13 14 15  16 17 18
-1 2 2 1 1 2 1 2 2 1 2  2  1   1  2  1   1  2  2 ......
-1  2   2  1 1  2  1  2      2    1    2     2 ......
+0 1 2 3 4 5 6 7 8 9 10 11  12  13 14 15  16 17 18
+1 2 2 1 1 2 1 2 2 1 2  2 | 1   1  2  1   1  2  2 ......
+1  2   2  1 1  2  1  2       2    1    2     2 ......
 */
 
 public class MagicalString {
     public int magicalString(int n) {
-		StringBuilder sb = new StringBuilder("1221121221221121122");
-		int p1 = 12;
-		int p2 = sb.length();
-		while (sb.length() < n) {
-			if (sb.charAt(p1) == '1') {
-				if (sb.charAt(p2 - 1) == '1') {
-					sb.append('2');
-				} else {
-					sb.append('1');
-				}
-				p2 += 1;
-			}
-			else {
-				if (sb.charAt(p2 - 1) == '1') {
-					sb.append("22");
-				} else {
-					sb.append("11");
-				}
-				p2 += 2;
-			}
-			p1++;
-		}
-		int cnt = 0;
-		for (int i = 0; i < n; i++) { // note this is n, not sb.length()
-			if (sb.charAt(i) == '1') {
-				cnt++;
-			}
-		}
-
-		return cnt;
+        StringBuilder sb = new StringBuilder("1221121221221121122");
+        
+        int basePointer = 12;
+        int magicStrPointer = sb.length();
+        
+        while (magicStrPointer < n) {
+            char startChar = sb.charAt(basePointer);
+            if (startChar == '1') {
+                if (sb.charAt(magicStrPointer - 1) == '1') {
+                    sb.append('2');
+                } else {
+                    sb.append('1');
+                }
+                magicStrPointer++;
+            } else {
+                if (sb.charAt(magicStrPointer - 1) == '1') {
+                    sb.append("22");
+                } else {
+                    sb.append("11");
+                }
+                magicStrPointer += 2;
+            }
+            basePointer++;
+        }
+        
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            if (sb.charAt(i) == '1') {
+                cnt++;
+            }
+        }
+        
+        return cnt;
     }
 }

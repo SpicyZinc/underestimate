@@ -27,13 +27,17 @@ public class DecodeString {
 
         Stack<Integer> countStack = new Stack<Integer>();
         Stack<String> result = new Stack<String>();
+
         int i = 0;
         result.push("");
+
         while (i < s.length()) {
             char c = s.charAt(i);
             if (Character.isDigit(c)) {
                 int start = i;
-                while (Character.isDigit(s.charAt(i + 1))) i++;
+                while (Character.isDigit(s.charAt(i + 1))) {
+                	i++;
+                }
                 countStack.push( Integer.parseInt(s.substring(start, i + 1)) );
             }
             else if (c == '[') {
@@ -66,31 +70,32 @@ public class DecodeString {
 // Note: define index as class field variable
 // in recursion, no need to increase it
 class DecodeString {
+	// note, this index is global
 	private int index = 0;
-    public String decodeString(String s) {
-    	return dfs("1[" + s + "]").toString();
-    }
-    public StringBuilder dfs(String s) {
-    	int count = 0;
-    	StringBuilder res = new StringBuilder();
-    	for (; index < s.length(); index++) {
-    		if (Character.isDigit(s.charAt(index))) {
-    			count = count * 10 + s.charAt(index) - '0';
-    		}
-    		else if (s.charAt(index) == '[') {
-    			index++;
-    			StringBuilder sb = dfs(s);
-    			for (; count > 0; count--) {
-    				res.append(sb);
-    			}
-    		}
-    		else if (s.charAt(index) == ']') {
-    			break;
-    		}
-    		else {
-    			res.append(s.charAt(index));
-    		}
-    	}
-    	return res;
-    }
+	public String decodeString(String s) {
+		return dfs("1[" + s + "]").toString();
+	}
+	public StringBuilder dfs(String s) {
+		int count = 0;
+		StringBuilder res = new StringBuilder();
+		for (; index < s.length(); index++) {
+			if (Character.isDigit(s.charAt(index))) {
+				count = count * 10 + s.charAt(index) - '0';
+			}
+			else if (s.charAt(index) == '[') {
+				index++;
+				StringBuilder sb = dfs(s);
+				for (; count > 0; count--) {
+					res.append(sb);
+				}
+			}
+			else if (s.charAt(index) == ']') {
+				break;
+			}
+			else {
+				res.append(s.charAt(index));
+			}
+		}
+		return res;
+	}
 }

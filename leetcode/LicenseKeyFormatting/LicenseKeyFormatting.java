@@ -29,6 +29,7 @@ idea:
 note don't forget to remove all '-' in the trailing
 2. others' idea, a couple of lines
 treat K characters and '-' as a whole, so K + 1 is a unit
+note, sb.length(), not S.length()
 */
 public class LicenseKeyFormatting {
 	public static void main(String[] args) {
@@ -70,9 +71,35 @@ public class LicenseKeyFormatting {
     	for (int i = S.length() - 1; i >= 0; i--) {
     	    char c = S.charAt(i);
     	    if (c != '-') {
-    	        sb.append(sb.length() % (K + 1) == K ? "-" : "").append(S.charAt(i));    
+    	        sb.append(sb.length() % (K + 1) == K ? "-" : "").append(c);    
     	    }
     	}
     	return sb.reverse().toString().toUpperCase();
+    }
+    // TLE, but self
+    public String licenseKeyFormatting(String S, int K) {
+        String[] matches = S.trim().split("-");
+        String s = "";
+        for (int i = 0; i < matches.length; i++) {
+            String match = matches[i];
+            s += match;
+        }
+        
+        int len = s.length();
+        
+        if (len <= K) {
+            return s.toUpperCase();
+        }
+        
+        int mod = len % K;
+        
+        String result = mod == 0 ? "" : s.substring(0, mod) + "-";
+        for (int i = mod; i < len; i++) {
+            if ((i + 1 - mod) % K == 0) {
+                result +=  (i == len - 1) ? s.substring(i + 1 - K , i + 1) : s.substring(i + 1 - K , i + 1) + "-";
+            }
+        }
+        
+        return result.toUpperCase();
     }
 }

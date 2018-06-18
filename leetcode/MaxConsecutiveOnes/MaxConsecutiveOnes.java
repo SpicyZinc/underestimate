@@ -16,21 +16,17 @@ very simple, direct thought
 
 public class MaxConsecutiveOnes {
     public int findMaxConsecutiveOnes(int[] nums) {
-        if (nums.length == 0 || nums == null) {
-        	return 0;
-        }
-
-        int max = 0;
         int cnt = 0;
-        for (int i = 0; i < nums.length; i++) {
-        	if (nums[i] == 1) {
-        		cnt++;
-        		max = Math.max(max, cnt);
-        	}
-        	else {
-        		cnt = 0;
-        	}
+        int max = 0;
+        for (int num : nums) {
+            if (num == 1) {
+                cnt++;
+                max = Math.max(max, cnt);
+            } else {
+                cnt = 0;
+            }
         }
+        
         return max;
     }
 }

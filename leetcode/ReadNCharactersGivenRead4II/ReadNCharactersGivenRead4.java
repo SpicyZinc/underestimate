@@ -31,9 +31,9 @@ public class Solution extends Reader4 {
 		while (i < n) {
 			// finishing transferring from buf4 to buf
 			if (buf4Index >= buf4Size) {
+				buf4Index = 0;
 				// read from file to buf4
 				buf4Size = read4(buf4);
-				buf4Index = 0;
 				if (buf4Size == 0) {
 					break;
 				}

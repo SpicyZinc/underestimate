@@ -22,7 +22,7 @@ The range of n is [3, 10^18].
 The string representing n is always valid and will not have leading zeros.
 
 idea:
-http://blog.csdn.net/guoyuhaoaaa/article/details/54782315
+https://blog.csdn.net/guoyuhaoaaa/article/details/54782315
 whatsoever, aim的表示形式一定是全‘1’的, 如果最小的base那么也就意味着最长的‘1’串.
 可以固定一个‘1’串来找是否有合适的base可以满足, 而在固定‘1’串找base的时候可以使用二分查找来节省时间.
 如果当前的‘1’串都不合适, 那么我们就可以减少‘1’串的长度, 找到为止
@@ -31,11 +31,12 @@ whatsoever, aim的表示形式一定是全‘1’的, 如果最小的base那么�
 
 2. for each k from 66 to 2, we get 'x', and the minimum of all "x"s is the answer
 x is base, k is potent
-n = x^(k - 1) + x^(k - 2) + ..., + x^1 + x^0 (1)
-x^k - 1 = n(x - 1)
+n = x^(k - 1) + x^(k - 2) + ..., + x^1 + x^0
+n = (x^k - 1) / (x - 1)
 if n(x - 1) > x^k - 1, means x is too big
 if n(x - 1) < x^k - 1, means x is too small
 
+http://hankerzheng.com/blog/LeetCode-Smallest-Good-Base
 */
 import java.math.*;
 
@@ -45,30 +46,40 @@ public class SmallestGoodBase {
         long num = Long.parseLong(n);
         for (int p = 2; p < 100; p++) {
             if ((1 << p) < num) {
-                long k = helper(num, p);
+                long k = findLengthBase(num, p);
                 if (k != -1) {
-                	return String.valueOf(k);
+                    return String.valueOf(k);
                 }
             }
         }
 
         return String.valueOf(num - 1);
     }
-    
-    private long helper(long num, int p) {
-        long l = 1, r = (long)(Math.pow(num, 1.0/p) + 1);
+    // binary to get proper base
+    private long findLengthBase(long num, int p) {
+        long l = 1;
+        long r = (long) (Math.pow(num, 1.0 / p) + 1);
         while (l < r) {
+            // one possible base
             long mid = l + (r - l) / 2;
-            long sum = 0, cur = 1;
-            for (int i = 0; i <= p; i++) {
-                sum += cur;
-                cur *= mid;
-            }
+            long sum = getNumber(mid, p);
             if (sum == num) return mid;
             else if (sum > num) r = mid;
             else l = mid + 1;
         }
+
         return -1;
+    }
+    // convert 1111 cnt to decimal, based on base
+    private long getNumber(long base, int cnt) {
+        long sum = 0;
+        long currBase = (long) Math.pow(base, 0); // 1
+        // 因为都是1, skip 1 * 
+        for (int i = 0; i <= cnt; i++) {
+            sum += currBase;
+            currBase *= base;
+        }
+        return sum;
     }
 
     // method 2

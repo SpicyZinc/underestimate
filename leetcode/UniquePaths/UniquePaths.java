@@ -42,40 +42,18 @@ add these two options together, each option has the number of ways to reach righ
 */
 
 public class UniquePaths {
-	// 1D DP
-    // Step[i][j] = Step[i-1][j] + Step[i][j-1]
     // save space by only creating 1D array
-    // simpler version of 2D DP
     public int uniquePaths(int m, int n) {
         int[] step = new int[n];
         step[0] = 1;
-        for (int i=0; i<m; i++) { 
-            for (int j=1; j<n; j++) {  
-                step[j] = step[j-1] + step[j];  
-            }  
-        }  
+        for (int i = 0; i < m; i++) { 
+            for (int j = 1; j < n; j++) {
+                step[j] += step[j - 1];
+            }
+        }
+
         return step[n-1];
     }
-
-    public int uniquePaths(int m, int n) {
-        int[][] remember = new int[m][n];
-        // last row
-        for (int j=0; j<n; j++) {
-        	remember[m-1][j] = 1;
-        }
-        // last column
-        for (int i=0; i<m; i++) {
-        	remember[i][n-1] = 1;
-        }
-        // DP
-        for (int i=m-2; i>=0; i--) {
-        	for (int j=n-2; j>=0; j--) {
-        		remember[i][j] = remember[i+1][j] + remember[i][j+1];
-        	}
-        }
-        
-        return remember[0][0];
-    }  
 
     public int uniquePaths(int m, int n) {
         int[][] res = new int[m][n]; 
@@ -96,6 +74,27 @@ public class UniquePaths {
          
         return res[m - 1][n - 1];
     }
+
+    public int uniquePaths(int m, int n) {
+        int[][] remember = new int[m][n];
+        // last row
+        for (int j=0; j<n; j++) {
+            remember[m-1][j] = 1;
+        }
+        // last column
+        for (int i=0; i<m; i++) {
+            remember[i][n-1] = 1;
+        }
+        // DP
+        for (int i=m-2; i>=0; i--) {
+            for (int j=n-2; j>=0; j--) {
+                remember[i][j] = remember[i+1][j] + remember[i][j+1];
+            }
+        }
+        
+        return remember[0][0];
+    }  
+
 
 	// direct recursion only passed Judge Small
     public int uniquePaths(int m, int n) {
@@ -123,16 +122,17 @@ public class UniquePaths {
 	}
 
 	// implementation of C(m, n)
-	int gcd(int a, int b) {
-		while (b) {
+	public int gcd(int a, int b) {
+		while (b > 0) {
 	        int c = a % b;
 	        a = b;
 	        b = c;
 	    }
+
 	    return a;
 	}
 
-	int C(int m, int n) {
+	public int C(int m, int n) {
 	    if (m - n < n) {
 	        n = m - n;
 	    }

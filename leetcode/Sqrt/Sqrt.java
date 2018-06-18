@@ -30,42 +30,40 @@ public class Sqrt {
 	}
 
     // best
-    public int sqrt(int x) {
+    public int mySqrt(int x) {
         if (x <= 1) {
             return x;
         }
         
         long left = 0;
         long right = x;
-
-        while (right >= left) {
+        while (left <= right) {
             long mid = left + (right - left) / 2;
             if (mid * mid > x) {
                 right = mid - 1;
             } else {
-                left = mid + 1;    
+                left = mid + 1;
             }
         }
+        
         return (int) right;
     }
 
     // integer version best
-    public int sqrt(int x) {
-        if (x <= 1) 
+    public int mySqrt(int x) {
+        if (x <= 1) {
             return x;
+        }
         
-        int guess = x / 2;        
+        int guess = x / 2;
         while (guess * guess > x || guess > 46340) {
-            guess = (guess + x / guess) / 2;
+            guess = (guess + x / guess) / 2; 
         }
         
         return guess;
     }
 
-    public int sqrt(int x) {
-        if (x < 0) {
-            return -1;
-        }
+    public int mySqrt(int x) {
         if (x <= 1) {
             return x; 
         }

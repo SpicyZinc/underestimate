@@ -25,17 +25,20 @@ public class FindAllNumbersDisappearedInAnArray {
 	}
     public List<Integer> findDisappearedNumbers(int[] nums) {
         List<Integer> result = new ArrayList<Integer>();
+
         for (int num : nums) {
             int idx = Math.abs(num) - 1;
             if (nums[idx] > 0) {
                 nums[idx] = -1 * nums[idx];
             }
         }
+        // kind of going through 0 - (n - 1), 变相的 1 - n
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] > 0) {
                 result.add(i + 1);
             }
         }
+
         return result;
     }
 }

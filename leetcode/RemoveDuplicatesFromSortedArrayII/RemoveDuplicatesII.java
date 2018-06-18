@@ -10,23 +10,43 @@ idea:
 slightly different from I, added a counter
 since it is sorted array, so use it to know times of each duplicates
 note: each element at most appear twice
+note: always nums[0] no need to consider
 */
 public class RemoveDuplicatesII {
+	public int removeDuplicates(int[] nums) {
+        int j = 0;
+        int i = 1;
+        int count = 1;
+        for (i = 1; i < nums.length; i++) {
+            if (nums[i - 1] == nums[i]) {
+                count++;
+            } else {
+                count = 1;
+            }
+            
+            if (count <= 2) {
+                // increase the resultant array
+                nums[++j] = nums[i];
+            }
+        }
+        
+        return j + 1;
+    }
+
     public int removeDuplicates(int[] nums) {
-        int index = 1;
+        int j = 1;
         int count = 1;
         for (int i = 1; i < nums.length; i++) {
             if (nums[i] == nums[i - 1]) {
                 count++;
-            }
-            else {
+            } else {
                 count = 1;
             }
             if (count <= 2) {
-                nums[index++] = nums[i];
+                nums[j++] = nums[i];
             }
         }
 
-        return index;
+        return j;
     }
 }

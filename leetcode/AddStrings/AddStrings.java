@@ -21,61 +21,45 @@ public class AddStrings {
  			return num1;
  		}
 
+ 		StringBuilder sb = new StringBuilder();
+
  		int i = num1.length() - 1;
  		int j = num2.length() - 1;
  		int carry = 0;
- 		StringBuilder sb = new StringBuilder();
 
  		while (i >= 0 && j >= 0) {
  			char a = num1.charAt(i);
  			char b = num2.charAt(j);
 
- 			int temp = (a - '0') + (b - '0');
- 			temp += carry;
- 			if (temp >= 10) {
- 				carry = temp / 10;
- 				temp = temp % 10;
- 			}
- 			else {
- 			    carry = 0;
- 			}
- 			sb.append(temp);
+ 			int sum = (a - '0') + (b - '0') + carry;
+ 			sb.append(sum % 10);
+ 			carry = sum / 10;
+
  			i--;
  			j--;
  		}
 
- 		while (i >= 0) {
- 			char a = num1.charAt(i);
- 			int temp = a - '0' + carry;
- 			System.out.println(temp);
- 			if (temp > 9) {
- 				carry = temp / 10;
- 				temp = temp % 10;
- 			}
- 			else {
- 			    carry = 0;
- 			}
- 			sb.append(temp);
- 			i--;
- 		}
+		while (i >= 0) {
+			char a = num1.charAt(i);
+			int sum = a - '0' + carry;
+			sb.append(sum % 10);
+			carry = sum / 10;
+			i--;
+		}
 
- 		while (j >= 0) {
- 			char b = num2.charAt(j);
- 			int temp = b - '0' + carry;
- 			if (temp > 9) {
- 				carry = temp / 10;
- 				temp = temp % 10;
- 			}
- 			else {
- 			    carry = 0;
- 			}
- 			sb.append(temp);
- 			j--;
- 		}
+		while (j >= 0) {
+			char b = num2.charAt(j);
+			int sum = b - '0' + carry;
+			sb.append(sum % 10);
+			carry = sum / 10;
+			j--;
+		}
+
+
  		if (carry > 0) {
  		    sb.append(carry);
  		}
- 		
+		
  		return sb.reverse().toString();
     }
 }

@@ -19,25 +19,12 @@ minStack.getMin();   --> Returns -2.
 idea:
 1. minStack always keeps same number of elements in actual stack
 2. minStack only keeps the minimum so far, actual stack keeps all
-3. one stack, when run into a number smaller than current min, push current min, update min with the smaller, push the smaller
+3. one stack, when run into a number smaller than current min, push current min, update min with the smaller, push the smaller; old min over current min saved twice
 4. NodeWithMin class
 */
+import java.util.*;
+
 class MinStack {
-    public static void main(String[] args) {
-        MinStack ms = new MinStack();
-        ms.push(10);
-        ms.push(20);
-        ms.push(30);
-
-        System.out.println("So far min == " + ms.getMin());
-        System.out.println("So far min == " + ms.min.toString());
-        System.out.println("So far min == " + ms.actual.toString());
-
-        ms.push(5);
-
-        System.out.println("So far min == " + ms.getMin());
-    }
-
     // method 3
     private int min;
     private Stack<Integer> stack;
@@ -99,8 +86,8 @@ class MinStack {
     }
 
     // method 2
-    private Stack<Integer> stack = new Stack<Integer>();
     private Stack<Integer> minStack = new Stack<Integer>();
+    private Stack<Integer> stack = new Stack<Integer>();
 
     public void push(int x) {
         if (minStack.isEmpty() || x <= minStack.peek()) {
@@ -123,42 +110,60 @@ class MinStack {
     public int getMin() {
         return minStack.peek();
     }
-}
-
-
-public class MinStack {
-
-    private class NodeWithMin {
-        int min;
-        int val;
-        public NodeWithMin(int min, int val) {
-            this.min = min;
-            this.val = val;
-        }
-    }
-    Stack<NodeWithMin> stack = null;
-    /** initialize your data structure here. */
-    public MinStack() {
-        stack = new Stack<NodeWithMin>();        
-    }
-    
-    public void push(int x) {
-        int min = x;
-        if (!stack.isEmpty()) {
-            min = Math.min(x, getMin());
-        }
-        stack.push(new NodeWithMin(min, x));
-    }
-    
-    public void pop() {
-        stack.pop();
-    }
-    
-    public int top() {
-        return stack.peek().val;
-    }
-    
-    public int getMin() {
-        return stack.peek().min;
+ 
+    public static void main(String[] args) {
+        MinStack ms = new MinStack();
+        ms.push(15);
+        System.out.println("So far min == " + ms.getMin());
+        System.out.println("So far min == " + ms.stack);
+        ms.push(10);
+        System.out.println("So far min == " + ms.getMin());
+        System.out.println("So far min == " + ms.stack);
+        ms.push(20);
+        System.out.println("So far min == " + ms.getMin());
+        System.out.println("So far min == " + ms.stack);
+        ms.push(30);
+        System.out.println("So far min == " + ms.getMin());
+        System.out.println("So far min == " + ms.stack);
+        ms.push(5);
+        System.out.println("So far min == " + ms.getMin());
+        System.out.println("So far min == " + ms.stack);
     }
 }
+
+
+// public class MinStack {
+//     private class NodeWithMin {
+//         int min;
+//         int val;
+//         public NodeWithMin(int min, int val) {
+//             this.min = min;
+//             this.val = val;
+//         }
+//     }
+//     Stack<NodeWithMin> stack = null;
+//     /** initialize your data structure here. */
+//     public MinStack() {
+//         stack = new Stack<NodeWithMin>();        
+//     }
+    
+//     public void push(int x) {
+//         int min = x;
+//         if (!stack.isEmpty()) {
+//             min = Math.min(x, getMin());
+//         }
+//         stack.push(new NodeWithMin(min, x));
+//     }
+    
+//     public void pop() {
+//         stack.pop();
+//     }
+    
+//     public int top() {
+//         return stack.peek().val;
+//     }
+    
+//     public int getMin() {
+//         return stack.peek().min;
+//     }
+// }

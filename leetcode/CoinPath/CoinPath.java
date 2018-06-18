@@ -1,6 +1,7 @@
 /*
 Given an array A (index starts at 1) consisting of N integers: A1, A2, ..., AN and an integer B.
-The integer B denotes that from any place (suppose the index is i) in the array A, you can jump to any one of the place in the array A indexed i+1, i+2, …, i+B if this place can be jumped to. Also, if you step on the index i, you have to pay Ai coins.
+The integer B denotes that from any place (suppose the index is i) in the array A, you can jump to any one of the place in the array A indexed i+1, i+2, …, i+B if this place can be jumped to.
+Also, if you step on the index i, you have to pay Ai coins.
 If Ai is -1, it means you can’t jump to the place indexed i in the array.
 
 Now, you start from the place indexed 1 in the array A, and your aim is to reach the place indexed N using the minimum coins.
@@ -12,7 +13,6 @@ If it's not possible to reach the place indexed N then you need to return an emp
 Example 1:
 Input: [1,2,4,-1,2], 2
 Output: [1,3,5]
- 
 
 Example 2:
 Input: [1,2,4,-1,2], 1
@@ -25,8 +25,7 @@ A1 >= 0. A2, ..., AN (if exist) will in the range of [-1, 100].
 Length of A is in the range of [1, 1000].
 B is in the range of [1, 100].
 
-
-
+idea:
 
 Assume path P and Q have the same cost, and P is strictly shorter and P is lexicographically smaller.
 Since P is lexicographically smaller, P and Q must start to differ at some point.
@@ -46,32 +45,91 @@ Here Q is longer but not lexicographically smaller.
 Why? Because j = 3 to n = 5 is not optimal.
 The optimal path should be [1, 3, 5] where the cost is only 2
 
-
+https://www.cnblogs.com/grandyang/p/8183477.html
 */
 
+import java.util.*;
+
 class CoinPath {
+	public static void main(String[] args) {
+		CoinPath eg = new CoinPath();
+		int[] A = new int[] {1,2,4,-1,2};
+		int B = 2;
+		List<Integer> result = eg.cheapestJump(A, B);
+		System.out.println(result.toString());
+	}
+
 	public List<Integer> cheapestJump(int[] A, int B) {
-        int n = A.length;
-        int[] c = new int[n]; // cost
-        int[] p = new int[n]; // previous index
-        int[] l = new int[n]; // length
-        Arrays.fill(c, Integer.MAX_VALUE);
-        Arrays.fill(p, -1);
-        c[0] = 0;
-        for (int i = 0; i < n; i++) {
-            if (A[i] == -1) continue;
-            for (int j = Math.max(0, i - B); j < i; j++) {
-                if (A[j] == -1) continue;
-                int alt = c[j] + A[i];
-                if (alt < c[i] || alt == c[i] && l[i] < l[j] + 1) {
-                    c[i] = alt;
-                    p[i] = j;
-                    l[i] = l[j] + 1;
-                }
-            }
-        }
-        List<Integer> path = new ArrayList<>();
-        for (int cur = n - 1; cur >= 0; cur = p[cur]) path.add(0, cur + 1);
-        return path.get(0) != 1 ? Collections.emptyList() : path;
-    }
+		List<Integer> result = new ArrayList<Integer>();
+		int n = A.length;
+		if (A[n - 1] == -1) {
+			return result;
+		}
+
+		int[] dp = new int[n];
+		int[] pos = new int[n];
+		Arrays.fill(dp, Integer.MAX_VALUE);
+		Arrays.fill(pos, -1);
+		dp[n - 1] = A[n - 1];
+
+		for (int i = n - 2; i >= 0; i--) {
+			if (A[i] == -1) {
+				continue;
+			}
+			for (int j = i + 1; j <= Math.min(i + B, n - 1); j++) {
+				if (dp[j] == Integer.MAX_VALUE) {
+					continue;
+				}
+				if (A[i] + dp[j] < dp[i]) {
+					dp[i] = A[i] + dp[j];
+					pos[i] = j;
+				}
+			}
+		}
+		if (dp[0] == Integer.MAX_VALUE) {
+			return result;
+		}
+		for (int cur = 0; cur != -1; cur = pos[cur]) {
+			result.add(cur + 1);
+		}
+
+		return result;
+	}
+
+	public List<Integer> cheapestJump(int[] A, int B) {
+		int n = A.length;
+
+		int[] cost = new int[n]; // cost
+		int[] prev = new int[n]; // previous index
+		int[] len = new int[n]; // length
+
+		Arrays.fill(cost, Integer.MAX_VALUE);
+		Arrays.fill(prev, -1);
+		cost[0] = 0;
+
+		for (int i = 0; i < n; i++) {
+			if (A[i] == -1) {
+				continue;
+			}
+			for (int j = Math.max(0, i - B); j < i; j++) {
+				if (A[j] == -1) {
+					continue;
+				}
+				int alt = cost[j] + A[i];
+				if (alt < cost[i] || alt == cost[i] && len[i] < len[j] + 1) {
+					cost[i] = alt;
+					prev[i] = j;
+					len[i] = len[j] + 1;
+				}
+			}
+		}
+
+		List<Integer> path = new ArrayList<>();
+		for (int cur = n - 1; cur >= 0;) {
+			path.add(0, cur + 1);
+			cur = prev[cur];
+		}
+
+		return path.get(0) != 1 ? Collections.emptyList() : path;
+	}
 }

@@ -19,6 +19,8 @@ But the following is not:
 
 idea:
 recursion version
+left.left vs right.right
+left.right vs right.left
 
 */
 class TreeNode {
@@ -61,10 +63,15 @@ public class SymmetricTree {
             TreeNode temp1 = left.poll();
             TreeNode temp2 = right.poll();
       
-            if (temp1 == null && temp2 != null || temp1 != null && temp2 == null) return false;
+            if (temp1 == null && temp2 != null || temp1 != null && temp2 == null) {
+                return false;
+            }
 
             if (temp1 != null && temp2 != null) {
-                if (temp1.val != temp2.val) return false;
+                if (temp1.val != temp2.val) {
+                    return false;
+                }
+                // note adding sequence
                 left.add(temp1.left);
                 left.add(temp1.right);
                 right.add(temp2.right);

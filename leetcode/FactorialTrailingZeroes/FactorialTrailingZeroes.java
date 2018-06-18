@@ -19,12 +19,12 @@ a thing to note:
 
 public class FactorialTrailingZeroes {
     public int trailingZeroes(int n) {
-    	int five_cnt = 0;
-    	while ( n > 0 ) {
-    		int k = n / 5;
-    		five_cnt += k;
-    		n = k;
-    	}
-        return five_cnt;
+        int fiveCnt = 0;
+        while (n > 0) {
+            n /= 5;
+            fiveCnt += n;
+        }
+        
+        return fiveCnt;
     }
 }

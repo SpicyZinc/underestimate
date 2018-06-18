@@ -49,7 +49,7 @@ public class SearchInRotatedSortedArray {
             // right part is sorted
             if (A[start] > A[mid]) {
                 // find where the target is
-                if (A[mid+1] <= target && target <= A[end]) { // in sorted right part
+                if (A[mid + 1] <= target && target <= A[end]) { // in sorted right part
                     start = mid + 1;
                 }
                 else { // in unsorted left part

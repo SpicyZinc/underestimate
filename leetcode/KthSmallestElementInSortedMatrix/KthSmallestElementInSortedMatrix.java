@@ -14,14 +14,55 @@ Note:
 You may assume k is always valid, 1 ≤ k ≤ n2.
 
 idea:
+https://www.programcreek.com/2016/08/leetcode-kth-smallest-element-in-a-sorted-matrix-java/
 1. binary search
 kthSmallest, since the matrix is sorted,
 binary search to find position in each row, add together
 note: matrix is not serpentine sorted, it is another way sorted
-2. PriorityQueue, http://www.jiuzhang.com/solutions/kth-smallest-number-in-sorted-matrix/
+2. PriorityQueue, over size of k, poll()
+weird answer always,
+http://www.jiuzhang.com/solutions/kth-smallest-number-in-sorted-matrix/
 */
 
 public class KthSmallestElementInSortedMatrix {
+    // why fail
+    public int kthSmallest(int[][] matrix, int k) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int min = matrix[0][0];
+        int max = matrix[m - 1][n - 1];
+
+        int cnt = 0;
+        while (min < max) {
+            int mid = min + (max - min) / 2;
+            for (int i = 0; i < m; i++) {
+                cnt += getCntBiggerThanTarget(matrix[i], mid);
+            }
+            if (cnt < k) {
+                min = mid + 1;
+            } else {
+                max = mid;
+            }
+        }
+
+        return min;
+    }
+
+    public int getCntBiggerThanTarget(int[] a, int target) {
+        if (a[0] >= target) {
+            return 0;
+        }
+        if (a[a.length - 1] < target) {
+            return a.length;
+        }
+        int cnt = 0;
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] < target) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
     // method 1
     public int kthSmallest(int[][] matrix, int k) {
         int n = matrix.length;
@@ -62,51 +103,25 @@ public class KthSmallestElementInSortedMatrix {
 
     // method 2
     public int kthSmallest(int[][] matrix, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer a, Integer b) {
+                return b.compareTo(a);
+            }
+        });
+        
         int m = matrix.length;
         int n = matrix[0].length;
         
-        PriorityQueue<Node> queue = new PriorityQueue<Node>(k, new NodeComparator());
-        boolean[][] isVisited = new boolean[m][n];
-        queue.offer(new Node(0, 0, matrix[0][0]));
-        isVisited[0][0] = true;
-        int[][] directions = {{0,1}, {1,0}};
-
-        for (int i = 0; i < k - 1; i++) {
-            Node current = queue.poll();
-            for (int[] dir : directions) {
-                int newX = current.x + dir[0];
-                int newY = current.y + dir[1];
-                if ( isValid(matrix, newX, newY, isVisited) ) {
-                    isVisited[newX][newY] = true;
-                    queue.offer(new Node(newX, newY, matrix[newX][newY]));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                pq.offer(matrix[i][j]);
+                if (pq.size() > k) {
+                    pq.poll();
                 }
             }
         }
-        return queue.peek().value;
-    }
-
-    public boolean isValid(int[][] matrix, int x, int y, boolean[][] isVisited) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-        return x < m && y < n && !isVisited[x][y];
-    }
-}
-
-class Node {
-    public int x;
-    public int y;
-    public int value;
-
-    public Node(int x, int y, int value) {
-        this.x = x;
-        this.y = y;
-        this.value = value;
-    }
-}
-
-class NodeComparator implements Comparator<Node> {
-    @Override
-    public int compare(Node a, Node b) {
-        return a.value - b.value;        
+        
+        return pq.poll();
     }
 }

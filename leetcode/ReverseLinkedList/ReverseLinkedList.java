@@ -1,6 +1,13 @@
 /*
 Reverse a singly linked list.
 
+Example:
+Input: 1->2->3->4->5->NULL
+Output: 5->4->3->2->1->NULL
+
+Follow up:
+A linked list can be reversed either iteratively or recursively. Could you implement both?
+
 idea:
 1. Iteratively
 2. Recursively
@@ -12,25 +19,32 @@ class ListNode {
 }
 
 public class ReverseLinkedList {
-    public ListNode reverse(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-
+    public ListNode reverseList(ListNode head) {
         ListNode curr = head;
         ListNode prev = null;
-        ListNode next;
-        
-        while (curr != null && curr.next != null) {
-            next = curr.next;
+
+        while (curr != null) {
+            ListNode next = curr.next;
             curr.next = prev;
             prev = curr;
             curr = next;
         }
-        // curr points to end of the list, not set its next yet
-        curr.next = prev;
 
-        return curr;
+        return prev;
+    }
+
+    public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        // reverse ListNode head.next
+        ListNode reversedRemaining = reverseList(head.next);
+        // now reversedRemaining points to reversed head
+        // cut off (head.next).next by letting .next point to head (now tail);
+        head.next.next = head;
+        head.next = null;
+        
+        return reversedRemaining;
     }
 
     public ListNode reverseListRecursively(ListNode head) {
@@ -45,19 +59,5 @@ public class ReverseLinkedList {
         second.next = head;
 
         return remaining;
-    }
-
-    public ListNode reverse(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        // reverse ListNode head.next
-        ListNode reversedRemaining = reverse(head.next);
-        // now reversedRemaining points to reversed head
-        // cut off (head.next).next by letting .next point to head (now tail);
-        head.next.next = head;
-        head.next = null;
-        
-        return reversedRemaining;
     }
 }

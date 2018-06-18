@@ -32,7 +32,6 @@ class MaximumAverageSubarray {
 	public double findMaxAverage(int[] nums, int k) {
 		int n = nums.length;
 		double[] sum = new double[n + 1];
-		// int[] sum = new int[n + 1];
 		for (int i = 0; i < n; i++) {
 			sum[i + 1] = sum[i] + nums[i];
 		}
@@ -41,25 +40,10 @@ class MaximumAverageSubarray {
 		for (int i = 0; i <= n - k; i++) {
 			for (int j = k; i + j <= n; j++) {
 				double average = (sum[i + j] - sum[i]) / j;
-				if (maxAvg < average) {
-					maxAvg = average;
-				}
+				maxAvg = Math.max(maxAvg, average);
 			}
 		}
 
 		return maxAvg;
-	}
-	// seems working as well
-	public double findMaxAverage(int[] nums, int k) {
-		int n = nums.length;
-		int[] sums = new int[n + 1];
-		for (int i = 0; i < n; ++i){
-			sums[i + 1] = sums[i] + nums[i];
-		}
-		double max = Double.NEGATIVE_INFINITY;
-		for (int i = 0; i + k < sums.length; i++) {
-			max = Math.max(max, (sums[i + k] - sums[i]) / (k * 1.0));
-		}
-		return max;
 	}
 }

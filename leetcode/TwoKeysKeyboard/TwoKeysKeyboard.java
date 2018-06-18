@@ -22,6 +22,15 @@ idea:
 find the rule, n == 2, minSteps = 2; n == 3, minSteps = 3;
 1. recursion
 2. iteration
+
+to get n 'A', at worst need n steps
+if want < n steps
+need to find all factors of n, e.g. x is a factor
+n % x == 0
+copy, paste, ... === x times
+
+subset == (n / x) to call recursion on
+
 */
 public class TwoKeysKeyboard {
 	// method 1

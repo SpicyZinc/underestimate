@@ -7,7 +7,8 @@ Note:
 The length of A and B will be between 1 and 10000.
 
 idea:
-once sb.length > A.length() + B.length(), no match should return -1
+once sb.length > A.length() + B.length(),
+if no match should return -1
 */
 
 class RepeatedStringMatch {
@@ -25,5 +26,24 @@ class RepeatedStringMatch {
 		}
 
 		return count;
+	}
+
+	// suppose q times A and q + 1 times A, must in q, q + 1
+	public int repeatedStringMatch(String A, String B) {
+		StringBuilder sb = new StringBuilder();
+		int count = 0;
+		while (sb.length() < B.length()) {
+			sb.append(A);
+			count++;
+		}
+
+		if (sb.toString().contains(B)) {
+			return count;
+		}
+		if (sb.append(A).toString().contains(B)) {
+			return count + 1;
+		}
+		
+		return -1;
 	}
 }

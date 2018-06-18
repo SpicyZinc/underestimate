@@ -2,8 +2,8 @@
 Design and implement a data structure for a compressed string iterator.
 It should support the following operations: next and hasNext.
 
-The given compressed string will be in the form of each letter followed
-by a positive integer representing the number of this letter existing in the original uncompressed string.
+The given compressed string will be in the form of each letter
+followed by a positive integer representing the number of this letter existing in the original uncompressed string.
 
 next() - if the original string still has uncompressed characters, return the next letter; Otherwise return a white space.
 hasNext() - Judge whether there is any letter needs to be uncompressed.
@@ -29,7 +29,7 @@ iterator.next(); // return ' '
 
 idea:
 1. my method Memory Limit Exceeded [["a1234567890b1234567890"],[],[],[],[],[],[],[],[],[]]
-2. Not convert to literal string
+2. No need to convert to literal string
 */
 
 public class StringIterator {
@@ -38,12 +38,12 @@ public class StringIterator {
     public StringIterator(String compressedString) {
         idx = 0;
         StringBuilder sb = new StringBuilder();
-        char last = ' ';
+        char lastChar = ' ';
         for (int i = 0; i < compressedString.length();) {
         	int val = 0;
         	char c = compressedString.charAt(i); 
             if (Character.isLetter(c)) {
-                last = c;
+                lastChar = c;
                 i++;
             }
         	else if (Character.isDigit(c)) {
@@ -52,12 +52,11 @@ public class StringIterator {
         			i++;
         		}
         		for (int j = 0; j < val; j++) {
-            		sb.append(last);
+            		sb.append(lastChar);
             	}
         	}
         }
         s = sb.toString();
-        System.out.println(s);
     }
     
     public char next() {
@@ -112,5 +111,3 @@ public class StringIterator {
 		return repetitions > 0 || i < compressedString.length();
 	}
 }
-
-

@@ -34,7 +34,8 @@ class BombEnemy {
 
 		int m = grid.length;
 		int n = grid[0].length;
-		int[][] max = new int[m][n];
+		// maxKills can reach at (i, j)
+		int[][] maxKills = new int[m][n];
 
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -73,7 +74,7 @@ class BombEnemy {
 						}
 					}
 
-					max[i][j] = kills;
+					maxKills[i][j] = kills;
 				}
 			}
 		}
@@ -81,7 +82,7 @@ class BombEnemy {
 		int maxKill = 0;
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				maxKill = Math.max(maxKill, max[i][j]);
+				maxKill = Math.max(maxKill, maxKills[i][j]);
 			}
 		}
 

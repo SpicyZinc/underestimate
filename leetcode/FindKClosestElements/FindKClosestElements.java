@@ -16,21 +16,26 @@ Absolute value of elements in the array and x will not exceed 10^4
 
 idea:
 sort the array based on the distance to the target and grab the top k elements
+List.subList(0, k); k is not inclusive
 */
 
 public class FindKClosestElements {
-	public List<Integer> findClosestElements(List<Integer> arr, int k, int x) {
-        Collections.sort(arr, new Comparator<Integer>() {
+	public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        List<Integer> nums = new ArrayList<Integer>();
+        for (int i : arr) {
+            nums.add((Integer) i);
+        }
+        Collections.sort(nums, new Comparator<Integer>() {
             @Override
             public int compare(Integer a, Integer b) {
                 return a == b ? 0 : Math.abs(a - x) - Math.abs(b - x);
             }
 		});
-		arr = arr.subList(0, k);
-		Collections.sort(arr);
-		return arr;
+		nums = nums.subList(0, k);
+        Collections.sort(nums);
+		return nums;
     }
-
+    // not sure this works or not
 	public List<Integer> findClosestElements(List<Integer> arr, int k, int x) {
 		int min = arr.get(0);
 		int max = arr.get(arr.size() - 1);
@@ -39,13 +44,11 @@ public class FindKClosestElements {
 			for (int i = 0; i < k; i++) {
 				result.add(arr.get(i));
 			}
-		}
-		else if (x >= max) {
+		} else if (x >= max) {
 			for (int i = arr.size() - k; i < arr.size(); i++) {
 				result.add(arr.get(i));
 			}
-		}
-		else {
+		} else {
 			int pos = FindInsertionPosition(arr, x);
 			int start = 0;
 			while (start + k < pos) {
@@ -64,18 +67,16 @@ public class FindKClosestElements {
 		int end = arr.size() - 1;
 		
 		while (start < end) {
-			int mid = (start + end) / 2;
+			int mid = start + (end - start) / 2;
 			if (arr.get(mid) > T) {
 				end = mid;
-			}
-			else {
+			} else {
 				start = mid + 1;
 			}
         }
         if (arr.get(start) > T) {
 			return start;
-        }
-        else {
+        } else {
 			return start + 1;
         } 
 	}

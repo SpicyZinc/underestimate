@@ -14,8 +14,12 @@ notes:
 Method 1
 scan from the back of the array
 check if substring(0, j) is a palindrome
-in this way, we can guarantee that the shortest palindrome can be found out
-because the earliest a partial palindrome found, the shortest the palindrome could be generated
+this way can guarantee that the shortest palindrome can be found out
+because the earliest a partial palindrome found,
+the biggest partial this palindrome in the string,
+the fewest characters added to generate the shortest the palindrome
+
+abccba|fe => fe => ef => ef|abccba|fe
 
 Method 2
 recursion, keep applying shortestPalindrom()
@@ -70,18 +74,25 @@ public class ShortestPalindrome {
     }
  	// passed test, method 2
     public String shortestPalindrome(String s) {
-		int j = 0;
-	    for (int i = s.length() - 1; i >= 0; i--) {
-	        if (s.charAt(i) == s.charAt(j)) { 
-	        	j += 1; 
-	        }
-	    }
-	    if (j == s.length()) { 
-	    	return s; 
-	    }
-	    String suffix = s.substring(j);
-	    return new StringBuilder(suffix).reverse().toString() + shortestPalindrome(s.substring(0, j)) + suffix;
+        int i = 0;
+        int j = s.length() - 1;
+        while (j >= 0) {
+            if (s.charAt(i) == s.charAt(j)) {
+                i++;
+            }
+            j--;
+        }
+        if (i == s.length()) {
+            return s;
+        }
+        
+        String suffix = s.substring(i);
+        String prefix = new StringBuilder(suffix).reverse().toString();
+        String mid = shortestPalindrome(s.substring(0, i));
+        
+        return prefix + mid + suffix;
     }
+
     // passed test, method 3
     public String shortestPalindrome(String s) {
         if (s == null || s.length() <= 1) {

@@ -192,6 +192,7 @@ Add Bold Tag in String
 Shopping Offers
 Maximum Average Subarray I
 Maximum Average Subarray II
+2 Keys Keyboard
 4 Keys Keyboard
 Find Duplicate Subtrees
 Coin Path

@@ -25,6 +25,7 @@ Note:
 The given array will be in the range [1, 20000].
 
 idea:
+output which day 2 flowers blooming with k (empty slots) not-blooming flowers in between
 
 flowers[] means
 day 1, position 1 bloom
@@ -46,21 +47,26 @@ note: i reaches right, found out a valid subarray
 class KEmptySlots {
 	public int kEmptySlots(int[] flowers, int k) {
     	int n = flowers.length;
-    	// flower at position i + 1 blooms at days[i]
+        // flower blooming days
+        // flower 1 blooms at which day
+        // flower 2 blooms at which day
+        // flower at position i + 1 blooms at days[i]
         int[] days = new int[n];
         for (int i = 0; i < n; i++) {
-        	days[flowers[i] - 1] = i + 1;
+            days[flowers[i] - 1] = i + 1;
         }
 
 		int res = Integer.MAX_VALUE;
+        // maintain a window of size k
     	int left = 0;
     	int right = k + 1;
-
+        // loop through flowers
         for (int i = 0; right < days.length; i++) {
             // a valid subarray found, the condition is i reaches right
             if (i == right) {
                 res = Math.min(res, Math.max(days[left], days[right]));
             }
+            // make sure no flowers bloom in between, if break the rule, update the window range
             if (days[i] < days[left] || days[i] <= days[right]) {
                 // maintain k flowers between left and right
                 left = i;

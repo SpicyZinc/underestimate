@@ -5,14 +5,13 @@ Return a deep copy of the list.
 idea:
 http://www.programcreek.com/2012/12/leetcode-copy-list-with-random-pointer/
 1. use hashmap to keep origin - copy pair, 
-loop through the origin, create copy 
-save to hashmap, meanwhile populate next in the copy list
+loop through the origin, create copy node, save to hashmap;
+meanwhile populate next in the copy list
 
 loop again, populate random pointer
 
 http://blog.csdn.net/fightforyourdream/article/details/16879561
 2. A----->B----->C----->D----->E
-
    A      B      C		D      E
    |    / |    / |    / |    / |
    |   /  |   /  |   /  |  	/  |
@@ -29,7 +28,6 @@ class RandomListNode {
 public class CopyListWithRandomPointer {
 	// method 1, hashmap passed test 
     public RandomListNode copyRandomList(RandomListNode head) {
-        // write your code here
         if (head == null) {
             return head;
         }

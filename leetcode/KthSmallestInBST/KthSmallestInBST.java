@@ -19,7 +19,7 @@ http://algorithms.tutorialhorizon.com/inorder-traversal-non-recursive-approach/
 in-order == left - root - right
 
 1. queue to in-order traverse a BST, count k times, recursively
-2. must remember how to use stack to traverse BST in-order, very different
+2. must remember how to use stack to in-order traverse BST
 */
 
 class TreeNode {

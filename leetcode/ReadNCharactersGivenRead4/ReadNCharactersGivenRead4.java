@@ -21,7 +21,7 @@ public class ReadNCharactersGivenRead4 extends Reader4 {
 		char[] tempBuffer = new char[4];
 		while (true) {
 			int len = read4(tempBuffer);
-			// if no characters left, return 0
+			// if no characters left, return whatever size is
 			if (len == 0) {
 				return size;
 			}

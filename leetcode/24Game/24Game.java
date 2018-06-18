@@ -19,8 +19,8 @@ You cannot concatenate numbers together. For example, if the input is [1, 2, 1, 
 idea:
 dfs or backtracking
 note:
-choose 2 numbers (with order) in 12 ways and perform one of 4 operations (12 * 4). Then, with 3 remaining numbers,
-choose 2 of them and perform one of 4 operations (6 * 4)
+In 4 cards representing 4 numbers, choose 2 numbers (with order) in 12 ways and perform one of 4 operations (12 * 4).
+Then, with 3 remaining numbers, choose 2 of them and perform one of 4 operations (6 * 4)
 finally 2 numbers left and make a final choice of 2 * 4 possibilities.
 
 12 * 4
@@ -30,59 +30,81 @@ possibilities
 
 */
 class 24Game {
-	public boolean judgePoint24(int[] nums) {
-		List<Double> numbers = new ArrayList<Double>();
+    public boolean judgePoint24(int[] nums) {
+        List<Double> numbers = new ArrayList<Double>();
         for (int num : nums) {
             numbers.add((double) num);
         }
-		return dfs(numbers);
-	}
-
+        return dfs(numbers);
+    }
+    
     public boolean dfs(List<Double> nums) {
-		if (nums.size() == 0) return false;
-		if (nums.size() == 1) {
-			return Math.abs(nums.get(0) - 24) < 0.000006;
-		}
+        if (nums.size() == 0) {
+            return false;
+        }
+        if (nums.size() == 1) {
+            return Math.abs(nums.get(0) - 24) < 0.000006;
+        }
+        
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                // make sure it's different two cards
+                if (i != j) {
+                    // choose 2 operands, whatever chosen, leftover need to be in another list
+                    List<Double> remainingNums = new ArrayList<Double>();
+                    for (int k = 0; k < n; k++) {
+                        if (k != i && k != j) {
+                            remainingNums.add(nums.get(k));
+                        }
+                    }
 
-		int n = nums.size();
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (i != j) {
-					// choose 2 operands, whatever chosen, leftover need to be in another list
-					List<Double> remainingNums = new ArrayList<Double>();
-					for (int k = 0; k < n; k++) {
-						if (k != i && k != j) {
-							remainingNums.add(nums.get(k));
-						}
-					}
-					// 4 operations
-					for (int k = 0; k < 4; k++) {
-						// if +, * operations, no need to calculate different arrangement
-						// like a + b == b + a, this way reduce some time
-						if (k < 2 && j > i) continue;
-						double a = nums.get(i);
-						double b = nums.get(j);
-
-						if (k == 0) remainingNums.add(a + b);
-						if (k == 1) remainingNums.add(a * b);
-						if (k == 2) remainingNums.add(a - b);
-						if (k == 3) {
-							if (b != 0) {
-								remainingNums.add(a / b);
-							} else {
-								continue;
-							}
-						}
+                    // 4 operations
+                    // 0 -- + 
+                    // 1 -- * 
+                    // 2 -- - 
+                    // 3 -- /                    
+                    for (int k = 0; k < 4; k++) {
+                        // note, j > i because j < i is calculated
+                        // if +, * operations, no need to calculate different arrangement
+						// like a + b == b + a, reduce some time
+                        if (k < 2 && j > i) {
+                            continue;
+                        }
+                        
+                        double a = nums.get(i);
+                        double b = nums.get(j);    
+                        
+                        if (k == 0) {
+                            remainingNums.add(a + b);
+                        }
+                        
+                        if (k == 1) {
+                            remainingNums.add(a * b);
+                        }
+                        
+                        if (k == 2) {
+                            remainingNums.add(a - b);
+                        }
+                        
+                        if (k == 3) {
+                            if (b != 0) {
+                                remainingNums.add(a / b);
+                            } else {
+                                continue;
+                            }
+                        }
                         
                         if (dfs(remainingNums)) {
                             return true;
                         }
+                        
                         remainingNums.remove(remainingNums.size() - 1);
-					}
-				}
-			}
-		}
-
-		return false;
-	}
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
 }

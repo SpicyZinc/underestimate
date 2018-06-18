@@ -35,7 +35,7 @@ http://blog.jerkybible.com/2017/03/18/LeetCode-514-Freedom-Trail/
 
 1. dfs, easy to understand
 but Map<String, Map<Integer, Integer>> cache = new HashMap<>() used to avoid unnecessary repeat
-note, this uses rotate array or rotate string 3 steps to rotate
+note, this uses rotate array or rotate string, 3 steps to rotate
 123436 => 343612
 that's why it's called rotate string
 

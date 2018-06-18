@@ -58,6 +58,7 @@ public class PathSumII {
 		}
 	}
     // recursion dfs
+    // note, no return and position of when finding out a case
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
         List<List<Integer>> result = new ArrayList<>();
         dfs(root, sum, new ArrayList<Integer>(), result);
@@ -66,14 +67,17 @@ public class PathSumII {
     
     public void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> result) {
         if (node == null) return;
+
         path.add(node.val);
+        
         if (node.left == null && node.right == null && remaining == node.val) {
             result.add(new ArrayList<Integer>(path));
         }
         dfs(node.left, remaining - node.val, path, result);
         dfs(node.right, remaining - node.val, path, result);
+
         path.remove(path.size() - 1);
-    } 
+    }
 
 	// iterative
     public List<List<Integer>> pathSum(TreeNode root, int sum) {

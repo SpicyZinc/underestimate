@@ -17,9 +17,8 @@ word = "ABCB", -> returns false.
 
 idea:
 DFS and use a boolean array to keep track if one cell was visited before or not.
+in this case, set board[i][j] = 0 as a flag
 
-http://gongxuns.blogspot.com/2013/01/leetcodeword-search.html
-failed case ["ABCE","SFES","ADEE"] "ABCESEEEFS"
 */
 
 import java.util.*;

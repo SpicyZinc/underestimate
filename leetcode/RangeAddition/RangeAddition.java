@@ -1,53 +1,78 @@
 /*
-Given an m * n matrix M initialized with all 0's and several update operations.
-Operations are represented by a 2D array, and each operation is represented by an array with two positive integers a and b,
-which means M[i][j] should be added by one for all 0 <= i < a and 0 <= j < b.
+Assume you have an array of length n initialized with all 0's and are given k update operations.
+Each operation is represented as a triplet: [startIndex, endIndex, inc]
+which increments each element of subarray A[startIndex ... endIndex] (startIndex and endIndex inclusive) with inc.
 
-You need to count and return the number of maximum integers in the matrix after performing all the operations.
+Return the modified array after all k operations were executed.
 
-Example 1:
-Input: 
-m = 3, n = 3
-operations = [[2,2],[3,3]]
-Output: 4
+Example:
+Given: length = 5,
+    updates = [
+        [1,  3,  2],
+        [2,  4,  3],
+        [0,  2, -2]
+    ]
+Output:
+    [-2, 0, 3, 5, 3]
 
 Explanation:
 
-Initially, M = 
-[[0, 0, 0],
- [0, 0, 0],
- [0, 0, 0]]
+Initial state:
+[ 0, 0, 0, 0, 0 ]
+After applying operation [1, 3, 2]:
+[ 0, 2, 2, 2, 0 ]
+After applying operation [2, 4, 3]:
+[ 0, 2, 5, 5, 3 ]
+After applying operation [0, 2, -2]:
+[-2, 0, 3, 5, 3 ]
 
-After performing [2,2], M = 
-[[1, 1, 0],
- [1, 1, 0],
- [0, 0, 0]]
-
-After performing [3,3], M = 
-[[2, 2, 1],
- [2, 2, 1],
- [1, 1, 1]]
-
-So the maximum integer in M is 2, and there are four of it in M. So return 4.
-
-Note:
-The range of m and n is [1,40000].
-The range of a is [1,m], and the range of b is [1,n].
-The range of operations size won't exceed 10,000.
+Hint:
+Thinking of using advanced data structures? You are thinking it too complicated.
+For each update operation, do you really need to update all elements between i and j?
+Update only the first and end element is sufficient.
+The optimal time complexity is O(k + n) and uses O(1) extra space.
 
 idea:
-easy
-note, maxRow and maxCol is NOT index based
+follow the hint,
+add increment at start position
+subtract increment at (end + 1) position
+then use a sum variable to record sum in array so far, and assign sum to each element
 */
+import java.util.*;
 
-public class RangeAddition {
-    public int maxCount(int m, int n, int[][] ops) {
-		int maxRow = m;
-		int maxCol = n;
-		for (int[] op : ops) {
-			maxRow = Math.min(op[0], maxRow);
-			maxCol = Math.min(op[1], maxCol);
+class RangeAddition {
+	public static void main(String[] args) {
+		RangeAddition eg = new RangeAddition();
+		int[][] updates = {
+			{1, 3, 2},
+			{2, 4, 3},
+			{0, 2, -2}
+		};
+
+		int[] result = eg.getModifiedArray(5, updates);
+		System.out.println(Arrays.toString(result));
+	}
+
+	public int[] getModifiedArray(int length, int[][] updates) {
+		int[] result = new int[length];
+
+		for (int[] update : updates) {
+			int start = update[0];
+			int end = update[1];
+			int increment = update[2];
+
+			result[start] += increment;
+			if (end < length - 1) {
+				result[end + 1] += -1 * increment;
+			}
 		}
-		return maxRow * maxCol;
-    }
+
+		int sum = 0;
+		for (int i = 0; i < length; i++) {
+			sum += result[i];
+			result[i] = sum;
+		}
+
+		return result;
+	}
 }

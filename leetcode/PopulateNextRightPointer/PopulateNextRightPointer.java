@@ -71,12 +71,12 @@ public class PopulateNextRightPointer {
 		connect(root.right);
 	}
 	// self written version passed test
-	public static void connect(TreeLinkNode root) {
+	public void connect(TreeLinkNode root) {
         // 空节点就直接返回  
         if (root == null) {  
             return;  
         }      
-        // 左节点非空，连接右节点  
+        // 左节点非空, 连接右节点  
         if (root.left != null) {  
             root.left.next = root.right;  
         }
@@ -135,6 +135,31 @@ public class PopulateNextRightPointer {
             }
 			
             leftWall = leftWall.left;
+        }
+    }
+    // best and typical iterative 
+    public void connect(TreeLinkNode root) {
+        if (root == null) {
+            return;
+        }
+
+        Queue<TreeLinkNode> queue = new LinkedList<TreeLinkNode>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeLinkNode node = queue.poll();
+                if (i < size - 1) {
+                    node.next = queue.peek();
+                }
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
         }
     }
 

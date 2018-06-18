@@ -33,10 +33,59 @@ Note:
 The size of the input 2D-array will be between 3 and 1000.
 Every integer represented in the 2D-array will be between 1 and N, where N is the size of the input array.
 
+idea:
+need to go back
 */
 
-class RedundantConnectionII {
-    public int[] findRedundantDirectedConnection(int[][] edges) {
-        
-    }
+class RedundantConnection {
+	public int[] findRedundantDirectedConnection(int[][] edges) {
+		int n = edges.length;
+		int[] root = new int[n + 1];
+		int[] first = new int[2];
+		int[] second = new int[2];
+
+		for (int[] edge : edges) {
+			int start = edge[0];
+			int end = edge[1];
+			// indegree
+			if (root[end] == 0) {
+				root[end] = start;
+			} else {
+				first[0] = root[end];
+				first[1] = end;
+				second = edge;
+				// ?
+				edge[1] = 0;
+			}
+		}
+
+		for (int i = 0; i <= n; i++) {
+			root[i] = i;
+		}
+
+		for (int[] edge : edges) {
+			int start = edge[0];
+			int end = edge[1];
+			if (end == 0) {
+				continue;
+			}
+
+			int x = getRoot(root, start);
+			int y = getRoot(root, end);
+			if (x == y) {
+				return first.length == 0 ? edge : first;
+			}
+			root[x] = y;
+		}
+
+		return second;
+	}
+
+	public int getRoot(int[] root, int i) {
+		while (i != root[i]) {
+			root[i] = root[root[i]];
+			i = root[i];
+		}
+		return i;
+	}
 }

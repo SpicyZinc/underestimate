@@ -28,6 +28,11 @@ You may assume k is always valid, ie: 1 ≤ k ≤ input array's size for non-emp
 idea:
 1. direct thought
 2. use minHeap and maxHeap, https://leetcode.com/submissions/detail/44226667/
+https://blog.csdn.net/MebiuW/article/details/54408831
+maxHeap stores smaller half
+minHeap stores greater half
+minHeap equal or one more than maxHeap in the term of size
+
 tried to debug why heap is empty after first element gets in,
 how could I did not think of poll() in getMedian() instead of peek()
 because getMedian() called frequently, heap is empty.
@@ -66,17 +71,17 @@ public class SlidingWindowMedian {
     	}
     	Arrays.sort(numArray);
     	double median;
-		if (numArray.length % 2 == 0) {
-		    median = ((double)numArray[numArray.length/2] + (double)numArray[numArray.length/2 - 1])/2;
+        int len = numArray.length;
+		if (len % 2 == 0) {
+		    median = ((double)numArray[len / 2] + (double)numArray[len / 2 - 1]) / 2;
 		} else {
-		    median = (double) numArray[numArray.length/2];
+		    median = (double) numArray[len / 2];
 		}
 
 		return median;
     }
 
     // method 2
-
     PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
     PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(new Comparator<Integer>() {
         @Override
@@ -84,7 +89,7 @@ public class SlidingWindowMedian {
             return b.compareTo(a);
         }
     });
-
+    
     public double[] medianSlidingWindow(int[] nums, int k) {
         int n = nums.length;
         if (k > n) {
@@ -92,16 +97,31 @@ public class SlidingWindowMedian {
         }
         
         double[] medians = new double[n - k + 1];
+        
         for (int i = 0; i <= n; i++) {
             if (i >= k) {
                 medians[i - k] = getMedian();
                 remove(nums[i - k]);
             }
+            
             if (i < n) {
                 add(nums[i]);
             }
         }
+        
         return medians;
+    }
+    
+    public double getMedian() {
+        if (minHeap.isEmpty() && maxHeap.isEmpty()) {
+            return 0;
+        }
+        
+        if (minHeap.size() > maxHeap.size()) {
+            return (double) minHeap.peek();
+        } else {
+            return ((double) minHeap.peek() + (double) maxHeap.peek()) / 2.0;
+        }
     }
     
     public void add(int num) {
@@ -110,10 +130,8 @@ public class SlidingWindowMedian {
         } else {
             minHeap.add(num);
         }
-        // balance two heaps
         balance();
     }
-    
     
     public void remove(int num) {
         if (num < getMedian()) {
@@ -121,10 +139,9 @@ public class SlidingWindowMedian {
         } else {
             minHeap.remove(num);
         }
-        // balance two heaps
         balance();
     }
-    
+    // balance two heaps
     // always minHeap equal with or one more than the maxHeap
     public void balance() {
         if (minHeap.size() < maxHeap.size()) {
@@ -132,17 +149,6 @@ public class SlidingWindowMedian {
         }
         if (minHeap.size() > maxHeap.size() + 1) {
             maxHeap.add(minHeap.poll());
-        }
-    }
-    
-    public double getMedian() {
-        if (minHeap.isEmpty() && maxHeap.isEmpty()) {
-            return 0;
-        }
-        if (minHeap.size() > maxHeap.size()) {
-            return (double) minHeap.peek();
-        } else {
-            return ( (double) minHeap.peek() + (double) maxHeap.peek() ) / 2.0;
         }
     }
 }

@@ -10,30 +10,45 @@ Output: "bacdfeg"
 Restrictions:
 The string consists of lower English letters only.
 Length of the given string and k will in the range [1, 10000]
+
+idea:
+go though each char, for every 2k chars, first k, and second k char
+note, not forget to check if exceed str length or not
 */
 
 public class Reverse String {
 	public String reverseStr(String s, int k) {
-        if (s.length() == 0 || s == null) {
-    		return s;
-    	}
-    	if (k % s.length() == 0) {
-    	    return new StringBuilder(s).reverse().toString();
-    	}
+		if (s.length() == 0 || s == null) {
+			return s;
+		}
 
+		int len = s.length();
+		if (k > 0 && k % len == 0) {
+			return new StringBuilder(s).reverse().toString();
+		}
 		StringBuilder sb = new StringBuilder();
-		int i = 0, j = 0;
-		while (i < s.length()) {
-			// first k
-			j = (i + k) <= s.length() ? i + k : s.length();
+		int i = 0;
+		int j = 0;
+		while (i < len) {
+			// first k chars
+			j = (i + k) <= len ? i + k : len;
 			sb.append( new StringBuilder(s.substring(i, j)).reverse().toString() );
-			// second k
+			// second k chars
 			i = j;
-			j = i + k <= s.length() ? i + k : s.length();
+			j = (i + k) <= len ? i + k : len;
 			sb.append(s.substring(i, j));
-
+			// update i
 			i = j;
 		}
+
 		return sb.toString();
+    }
+    // c++, not working because of syntax, logic is correct
+	public String reverseStr(String s, int k) {
+		for (int i = 0; i < s.length(); i += 2 * k) {
+			int end = Math.min(s.begin() + i + k, s.length());
+			reverse(s.begin() + i, end);
+		}
+		return s;
     }
 }

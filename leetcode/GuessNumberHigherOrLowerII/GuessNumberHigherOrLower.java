@@ -18,6 +18,7 @@ Given a particular n ≥ 1, find out how much money you need to have to guarante
 
 idea:
 https://www.hrwhisper.me/leetcode-guess-number-higher-lower-ii/
+https://www.cnblogs.com/grandyang/p/5677550.html
 
 dp[i][j]: minimum money to guarantee win for subproblem [i, j]
 Corner case: dp[i][i] = 0 (because the only element must be correct)
@@ -49,16 +50,18 @@ public class GuessNumberHigherOrLower {
     }
 
 	public int getMoneyAmount(int n) {
-        int[][] dp = new int[n+1][n+1];
-	    for (int len = 1; len < n; len++) {
-	        for (int i = 1; i + len <= n; i++) {
+        int[][] dp = new int[n + 1][n + 1];
+		for (int len = 1; len < n; len++) {
+	        for (int i = 1; i < n; i++) {
 	            int j = i + len;
-	            int min = Integer.MAX_VALUE;
-	            for (int k = i; k < j; k++) {
-	            	int tmp = k + Math.max(dp[i][k-1], dp[k+1][j]);
-	            	min = Math.min(min, tmp);
-	            }
-	            dp[i][j] = min;
+	            int minCost = Integer.MAX_VALUE;
+                if (j <= n) {
+                    for (int k = i; k < j; k++) {
+                        int cost = k + Math.max(dp[i][k - 1], dp[k + 1][j]);
+                        minCost = Math.min(minCost, cost);
+                    }
+                    dp[i][j] = minCost;
+                }
 	        }
 	    }
 

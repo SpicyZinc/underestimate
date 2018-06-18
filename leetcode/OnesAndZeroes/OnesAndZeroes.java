@@ -28,26 +28,29 @@ Math.max(dp[i][j], dp[i-zeros][j-ones] + 1);
 public class OnesAndZeroes {
     public int findMaxForm(String[] strs, int m, int n) {
         int[][] dp = new int[m + 1][n + 1];
-    	// each string, take it or not take it, can give rise to different results
-    	// e.g. {"10", "0", "1"} if 10 taken, m=1, n=1 can only give 1 string
-    	// otherwise can give 2 strings
+        // each string, take it or not take it, can give rise to different results
+        // e.g. {"10", "0", "1"} if 10 taken, m=1, n=1 can only give 1 string
+        // otherwise can give 2 strings
         for (String str : strs) {
-        	int zeros = 0, ones = 0;
-        	for (int k = 0; k < str.length(); k++) {
-        		char c = str.charAt(k);
-        		if (c == '0') {
-        		    zeros++;
-        		} else {
-        		    ones++;
-        		}
-        	}
-        	for (int i = m; i >= zeros; i--) {
-        		for (int j = n; j >= ones; j--) {
-					dp[i][j] = Math.max(dp[i][j], dp[i - zeros][j - ones] + 1);
-        		}
-        	}
+            int zeroCnt = 0;
+            int oneCnt = 0;
+            for (int k = 0; k < str.length(); k++) {
+                char c = str.charAt(k);
+                if (c == '0') {
+                    zeroCnt++;
+                } else {
+                    oneCnt++;
+                }
+            }
+            
+            for (int i = m; i >= zeroCnt; i--) {
+                for (int j = n; j >= oneCnt; j--) {
+                    // this str is taken, it costs zeros 0 and ones 1, leftover are i - zeros and j - ones
+                    dp[i][j] = Math.max(dp[i][j], dp[i - zeroCnt][j - oneCnt] + 1);
+                }
+            }
         }
-
+        
         return dp[m][n];
     }
 }

@@ -9,9 +9,20 @@ Your function should return length = 2, with the first two elements of nums bein
 It doesn't matter what you leave beyond the new length.
 
 idea:
-in place
-note: always save element at index = 0 to result first
+very similar to Remove Element leetcode
 
+note: always save first element (index = 0) to result array
+
+i for all elements in A array, starting from 1
+j for unique elements in A array,  starting from 0
+
+for example
+1 1 1 2 3 =>
+1 2 1 2 3 =>
+1 2 3 2 3
+
+j controls 1 2 3
+i controls 1 1 1 2 3 
 */
 
 class RemoveDuplicates {
@@ -25,26 +36,55 @@ class RemoveDuplicates {
 		System.out.println("New size of array3: " + my_array3.length + " " + eg.removeDuplicates(my_array3));
 		System.out.println("New size of array5: " + my_array5.length + " " + eg.removeDuplicates(my_array5));
 	}
+
+	public int removeDuplicates(int[] nums) {
+        if (nums.length < 2) {
+            return nums.length;
+        }
+        int i = 1;
+        int j = 0;
+        
+        while (i < nums.length) {
+            if (nums[j] != nums[i]) {
+                j++;
+                // this is to make sure all unique values go to left front
+                nums[j] = nums[i];
+            }
+            i++;
+        }
+        
+        return j + 1;
+    }
+
 	// self written
 	public int removeDuplicates(int[] nums) {
         int j = 1;
         for (int i = 0; i < nums.length - 1; i++) {
             int curr = nums[i];
-            int next = nums[i+1];
+            int next = nums[i + 1];
             if (curr == next) {
                 continue;
-            }
-            else {
+            } else {
                 nums[j++] = next;
             }
         }
 
         return j;
     }
-    // method 2
+	// best method
+	public int removeDuplicates(int[] nums) {
+        int j = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != nums[j]) {
+                // note j still starts from 1
+                nums[++j] = nums[i];
+            }
+        }
+        return j+1;
+    }
+	// method 2
 	public int removeDuplicatesTwo(int a[]) {
 		int i, j = 0;
-		// Print old array
 		System.out.printf("\nOLD : ");
 		for (i = 0; i < a.length; i++) {
 			System.out.printf("[%d] ", a[i]);
@@ -65,15 +105,4 @@ class RemoveDuplicates {
 		// The new array size, j + 1
 		return j + 1;
 	}
-	// best method
-	public int removeDuplicates(int[] nums) {
-        int j = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != nums[j]) {
-                // note j still starts from 1
-                nums[++j] = nums[i];
-            }
-        }
-        return j+1;
-    }
 }

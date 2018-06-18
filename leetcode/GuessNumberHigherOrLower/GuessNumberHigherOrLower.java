@@ -13,6 +13,8 @@ Return 6.
 
 idea:
 binary search
+my number 指出题人的 number
+1 高于 your guess, you refers to me 做题人
 recursion or iteration
 */
 
@@ -27,16 +29,17 @@ public class GuessNumberHigherOrLower extends GuessGame {
         int end = n;
         
         while (start < end) {
-            int mid = start + ( end - start ) / 2;
-            int guess = guess(mid);
-            if (guess == 1) {
-                start = mid + 1;
-            } else if (guess == -1) {
-                end = mid - 1;
+            int myGuess = start + (end - start) / 2;
+            int guessResult = guess(myGuess);
+            if (guessResult == 1) {
+                start = myGuess + 1;
+            } else if (guessResult == -1) {
+                end = myGuess - 1;
             } else {
-                return mid;
+                return myGuess;
             }
         }
+        
         return start;
     }
 

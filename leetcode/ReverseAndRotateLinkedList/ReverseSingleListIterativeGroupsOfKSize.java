@@ -1,16 +1,12 @@
 
-public class ReverseSingleListIterativeGroupsOfKSize{
-    public ReverseSingleListIterativeGroupsOfKSize(){
-    }
-
-    public ListNode reverseList(ListNode headerNode, int k){
+public class ReverseSingleListIterativeGroupsOfKSize {
+    public ListNode reverseList(ListNode headerNode, int k) {
         ListNode prevNode = null;
         ListNode currNode = headerNode;
         ListNode nextNode = null;
 		int count = 0;
 
-        while (currNode != null && count < k)
-        {
+        while (currNode != null && count < k) {
             nextNode = currNode.next;
             currNode.next = prevNode;
             prevNode = currNode;
@@ -18,13 +14,14 @@ public class ReverseSingleListIterativeGroupsOfKSize{
 			count++;
         }
 		
-		if(nextNode != null)
+		if (nextNode != null) {
 			headerNode.next = reverseList(nextNode, k);
+		}
 
         return prevNode;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         /**
 		Constructing Single Linked List:
             1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 
@@ -50,35 +47,35 @@ public class ReverseSingleListIterativeGroupsOfKSize{
     }
 }
 
-class ListNode{
+class ListNode {
 	int value;
 	ListNode next;
 	
-	public ListNode(int value){
+	public ListNode(int value) {
 		this.value = value;
 		next = null;
 	}	
 }
 
-class SingleLinkedList{
+class SingleLinkedList {
 	public ListNode head;
 	
-	public void add(int value){
+	public void add(int value) {
 		ListNode newNode = new ListNode(value);
 		newNode.next = head;
 		head = newNode;		
 	}
-	public ListNode getList(){
+	public ListNode getList() {
 		return head;
 	} 
-	public void setList(ListNode aNode){
+	public void setList(ListNode aNode) {
 		head = aNode;
 	}
 	
-	public void printList(){
+	public void printList() {
 		ListNode current = head;
 		
-		while(current != null){
+		while (current != null) {
 			System.out.printf("%d ", current.value);
 			current = current.next;
 		}

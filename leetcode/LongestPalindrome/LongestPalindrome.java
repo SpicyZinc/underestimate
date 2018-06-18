@@ -18,9 +18,32 @@ however, for those letters which appear odd times but less than the largest odd 
 (oddCnt - maxOdd) == appearing times of the letters which are less than the biggest odd times
 (lettersAppearOddTimes-1) == the number of letters appearing odd times except the letter which appears the biggest odd times
 
+greedy algorithm
 */
 
 public class LongestPalindrome {
+    // Greedy algorithm
+    public int longestPalindrome(String s) {
+        int[] letters = new int[256];
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            letters[c]++;
+        }
+        
+        int maxLen = 0;
+        for (int cnt : letters) {
+            maxLen += cnt / 2 * 2;
+            if (maxLen % 2 == 0 && cnt % 2 == 1) {
+                maxLen += 1;
+            }
+        }
+        
+        return maxLen;
+    }
+    // direct thought, pick the letter appearing the most odd times
+    // other letters appearing odd times, use them but minus - 1 for each
+    // so need some variables to record
+    // (lettersAppearOddTimes - 1) is the other letters
 	public int longestPalindrome(String s) {
         if (s.length() == 0 || s == null) {
         	return 0;

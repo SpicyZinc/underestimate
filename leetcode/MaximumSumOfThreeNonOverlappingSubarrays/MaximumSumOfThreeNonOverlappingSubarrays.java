@@ -15,7 +15,10 @@ nums[i] will be between 1 and 65535.
 k will be between 1 and floor(nums.length / 3).
 
 idea:
-https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/discuss/
+https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/discuss/108231/C++Java-DP-with-explanation-O(n)
+based on [i, i+k-1], where k <= i <= n-2k
+i
+posLeft[i] 得到最大left sum index
 */
 class MaximumSumOfThreeNonOverlappingSubarrays {
     public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
@@ -30,33 +33,35 @@ class MaximumSumOfThreeNonOverlappingSubarrays {
         	sum[i + 1] = sum[i] + nums[i];
         }
         // DP for left subarray
-        for (int i = k, tot = sum[k] - sum[0]; i < n; i++) {
-        	if (sum[i + 1] - sum[i + 1 - k] > tot) {
-        		posLeft[i] = i + 1 - k;
-        		tot = sum[i + 1] - sum[i + 1 - k];
+        int leftMax = sum[k] - sum[0];
+        for (int i = k; i < n; i++) {
+        	if (sum[i + 1] - sum[i + 1 - k] > leftMax) {
+        		leftMax = sum[i + 1] - sum[i + 1 - k];
+                posLeft[i] = i + 1 - k;
         	} else {
         		posLeft[i] = posLeft[i - 1];
         	}
         }
         // DP for right subarray
-        // note, the condition is ">= tot" for right interval, and "> tot" for left interval
-        // note, not forget initialize
-        posRight[n - k] = n - k;
-        for (int i = n - k - 1, tot = sum[n] - sum[n - k]; i >= 0; i--) {
-        	if (sum[i + k] - sum[i] >= tot) {
-        		posRight[i] = i;
-        		tot = sum[i + k] - sum[i];
+        // note, the condition is ">= total" for right interval, and "> total" for left interval
+        // note, not forget to initialize
+        int rightMax = sum[n] - sum[n - k];
+        posRight[n - k - 1 + 1] = n - k - 1 + 1;
+        for (int i = n - k - 1; i >= 0; i--) {
+        	if (sum[i + k] - sum[i] >= rightMax) {
+        		rightMax = sum[i + k] - sum[i];
+                posRight[i] = i;
         	} else {
         		posRight[i] = posRight[i + 1];
         	}
         }
-        // test all in term of middle interval
+        // test all middle intervals i in [k, n - k * 2]
         for (int i = k; i <= n - 2 * k; i++) {
         	int left = posLeft[i - 1];
         	int right = posRight[i + k];
-        	int tot = (sum[left + k] - sum[left]) + (sum[i + k] - sum[i]) + (sum[right + k] - sum[right]);
-        	if (tot > maxSum) {
-        		maxSum = tot;
+        	int total = (sum[left + k] - sum[left]) + (sum[i + k] - sum[i]) + (sum[right + k] - sum[right]);
+        	if (total > maxSum) {
+        		maxSum = total;
         		answer[0] = left;
         		answer[1] = i;
         		answer[2] = right;

@@ -18,26 +18,37 @@ public class IsSameTree {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if (p == null && q == null) {
             return true;
-        } 
-        else if (p == null || q == null) {
+        }
+        if (p == null || q == null) {
             return false;
-        } 
+        }
 
         return p.val == q.val && isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
     }
 
-    // self written passed test once
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        if (p == null && q == null) {
-            return true;
+        Queue<TreeNode> one = new LinkedList<TreeNode>();
+        Queue<TreeNode> two = new LinkedList<TreeNode>();
+        one.add(p);
+        two.add(q);
+        while (!one.isEmpty() && !two.isEmpty()) {
+            TreeNode tmp1 = one.poll();
+            TreeNode tmp2 = two.poll();
+            if (tmp1 == null) {
+                return tmp2 == null;
+            }
+            // when reaching here, tmp1 != null
+            if (tmp2 == null || tmp1.val != tmp2.val) {
+                return false;
+            }
+
+            one.add(p.left);
+            one.add(p.right);
+            two.add(q.left);
+            two.add(q.right);       
         }
-        if (p == null && q != null || p != null && q == null) {
-            return false;
-        }
-        if (p.val == q.val) {
-            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
-        }
-        return false;
+        
+        return true;    
     }
 }
 

@@ -2,7 +2,8 @@
 Given a non-empty string str and an integer k, rearrange the string such that the same characters are at least distance k from each other.
 All input strings are given in lowercase letters. If it is not possible to rearrange the string, return an empty string "".
 
-Example 1:str = " ", k = 3
+Example 1:
+str = "aabbcc", k = 3
 Result: "abcabc"
 The same letters are at least distance 3 from each other.
 
@@ -18,10 +19,9 @@ Another possible answer is: "abcabcda"
 The same letters are at least distance 2 from each other.
 
 idea:
-http://www.programcreek.com/2014/08/leetcode-rearrange-string-k-distance-apart-java/
-hashmap frequency of a character
-priority queue top one is the most times appearance of a character
 greedy algorithm
+hashmap frequency of a character
+priority queue top one is the character appearing the most times
 
 https://segmentfault.com/a/1190000005825133
 */
@@ -63,7 +63,7 @@ public class RearrangeStringKDistanceApart {
 
 		StringBuilder sb = new StringBuilder();
 		// first, put all different characters into the queue
-		// take this as base unit
+		// take this as starting repeating unit
 		for (char c : hm.keySet()) {
 			queue.offer(c);
 		}
@@ -77,10 +77,11 @@ public class RearrangeStringKDistanceApart {
 				}
 				char ch = queue.poll();
 				sb.append(ch);
-				hm.put(ch, hm.get(ch) - 1);
-				// append one character, length--, because reconstruct string, the biggest length it could be is the original length.
+				// update length, reconstructed string, its length cannot be bigger the original length
 				len--;
-				// note
+				// update map
+				hm.put(ch, hm.get(ch) - 1);
+
 				// if a character is used up, cannot add it to repeatingUnit, which will cause this char to be added to the queue
 				// because next while will add this character to return string
 				// in addition, return '' if the queue is empty

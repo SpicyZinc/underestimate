@@ -36,7 +36,7 @@ Each board[i][j] is a character in the set {" ", "X", "O"}.
 idea:
 two invalid cases
 1. countX == countO and 3 consecutive Xs
-2. countX - countO == 1 and 3 consecutive 0s, game should be over, no such case countX > countO
+2. countX - countO == 1 and 3 consecutive Os, game should be over, no such case countX > countO
 */
 
 class ValidTicTacToeState {
@@ -64,6 +64,7 @@ class ValidTicTacToeState {
 				}
 			}
 		}
+		// based on rule
         // # of O cannot be bigger than # of X
         // # of X cannot be 2 more than # of O
         if (countO > countX || countX - countO > 1) {
@@ -82,7 +83,7 @@ class ValidTicTacToeState {
         
         return true;
 	}
-	// check if row, column, diagonal and anti has a line of 3 consecutive character
+	// check if row, column, diagonal and anti-diagonal has a line of 3 consecutive character
 	private boolean helperToDetectValid(char[][] board, char c) {
 		for (int i = 0; i < 3; i++) {
 			// row

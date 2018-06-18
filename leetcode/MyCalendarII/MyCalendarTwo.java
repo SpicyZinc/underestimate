@@ -82,6 +82,36 @@ class MyCalendarTwo {
 			return true;
 		}
 	}
+
+	// brute force
+	List<int[]> calendar;
+	List<int[]> overlapped;
+
+	public MyCalendarTwo() {
+		calendar = new ArrayList<int[]>();
+		overlapped = new ArrayList<int[]>();
+	}
+
+	public boolean book(int start, int end) {
+		for (int[] overlappedInterval : overlapped) {
+			// newStart >= newEnd
+			if (Math.max(start, overlappedInterval[0]) < Math.min(end, overlappedInterval[1])) {
+				return false;
+			}
+		}
+
+		for (int[] booked : calendar) {
+			int overlappedIntervalStart = Math.max(start, booked[0]);
+			int overlappedIntervalEnd = Math.min(end, booked[1]);
+
+			if (overlappedIntervalStart < overlappedIntervalEnd) {
+				overlapped.add(new int[] {overlappedIntervalStart, overlappedIntervalEnd});
+			}
+		}
+
+		calendar.add(new int[] {start, end});
+		return true;
+	}
 }
 
 /**

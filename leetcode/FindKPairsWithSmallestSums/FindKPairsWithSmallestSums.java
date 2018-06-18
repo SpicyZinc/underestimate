@@ -1,8 +1,6 @@
 /*
 You are given two integer arrays nums1 and nums2 sorted in ascending order and an integer k.
-
 Define a pair (u,v) which consists of one element from the first array and one element from the second array.
-
 Find the k pairs (u1,v1),(u2,v2) ...(uk,vk) with the smallest sums.
 
 Example 1:
@@ -41,12 +39,14 @@ http://www.programcreek.com/2015/07/leetcode-find-k-pairs-with-smallest-sums-jav
 
 public class FindKPairsWithSmallestSums {
     public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+
         List<int[]> pairs = new ArrayList<int[]>();
         int len1 = nums1.length;
         int len2 = nums2.length;
         if (k == 0 || len1 == 0 || len2 == 0 ) {
             return pairs;
         }
+
         for (int i = 0; i < Math.min(len1, k); i++) {
             for (int j = 0; j < Math.min(len2, k); j++) {
                 int[] temp = new int[] {nums1[i], nums2[j]};
@@ -54,21 +54,13 @@ public class FindKPairsWithSmallestSums {
             }
         }
 
-        List<int[]> result = new ArrayList<int[]>();
         Collections.sort(pairs, new Comparator<int[]>() {
             public int compare(int[] a, int[] b) {
                 return a[0] + a[1] - b[0] - b[1];
             }
         });
-        if (k <= pairs.size()) {
-            for (int i = 0; i < k; i++) {
-                result.add(pairs.get(i));
-            }
-            return result;
-        }
-        else {
-            return pairs;
-        }
+
+        return k >= pairs.size() ? pairs : pairs.subList(0, k);
     }
 
     /**
@@ -78,22 +70,35 @@ public class FindKPairsWithSmallestSums {
      * its next candidate should be this (specific number) + nums2[current_associated_index + 1], unless out of boundary;)
      */
     public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        PriorityQueue<int[]> que = new PriorityQueue<>((a,b)->a[0]+a[1]-b[0]-b[1]);
-        List<int[]> res = new ArrayList<>();
-        if (nums1.length == 0 || nums2.length == 0 || k == 0) {
-            return res;
+        List<int[]> pairs = new ArrayList<int[]>();
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        if (len1 == 0 || len2 == 0 || k == 0) {
+            return pairs;
         }
-        for (int i=0; i<nums1.length && i<k; i++) {
-            que.offer(new int[]{nums1[i], nums2[0], 0});
+        // 一定程度上的BFS 以它们为基础不断扩展
+        PriorityQueue<int[]> queue = new PriorityQueue<int[]>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                return a[0] + a[1] - b[0] - b[1];
+            }
+        });
+        // first add k pairs
+        for (int i = 0; i < len1 && i < k; i++) {
+            queue.offer(new int[] {nums1[i], nums2[0], 0});
         }
-        while (k-- > 0 && !que.isEmpty()) {
-            int[] cur = que.poll();
-            res.add(new int[]{cur[0], cur[1]});
-            if (cur[2] == nums2.length - 1) {
+        // queue 的每个element是一个array whose第三个element是当前到达的index
+        while (k-- > 0 && !queue.isEmpty()) {
+            int[] minPair = queue.poll();
+            int idxInNums2 = minPair[2];
+            pairs.add(new int[] {minPair[0], minPair[1]});
+            // k--;
+            if (idxInNums2 == len2 - 1) {
                 continue;
             }
-            que.offer(new int[]{cur[0], nums2[cur[2]+1], cur[2]+1});
+            queue.offer(new int[] {minPair[0], nums2[idxInNums2 + 1], idxInNums2 + 1});
         }
-        return res;
+        
+        return pairs;
     }
 }
