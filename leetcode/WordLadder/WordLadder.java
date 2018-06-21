@@ -48,78 +48,57 @@ use +1 and -1 to indicate two directions,
 start --- a --- b --- end, it terminates when 'a' can be converted to 'b', and b is already in queue, length is figured out
 */
 
+class Node { 
+	String word;
+	int l;
+	boolean isVisited;
+	public Node(String word, int l) {
+		this.word = word;            
+		this.l = l;
+		isVisited = false;
+	}
+}
+
 public class WordLadder {	
 	// method 1, best version easy to understand, recently changed hashset to list
 	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        if (wordList.size() == 0) {
-            return 0;
-        }
-        HashSet<String> hs = new HashSet<String>();
+		Set<String> dict = new HashSet<String>();
         for (String word : wordList) {
-            hs.add(word);
+            dict.add(word);
         }
 
-        Queue<String> wordQueue = new LinkedList<String>();
-        Queue<Integer> ladderQueue = new LinkedList<Integer>();
-        // add remove
-        // offer poll
-        wordQueue.offer(beginWord);
-        ladderQueue.offer(1);
-        
-        while (!wordQueue.isEmpty()) {
-            String word = wordQueue.poll();
-            Integer distance = ladderQueue.poll();
-            if (word.equals(endWord)) {
-                return distance;
-            }
-            for (int i = 0; i < word.length(); i++) {
-                char[] charArray = word.toCharArray();
-                for (char j = 'a'; j < 'z'; j++) {
-                    charArray[i] = j;
-                    String newWord = new String(charArray);
-                    if (hs.contains(newWord)) {
-                        wordQueue.add(newWord);
-                        ladderQueue.add(distance + 1);
-                        hs.remove(newWord);
-                    }
-                }
-            }
-        }
-        
-        return 0;
-    }
-    // method 1'
-	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Set<String> reached = new HashSet<String>();
-        reached.add(beginWord);
-        Set<String> wordDict = new HashSet<String>();
-        for (String word : wordList) {
-            wordDict.add(word);
-        }
+        Set<String> wordsReached = new HashSet<String>();
+        // start not in dict, need to have some initial point to start BFS
+        wordsReached.add(beginWord);
 
         int distance = 1;
-        while (!reached.contains(endWord)) {
-            Set<String> toAdd = new HashSet<String>();
-            for (String each : reached) {
-                for (int i = 0; i < each.length(); i++) {
-                    char[] chars = each.toCharArray();
-                    for (char ch = 'a'; ch <= 'z'; ch++) {
-                        chars[i] = ch;
-                        String word = new String(chars);
-                        if (wordDict.contains(word)) {
-                            toAdd.add(word);
-                            wordDict.remove(word);
+        while (!wordsReached.contains(endWord)) {
+            Set<String> wordsToReach = new HashSet<String>();
+            for (String reachedWord : wordsReached) {
+                for (int i = 0; i < reachedWord.length(); i++) {
+                    // where to toCharArray is crucial
+                    // 每个位置有26个可能性
+                    char[] chars = reachedWord.toCharArray();
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        chars[i] = c;
+                        String next = new String(chars);
+                        if (dict.contains(next)) {
+                            wordsToReach.add(next);
+                            dict.remove(next);
                         }
                     }
                 }
             }
+            // no new words can be reached, early return
+            if (wordsToReach.size() == 0) {
+                return 0;
+            }
             distance++;
-            if (toAdd.size() == 0) return 0;
-            reached = toAdd;
+            wordsReached = wordsToReach;
         }
+        
         return distance;
     }
-
 
     // method 2
     public int ladderLength(String start, String end, HashSet<String> dict) {
@@ -128,7 +107,7 @@ public class WordLadder {
 			return 0;
 		}
 
-		HashMap<String, Node> map = new HashMap<String, Node>();
+		Map<String, Node> map = new HashMap<String, Node>();
 
 		for (String w : dict) {
 			Node n = null;
@@ -180,9 +159,7 @@ public class WordLadder {
 							else 
 								node.l = c.l - 1;
 							queue.offer(node);
-						} 
-						// meets
-						else {
+						} else { // meets
 							if ((node.l > 0 && c.l < 0) || (c.l > 0 && node.l < 0)) {
 								return Math.abs(node.l) + Math.abs(c.l);
 							}
@@ -194,15 +171,4 @@ public class WordLadder {
 
 		return 0;
     }
-}
-
-class Node { 
-	String word;
-	int l;
-	boolean isVisited;
-	public Node(String word, int l) {
-		this.word = word;            
-		this.l = l;
-		isVisited = false;
-	}
 }

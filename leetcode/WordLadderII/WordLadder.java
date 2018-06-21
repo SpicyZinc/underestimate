@@ -22,15 +22,12 @@ You may assume no duplicates in the word list.
 You may assume beginWord and endWord are non-empty and are not the same.
 
 idea:
-http://standalone.iteye.com/blog/1847367
-
-this answer passed 13/39
-impossible to ask in interview
+Rung class with prev Rung pointer
 */
 
 import java.util.*;
 
-public class WordLadderII {
+public class WordLadder {
     public static void main(String[] args) {
         WordLadderII eg = new WordLadderII();
         String beginWord = "hit";
@@ -47,6 +44,77 @@ public class WordLadderII {
             System.out.println(path);
         }
     }
+    // latest best method
+    class Rung {
+        String word;
+        int level;
+        Rung previous;
+
+        public Rung(String word, int level) {
+            this.word = word;
+            this.level = level;
+            this.previous = null;
+        }
+    }
+
+    public List<List<String>> findLadders(String start, String end, List<String> wordList) {
+        // move words into hashset
+        Set<String> dict = new HashSet<String>();
+        for (String word : wordList) {
+            dict.add(word);
+        }
+        dict.add(start);
+        dict.add(end);
+
+        List<List<String>> result = new ArrayList<List<String>>();        
+        List<Rung> ladderPath = new ArrayList<Rung>();
+        Queue<Rung> queue = new LinkedList<Rung>();
+        queue.add(new Rung(start, 0));
+        int minLevel = Integer.MAX_VALUE;
+        // boolean found = false;
+        while (!queue.isEmpty()) {
+            Rung curr = queue.poll();
+            if (curr.level > minLevel) {
+                break;
+            }
+            dict.remove(curr.word);
+            char[] chars = curr.word.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                char origin = chars[i];
+                for (char c = 'a'; c <= 'z'; c++) {
+                    chars[i] = c;
+                    String newWord = new String(chars);
+                    // found one path
+                    if (newWord.equals(end) && dict.contains(end)) {
+                        // found = true;
+                        minLevel = curr.level;
+                        Rung ladderPathEnd = new Rung(newWord, curr.level + 1);
+                        ladderPathEnd.previous = curr;
+                        ladderPath.add(ladderPathEnd);
+                        break;
+                    } else if (dict.contains(newWord)) {
+                        Rung next = new Rung(newWord, curr.level + 1);
+                        next.previous = curr;
+                        queue.add(next);
+                    }
+                }
+                chars[i] = origin;
+            }
+        }
+        
+        for (Rung rung : ladderPath) {
+            List<String> list = new ArrayList<String>();
+            while (rung != null) {
+                list.add(0, rung.word);
+                rung = rung.previous;
+            }
+
+            result.add(list);
+        }
+        
+        return result;
+    }
+
 
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
@@ -61,7 +129,7 @@ public class WordLadderII {
             res.add(path);
             return res;
         }
-
+        // move words into hashset
         Set<String> dict = new HashSet<String>();
         for (String word : wordList) {
             dict.add(word);
