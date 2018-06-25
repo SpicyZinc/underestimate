@@ -15,7 +15,9 @@ public class ImplementStrStr {
 
         for (int i = 0; i <= haystack.length() - needle.length(); i++) {
             int k = i + needle.length();
-            if ( haystack.substring(i, k).equals(needle) ) return i; 
+            if ( haystack.substring(i, k).equals(needle) ) {
+                return i; 
+            }
         }
         return -1;
     }
