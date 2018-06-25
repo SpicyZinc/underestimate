@@ -5,6 +5,7 @@ if needle is not part of haystack.
 idea:
 1. substring() and equals()
 2. brute force, two for loops, the good part is i + j, use one pointer, instead of start, j
+https://www.programcreek.com/2012/12/leetcode-implement-strstr-java/
 */
 
 public class ImplementStrStr {
@@ -42,37 +43,67 @@ public class ImplementStrStr {
         
         return -1;
     }
-
-    // self rewrite good one
-    public int strStr(String source, String target) {
-        if (source == null || target == null) {
-            return -1;
-        }
-        int i = 0;
-        int j = 0;
-        int lenS = source.length();
-        int lenT = target.length();
-        if (lenT == 0) {
+    // use this one
+    public int strStr(String haystack, String needle) {
+        if (haystack == null || needle == null) {
             return 0;
         }
-        
-        for (i = 0; i < lenS;) {
+
+        if (needle.length() == 0) {
+            return 0;
+        }
+
+        int lenS = haystack.length();
+        int lenT = needle.length();
+
+        for (int i=0; i<lenS; i++) {
+            if (i + lenT > lenS) {
+                return -1;
+            }
+
             int start = i;
-            while (source.charAt(start) == target.charAt(j)) {
-                start++;
-                j++;
-                if (j == lenT) {
-                    return i;
-                }
-                if (start == lenS) {
-                    return -1;
+            for (int j = 0; j < lenT; j++) {
+                if (haystack.charAt(start) == needle.charAt(j)) {
+                    if (j == lenT-1) {
+                        return i;
+                    }
+                    start++;
+                } else {
+                    break;
                 }
             }
-            
-            if (j < lenT - 1) {
-                j = 0;
+        }
+
+        return -1;
+    }
+
+    // lintcode version, need to check some source == null
+    public int strStr(String source, String target) {
+        if (source == null || target == null) {
+            return 0;
+        }
+        if (target.length() == 0) {
+            return 0;
+        }
+
+        int lenS = source.length();
+        int lenT = target.length();
+        
+        for (int i = 0; i < lenS; i++) {
+            if (i + lenT > lenS) {
+                return -1;
             }
-            i++;
+            int start = i;
+            for (int j = 0; j < lenT; j++) {
+                if (source.charAt(start) == target.charAt(j)) {
+                    if (j == lenT - 1) {
+                        return i;
+                    }
+                    start++;
+                } else {
+                    break;
+                }
+            }
         }
         
         return -1;
