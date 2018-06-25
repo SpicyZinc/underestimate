@@ -18,6 +18,8 @@ S will consist only of letters or digits.
 
 idea:
 BFS permutation
+for each letter, no more than 2 cases, try them both
+then push to queue again
 */
 
 class LetterCasePermutation {
