@@ -29,18 +29,23 @@ public class StringString {
 		if(needle == null || needle.length() == 0) {
 			return haystack;
 		}
+
+		int len = haystack.length();
+		int subLen = needle.length();
+
 		int i = 0;
 		int j = 0;
-		while (i < haystack.length() && j < needle.length()) {
+		while (i < len && j < subLen) {
 			if (haystack.charAt(i) == needle.charAt(j)) {
 				i++;
 				j++;
-				if (j == needle.length()) {
+
+				if (j == subLen) {
 					return haystack.substring(i - j);
 				}
 			} else {
 				// i-j+1 is necessary
-				// i-j is substring, +1 is to move to next letter
+				// i-j is substring, +1 is to move to next character
 				i = i - j + 1;
 				j = 0;
 			}
