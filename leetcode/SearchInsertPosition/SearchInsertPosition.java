@@ -61,29 +61,24 @@ public class SearchInsertPosition {
 		
 		return ret;
 	}
-	// return the index of smallest number greater than target
-	// return directly, no need to add 1
-	public int FindInsertionPosition(int[] A, int T) {
-        int start = 0;
-		int end = A.length - 1;
-		
-		while (start < end) {
-			int mid = (start + end) / 2;
-			if (A[mid] > T) {
-				end = mid;
-				// end = mid - 1; corresponds to while (start <= end) 
+	// return the index of first number >= target
+	// best, use this
+	public int searchInsert(int[] nums, int target) {
+		int left = 0;
+		int right = nums.length - 1;
+
+		while (left <= right) {
+			int mid = left + (right - left) / 2;
+			if (nums[mid] < target) {
+				left = mid + 1;
+			} else if (nums[mid] >= target) {
+				right = mid - 1;
 			}
-			else {
-				start = mid + 1;
-			}
-        }
-        if (A[start] > T) {
-			return start;
-        }
-        else {
-			return start + 1;
-        } 
+		}
+
+		return left;
 	}
+
 	// best, must memorize
 	public int searchInsert(int[] nums, int target) {
 		int left = 0;
