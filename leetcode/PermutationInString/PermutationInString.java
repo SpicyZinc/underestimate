@@ -16,11 +16,10 @@ The input strings only contain lower case letters.
 The length of both given strings is in range [1, 10,000].
 
 idea:
-https://discuss.leetcode.com/topic/87884/8-lines-slide-window-solution-in-java/2
 note: this is to get substring NOT subsequence, must be consecutive
-1. digging hole, and fill it out
-    挖的坑填上
-    没挖的填上超出要减去
+https://www.cnblogs.com/grandyang/p/6815227.html
+1. 什么挖不挖坑 很讨厌
+公用一个map
 2. basic idea, 2 steps
 	How do we know string p is a permutation of string s?
 	Easy, each character in p is in s too. So we can abstract all permutation strings of s to a map (Character -> Count). i.e. abba -> {a:2, b:2}.
@@ -35,21 +34,33 @@ note: this is to get substring NOT subsequence, must be consecutive
 
 public class PermutationInString {
 	// method 1
-    public boolean checkInclusion(String s1, String s2) {
-        int[] map = new int[128];
-        for (int i = 0; i < s1.length(); i++) {
-            map[s1.charAt(i)]--;
-        }
-        int left = 0;
-        for (int right = 0; right < s2.length(); right++) {
-            if (++map[s2.charAt(right)] >= 1) {
-                while (--map[s2.charAt(left++)] < 0) {}
-            } else if (right - left + 1 == s1.length()) {
-                return true;
-            }
-        }
-        return s1.length() == 0;
-    }
+	public boolean checkInclusion(String s1, String s2) {
+		int[] map = new int[128];
+		for (int i = 0; i < s1.length(); i++) {
+			map[s1.charAt(i)]++;
+		}
+		int left = 0;
+		int cnt = s1.length();
+		for (int right = 0; right < s2.length(); right++) {
+			char c = s2.charAt(right);
+			// 有没有在 map 中的 character 都要 更新
+			if (map[c]-- >= 1) {
+				cnt--;
+			}
+			while (cnt == 0) {
+				if (right - left + 1 == s1.length()) {
+					return true;
+				}
+				// == 1 means 把 s1 中的一个移出window了
+				// cnt 要++
+				if (++map[s2.charAt(left++)] >= 1) {
+					cnt++;
+				}
+			}
+		}
+
+		return false;
+	}
     // method 2
     public boolean checkInclusion(String s1, String s2) {
     	if (s1.length() == 0 || s1 == null) {
@@ -82,13 +93,13 @@ public class PermutationInString {
         return false;
     }
 
-    private boolean allZero(int[] count) {
-    	for (int i = 0; i < count.length; i++) {
-    		if (count[i] != 0) {
-    			return false;
-    		}
-    	}
+	private boolean allZero(int[] count) {
+		for (int i = 0; i < count.length; i++) {
+			if (count[i] != 0) {
+				return false;
+			}
+		}
 
-    	return true;
-    }
+		return true;
+	}
 }
