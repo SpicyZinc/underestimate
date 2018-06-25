@@ -8,6 +8,7 @@ idea:
 偷梁换柱
 assign the next node value to current which is supposed to delete
 then remove the next node by node.next = node.next.next
+真正 remove node to remove 的下一个
 thus realize the result that change the current node to next node, and delete the current node
 */
 
