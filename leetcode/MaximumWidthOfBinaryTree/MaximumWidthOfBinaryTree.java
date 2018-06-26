@@ -50,6 +50,10 @@ Output: 8
 Explanation:The maximum width existing in the fourth level with the length 8 (6,null,null,null,null,null,null,7).
 
 Note: Answer will in the range of 32-bit signed integer.
+
+idea:
+did not expect i have so many difficulties in this problem
+need to go back, almost there
 */
 
 class TreeNode {
@@ -60,23 +64,25 @@ class TreeNode {
 }
 
 class MaximumWidthOfBinaryTree {
-    public int widthOfBinaryTree(TreeNode root) {
+	public int widthOfBinaryTree(TreeNode root) {
 		return dfs(root, 0, 1, new ArrayList<Integer>(), new ArrayList<Integer>());
-    }
+	}
 
-    public int dfs(TreeNode node, int level, int index, List<Integer> start, List<Integer> end) {
-    	if (node == null) return 0;
-    	if (start.size() == level) {
-    		start.add(index);
-    		end.add(index);
-    	}
-    	else {
-    		end.set(level, index);
-    	}
-    	int curr = end.get(level) - start.get(level) + 1;
-    	int left = dfs(node.left, level + 1, index * 2, start, end);
-    	int right = dfs(node.right, level + 1, index * 2 + 1, start, end);
+	public int dfs(TreeNode node, int level, int index, List<Integer> start, List<Integer> end) {
+		if (node == null) {
+			return 0;
+		}
+		if (start.size() == level) {
+			start.add(index);
+			end.add(index);
+		} else {
+			end.set(level, index);
+		}
 
-    	return Math.max(curr, Math.max(left, right));
-    }
+		int curr = end.get(level) - start.get(level) + 1;
+		int left = dfs(node.left, level + 1, index * 2, start, end);
+		int right = dfs(node.right, level + 1, index * 2 + 1, start, end);
+
+		return Math.max(curr, Math.max(left, right));
+	}
 }
