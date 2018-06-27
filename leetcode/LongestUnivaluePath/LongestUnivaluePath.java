@@ -32,6 +32,10 @@ dfs()
 return subtree longest solo value
 how ?
 recursion + consider current node, then + 1
+
+this is to find consecutive 1's 
+如果最后左右连到 root的两个 edge 没有 同样的数字 没有连接起来
+不能称其为 UnivaluePath 所以到这个root 点 最大edge数就是0
 */
 
 class TreeNode {
