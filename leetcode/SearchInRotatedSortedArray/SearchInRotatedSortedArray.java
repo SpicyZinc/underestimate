@@ -96,6 +96,35 @@ public class SearchInRotatedSortedArray {
         
         return -1;
     }
+    // 注意区别 也是对的
+    public int search(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length - 1;
+        
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            // happen to find target, return early
+            if (nums[mid] == target) {
+                return mid;
+            }
+            // left part is sorted
+            if (nums[mid] > nums[end]) {
+                if (nums[start] <= target && target <= nums[mid]) { // target in the sorted left part
+                    end = mid - 1;
+                } else {
+                    start = mid + 1;
+                }
+            } else { // right part is sorted
+                if (nums[mid] <= target && target <= nums[end]) { // target in the sorted right part
+                    start = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+        }
+        
+        return -1;
+    }
 
     // search in a rotated once array, recursion
     public int search(int[] nums, int target) {
@@ -180,18 +209,19 @@ public class SearchInRotatedSortedArray {
     // watermark's solution, get confused
     public int search(int[] A, int target) {
         assert(A != null);
-        int start = 0, 
-            end = A.length-1;
+        int start = 0;
+        int end = A.length - 1;
+
         while (start <= end) {
             int mid = (start + end) / 2;
             if (A[mid] == target) return mid;
             if (A[mid] > target && (A[end] > A[mid] || A[end] < target) || A[mid] < target && A[end] > A[mid] && A[end] < target) {
                 end = mid - 1;
-            }
-            else {
+            } else {
                 start = mid + 1;
             }
         }
+
         return -1;
     }
 }
