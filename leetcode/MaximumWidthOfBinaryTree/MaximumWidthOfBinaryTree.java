@@ -54,6 +54,8 @@ Note: Answer will in the range of 32-bit signed integer.
 idea:
 did not expect i have so many difficulties in this problem
 need to go back, almost there
+
+damn, could not figure out
 */
 
 class TreeNode {
@@ -64,6 +66,35 @@ class TreeNode {
 }
 
 class MaximumWidthOfBinaryTree {
+	// method 1, this method not consider the empty #
+	public int widthOfBinaryTree(TreeNode root) {
+		int height = getHeight(root);
+		int maxWidth = 0;
+		for (int i = 1; i <= height; i++) {
+			maxWidth = Math.max(maxWidth, getWidthByLevel(root, i));
+		}
+
+		return maxWidth;
+	}
+
+	public int getWidthByLevel(TreeNode node, int level) {
+		if (node == null) {
+			return 0;
+		}
+		if (level == 1) {
+			return 1;
+		}
+		return getWidthByLevel(node.left, level - 1) + getWidthByLevel(node.right, level - 1);
+	}
+
+	public int getHeight(TreeNode node) {
+		if (node == null) {
+			return 0;
+		}
+
+		return 1 + Math.max(getHeight(node.left), getHeight(node.right));
+	}
+	// method 2, not quite get start.size() == level, start and end add(index)
 	public int widthOfBinaryTree(TreeNode root) {
 		return dfs(root, 0, 1, new ArrayList<Integer>(), new ArrayList<Integer>());
 	}
