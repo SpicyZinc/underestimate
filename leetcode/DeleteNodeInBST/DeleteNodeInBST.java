@@ -38,7 +38,7 @@ note: node has both left and right
 find the minimum value in the right subtree, set that value to the currently found node,
 then the problem turns into recursively deleting the minimum value in the right subtree
 2. iterative
-https://discuss.leetcode.com/topic/67962/iterative-solution-in-java-o-h-time-and-o-1-space/2
+https://discuss.leetcode.com/topic/67962/iterative-solution-in-java-o-h-time-and-o-1-space/2 
 */
 
 class TreeNode {
@@ -53,28 +53,30 @@ public class DeleteNodeInBST {
         if (root == null) {
             return root;
         }
-        if (root.val > key) {
+
+        if (key < root.val) {
             root.left = deleteNode(root.left, key);
-        }
-        else if (root.val < key) {
+        } else if (key > root.val) {
             root.right = deleteNode(root.right, key);    
-        }
-        else {
+        } else {
             if (root.left == null) {
                 return root.right;
             }
-            else if (root.right == null) {
+            if (root.right == null) {
                 return root.left;
             }
-            else {
-                TreeNode minNode = findMinNode(root.right);
-                root.val = minNode.val;
-                root.right = deleteNode(root.right, root.val);
-            }
+            // why
+            // after deletion of root
+            // the most left in right part will be the one smallest bigger than root value
+            // find it and replace root value with it
+            TreeNode minNodeOfRight = findMinNode(root.right);
+            root.val = minNodeOfRight.val;
+            root.right = deleteNode(root.right, root.val);
         }
+
         return root;
     }
-    
+    // BST, keep left will find minimum node
     private TreeNode findMinNode(TreeNode node) {
         while (node.left != null) {
             node = node.left;
