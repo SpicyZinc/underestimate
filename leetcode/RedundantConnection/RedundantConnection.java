@@ -87,4 +87,36 @@ class RedundantConnection {
 
 		return false;
 	}
+
+	// union-find
+	public int[] findRedundantConnection(int[][] edges) {
+		int[] roots = new int[2000];
+		for (int i = 0; i < roots.length; i++) {
+			roots[i] = i;
+		}
+
+		for (int[] edge : edges) {
+			int u = edge[0];
+			int v = edge[1];
+
+			int rootU = getRootIdx(roots, u - 1);			
+			int rootV = getRootIdx(roots, v - 1);
+
+			if (rootU == rootV) {
+				return edge;
+			}
+
+			roots[rootU] = rootV;
+		}
+
+		return new int[] {};
+	}
+
+	private int getRootIdx(int[] roots, int i) {
+		while (roots[i] != i) {
+			i = roots[i];
+		}
+
+		return i;
+	}
 }
