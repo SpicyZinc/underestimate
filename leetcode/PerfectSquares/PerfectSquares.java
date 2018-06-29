@@ -5,6 +5,7 @@ given n = 12, return 3 because 12 = 4 + 4 + 4;
 given n = 13, return 2 because 13 = 4 + 9.
 
 idea:
+所有自然数至多只要用四个数的平方和就可以表示
 http://bookshadow.com/weblog/2015/09/09/leetcode-perfect-squares/
 http://www.cnblogs.com/grandyang/p/4800552.html
 
@@ -13,7 +14,7 @@ i starting from 2, if n can be divided exactly, count the number
 if not, get the remaining number, recursively passing in the function again
 
 2. dynamic programming
-create an array of length n + 1, dp[i] the smallest number of square numbers for i
+create an array of length n + 1, dp[i] the smallest number of square numbers added up to i
 dp[0] = 0, the rest is Integer.MAX_VALUE
 i[0, n], j[1, n] but i+j*j <= n,
 update dp[i+j*j], return dp[n]
