@@ -24,30 +24,39 @@ https://siddontang.gitbooks.io/leetcode-solution/content/array/find_peak_element
 */
 
 public class FindPeakElement {
-    public int findPeakElement(int[] num) {
-    	int start = 0;
-    	int end = num.length - 1;
+    public int findPeakElement(int[] nums) {
+        int start = 0;
+        int end = nums.length - 1;
 
-    	while (start < end) {
-    		int mid = start + (end - start) / 2;
-    		if (num[mid] < num[mid + 1]) {
-    			start = mid + 1;
-    		}
-    		else {
-    			end = mid;
-    		}
-    	}
+        // 0, 3
+        // mid = 1
+        // nums[mid] nums[mid + 1] 
+        // 2 3
+        // start = 1 + 1 = 2;
+        // start < end => 2 < 3
+        // mid = 2
+        // nums[mid] nums[mid + 1] 
+        // 3 1
+        // end = 2
+        
+        while (start < end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] < nums[mid + 1]) {
+                start = mid + 1;
+            } else {
+                end = mid;
+            }
+        }
 
-    	return end;
+        return start;
     }
 
-
-    public int findPeakElement(int[] num) {
-    	for (int i = 0; i < num.length - 1; i++) {
-    		if (num[i] > num[i + 1]) {
+    public int findPeakElement(int[] nums) {
+    	for (int i = 0; i < nums.length - 1; i++) {
+    		if (nums[i] > nums[i + 1]) {
     			return i;
     		}
     	}
-    	return num.length - 1;
+    	return nums.length - 1;
     }
 }
