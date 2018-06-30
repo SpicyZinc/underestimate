@@ -15,7 +15,7 @@ http://blog.csdn.net/u013027996/article/details/48713751
 DFS basic idea
 1. overflow: use a long type once it is larger than Integer.MAX_VALUE or minimum
 2. 0 sequence: because we can't have numbers with multiple digits started with zero, skip it
-3. a little trick is that we should save the value that is to be multiplied in the next recursion.
+3. a little trick is that we should save the prev operand that could be multiplied in the next recursion.
 */
 
 import java.util.*;
@@ -32,14 +32,16 @@ public class ExpressionAddOperators {
     public List<String> addOperators(String num, int target) {
         List<String> result = new ArrayList<String>();
         dfs(num, target, 0, 0, "", result);
+
         return result;
     }
-    // the net value put on the currRes
-    public void dfs(String num, int target, long currRes, long prevRes, String path, List<String> result) {
-        if (num.length() == 0 && currRes == target) {
-            result.add(new String(path));
+    // the net value put on the currVal
+    public void dfs(String num, int target, long currVal, long prevOperand, String path, List<String> result) {
+        if (num.length() == 0 && currVal == target) {
+            result.add(path);
             return;
         }
+
         for (int i = 1; i <= num.length(); i++) {
             String currStr = num.substring(0, i);
             // exclude number of more than 1 digit having leading zero
@@ -48,17 +50,18 @@ public class ExpressionAddOperators {
                 return;
             }
             long currNum = Long.parseLong(currStr);
-            String nextNum = num.substring(i);
-            // start dfs for the 1st time
+
+            String restNum = num.substring(i);
+            // dfs for the 1st time
             if (path.length() == 0) {
-                dfs(nextNum, target, currNum, currNum, currStr, result);
+                dfs(restNum, target, currNum, currNum, currStr, result);
             } else {
                 // add * before currNum
-                dfs(nextNum, target, currRes - prevRes + prevRes * currNum, prevRes * currNum, path + "*" + currNum, result);
+                dfs(restNum, target, currVal - prevOperand + prevOperand * currNum, prevOperand * currNum, path + "*" + currNum, result);
                 // add + before currNum
-                dfs(nextNum, target, currRes + currNum, currNum, path + "+" + currNum, result);
+                dfs(restNum, target, currVal + currNum, currNum, path + "+" + currNum, result);
                 // add - before currNum
-                dfs(nextNum, target, currRes - currNum, -1 * currNum, path + "-" + currNum, result);
+                dfs(restNum, target, currVal - currNum, -1 * currNum, path + "-" + currNum, result);
             }
         }
     }
