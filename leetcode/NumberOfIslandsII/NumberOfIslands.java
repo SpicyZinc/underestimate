@@ -80,7 +80,7 @@ class NumberOfIslands {
 				int nextIndex = nextX * n + nextY;
 				// roots[nextIndex] != -1 means it is land, visited before, now needs to update
 				if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && roots[nextIndex] != -1) {
-					int rootIdx = getRootIdx(roots, nextIndex);
+					int rootIdx = getRoot(roots, nextIndex);
 					// should equal, why because it is current position's 4 neighbors,
 					// belonging to the same island, should have the same parent
 					// if not, need to update
@@ -106,7 +106,7 @@ class NumberOfIslands {
 
 	// find root index
 	// always return i = roots[i] case, the very root
-	private int getRootIdx(int[] roots, int i) {
+	private int getRoot(int[] roots, int i) {
 		while (roots[i] != i) {
 			i = roots[i];
 		}

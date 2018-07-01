@@ -50,7 +50,7 @@ public class FriendCircles {
         int circles = 0;
         for (int i = 0; i < n; i++) {
             if (!visited[i]) {
-                // a person is a cirle, if he knows others, still same circle
+                // a person is a circle, if he knows others, still same circle
                 circles++;
                 // only for marking person to be visited
                 bfs(M, i, visited);
@@ -94,5 +94,38 @@ public class FriendCircles {
                 dfs(M, j, visited);
             }
         }
+    }
+    // union find
+    public int findCircleNum(int[][] M) {
+        int n = M.length;
+        int circles = n; // at most each friend has a circle, only know itself
+        int[] root = new int[n];
+        for (int i = 0; i < n; i++) {
+            root[i] = i;           
+        }
+        // union
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                // direct friend
+                if (M[i][j] == 1) {
+                    int rootI = getRoot(root, i);
+                    int rootJ = getRoot(root, j);
+                    // if not in same group, union it
+                    if (rootI != rootJ) {
+                        root[rootJ] = rootI;
+                        circles--;
+                    }
+                }
+            }
+        }
+
+        return circles;
+    }
+
+    public int getRoot(int[] root, int i) {
+        while (root[i] != i) {
+            i = root[i];
+        }
+        return i;
     }
 }
