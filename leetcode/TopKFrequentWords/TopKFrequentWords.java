@@ -23,9 +23,35 @@ Try to solve it in O(n log k) time and O(n) extra space.
 
 idea:
 the same as Top K Frequent Elements
-make use of null or not, from the biggest frequency which is not more than the length of array
+array of list, index is the frequency of each work, at most it cannot exceed the number of all words
+from the biggest frequency to loop, addAll() to result and then sort
+but order not correct
+
+simple way is the method 1
+
 */
 class TopKFrequentWords {
+	public List<String> topKFrequent(String[] words, int k) {
+        Map<String, Integer> count = new HashMap();
+        for (String word : words) {
+            count.put(word, count.getOrDefault(word, 0) + 1);
+        }
+
+        List<String> candidates = new ArrayList(count.keySet());
+
+        Collections.sort(candidates, new Comparator<String>() {
+        	@Override
+        	public int compare(String a, String b) {
+        		int aTimes = count.get(a);
+        		int bTimes = count.get(b);
+
+        		return aTimes == bTimes ? a.compareTo(b) : bTimes - aTimes;
+        	}
+        });
+
+        return candidates.subList(0, k);
+	}
+	// 结果次序不对
 	public List<String> topKFrequent(String[] words, int k) {
 		Map<String, Integer> hm = new HashMap<String, Integer>();
 		for (String word : words) {
