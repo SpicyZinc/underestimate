@@ -7,9 +7,6 @@ this contains two problems
 1. put elements at odd index to front, move elements at even index to back
 2. put all odd numbers to front, all even numbers to back
 
-swap()
-note: when passing the middle point of the array, stop swap
-
 5,6,8,2,3,9,4,7 => 5 8 3 4 6 2 9 7
 5,6,8,2,3,9,4,7 => 5 3 9 7 6 8 2 4
 */
@@ -26,9 +23,32 @@ public class OddBeforeEven {
 		System.out.println();
 	}
 
+	// move number at odd or even index
+	public void move(int[] nums) {
+		for (int i = 1; i <= nums.length / 2; i++) {
+			for (int j = i + 1; j < nums.length; j++) {
+				swap(nums, j - 1, j);
+			}
+		}
+	}
+	// move odd value before even value
+	// whenever run into odd number
+	// via swap() 把它移到上一个 odd 之后
+	public void moveByParity(int[] nums) {
+		int lastOddPos = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i] % 2 == 1) {
+				for (int j = i; j > lastOddPos; j--) {
+					swap(nums, j, j - 1);
+				}
+				lastOddPos++;
+			}
+		}
+	}
 
+	// move odd value before even value
+	// front and back two pointers
 	public void partitionArray(int[] nums) {
-        // write your code here
         int i = 0;
         int j = nums.length - 1;
         
@@ -45,29 +65,6 @@ public class OddBeforeEven {
             }
         }
     }
-
-
-	public void move(int[] nums) {
-		for (int i = 1; i < nums.length - 1; i++) {
-			if (i <= nums.length / 2) {
-				for (int j = i + 1; j < nums.length; j++) {
-					swap(nums, j - 1, j);
-				}
-			}
-		}
-	}
-	
-	public void moveByParity(int[] nums) {
-		int posToStopSwap = 0;
-		for (int i = 0; i < nums.length; i++) {
-			if (nums[i] % 2 == 1) {
-				for (int j = i; j > posToStopSwap; j--) {
-					swap(nums, j, j - 1);
-				}
-				posToStopSwap++;
-			}
-		}
-	}
 
 	public void swap(int[] nums, int i, int j) {
 		int temp = nums[i];
