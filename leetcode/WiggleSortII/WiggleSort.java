@@ -24,14 +24,13 @@ idea:
 https://www.cnblogs.com/grandyang/p/5139057.html
 https://www.hrwhisper.me/leetcode-wiggle-sort-ii/
 
-sort the array in the first place
+sort the array, then reverse it
 find the mid point, separate the array to two parts
 take the last elements from both 1st half and 2nd half respectively to create the new array
+if odd length, 2nd half should be one element more than 1st half
 
-not exactly any sorting works, have to be sort reversely
-then 2nd half goes to the 1st part, also if odd length, 2nd half should be one element more than 1st half
-
-or NOT sorting reversely, but pointer starts from end part of the array
+2. no sorting reversely, but pointer starts from end part of the array
+right = (n + 1) / 2, then --right
 
 note: depends the parity of the length
 this is wiggle sort II, NOT allowing equal sign
@@ -50,54 +49,6 @@ public class WiggleSort {
         System.out.println();
     }
 
-    // public void wiggleSort(int[] nums) {
-    //     if (nums.length <= 1 || nums == null) {
-    //         return;   
-    //     }
-    //     // sort in a reverse order
-    //     Arrays.sort(nums);
-    //     int mid = nums.length / 2;
-    //     for (int i = 0; i < mid; i++) {
-    //         int cache = nums[i];
-    //         nums[i] = nums[nums.length - 1 - i];
-    //         nums[nums.length - 1 - i] = cache;
-    //     }
-
-    //     // for (int num : nums)  {
-    //     //     System.out.print(num + "    ");
-    //     // }
-
-
-    //     int[] res = new int[nums.length];
-    //     for (int i = 0; i < mid; i++) {
-    //         if (nums.length % 2 == 1 && i == mid - 1) {
-    //             res[nums.length-1] = nums[nums.length-1];    
-    //         }
-    //     	res[i * 2] = nums[i + mid];
-    //     	res[i * 2 + 1] = nums[i];
-    //     }
-        
-    //     for (int i = 0; i < nums.length; i++) {
-    //     	nums[i] = res[i];
-    //     }
-    // }
-
-
-    public void wiggleSort(int[] nums) {
-        if (nums.length <= 1 || nums == null) {
-            return;   
-        }
-        int n = nums.length;
-        int[] copy = Arrays.copyOf(nums, n);
-        Arrays.sort(copy);
-        int k = (n + 1) / 2;
-        int j = n;
-        for (int i = 0; i < n; i++) {
-            nums[i] = (i % 2 == 0) ? copy[--k] : copy[--j];
-        }
-    }
-
-    // self written version
     public void wiggleSort(int[] nums) {
         if (nums.length <= 1 || nums == null) {
             return;
@@ -113,16 +64,32 @@ public class WiggleSort {
                 return b - a;
             }
         });
+
         int pointerFirstHalf = n / 2;
         int pointerSecondHalf = 0;
         for (int i = 0; i < n; i++) {
             nums[i] = i % 2 == 0 ? copy[pointerFirstHalf++] : copy[pointerSecondHalf++];
         }
     }
+
+    public void wiggleSort(int[] nums) {
+        if (nums.length <= 1 || nums == null) {
+            return;   
+        }
+        int n = nums.length;
+        int[] copy = Arrays.copyOf(nums, n);
+        Arrays.sort(copy);
+
+        int leftPtr = (n + 1) / 2;
+        int rightPtr = n;
+        // left part size always equal or 1 smaller than right part
+        // take 7 as an example
+        // 0 1 2 3 4 5 6
+        // 4 even numbers, 3 odd numbers in term of indexes
+        // rightPtr one more than leftPtr, so even index goes to right right
+        // what i said partially right, low high low high, so leftPtr
+        for (int i = 0; i < n; i++) {
+            nums[i] = (i % 2 == 0) ? copy[--leftPtr] : copy[--rightPtr];
+        }
+    }
 }
-
-
-
-
-
-
