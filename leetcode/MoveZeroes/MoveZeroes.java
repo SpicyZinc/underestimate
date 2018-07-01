@@ -13,7 +13,9 @@ idea
 Method 1:
 like bubble sort, self implemented
 swap any two adjacent elements until the zero reaches the end of array
-repeat this the length of array times
+because zero reaches to the end of array
+next time, m--
+repeat this the length of array times 
 
 Method 2 (the most direct method)
 move all nonzero elements to the front part of the array
@@ -31,7 +33,7 @@ public class MoveZeroes {
     public void moveZeroes(int[] nums) {
     	int n = nums.length;
     	int k = 0;
-    	for ( int m = n-1; m >= 0; m-- ) {
+    	for (int m = n - 1; m >= 0; m--) {
 	    	for (int i = 0; i < n - 1; i++) {
 			    k = i + 1;
 			    if (nums[i] == 0) {
@@ -47,14 +49,14 @@ public class MoveZeroes {
     }
     // method 2
     public void moveZeroes(int[] nums) { 
-        int curPos = 0; 
+        int lastNonZeroPos = 0; 
         for (int i = 0; i < nums.length; i++) { 
             if (nums[i] != 0) { 
-                nums[curPos++] = nums[i]; 
+                nums[lastNonZeroPos++] = nums[i]; 
             } 
         } 
-        while (curPos < nums.length) { 
-            nums[curPos++] = 0; 
+        while (lastNonZeroPos < nums.length) { 
+            nums[lastNonZeroPos++] = 0; 
         }
     }
     // method 3
