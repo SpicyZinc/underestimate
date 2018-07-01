@@ -5,13 +5,14 @@ push(x) -- Push element x onto stack.
 pop() -- Removes the element on top of the stack.
 top() -- Get the top element.
 empty() -- Return whether the stack is empty.
+
 Notes:
 You must use only standard operations of a queue -- which means only push to back, peek/pop from front, size, and is empty operations are valid.
 Depending on your language, queue may not be supported natively. You may simulate a queue by using a list or deque (double-ended queue), as long as you use only standard operations of a queue.
 You may assume that all operations are valid (for example, no pop or top operations will be called on an empty stack).
 
 idea:
-Method 1 (By making push operation costly)
+1 (By making push operation costly)
 This method makes sure that newly entered element is always at the front of 'q1', so that pop operation just dequeues from 'q1'. 
 'q2' is used to put every new element at front of 'q1'.
 
@@ -25,7 +26,7 @@ push(s, x)
 pop(s)
   1) Dequeue an item from q1 and return it.
 
-Method 2 (By making pop operation costly)
+2 (By making pop operation costly)
 In push operation, the new element is always enqueued to q1. 
 In pop() operation, if q2 is empty then all the elements except the last, are moved to q2. 
 Finally the last element is dequeued from q1 and returned.
@@ -43,6 +44,7 @@ pop(s)
 
 import java.util.*;
 
+// this is implementation of 2nd method
 class MyStack {
     Queue<Integer> normalQueue = new LinkedList<Integer>();
     Queue<Integer> reverseQueue = new LinkedList<Integer>();
