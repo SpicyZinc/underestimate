@@ -53,37 +53,37 @@ public class KillProcess {
 	}
 	// method 2
 	public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
-		if (kill == 0) {
-			return pid;
-		}
-
-		List<Integer> result = new ArrayList<Integer>();
-		HashMap<Integer, Set<Integer>> hm = new HashMap<Integer, Set<Integer>>();
-		for (int i = 0; i < pid.size(); i++) {
-			int process = pid.get(i);
-			hm.put(process, new HashSet<Integer>());
-		}
-		for (int i = 0; i < ppid.size(); i++) {
-			int parent = ppid.get(i);
-			if (hm.containsKey(parent)) {
-				Set<Integer> set = hm.get(parent);
-				set.add(pid.get(i));
-			}
-		}
-		result.add(kill);
-		traverse(hm, result, kill);
-		return result;
-	}
-
-	private void traverse(HashMap<Integer, Set<Integer>> hm, List<Integer> result, int kill) {
-		// result.add(kill);
-		Set<Integer> set = hm.get(kill);
-		for (int process : set) {
-			traverse(hm, result, process);
-			result.add(process);
-		}
-	}
-
+        // kill root, all will be killed
+        if (kill == 0) {
+            return pid;
+        }
+        
+        List<Integer> result = new ArrayList<Integer>();
+        // build map based on pid. why? process to kill can be the key
+        Map<Integer, Set<Integer>> hm = new HashMap<>();
+        for (int process : pid) {
+            hm.put(process, new HashSet<Integer>());
+        }
+        
+        for (int i = 0; i < ppid.size(); i++) {
+            int process = ppid.get(i);
+            if (hm.containsKey(process)) {
+                hm.get(process).add(pid.get(i));
+            }
+        }
+        
+        dfs(kill, hm, result);
+        
+        return result;
+    }
+    
+    public void dfs(int kill, Map<Integer, Set<Integer>> hm, List<Integer> result) {
+        result.add(kill);
+        for (int processToKill : hm.get(kill)) {
+            dfs(processToKill, hm, result);
+        }
+    }
+    // TLE
     public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
         List<Integer> result = new ArrayList<Integer>();
         if (pid.size() == 0 || pid == null || ppid.size() == 0 || ppid == null) {
@@ -107,8 +107,7 @@ public class KillProcess {
 		        		queue.offer(process);
 		        	}
 	        	}
-        	}
-        	else {
+        	} else {
         		break;
         	}
         }
