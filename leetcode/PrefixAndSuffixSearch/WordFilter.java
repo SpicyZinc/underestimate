@@ -18,6 +18,7 @@ words[i] and prefix, suffix queries consist of lowercase letters only.
 
 idea:
 since prefix, suffix are in [0, 10], for loop is 0-10
+没什么意思
 */
 
 class WordFilter {
@@ -25,6 +26,7 @@ class WordFilter {
 	public WordFilter(String[] words) {
 		for (int w = 0; w < words.length; w++) {
 			String word = words[w];
+			// word with highest weight is recorded
 			int len = word.length();
 			for (int i = 0; i <= 10 && i <= len; i++) {
 				for (int j = 0; j <= 10 && j <= len; j++) {
