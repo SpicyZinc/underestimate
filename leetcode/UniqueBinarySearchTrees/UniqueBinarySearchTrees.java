@@ -19,7 +19,7 @@ count(3) = 5
 
 A1, A2, A3, Ak, ... , An (n nodes), any node can be root
 Take Ak as root, a general case
-left sub tree = k-1 nodes (since it is k, so 'k - 1' the count of nodes left), 
+left sub tree = k-1 nodes (since it is k, so '(k - 1) - 1 + 1' the count of nodes left), 
 right sub tree = n-k nodes
 total = (k-1) + (n-k) = n - 1 nodes
 
@@ -33,9 +33,9 @@ public class UniqueBinarySearchTrees {
     public int numTrees(int n) {
         if (n == 0 || n == 1) {
             return 1;
-        }
-        else {
+        } else {
             int cnt = 0;
+            // loop to use any [1, n] as root
             for (int i = 1; i <= n; i++) {
                 cnt += numTrees(i - 1) * numTrees(n - i);
             }
