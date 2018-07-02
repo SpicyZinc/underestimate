@@ -10,12 +10,11 @@ A solution set is:
 [2, 2, 3] 
 
 idea:
-This question is basically a generalized coin change problem.
-very typical and classical
-
-note: remaining, pos, stop case
-
 https://github.com/yuanx/leetcode/blob/master/CombinationSum.java
+
+This question is basically a generalized coin change problem.
+quintessential dfs()
+note, remaining, pos, stop case, sort first
 */
 
 import java.util.*;
