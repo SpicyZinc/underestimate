@@ -53,17 +53,67 @@ Explanation:
 There is no plus sign, so return 0.
 
 Note:
-
 N will be an integer in the range [1, 500].
 mines will have length at most 5000.
 mines[i] will be length 2 and consist of integers in the range [0, N-1].
 (Additionally, programs submitted in C, C++, or C# will be judged with a slightly smaller time limit.)
 
 idea:
+弄清楚什么是 plus sign of order k
+一个中心 然后上下左右分别有 (k - 1) 1
 
+https://www.cnblogs.com/grandyang/p/8679286.html
+https://www.cnblogs.com/Deribs4/p/8289925.html
 */
 
 class LargestPlusSign {
+	// very brute force
+	public int orderOfLargestPlusSign(int N, int[][] mines) {
+		int[][] grid = new int[N][N];
+
+		for (int i = 0; i < N; i++) {
+			Arrays.fill(grid[i], 1);
+		}
+
+		for (int[] m : mines) {
+			grid[m[0]][m[1]] = 0;
+		}
+
+		int order = 0;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (grid[i][j] == 1) {
+					int k = 1;
+					// 用k control, when the arm too long, while will return false
+					while (canExtend(grid, i, j, k)) {
+						k++;
+					}
+					// while fails at k + 1, so no need to k + 1
+					order = Math.max(order, k);
+				}
+			}
+		}
+
+		return order;
+	}
+
+	public boolean canExtend(int[][] grid, int i, int j, int k) {
+		int n = grid.length;
+
+		int left = i - k;
+		int top = j + k;
+		int right = i + k;
+		int bottom = j - k;
+
+		if (left < 0 || top >= n || right >= n || bottom < 0) {
+			return false;
+		}
+		return grid[left][j] == 1 &&
+				grid[i][top] == 1 &&
+				grid[right][j] == 1 &&
+				grid[i][bottom] == 1;
+	}
+	// 每个(i, j) four directions the minimum consecutive 1s number
 	public int orderOfLargestPlusSign(int N, int[][] mines) {
 		int[][] grid = new int[N][N];
 
@@ -76,6 +126,7 @@ class LargestPlusSign {
 		}
 
 		for (int i = 0; i < N; i++) {
+			// l left, r right, u up, d down
 			for (int j = 0, k = N - 1, l = 0, r = 0, u = 0, d = 0; j < N; j++, k--) {
 				grid[i][j] = Math.min(grid[i][j], l = (grid[i][j] == 0 ? 0 : l + 1));
 				grid[i][k] = Math.min(grid[i][k], r = (grid[i][k] == 0 ? 0 : r + 1));
