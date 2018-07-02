@@ -25,9 +25,12 @@ Any scores in the given array are non-negative integers and will not exceed 10,0
 If the scores of both players are equal, then player 1 is still the winner.
 
 idea:
+https://leetcode.com/problems/predict-the-winner/solution/
+
 So assuming the sum of the array is SUM, so eventually player1 and player2 will split the SUM between themselves.
 For player1 to win, he/she has to get more than what player2 gets.
-If we think from the prospective of one player, then what he/she gains each time is a plus, while, what the other player gains each time is a minus.
+If we think from the prospective of one player, then what he/she gains each time is a plus,
+while, what the other player gains each time is a minus.
 Eventually if player1 can have a >0 total, player1 can win.
 
 Helper function simulate this process.
@@ -38,23 +41,9 @@ otherwise, this current player has 2 options:
 --> nums[e]-helper(nums,s,e-1): this player select the tail item, leaving the other player a choice from s to e-1
 Then take the max of these two options as this player's selection, return it.
 
-
 pick one number from either start or end, 2 options, continually, 2^n
-difference = number player1 picked - number player2 picked > 0, player1 wins 
-
-
-public class Solution {
-    public boolean PredictTheWinner(int[] nums) {
-        return helper(nums, 0, nums.length-1, new Integer[nums.length][nums.length]) >= 0;
-    }
-    private int helper(int[] nums, int s, int e, Integer[][] mem) {    
-        if (mem[s][e]==null)
-            mem[s][e] = s==e ? nums[e] : Math.max(nums[e]-helper(nums,s,e-1,mem),nums[s]-helper(nums,s+1,e,mem));
-        return mem[s][e];
-    }
-}
+difference = number player1 picked - number player2 picked > 0, player1 wins
 */
-
 
 public class PredictTheWinner {
     public boolean PredictTheWinner(int[] nums) {
@@ -70,6 +59,23 @@ public class PredictTheWinner {
         // player picks up the end
         int diff2 = nums[end] - getDiffNumbersPickedByPlayers(nums, start, end - 1);
         
+        // 需要净增长是正的 bigger one
         return Math.max(diff1, diff2);
+    }
+
+    // a little dp
+    public boolean PredictTheWinner(int[] nums) {
+        Integer[][] memo = new Integer[nums.length][nums.length];
+        return winner(nums, 0, nums.length - 1, memo) >= 0;
+    }
+    public int winner(int[] nums, int s, int e, Integer[][] memo) {
+        if (s == e)
+            return nums[s];
+        if (memo[s][e] != null)
+            return memo[s][e];
+        int a = nums[s] - winner(nums, s + 1, e, memo);
+        int b = nums[e] - winner(nums, s, e - 1, memo);
+        memo[s][e] = Math.max(a, b);
+        return memo[s][e];
     }
 }
