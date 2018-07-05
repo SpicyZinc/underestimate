@@ -271,7 +271,7 @@ Backspace String Compare
 Maximize Distance to Closest Person
 Peak Index in a Mountain Array
 Exam Room
-KSimilar Strings
+K-Similar Strings
 Car Fleet
 Minimum Cost to Hire K Workers
 Buddy Strings
