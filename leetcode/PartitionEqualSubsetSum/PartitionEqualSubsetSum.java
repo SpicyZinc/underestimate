@@ -16,35 +16,13 @@ Output: false
 Explanation: The array cannot be partitioned into equal sum subsets.
 
 idea:
-dfs, if can be partitioned, must be an even number
-otherwise, cannot be partitioned
+dfs, if can be partitioned, sum must be an even number
 subtract one by one from the sum, if final zero, return true
+otherwise, cannot be partitioned
 
 */
 
 public class PartitionEqualSubsetSum {
-	// all subsets, failed OJ
-    public boolean canPartition(int[] nums) {
-        if (nums.length == 0 || nums == null) {
-        	return false;
-        }
-
-        Arrays.sort(nums);
-        int[] sum = new int[nums.length];
-        sum[0] = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-        	sum[i] = nums[i] + sum[i - 1];
-        }
-
-        for (int i = nums.length - 1; i >= 1; i--) {
-        	if (sum[nums.length - 1] - sum[i-1] == sum[i-1]) {
-        		return true;
-        	}
-        }
-
-        return false;
-    }
-    // so simple, why not think of
     public boolean canPartition(int[] nums) {
         if (nums.length == 0 || nums == null) {
         	return false;
@@ -65,8 +43,7 @@ public class PartitionEqualSubsetSum {
     public boolean dfs(int[] nums, int start, int sum) {
     	if (sum == 0) {
     		return true;
-    	}
-    	else if (sum < 0) {
+    	} else if (sum < 0) {
     		return false;
     	}
 
