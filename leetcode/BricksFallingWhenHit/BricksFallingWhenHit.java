@@ -33,7 +33,7 @@ It is guaranteed that each erasure will be different from any other erasure, and
 An erasure may refer to a location with no brick - if it does, no bricks drop.
 
 idea:
-
+https://leetcode.com/problems/bricks-falling-when-hit/discuss/119829/Python-Solution-by-reversely-adding-hits-bricks-back
 too hard, not finish, need to be back
 */
 
