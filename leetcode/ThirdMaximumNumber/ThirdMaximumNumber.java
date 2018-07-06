@@ -5,47 +5,40 @@ The time complexity must be O(n) or less.
 idea:
 1. first thought of getKth
 2. find the first three maximum numbers
+3. damn overflow
 note: (num >= third) don't forget equal sign
-try to avoid duplicate elements
-			if (num == first || num == second) {
-    	        continue;
-    	    }
 */
+
 public class ThirdMaximumNumber {
     public int thirdMax(int[] nums) {
-    	int first = Integer.MIN_VALUE;
-    	int second = Integer.MIN_VALUE;
-    	int third = Integer.MIN_VALUE;
-    	int cnt = 0;
+        long first = Long.MIN_VALUE;
+        long second = Long.MIN_VALUE;
+        long third = Long.MIN_VALUE;
+        int cnt = 0;
 
-    	for (int num : nums) {
-    	    if (num == first || num == second) {
-    	        continue;
-    	    }
-    		if (num > first) {
-    			third = second;
-    			second = first;
-    			first = num;
+        for (int num : nums) {
+            long number = (long) num;
+            if (number == first || number == second) {
+                continue;
+            }
 
-    			cnt++;
-    		}
-    		else if (num > second) {
-    			third = second;
-    			second = num;
+            if (number > first) {
+                third = second;
+                second = first;
+                first = number;
 
-    			cnt++;
-    		}
-    		else if (num >= third) {
-    			third = num;
-    			cnt++;
-    		}
-    	}
+                cnt++;
+            } else if (number > second) {
+                third = second;
+                second = number;
 
-    	if (cnt >= 3) {
-    		return third;
-    	}
-    	else {
-    		return first;
-    	}
+                cnt++;
+            } else if (number >= third) {
+                third = number;
+                cnt++;
+            }
+        }
+        
+        return cnt >= 3 ? (int) third : (int) first;
     }
 }
