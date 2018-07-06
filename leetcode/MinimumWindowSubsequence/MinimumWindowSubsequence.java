@@ -27,7 +27,18 @@ when S[i] == T[j]
 e.g. dbd包含bd的起始位置和db包含b的起始位置一样
 when S[i] != T[j]
 其实是和 dp[i - 1][j] 是一样的
-e.g.dbd包含b的起始位置和db包含b的起始位置是一样
+e.g. dbd包含b的起始位置和db包含b的起始位置是一样
+
+S = "dbd", T = "bd"
+
+S (i)	T (j)
+db     	b
+dbd     bd
+
+
+S (i)	T (j)
+db    	b
+dbd     b (d != b)
 */
 
 import java.util.*;
@@ -61,6 +72,7 @@ public class MinimumWindowSubsequence {
         
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= Math.min(i, n); j++) {
+            	// dp[3][1] S.charAt(2) == T.charAt(0)
                 dp[i][j] = S.charAt(i - 1) == T.charAt(j - 1) ? dp[i - 1][j - 1] : dp[i - 1][j];
             }
             if (dp[i][n] != -1) {
