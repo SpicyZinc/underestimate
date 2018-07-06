@@ -1,12 +1,15 @@
 /*
-Given an input string, reverse the string word by word. A word is defined as a sequence of non-space characters.
-The input string does not contain leading or trailing spaces and the words are always separated by a single space.
+Given an input string , reverse the string word by word. 
+Example:
+Input:  ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
+Output: ["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]
 
-For example,
-Given s = "the sky is blue",
-return "blue is sky the".
+Note: 
+A word is defined as a sequence of non-space characters.
+The input string does not contain leading or trailing spaces.
+The words are always separated by a single space.
 
-Could you do it in-place without allocating extra space?
+Follow up: Could you do it in-place without allocating extra space?
 
 idea:
 input is char array to represent words only separated by a space between words
@@ -30,39 +33,39 @@ public class ReverseWordsInAString {
 		System.out.println();
 	}
 	// method 1
-    public void reverseWordsI(char[] s) {
-    	int start = 0;
-    	// reverse each word in place
-    	for (int i = 0; i < s.length; i++) {
-    		if (s[i] == ' ') {
-    			reverse(s, start, i-1);
-    			start = i + 1;
-    		}
-    	}
-    	reverse(s, start, s.length - 1); // reverse last word
-    	// reverse the whole string
-    	reverse(s, 0, s.length - 1);
-    }
-    // method 2
-    public void reverseWordsII(char[] s) {
-    	reverse(s, 0, s.length - 1);
-    	int start = 0;
-    	for (int i = 0; i < s.length; i++) {
-    		if (s[i] == ' ') {
-    			reverse(s, start, i - 1);
-    			start = i + 1;
-    		}
-    	}
-    	reverse(s, start, s.length - 1);
-    }
+	public void reverseWords(char[] s) {
+		int start = 0;
+		// reverse each word in place
+		for (int i = 0; i < s.length; i++) {
+			if (s[i] == ' ') {
+				reverse(s, start, i-1);
+				start = i + 1;
+			}
+		}
+		reverse(s, start, s.length - 1); // reverse last word
+		// reverse the whole string
+		reverse(s, 0, s.length - 1);
+	}
+	// method 2
+	public void reverseWords(char[] s) {
+		reverse(s, 0, s.length - 1);
+		int start = 0;
+		for (int i = 0; i < s.length; i++) {
+			if (s[i] == ' ') {
+				reverse(s, start, i - 1);
+				start = i + 1;
+			}
+		}
+		reverse(s, start, s.length - 1);
+	}
 
-    public void reverse(char[] s, int i, int j) {
-    	while (i < j) {
-    		char temp = s[i];
-    		s[i] = s[j];
-    		s[j] = temp;
-    		i++;
-    		j--;
-    	}
-    }
+	public void reverse(char[] s, int i, int j) {
+		while (i < j) {
+			char temp = s[i];
+			s[i] = s[j];
+			s[j] = temp;
+			i++;
+			j--;
+		}
+	}
 }
