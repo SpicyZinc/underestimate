@@ -1,5 +1,4 @@
 /*
-
 Given two arrays, write a function to compute their intersection.
 
 Example:
@@ -9,7 +8,6 @@ Note:
 Each element in the result must be unique.
 The result can be in any order.
 
-
 idea:
 1. HashSet
 2. sort the arrays, skip duplicates, binary search
@@ -18,8 +16,8 @@ idea:
 
 public class IntersectionOfTwoArrays {
     public int[] intersection(int[] nums1, int[] nums2) {
-    	HashSet<Integer> hs = new HashSet<Integer>();
-    	HashSet<Integer> res = new HashSet<Integer>();
+    	Set<Integer> hs = new HashSet<Integer>();
+    	Set<Integer> res = new HashSet<Integer>();
 
         for (int i : nums1) {
         	hs.add(i);
@@ -39,45 +37,46 @@ public class IntersectionOfTwoArrays {
     }
 
     // binary search
-    // public int[] intersect(int[] nums1, int[] nums2) {
-    //     Arrays.sort(nums1);
-    //     Arrays.sort(nums2);
-    //     int l1 = nums1.length;
-    //     List<Integer> intersect = new ArrayList<Integer>();
+    public int[] intersection(int[] nums1, int[] nums2) {
 
-    //     for (int i=0; i<l1; i++) {
-    //     	if (i > 0 && nums1[i] == nums1[i-1]) {
-    //     		continue;
-    //     	}
-    //         if (binarySearch(nums2,nums1[i])) {
-    //             intersect.add(nums1[i]);
-    //         } 
-    //     }
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
 
-    //     int[] intersect_arr = new int[intersect.size()];
-    //     for (int i=0; i<intersect.size(); i++) {
-    //         intersect_arr[i] = intersect.get(i).intValue();
-    //     }
+        int m = nums1.length;
+        List<Integer> intersect = new ArrayList<Integer>();
 
-    //     return intersect_arr;
-    // }
+        for (int i = 0; i < m; i++) {
+            if (i > 0 && nums1[i] == nums1[i - 1]) {
+                continue;
+            }
+            if (binarySearch(nums2, nums1[i])) {
+                intersect.add(nums1[i]);
+            }
+        }
 
-    // public boolean binarySearch(int[] nums, int target) {
-    // 	int start = 0;
-    // 	int end = nums.length - 1;
-    // 	int mid;
-    // 	while (start <= end) {
-    // 		mid = (start + end) / 2;
-    // 		if (nums[mid] == target) {
-    // 			return true;
-    // 		}
-    // 		else if (nums[mid] > target) {
-    // 			end = mid - 1;
-    // 		}
-    // 		else {
-    // 			start = mid + 1;
-    // 		}
-    // 	}
-    // 	return false;
-    // }
+        int[] result = new int[intersect.size()];
+        for (int i = 0; i < intersect.size(); i++) {
+            result[i] = intersect.get(i);
+        }
+
+        return result;
+    }
+
+    public boolean binarySearch(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length - 1;
+
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] == target) {
+                return true;
+            } else if (nums[mid] > target) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+
+        return false;
+    }
 }

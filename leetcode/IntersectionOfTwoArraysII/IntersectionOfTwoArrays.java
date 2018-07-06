@@ -27,7 +27,7 @@ public class IntersectionOfTwoArrays {
     	Arrays.sort(nums1);
     	Arrays.sort(nums2);
     	int p1 = 0, p2 = 0;
-    	ArrayList<Integer> intersection = new ArrayList<Integer>();
+    	List<Integer> intersection = new ArrayList<Integer>();
 
     	while (p1 < nums1.length && p2 < nums2.length) {
     		if (nums1[p1] == nums2[p2]) {
