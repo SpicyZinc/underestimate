@@ -42,6 +42,20 @@ public class ClimbingStairs {
         
         return c;
     }
+    // typical DP
+	public int climbStairs(int n) {
+		if (n == 1) return 1;
+
+		int[] dp = new int[n + 1];
+		dp[1] = 1;
+		dp[2] = 2;
+
+		for (int i = 3; i <= n; i++) {
+			dp[i] = dp[i - 1] + dp[i - 2];
+		}
+
+		return dp[n];
+	}
 	// bottom-up iterative dynamic programming
 	public int climbStairs(int n) {
 		if (n == 1) return 1;
@@ -49,8 +63,7 @@ public class ClimbingStairs {
 
         int[] prev = {1, 2};
         // meaning the "current" number of steps to be finished
-		int current = 2; 
-		
+		int current = 2;
 		while (current < n) {
 			int preTotal = prev[0] + prev[1];
 			prev[0] = prev[1];
