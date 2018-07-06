@@ -91,4 +91,27 @@ public class Vector2D {
     public boolean hasNext() {
         return curr < iterators.size() && iterators.get(curr).hasNext();
     }
+
+    // use java List 1d iterator
+	List<Integer> list;
+    Iterator<Integer> itr;
+    public Vector2D(List<List<Integer>> vec2d) {
+        this.list = new ArrayList<Integer>();
+        for (List<Integer> row : vec2d) {
+            for (int num : row) {
+                list.add(num);
+            }
+        }
+        this.itr = list.iterator();
+    }
+
+    @Override
+    public Integer next() {
+        return itr.next();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return itr.hasNext();
+    }
 }
