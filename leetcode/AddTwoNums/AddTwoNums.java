@@ -31,13 +31,13 @@ public class AddTwoNums {
 	public static void main(String[] args) {
 	    AddTwoNums eg = new AddTwoNums();
 		
-		ListNode list_a = eg.fromArray(new int[]{4,7,4,7});
-		ListNode list_b = eg.fromArray(new int[]{5,3,7,4,7,4});
+		ListNode listA = eg.fromArray(new int[] {4,7,4,7});
+		ListNode listB = eg.fromArray(new int[] {5,3,7,4,7,4});
 		
-		eg.printList(list_a);
-		eg.printList(list_b);
+		eg.printList(listA);
+		eg.printList(listB);
 		
-		ListNode newList = eg.addTwoNumbers(list_a, list_b);
+		ListNode newList = eg.addTwoNumbers(listA, listB);
 		eg.printList(newList);
 	}
 

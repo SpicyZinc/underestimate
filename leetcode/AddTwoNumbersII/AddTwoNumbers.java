@@ -19,7 +19,7 @@ Sum of Two Integers
 Add Two Numbers
 
 similar to first Add Two Numbers,
-the only difference is that this one's input is reversed, so use stack
+the only difference is that this one's input is reversed, so use stack or reverse first
 */
 class ListNode {
     int val;
