@@ -47,8 +47,7 @@ public class IslandPerimeter {
             int newY = y + dir[1];
             if (newX < 0 || newY < 0 || newX >= grid.length || newY >= grid[0].length) {
                 perimeter += 1;
-            }
-            else if (grid[newX][newY] == 0) {
+            } else if (grid[newX][newY] == 0) {
                 perimeter += 1;
             }
         }

@@ -24,6 +24,31 @@ queue.remove()
 */
 
 public class IsSubsequence {
+    // 12 ms
+    public boolean isSubsequence(String s, String t) {
+        if (s.length() == 0 || s == null) {
+            return true;
+        }
+        
+        int n = s.length();
+        int m = t.length();
+        
+        int i = 0;
+        int j = 0;
+        
+        while (i < m) {
+            if (s.charAt(j) == t.charAt(i)) {
+                j++;
+                if (j == n) {
+                    return true;
+                }
+            }
+            i++;            
+        }
+        
+        return false;
+    }
+    // 34 ms
     public boolean isSubsequence(String s, String t) {
     	if (s == null || s.length() == 0 ) {
             return true;
