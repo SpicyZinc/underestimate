@@ -124,4 +124,33 @@ public class ValidParentheses {
 
         return stack.size() == 0;
     }
+
+    // self best version
+    public boolean isValid(String s) {
+        Map<Character, Character> match = new HashMap<>();
+        match.put(')', '(');
+        match.put(']', '[');
+        match.put('}', '{');
+        
+        Stack<Character> stack = new Stack<Character>();
+        
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+ 
+            if (c == '(' || c == '[' || c == '{') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+
+                char popped = stack.pop();
+                char supposedToMatch = match.get(c);
+                if (popped != supposedToMatch) {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
 }

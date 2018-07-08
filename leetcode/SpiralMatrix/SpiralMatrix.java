@@ -61,97 +61,82 @@ public class SpiralMatrix {
 		}	
 		System.out.print("]");
 	}
-
-	// self written version passed test, borrowed from SpiralMatrixII
-	public ArrayList<Integer> spiralOrder(int[][] matrix) {
-		ArrayList<Integer> ret = new ArrayList<Integer>();
-		if (matrix.length == 0 || matrix == null) {
-			return ret;
-		}
-
-		int r = matrix.length;
-        int c = matrix[0].length;
-
-        int top = 0;
-        int right = c - 1;
-        int bottom = r - 1;
-        int left = 0;
-
-        int i;
-
-        while (ret.size() < r * c) {
-        	// top
-        	for (i = left; i <= right; i++) {
-        		ret.add(matrix[top][i]);
-        	}
-        	// right
-        	for (i = top+1; i <= bottom; i++) {
-        		ret.add(matrix[i][right]);
-        	}
-        	// bottom
-        	if (top < bottom) {
-        		for (i = right - 1; i >= left; i--) {
-        			ret.add(matrix[bottom][i]);
-        		}
-        	}
-        	// left
-        	if (left < right) {
-        		for (i = bottom - 1; i >= top + 1; i--) {
-        			ret.add(matrix[i][left]);
-        		}
-        	}
-
-        	top++;
-        	right--;
-        	bottom--;
-        	left++;
-        }
-
-        return ret;
-    }
-    // self written version passed test, a little change from the above method
-    public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> res = new ArrayList<Integer>();
-        if (matrix == null || matrix.length == 0) {
-            return res;
+    // both are working
+	public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> list = new ArrayList<>();
+        
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return list;
         }
         
         int m = matrix.length;
-        int n = matrix[0].length;
+        int n = matrix[0].length; 
         
-        int row = 0;
-        int col = 0;
+//         int top = 0;
+//         int left = 0;
+//         int bottom = m - 1;
+//         int right = n - 1;
+                
+//         while (top <= bottom && left <= right) {
+//             // top
+//             for (int i = left; i <= right; i++) {
+//                 list.add(matrix[top][i]);
+//             }
+//             top++;
+//             // right
+//             for (int i = top; i <= bottom; i++) {
+//                 list.add(matrix[i][right]);
+//             }
+//             right--;
+//             // bottom
+//             if (top <= bottom) {
+//                 for (int i = right; i >= left; i--) {
+//                     list.add(matrix[bottom][i]);
+//                 }
+//                 bottom--;
+//             }
+//             // left
+//             if (left <= right) {
+//                 for (int i = bottom; i >= top; i--) {
+//                     list.add(matrix[i][left]);
+//                 }
+//                 left++;
+//             }
+//         }
+
+        int top = 0;
+        int right = n - 1;
+        int bottom = m - 1;
+        int left = 0;
         
-        int i = 0;
-        
-        while (row < m && col < n) {
-            // first row
-            for (i = col; i < n; i++) {
-                res.add(matrix[row][i]);
+        while (list.size() < m * n) {
+            // top
+            for (int i = left; i <= right; i++) {
+                list.add(matrix[top][i]);
             }
-            row++;
-            // last column
-            for (i = row; i < m; i++) {
-                res.add(matrix[i][n-1]);
+            top++;
+            // right
+            for (int i = top; i <= bottom; i++) {
+                list.add(matrix[i][right]);
             }
-            n--;
-            // bottom row
-            if (row < m) {
-                for (i = n-1; i >= col; i--) {
-                    res.add(matrix[m-1][i]);
+            right--;
+            // bottom
+            if (bottom >= top) {
+                for (int i = right; i >= left; i--) {
+                    list.add(matrix[bottom][i]);
                 }
-                m--;
+                bottom--;
             }
-            // first column
-            if (col < n) {
-                for (i = m-1; i >= row; i--) {
-                    res.add(matrix[i][col]);
+            // left
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    list.add(matrix[i][left]);
                 }
-                col++;
+                left++;
             }
         }
-        
-        return res;
+            
+        return list;
     }
 	// recursion
     public ArrayList<Integer> spiralPrint(int[][] matrix) {
