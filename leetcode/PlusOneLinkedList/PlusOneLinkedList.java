@@ -19,6 +19,17 @@ class ListNode {
     int val;
     ListNode next;
     ListNode(int x) { val = x; }
+
+    String getString() {
+    	String s = "";
+    	ListNode curr = this;
+    	while (curr != null) {
+    		s += curr.val + " ";
+    		curr = curr.next;
+    	}
+
+    	return s;
+    }
 }
 
 class PlusOneLinkedList {
@@ -41,6 +52,48 @@ class PlusOneLinkedList {
 			curr = curr.next;
 		}
 	}
+	// self written one, good
+	public ListNode plusOne(ListNode head) {
+        int carry = 1;
+        int sum = carry;
+        ListNode reversed = reverse(head);
+        ListNode curr = reversed;
+        while (curr.next != null) {
+            sum = carry + curr.val;
+            curr.val = sum % 10;
+            carry = sum / 10;
+            // nothing to carry, no need to continue, can stop early
+			if (carry == 0) {
+				break;
+			}
+            curr = curr.next;
+        }
+        // separate treat last one
+        sum = curr.val + carry;
+        curr.val = sum % 10;
+
+        if (sum >= 10) {
+            curr.next = new ListNode(sum / 10);
+            curr = curr.next;
+        }
+        
+        return reverse(reversed);
+    }
+    
+    public ListNode reverse(ListNode head) {
+        ListNode curr = head;
+        ListNode prev = null;
+        
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        return prev;
+    }
+
 
 	public ListNode plusOne(ListNode head) {
 		if (head == null) {
@@ -70,7 +123,7 @@ class PlusOneLinkedList {
 		return reverseList(reversed);
 	}
 
-    public ListNode reverseList(ListNode head) {
+	public ListNode reverseList(ListNode head) {
 		ListNode curr = head;
 		ListNode prev = null;
 
