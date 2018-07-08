@@ -64,14 +64,16 @@ public class Solution {
         if (headA == null || headB == null) {
             return null;
         }
-
-        ListNode a = headA, b = headB;
-        while (a != b) {
-            a = (a != null ? a.next : headB);
-            b = (b != null ? b.next : headA);
+        
+        ListNode currA = headA;
+        ListNode currB = headB;
+        // prerequisite is there must be intersectioin
+        while (currA != currB) {
+            currA = currA == null ? headB : currA.next;
+            currB = currB == null ? headA : currB.next;
         }
-
-        return a;
+        
+        return currA;
     }
 
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
