@@ -56,6 +56,31 @@ class TreeLinkNode {
 }
 
 public class PopulateNextRightPointer {
+    // self recent
+    public void connect(TreeLinkNode root) {
+
+        Queue<TreeLinkNode> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeLinkNode node = queue.poll();
+                if (node == null) {
+                    continue;
+                }
+                if (i == size - 1) {
+                    node.next = null;
+                } else {
+                    node.next = queue.peek();
+                }
+                
+                queue.add(node.left);
+                queue.add(node.right);
+            }
+        }
+    }
+
 	// method 1
     public void connect(TreeLinkNode root) {
         if (root == null || (root.left == null && root.right == null)) {
@@ -99,16 +124,14 @@ public class PopulateNextRightPointer {
 				if (prevBegin == null) {
 					curr.next = null;
 					curr = curr.next;
-				} 
-				else {
+				} else {
 					curr.next = prevBegin.right;
 					curr = curr.next;
 					prevBegin = prevBegin.next;
 					if (prevBegin != null) {
 						curr.next = prevBegin.left;
 						curr = curr.next;
-					}
-					else {
+					} else {
 						curr.next = null;
 						curr = null;
 					}

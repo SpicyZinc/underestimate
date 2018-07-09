@@ -17,6 +17,33 @@ addLast()
 */ 
 
 public class MovingAverage {
+	// 07/08/2018
+	int idx;
+    int size;
+    int windowSum;
+    List<Integer> deque;
+    /** Initialize your data structure here. */
+    public MovingAverage(int size) {
+        this.idx = 0;
+        this.size = size;
+        this.windowSum = 0;
+        this.deque = new LinkedList<>();
+    }
+    
+    public double next(int val) {
+        idx++;
+        windowSum += val;
+        deque.add(val);
+
+        if (idx <= size) {
+            return (double) (windowSum * 1.0 / idx);
+        } else {
+            windowSum -= deque.get(idx - size - 1);
+            return (double) (windowSum * 1.0 / size);
+        }
+    }
+
+
 	Deque<Integer> dequeue = null;
 	int size = 0;
 	long sum = 0;

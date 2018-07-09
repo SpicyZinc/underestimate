@@ -25,9 +25,15 @@ idea:
 two maps,
 hm char <-> Set<Character> parent char -> children chars
 inDegree char <-> frequency
+in essence, this is topological sorting of DAG
+
+有多少个letter 就是多少个vertex 在 graph 中
+有的点没有 入度 那它们就是 起始点 
+它们指向的点再 一步步减少入度
 */
 
 import java.util.*;
+
 class AlienDictionary {
 
 	public static void main(String[] args) {
@@ -96,14 +102,14 @@ class AlienDictionary {
 		}
 
 		while (!queue.isEmpty()) {
-			char c = queue.remove();
+			char c = queue.poll();
 			order += c;
 			Set<Character> subsequentChars = hm.get(c);
 			if (subsequentChars != null) {
-				for (char c2 : subsequentChars) {
-					inDegree.put(c2, inDegree.get(c2) - 1);
-					if (inDegree.get(c2) == 0) {
-						queue.add(c2);
+				for (char nextChar : subsequentChars) {
+					inDegree.put(nextChar, inDegree.get(nextChar) - 1);
+					if (inDegree.get(nextChar) == 0) {
+						queue.add(nextChar);
 					}
 				}
 			}

@@ -26,7 +26,35 @@ After calling your function, the tree should look like:
 idea:
 use queue typical bfs
 */
-public class PopulateNextRightPointerII {
+public class PopulateNextRightPointer {
+    // 07/08/2018
+    public void connect(TreeLinkNode root) {
+        if (root == null) {
+            return;
+        }
+
+        Queue<TreeLinkNode> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeLinkNode node = queue.poll();
+                if (i == size - 1) {
+                    node.next = null;
+                } else {
+                    node.next = queue.peek();
+                }
+                
+                if (node.left != null) {
+                    queue.add(node.left);                    
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+        }
+    }
 	// recent best 06/03/2018
 	public void connect(TreeLinkNode root) {
         if (root == null) {
@@ -128,5 +156,40 @@ public class PopulateNextRightPointerII {
             }
             node = node.next;
         }
+    }
+
+    // dfs recursion
+    // http://blog.csdn.net/muscler/article/details/22907093
+    // http://blog.csdn.net/fightforyourdream/article/details/16854731
+    public void connect(TreeLinkNode root) {  
+        if (root == null) {
+            return;
+        }
+          
+        // 如果右孩子不为空, 左孩子的next是右孩子.  
+        // 反之, 找root next的至少有一个孩子不为空的节点  
+        if (root.left != null) {  
+            if (root.right != null) {  
+                root.left.next = root.right;  
+            }  
+            else {  
+                TreeLinkNode p = root.next;  
+                while (p != null && p.left == null && p.right == null)  
+                    p = p.next;  
+                if (p != null)  
+                    root.left.next = p.left == null ? p.right : p.left;  
+            }  
+        }  
+          
+        // 右孩子的next 根节点至少有一个孩子不为空的next  
+        if (root.right != null) {  
+            TreeLinkNode p = root.next;  
+            while (p != null && p.left == null && p.right == null)  
+                p = p.next;  
+            if (p != null)  
+                root.right.next = p.left == null ? p.right : p.left;  
+        }  
+        connect(root.right);      
+        connect(root.left);  
     }
 }

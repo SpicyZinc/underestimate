@@ -26,15 +26,19 @@ import java.util.*;
 
 class MinStack {
     // method 3
-    private int min;
-    private Stack<Integer> stack;
-    // initialize your data structure here.
+    int min;
+    Stack<Integer> stack;
+
+    /** initialize your data structure here. */
     public MinStack() {
         min = Integer.MAX_VALUE;
-        stack = new Stack<Integer>();
+        stack = new Stack<>();
     }
     
     public void push(int x) {
+        // prepare for the pop()
+        // push extra 2nd min
+        // note equal
         if (x <= min) {
             stack.push(min);
             min = x;
@@ -43,7 +47,8 @@ class MinStack {
     }
     
     public void pop() {
-        if (stack.pop() == min) {
+        int poped = stack.pop();
+        if (poped == min) {
             min = stack.pop();
         }
     }

@@ -30,6 +30,46 @@ note, rooms[i][j] >= distance `=`
 import java.util.*;
 
 public class WallsAndGates {
+	// 07/09/2018
+	public void wallsAndGates(int[][] rooms) {
+        if (rooms.length == 0 || rooms[0].length == 0) {
+            return;
+        }
+
+        int m = rooms.length;
+        int n = rooms[0].length;
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (rooms[i][j] == 0) {
+                    dfsFill(rooms, i, j, 0);
+                }
+            }
+        }
+    }
+    
+    public void dfsFill(int[][] rooms, int i, int j, int distance) {
+        int m = rooms.length;
+		int n = rooms[0].length;
+
+		int[][] directions = new int[][] {
+			{0, 1},
+			{0, -1},
+			{1, 0},
+			{-1, 0}
+		};
+        
+        for (int[] dir : directions) {
+            int newX = i + dir[0];
+            int newY = j + dir[1];
+            
+            if (newX >= 0 && newX < m && newY >= 0 && newY < n && rooms[newX][newY] > distance + 1) {
+                rooms[newX][newY] = distance + 1;
+                dfsFill(rooms, newX, newY, distance + 1);
+            }           
+        }
+    }
+
 	public static void main(String[] args) {
 		WallsAndGates eg = new WallsAndGates();
 		int INF = Integer.MAX_VALUE;
@@ -48,6 +88,10 @@ public class WallsAndGates {
 	}
 
 	public void wallsAndGates(int[][] rooms) {
+		if (rooms.length == 0 || rooms[0].length == 0) {
+            return;
+        }
+
 		int m = rooms.length;
 		int n = rooms[0].length;
 

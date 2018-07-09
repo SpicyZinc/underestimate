@@ -85,3 +85,106 @@ class MyStack {
         }
     }
 }
+// self 1st implementation without swap()
+class MyStack {
+    Queue<Integer> One;
+    Queue<Integer> Two;
+    /** Initialize your data structure here. */
+    public MyStack() {
+        One = new LinkedList<>();
+        Two = new LinkedList<>();
+    }
+    
+    /** Push element x onto stack. */
+    public void push(int x) {
+        // for pop(), so prepare
+        // 要想 pop 省事 push到 queue tail 的 x 要 想办法放到队列第一位
+        // how 只要不空 移到另外一个 放好 x 再移回来
+        while (!One.isEmpty()) {
+            Two.add(One.poll());
+        }
+        One.add(x);
+        while (!Two.isEmpty()) {
+            One.add(Two.poll());
+        }
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    public int pop() {
+        return One.poll();
+    }
+    
+    /** Get the top element. */
+    public int top() {
+        return One.peek();
+    }
+    
+    /** Returns whether the stack is empty. */
+    public boolean empty() {
+        return One.isEmpty() && Two.isEmpty();     
+    }
+}
+
+// self 2nd implementation
+class MyStack {
+    
+    Queue<Integer> queue;
+    Queue<Integer> forReverse;
+
+    /** Initialize your data structure here. */
+    public MyStack() {
+        queue = new LinkedList<>();
+        forReverse = new LinkedList<>();
+    }
+    
+    /** Push element x onto stack. */
+    public void push(int x) {
+        while (!forReverse.isEmpty()) {
+            queue.add(forReverse.poll());
+        }
+        queue.add(x);
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    public int pop() {
+        if (!forReverse.isEmpty()) {
+            return forReverse.poll();
+        }
+
+        while (queue.size() > 1) {
+            forReverse.add(queue.poll());
+        }
+
+        int val = queue.poll();
+        
+        Queue<Integer> temp = queue;
+        queue = forReverse;
+        forReverse = temp;
+
+        return val;
+    }
+    
+    /** Get the top element. */
+    public int top() {
+        if (!forReverse.isEmpty()) {
+            return forReverse.peek();
+        }
+        
+        while (queue.size() > 1) {
+            forReverse.add(queue.poll());
+        }
+
+        int val = queue.peek();
+        
+        Queue<Integer> temp = queue;
+        queue = forReverse;
+        forReverse = temp;
+
+        return val;
+    }
+    
+    /** Returns whether the stack is empty. */
+    public boolean empty() {
+        return queue.isEmpty() && forReverse.isEmpty();
+    }
+}

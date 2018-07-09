@@ -27,7 +27,10 @@ by connected it means 1 is adjacent to every other 1 horizontally or vertically
 use dfs to change 1 to something else e.g. 2
 so the count of 1 will be the number of islands
 这一个下去后 与这个connected的1 all changed to 2
+跟 similar string groups 异曲同工之妙 关键是建立这种图的表示方法 那个用hash
+这个用 matrix 建立双重 u - v and v - u
 */
+
 public class NumberOfIslands {
     public int numIslands(char[][] grid) {
         int m = grid.length;

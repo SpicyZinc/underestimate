@@ -20,6 +20,7 @@ Binary tree [1,2,3], return false.
 
 idea:
 1. recursion
+note long type, note no node.left == null && node.right == null return true
 2. Another solution (if space is not a constraint)
 Do an inorder traversal of the tree and store the node values in an array. 
 If the array is in sorted order, its a valid BST otherwise not.
@@ -33,6 +34,22 @@ class TreeNode {
 }
 
 public class ValidateBinarySearchTree {
+	// self
+	public boolean isValidBST(TreeNode root) {
+        return dfs(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    
+    public boolean dfs(TreeNode node, long min, long max) {
+        if (node == null) {
+            return true;
+        }
+
+        boolean isLeftValid = dfs(node.left, min, node.val);
+        boolean isRightValid = dfs(node.right, node.val, max);
+        
+        return min < node.val && node.val < max && isLeftValid && isRightValid;
+    }
+
 	public boolean isValidBST(TreeNode root) {
         return dfs(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }

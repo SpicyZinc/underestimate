@@ -35,6 +35,32 @@ public class SortCharactersByFrequency {
 		// String tt = eg.frequencySort("Aabb");	
 		System.out.println(tt);
 	}
+    // best, but TLE with only one
+    public String frequencySort(String s) {
+        Map<Character, Integer> frequency = new HashMap<Character, Integer>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            frequency.put(c, frequency.getOrDefault(c, 0) + 1);
+        }
+        
+        List<Character> keys = new ArrayList<Character>(frequency.keySet());
+        Collections.sort(keys, new Comparator<Character>() {
+            @Override
+            public int compare(Character a, Character b) {
+                return frequency.get(b) - frequency.get(a);
+            }
+        });
+
+        String result = "";
+        for (int i = 0; i < keys.size(); i++) {
+            char c = keys.get(i);
+            for (int j = 0; j < frequency.get(c); j++) {
+                result += c;
+            }
+        }
+        
+        return result;
+    }
     // method 1
     public String frequencySort(String s) {
         Map<Character, Integer> frequency = new HashMap<Character, Integer>();

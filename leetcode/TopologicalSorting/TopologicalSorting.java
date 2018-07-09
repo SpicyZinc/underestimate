@@ -20,7 +20,7 @@ https://songlee24.github.io/2015/05/07/topological-sorting/
 
 DAG directed acyclic graph
 Given a DAG, 图节点的拓扑排序被定义为
-对于每条有向边A--> B，则A必须排在B之前　　
+对于每条有向边A-->B, 则A必须排在B之前　　
 拓扑排序的第一个节点可以是任何在图中没有其他节点指向它的节点
 
 BFS

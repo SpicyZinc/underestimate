@@ -9,6 +9,7 @@ You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
 Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
 
 idea:
+similar to TopKFrequentWords
 List<Integer>[]
 use hashmap to record frequency of each value
 then frequency as key, the value will be another ArrayList containing all values appear "frequency" times
@@ -21,6 +22,24 @@ Note:
 top k, must create the length of nums.length + 1
 */
 public class TopKFrequentElements {
+    // best
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        for (int num : nums) {
+            hm.put(num, hm.getOrDefault(num, 0) + 1);
+        }
+        
+        List<Integer> keys = new ArrayList(hm.keySet());
+        Collections.sort(keys, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer a, Integer b) {
+                return hm.get(b) - hm.get(a);
+            }
+        });
+        
+        return keys.subList(0, k);
+    }
+
     public List<Integer> topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
         for (int i : nums) {

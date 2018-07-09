@@ -62,7 +62,7 @@ public class Sqrt {
         
         return guess;
     }
-
+    // double version
     public int mySqrt(int x) {
         if (x <= 1) {
             return x; 

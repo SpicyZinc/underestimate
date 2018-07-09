@@ -19,6 +19,7 @@ http://algorithms.tutorialhorizon.com/inorder-traversal-non-recursive-approach/
 in-order == left - root - right
 
 1. queue to in-order traverse a BST, count k times, recursively
+use List interface, better, can use get()
 2. must remember how to use stack to in-order traverse BST
 */
 
@@ -30,6 +31,19 @@ class TreeNode {
 }
 
 public class KthSmallestInBST {
+    // self 07/08/2018
+    public int kthSmallest(TreeNode root, int k) {
+        List<TreeNode> queue = new LinkedList<TreeNode>();
+        inorder(root, queue); 
+        return queue.get(k - 1).val;
+    }
+    private void inorder(TreeNode root, List<TreeNode> q) {
+        if (root != null) {
+            inorder(root.left, q);
+            q.add(root);
+            inorder(root.right, q);
+        }
+    }
     // method 1
     public int kthSmallest(TreeNode root, int k) {
         Queue<TreeNode> q = new LinkedList<TreeNode>();

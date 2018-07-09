@@ -17,7 +17,7 @@ LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according 
 idea:
 1. recursion
 http://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/
-2. find paths from root to p and q. 
+2. find paths from root to p and q. note find path return boolean
 Loop through the two paths, return last one node before two paths are mismatched
 http://blog.csdn.net/xudli/article/details/46871283
 */
@@ -32,24 +32,22 @@ class TreeNode {
 public class LowestCommonAncestorOfBinaryTree {
 	// method 1
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if ( root == null ) {
-        	return root;
+        if (root == null || root == p || root == q) {
+            return root;
         }
-        if ( root == p || root == q ) {
-        	return root;
+        // since not root == p nor root = q
+        // find in two sides
+        TreeNode leftCommonAncestor = lowestCommonAncestor(root.left, p, q);
+        TreeNode rightCommonAncestor = lowestCommonAncestor(root.right, p, q);
+        // none of them null
+        if (leftCommonAncestor != null && rightCommonAncestor != null) {
+            return root;
         }
-
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-
-        if ( left != null && right != null ) {
-        	return root;
-        }
-
-        return left == null ? right : left;
+        
+        return leftCommonAncestor == null ? rightCommonAncestor : leftCommonAncestor;
     }
 
-    // method 2, note know how to get path from some node to target using list
+    // method 2, note know how to get path from some root to target node using list
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null || p == root || q == root) return root;
         List<TreeNode> pathP = new ArrayList<TreeNode>();
