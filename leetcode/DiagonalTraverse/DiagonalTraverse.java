@@ -24,37 +24,40 @@ Second, the boundary of row and col is either sum or four edges.
 Four edges correspond to row == 0 || row == totalRow - 1 || col == 0 || col == totalCol - 1
 */
 public class DiagonalTraverse {
-	public int[] findDiagonalOrder(int[][] matrix) {
-        int r = matrix.length;
-        if (r == 0) {
+    // [0,0] -> [0,1],[1,0] -> [2,0],[1,1],[0,2] -> [1,2],[2,1] -> [2,2]
+    // 找规律 注意 利用sum parity to find 交替变换的方向
+    // best solution
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return new int[0];
         }
-        int c = matrix[0].length;
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
 
-        int[] res = new int[r * c];
+        int[] diagnoal = new int[m * n];
         int idx = 0;
-        for (int sum = 0; sum <= r + c; sum++) {
-            int row, col;
-            if (sum % 2 == 0) {                               
-                row = Math.min(sum, r-1);                    
-                col = sum - row;
-                while (row >= 0 && col < c) {
-                    res[idx++] = matrix[row--][col++];  
+        for (int sum = 0; sum <= m - 1 + n - 1; sum++) {
+            int i, j;
+            if (sum % 2 == 0) {
+                i = Math.min(sum, m - 1);
+                j = sum - i;
+                while (i >= 0 && j < n) {
+                    diagnoal[idx++] = matrix[i--][j++];
                 }
-            }
-            else {
-                col = Math.min(sum, c-1);                    
-                row = sum - col;
-                while (col >= 0 && row < r) {                  
-                    res[idx++] = matrix[row++][col--];
+            } else {
+                j = Math.min(sum, n - 1);
+                i = sum - j;
+                while (j >= 0 && i < m) {
+                    diagnoal[idx++] = matrix[i++][j--];
                 }
             }
         }
 
-        return res;
+        return diagnoal;
     }
 
-    // [0,0] -> [0,1],[1,0] -> [2,0],[1,1],[0,2] -> [1,2],[2,1] -> [2,2]
+    
     public int[] findDiagonalOrder(int[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return new int[0];

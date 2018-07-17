@@ -23,32 +23,38 @@ public class LongestSubstringwithAtMostTwoDistinctCharacters {
 	}
 
 	public int lengthOfLongestSubstringTwoDistinct(String s) {
-		if (s.length() == 0 || s == null) {
-			return 0;
-		}
+        if (s == null || s.length() <= 1) {
+            return s.length();
+        }
+        
+        int n = s.length();
+        Map<Character, Integer> hm = new HashMap<>();
+        
+        int left = 0;
+        int right = 0;
+        // the worst case all characters are different, so the length is k
+        int k = 2;
+        int maxLen = k;
+        for (; right < n; right++) {
+            char c = s.charAt(right);
+            hm.put(c, hm.getOrDefault(c, 0) + 1);
 
-		Map<Character, Integer> hm = new HashMap<Character, Integer>();
-		int start = 0;
-		int maxLen = 0;
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			hm.put(c, hm.getOrDefault(c, 0) + 1);
-			if (hm.size() > 2) {
-				maxLen = Math.max(maxLen, i - start);
-				while (hm.size() > 2) {
-					char charAtStart = s.charAt(start);
-					int cnt = hm.get(charAtStart);
-					if (cnt >= 2) {
-						hm.put(charAtStart, cnt - 1);
-					} else {
-						hm.remove(charAtStart);
-					}
-					start++;
-				}
-			}
-		}
-		maxLen = Math.max(maxLen, s.length() - start);
+            while (hm.size() > k) {
+                char leftChar = s.charAt(left);
+                int cnt = hm.get(leftChar);
+                // note >= 2
+                if (cnt >= 2) {
+                    hm.put(leftChar, cnt - 1);
+                } else {
+                    hm.remove(leftChar);
+                }
+                
+                left++;
+            }
 
-		return maxLen;
-	}
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+        
+        return maxLen;
+    }
 }

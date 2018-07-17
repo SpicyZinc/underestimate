@@ -32,22 +32,54 @@ public class HappyNumber {
 
 	public static void main(String[] args) {
 		HappyNumber eg = new HappyNumber();
-		boolean test = eg.isHappy(18);
+		boolean test = eg.isHappy(19);
 		System.out.println(test);
 	}
+
+    // 07/10/2018
+    public boolean isHappy(int n) {
+        if ( n == 1 ) {
+            return true;
+        }
+            
+        Set<Integer> hs = new HashSet<Integer>();
+        int happyCalculation = sumOfDigitSquare(n);
+        while ( hs.add(happyCalculation) ) {
+            if ( happyCalculation == 1 ) {
+                return true;
+            }
+            happyCalculation = sumOfDigitSquare(happyCalculation);
+        }
+
+        return false;
+    }
+
+    public int sumOfDigitSquare(int n) {
+        int sum = 0;
+        if ( n == 0 ) {
+            return sum;
+        }
+
+        while ( n > 0 ) {
+            sum += (n % 10) * (n % 10);
+            n = n / 10;
+        }
+
+        return sum;
+    }
 
 	public boolean isHappy(int n) {
         if ( n == 1 ) {
         	return true;
         }
-        HashSet<Integer> hs = new HashSet<Integer>();
-        int oneCal = sumOfDigitSquare(n);
-        while ( !hs.contains(oneCal) ) {
-        	if ( oneCal == 1 ) {
+        Set<Integer> hs = new HashSet<Integer>();
+        int happyCalculation = sumOfDigitSquare(n);
+        while ( !hs.contains(happyCalculation) ) {
+        	if ( happyCalculation == 1 ) {
         		return true;
         	}
-        	hs.add(oneCal);
-        	oneCal = sumOfDigitSquare(oneCal);
+        	hs.add(happyCalculation);
+        	happyCalculation = sumOfDigitSquare(happyCalculation);
         }
     	return false;
     }
@@ -57,6 +89,7 @@ public class HappyNumber {
     	if ( n == 0 ) {
     		return sum;
     	}
+
     	while ( n > 0 ) {
     		sum += (n % 10) * (n % 10);
     		n = n / 10;

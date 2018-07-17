@@ -7,7 +7,8 @@ Given "aacecaaa", return "aaacecaaa".
 Given "abcd", return "dcbabcd".
 
 idea:
-from a certain character go to both sides, if it can go to the start of the string, by 'can' it means it is equal char centered on this certain char
+from a certain character go to both sides, if it can go to the start of the string,
+by 'can' it means it is equal char centered on this certain char
 and if there are some characters left at the back, reverse it and prepend it to the start of the string
 
 notes:

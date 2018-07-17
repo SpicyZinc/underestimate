@@ -14,6 +14,7 @@ Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not a
 
 idea:
 https://www.cnblogs.com/grandyang/p/5257919.html
+DAG
 判断 是否是连通图和是否含有环
 
 用DFS来搜索节点0

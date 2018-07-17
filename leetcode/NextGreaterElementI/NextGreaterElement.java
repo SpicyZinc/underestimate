@@ -25,11 +25,34 @@ The length of both nums1 and nums2 would not exceed 1000.
 
 idea:
 either use hashmap or use loop find position, waste space or waste time
-use stack not understand
-
+use stack understand now, nums1 is subset of nums2
+hash 是nums2中每个数字 与比它大的第一个数的映射
 */
 
 public class NextGreaterElement {
+    // stack
+    public int[] nextGreaterElement(int[] findNums, int[] nums) {
+        int[] result = new int[findNums.length];
+        Stack<Integer> stack = new Stack<>();
+        Map<Integer, Integer> hm = new HashMap<>();
+
+        for (int num : nums) {
+            while (!stack.isEmpty() && stack.peek() < num) {
+                hm.put(stack.pop(), num);
+            }
+
+            stack.push(num);
+        }
+
+        for (int i = 0; i < findNums.length; i++) {
+            int num = findNums[i];
+            result[i] = hm.containsKey(num) ? hm.get(num) : -1;
+        }
+
+        return result;
+    }
+
+
     public int[] nextGreaterElement(int[] findNums, int[] nums) {
         int[] result = new int[findNums.length];
         for (int i = 0; i < findNums.length; i++) {

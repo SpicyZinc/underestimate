@@ -18,6 +18,37 @@ when it is a number, push it to the stack;
 when it is an operator, pop two numbers from the stack, do the calculation, and push back the result.
 */
 public class EvaluateReversePolishNotation  {
+    // 07/14/2018
+    public int evalRPN(String[] tokens) {
+        Stack<String> stack = new Stack<>();
+        for (String token : tokens) {
+            if (token.matches("-*\\d+")) {
+                stack.push(token);
+            } else {
+                int second = Integer.parseInt(stack.pop());
+                int first = Integer.parseInt(stack.pop());
+                int val = 0;
+                switch(token) {
+                    case "+":
+                        val = first + second;
+                        break;
+                    case "-":
+                        val = first - second;
+                        break;
+                    case "*":
+                        val = first * second;
+                        break;
+                    case "/":
+                        val = first / second;
+                        break;
+                }
+                stack.push("" + val);
+            }
+        }
+        
+        return Integer.parseInt(stack.pop());
+    }
+
     public int evalRPN(String[] tokens) {
         String operators = "+-*/";
         Stack<String> stack = new Stack<String>();

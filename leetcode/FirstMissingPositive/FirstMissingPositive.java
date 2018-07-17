@@ -29,6 +29,26 @@ public class FirstMissingPositive {
 		
 		System.out.println("\nA_1stMissingPositive == " + aTest.firstMissingPositive(A));
 	}
+
+    // note, use while
+    // 07/12/2018
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+
+        for (int i = 0; i < n; i++) {
+            while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+                swap(nums, i, nums[i] - 1);
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (i + 1 != nums[i]) {
+                return i + 1;
+            }
+        }
+        
+        return n + 1;
+    }
 	// put i to A[i - 1], so the array looks like: 1, 2, 3, ...
     public int firstMissingPositive(int[] A) { 
         for (int i = 0; i < A.length; i++) {
@@ -42,10 +62,7 @@ public class FirstMissingPositive {
                 }
 				// swap(), can be replaced by a swap() function
 				// now (A[i] - 1) != i, a different number j
-				int j = A[i] - 1;
-                int tmp = A[j];
-                A[j] = A[i]; // make it A[i] == A[A[i] - 1]
-                A[i] = tmp;
+                swap(A, A[i] - 1, i);
             }
         }
  
@@ -58,15 +75,19 @@ public class FirstMissingPositive {
 		// if this array is want 1, 2, 3 in index 0, 1, 2, then return (A.length + 1)
         return A.length + 1;         
     }
+    
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 
     // similar to the above, except && === !||
     public int firstMissingPositive(int[] A) {
         int i = 0;
         while (i < A.length) {
             if (A[i] != i + 1 && A[i] >= 1 && A[i] <= A.length && A[A[i] - 1] != A[i]) {
-                int tmp = A[A[i] - 1];
-                A[A[i] - 1] = A[i];
-                A[i] = tmp;
+                swap(A, A[i] - 1, i);
             } else {
                 i++;
             }

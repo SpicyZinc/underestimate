@@ -25,7 +25,7 @@ http://www.programcreek.com/2014/05/leetcode-course-schedule-java/
 http://blog.csdn.net/menglinaoxiang/article/details/45623713
 
 1. DFS
-very direct idea
+note, dfs() visited[] needs 3 status, 0表示还未访问过, 1表示已经访问了, -1表示有冲突
 build graph by edge notation
 construct a visit array to know which node has been visited
 loop through courses
@@ -51,16 +51,18 @@ if still there are non-zero in degree node, cannot finish
 public class CourseSchedule {
     // DFS
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        int[] visited = new int[numCourses];
+        int n = numCourses;
+        int[] visited = new int[n];
+
         // construct the graph
-        int[][] graph = new int[numCourses][numCourses];    
+        int[][] graph = new int[n][n];
         for (int[] prerequisite : prerequisites) {
             int taken = prerequisite[0];
             int prere = prerequisite[1];
             graph[taken][prere] = 1;
         }
     
-        for (int i = 0; i < numCourses; i++) {
+        for (int i = 0; i < n; i++) {
             if (!canFinishDFS(graph, visited, i)) {
                 return false;
             }
@@ -75,6 +77,7 @@ public class CourseSchedule {
 
         visited[i] = 1;
         for (int j = 0; j < graph[i].length; j++) {
+            // if there is a dependency
             if (graph[i][j] == 1) {
                 if (!canFinishDFS(graph, visited, j)) {
                     return false;
@@ -85,7 +88,7 @@ public class CourseSchedule {
     
         return true;
     }
-    // correct method, but TLE, 34 / 37 test cases passed
+    // correct method, but TLE, 40 / 42 test cases passed
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         int n = numCourses;
         boolean[] visited = new boolean[n];
@@ -108,9 +111,10 @@ public class CourseSchedule {
     
     public boolean canFinishDFS(int[][] graph, boolean[] visited, int courseTaken) {
         if (visited[courseTaken]) return false;
+
         visited[courseTaken] = true;
         for (int j = 0; j < graph[courseTaken].length; j++) {
-            // if there is a dependent
+            // if there is a dependency
             if (graph[courseTaken][j] == 1) {
                 if (!canFinishDFS(graph, visited, j)) {
                     return false;
@@ -127,33 +131,33 @@ public class CourseSchedule {
         if (prerequisites.length == 0) {
             return true;
         }
-        int[] preCouNum = new int[numCourses]; // 统计当前课程需要的预备课程数
-        boolean[][] graph = new boolean[numCourses][numCourses]; // 记录课程关系图
         int n = numCourses;
+        int[] preCouNum = new int[n]; // 统计当前课程需要的预备课程数
+        boolean[][] graph = new boolean[n][n]; // 记录课程关系图
         // the number of unique course pairs, course depending relationship
         int m = 0; 
         // 初始化有向图, 并统计出度
         for (int i = 0; i < prerequisites.length; i++) {
-            int r = prerequisites[i][0];
-            int c = prerequisites[i][1];
+        for (int[] prerequisite : prerequisites) {
+            int taken = prerequisite[0];
+            int prere = prerequisite[1];
             // 避免重复的数对
-            if (!graph[r][c]) {
-                graph[r][c] = true;
-                preCouNum[r]++; // course r needs how many other courses as prerequisite
+            if (!graph[taken][prere]) {
+                graph[taken][prere] = true;
+                preCouNum[taken]++; // course taken needs how many other courses as prerequisite
                 m++;
             }
         }
         // 无前向引用的课程 出度为0 可以修完的课程
         Queue<Integer> queue = new LinkedList<Integer>(); 
-        for (int i = 0; i < numCourses; i++) {
+        for (int i = 0; i < n; i++) {
             if (preCouNum[i] == 0) {
                 queue.add(i);
             }
         }
-        // queue存的是行号, n指最多处理的课程数
         while (!queue.isEmpty() && n > 0) {
             int i = queue.remove();
-            for (int j = 0; j < numCourses; j++) {
+            for (int j = 0; j < n; j++) {
                 if (graph[j][i]) { // 将使用该课程作预备课程的 
                     graph[j][i] = false; // 科目置为false表示该课程已修, no depending relationship
                     m--;

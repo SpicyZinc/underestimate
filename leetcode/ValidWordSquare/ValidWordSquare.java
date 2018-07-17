@@ -45,20 +45,10 @@ check if out of boundary first
 */
 public class ValidWordSquare {
 	public boolean validWordSquare(List<String> words) {
-		if ( words == null || words.size() == 0 ) {
-			return false;
-		}
-		if ( words.size() != words.get(0).length() ) {
-			return false;
-		}
 		for (int i = 0; i < words.size(); i++) {
-			String word = words.get(i);
-			for (int j = 0; j < word.length(); j++) {
-				char rowChar = word.charAt(j);
-				char colChar = words.get(j).charAt(i);
-				// an easy to think of this
-				// index does NOT exceed the array length or list size. outofboundary exception
-				if ( j >= words.size() || i >= words.get(j).length() || rowChar != colChar ) {
+			for (int j = 0; j < words.get(i).length(); j++) {
+				// note j at first, remember why
+				if (j >= words.size() || i >= words.get(j).length() || words.get(i).charAt(j) != words.get(j).charAt(i)) {
 					return false;
 				}
 			}

@@ -15,51 +15,43 @@ count is the number of edit times
 
 public class OneEditDistance {
 	public boolean isOneEditDistance(String s, String t) {
-		if ( (s == null || s.length == 1) && (t == null || t.length == 1) ) {
-			return false;
-		}
-		if (s == null || s.length == 1) {
-			return t.length == 1;
-		}
-		if (t == null || t.length == 1) {
-			return s.length == 1;
-		}
-		if (Math.abs(s.length - t.length) > 1) {
-			return false;
-		}
-
-		int m = s.length();
-		int n = t.length();
-		int editCnt = 0;
-		int i = 0;
-		int j = 0;
-
-		while (i < m && j < n) {
-			if (s.charAt(i) != t.charAt(j)) {
-				editCnt++;
-				if (editCnt > 1) {
-					return false;
-				}
-				if (m > n) {
-					i++;
-				}
-				else if (m < n) {
-					j++;
-				}
-				else {
-					i++;
-					j++;
-				}
-			}
-			else {
-				i++;
-				j++;
-			}
-		}
-		if (i < m || j < n) {
-			editCnt++;
-		}
-
-		return editCnt == 1;
-	}
+        int m = s.length();
+        int n = t.length();
+        int i = 0;
+        int j = 0;
+    
+        int editCnt = 0;
+        
+        if (Math.abs(m - n) > 1) {
+            return false;
+        }
+        
+        while (i < m && j < n) {
+            char a = s.charAt(i);
+            char b = t.charAt(j);
+            if (a != b) {
+                editCnt++;
+                if (editCnt > 1) {
+                    return false;
+                }
+                if (m > n) {
+                    i++;
+                } else if (m < n) {
+                    j++;
+                } else {
+                    i++;
+                    j++;
+                }
+            } else {
+                i++;
+                j++;
+            }
+        }
+        
+        if (i < m || j < n) {
+            editCnt++;
+        }
+        
+        return editCnt == 1;
+    }
 }

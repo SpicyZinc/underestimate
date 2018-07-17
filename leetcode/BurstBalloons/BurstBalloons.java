@@ -29,30 +29,36 @@ k = 2, left = 0, right = 2
 left + k = right
 start from left + 1, < right
 
-dp[l][r], the maximum coins to burst balloon from l to r; l, r exclusive, l - r = k
+dp[l][r], the maximum coins got to burst balloon from l + 1 to r - 1; l, r exclusive, l - r = k
 */
 
 public class BurstBalloons {
     public int maxCoins(int[] nums) {
-        int m = nums.length;
-        // copy version of nums with new front and end element as 1
-        int[] copy = new int[m + 2];
-        for (int i = 0; i < m; i++) {
-            copy[i + 1] = nums[i];
+        int[] copy = new int[nums.length + 2];        
+        for (int i = 0; i < copy.length; i++) {
+            if (i == 0 || i == copy.length - 1) {
+                copy[i] = 1;
+            } else {
+                copy[i] = nums[i - 1];
+            }
         }
-        copy[0] = copy[m + 1] = 1;
-
+        
         int n = copy.length;
         int[][] dp = new int[n][n];
         for (int span = 2; span < n; span++) {
             for (int left = 0; left < n - span; left++) {
                 int right = left + span;
-                for (int mid = left + 1; mid < right; mid++) {
-                    dp[left][right] = Math.max(dp[left][right], dp[left][mid] + copy[left] * copy[mid] * copy[right] + dp[mid][right]);
+                // left, right are exclusive
+                for (int mid = left + 1; mid <= right - 1; mid++) {
+                    // left, left + 1, ..., mid - 1, mid, mid + 1, ..., right - 1, right
+                    // burst [left + 1, mid - 1] and [mid + 1, right - 1]
+                    // the rest is left, mid, right, then  burst mid
+                    int max = dp[left][mid] + copy[left] * copy[mid] * copy[right] + dp[mid][right];
+                    dp[left][right] = Math.max(dp[left][right], max);
                 }
             }
         }
-
+        
         return dp[0][n - 1];
     }
 }

@@ -22,7 +22,7 @@ A: 从当前处理位开始, 向左扫描, 找到数值比它小的一位i, 交�
 从小到大, 从左到右;
 重设当前处理位为最后一位;
 若找不到数值比它小的, 当前处理位左移一位, go to A;
-如果无法左移, done, find the last permutation
+如果无法左移, done, find the next permutation
 
 example:
 123,
@@ -52,12 +52,34 @@ example:
 当前处理位 左移一位, 指向3,
 向左扫描, 无法找到比3小的一位,
 无法左移, done(就本题而言, done 可以 换成 reverse)
+
+
+通过观察原数组可以发现
+如果从末尾往前看
+数字逐渐变大
+到了2时才减小的
+然后我们再从后往前找第一个比2大的数字
+是3
+那么我们交换2和3
+再把此时3后面的所有数字转置一下即可
+
+步骤如下：
+
+1　　2　　7　　4　　3　　1
+
+1　　2　　7　　4　　3　　1
+
+1　　3　　7　　4　　2　　1
+
+1　　3　　1　　2　　4　　7
+
 */
 public class NextPermutation {
 	// best method easy understand
 	public void nextPermutation(int[] nums) {
 		int n = nums.length;
 		int i = n - 2;
+		// 先找到下降点
 		while (i >= 0) {
 			if (nums[i + 1] > nums[i]) {
 				break;
@@ -66,19 +88,17 @@ public class NextPermutation {
 		}
 
 		// i still in nums[], partially descending
+		// 再找比下降点高一点的value
 		if (i >= 0) {
 			int j = n - 1;
-			while (j > i) {
-				// 找到比下降点 value 增加一点点的 value
-				// 才符合 next permutation
-				if (nums[j] <= nums[i]) {
-					j--;
-				} else {
-					break;
-				}
+			// 找到比下降点 value 增加一点点的 value
+			// 才符合 next permutation
+			while (j > i && nums[j] <= nums[i]) {
+				j--;
 			}
 			swap(nums, i, j);
 		}
+		// actually make it ascending by reverse()
 		reverse(nums, i + 1, n - 1);
 	}
 

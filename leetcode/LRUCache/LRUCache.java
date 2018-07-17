@@ -24,18 +24,18 @@ cache.get(4);       // returns 4
 
 
 idea:
+https://www.programcreek.com/wp-content/uploads/2013/03/LRU-Cache-650x296.png
 
 http://www.cnblogs.com/feiling/p/3426967.html
-http://www.programcreek.com/2013/03/leetcode-lru-cache-java/
 
-// use LinkedHashMap
+use LinkedHashMap
 http://www.codewalk.com/2012/04/least-recently-used-lru-cache-implementation-java.html
 http://blog.csdn.net/whuwangyi/article/details/15495845
 
 
-get == visited 
-set == inserted
-either visited or inserted will hoist the value to list head
+get == visit 
+set == insert
+either visit or insert will hoist the value to list head
 
 lookup (get):
 from hashmap根据key查询, 若命中, 则返回节点, 否则返回null
@@ -50,39 +50,32 @@ delete:
 从双向链表和Hashmap中同时删除对应的记录
 */
 
-class DLLNode {
-    int key;
-    int value;
-    DLLNode prev;
-    DLLNode next;
-    
-    public DLLNode(int key, int value) {
-        this.key = key;
-        this.value = value;
-    }
-}
-
 class LRUCache {
+    Map<Integer, DLLNode> hm;
     
-    int capacity;
-    int currSize;
     DLLNode head;
     DLLNode tail;
-    Map<Integer, DLLNode> hm = new HashMap<Integer, DLLNode>();
+    
+    int currentSize;
+    int capacity;
     
     public LRUCache(int capacity) {
+        this.hm = new HashMap<Integer, DLLNode>();
+
+        this.head = null;
+        this.tail = null;
+        
+        this.currentSize = 0;
         this.capacity = capacity;
-        this.currSize = 0;
     }
     
     public int get(int key) {
         if (hm.containsKey(key)) {
             DLLNode node = hm.get(key);
-            // update position in list
-            // remove, then add before head
+            // update DLL
             remove(node);
             insertAtHead(node);
-            return node.value;
+            return node.val;
         } else {
             return -1;
         }
@@ -91,40 +84,38 @@ class LRUCache {
     public void put(int key, int value) {
         if (hm.containsKey(key)) {
             DLLNode node = hm.get(key);
-            node.value = value;
-            // update position in list
-            // remove, then add before head
+            node.val = value;
+            // update DLL
             remove(node);
             insertAtHead(node);
             // no need to update hm since DLLNode object address is not changed
-        	// only pointers pointing to it changed or its contents (prev, next) get updated
+            // only pointers pointing to it changed or its contents (prev, next) get updated
         } else {
-            // 1. cache is full
-            // 2. cache is not full
             DLLNode newNode = new DLLNode(key, value);
-            if (currSize >= capacity) {
-                // remove tail from map, least recently used
+            if (currentSize >= capacity) {
+                // delete tail node 腾出空间
+                // 1. remove from hashmap
                 hm.remove(tail.key);
-                // remove tail from list
-                tail = tail.prev;
-                if (tail != null) tail.next = null;
-                
-                // add to map
-                hm.put(key, newNode);
-                // add to list
-                insertAtHead(newNode);
+                // 2. remove from DLL
+                remove(tail);
+                // why not increase counter
+                // because offset remove() and add()
             } else {
-                hm.put(key, newNode);
-                insertAtHead(newNode);
-                currSize++;
+                currentSize++;
             }
+            
+            // insert at head;
+            insertAtHead(newNode);
+            // add to map
+            hm.put(key, newNode);
         }
     }
-    
+
     // remove node from Double linked list
-    public void remove(DLLNode node) {
+    private void remove(DLLNode node) {
         DLLNode prev = node.prev;
         DLLNode next = node.next;
+        
         // update next
         if (prev != null) {
             prev.next = next;
@@ -138,44 +129,57 @@ class LRUCache {
             tail = prev;
         }
     }
-    
     // insert node before head
-    public void insertAtHead(DLLNode node) {
+    private void insertAtHead(DLLNode node) {
         node.next = head;
         node.prev = null;
         if (head != null) {
             head.prev = node;
         }
-        // head points to node
         head = node;
-        // update tail
+        // update tail 无非就是head 和 tail 都检查下
         if (tail == null) {
             tail = head;
         }
     }
 }
 
-// public class LRUCache extends LinkedHashMap<Integer, Integer> {
-//     private int capacity;
+class DLLNode {
+    int key;
+    int val;
+    DLLNode prev;
+    DLLNode next;
     
-//     public LRUCache(int capacity) {
-//         super(capacity+1, 1.0f, true);  // "true" for access order
-//         this.capacity = capacity;
-//     }
+    public DLLNode(int key, int value) {
+        this.key = key;
+        this.val = value;
+        prev = null;
+        next = null;
+    }
+}
+
+// use linked hashmap
+public class LRUCache extends LinkedHashMap<Integer, Integer> {
+    private int capacity;
     
-//     public int get(int key) {
-//         if (super.get(key) == null) {
-//             return -1;
-//         } else {
-//             return ((int) super.get(key));
-//         }
-//     }
+    public LRUCache(int capacity) {
+        super(capacity + 1, 1.0f, true);  // "true" for access order
+        this.capacity = capacity;
+    }
     
-//     public void set(int key, int value) {
-//         super.put(key, value);
-//     }
+    public int get(int key) {
+        if (super.get(key) == null) {
+            return -1;
+        } else {
+            return ((int) super.get(key));
+        }
+    }
     
-//     protected boolean removeEldestEntry(Entry entry) {
-//         return (size() > this.capacity);
-//     }
-// }
+    public void set(int key, int value) {
+        super.put(key, value);
+    }
+    
+    protected boolean removeEldestEntry(Entry entry) {
+        return (size() > this.capacity);
+    }
+}

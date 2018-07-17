@@ -34,36 +34,37 @@ class NextClosestTime {
 	}
 
 	public String nextClosestTime(String time) {
-		// HH:MM each digit represents different minutes
-		int[] map = {
-			60 * 10,
-			60 * 1,
-			10,
-			1,
-		};
-		String[] matches = time.split(":");
-		int minutes = Integer.parseInt(matches[0]) * 60 + Integer.parseInt(matches[1]);
-		char[] next = new char[4];
-		// for each minute in next 60 * 24 minutes
-		for (int i = 1; i <= 60 * 24; i++) {
-			int nextMinute = (minutes + i) % 1440;
-			// for each next minute
-			int d = 0;
-			// will always overwrite next for each next minute
-			for (d = 0; d < next.length; d++) {
-				next[d] = (char) ('0' + nextMinute / map[d]);
-				nextMinute %= map[d];
-				// not reuse current digits, break early
-				if (time.indexOf(next[d]) == -1) {
-					break;
-				}
-			}
-			// break early if digit == 4, meaning found out a closest time
-			if (d == next.length) {
-				break;
-			}
-		}
-
-		return new String(next, 0, 2) + ":" + new String(next, 2, 2);
-	}
+        
+        String[] matches = time.split(":");
+        String hours = matches[0];
+        String minutes = matches[1];
+        
+        int timeInMins = 60 * Integer.parseInt(hours) + Integer.parseInt(minutes);
+        // HH:MM each digit represents different minutes
+        int[] map = {10 * 60, 60, 10, 1};
+        char[] next = new char[4];
+        
+        int NEXT = 60 * 24;
+        // for each minute in next 60 * 24 minutes
+        for (int i = 1; i <= NEXT; i++) {
+            int nextMins = (timeInMins + i) % NEXT;
+            // convert minutes to HH:MM
+            int d = 0;
+            // will always overwrite next for each next minute
+            for (; d < 4; d++) {
+                next[d] = (char) ('0' + nextMins / map[d]);
+                nextMins %= map[d];
+                
+                if (time.indexOf(next[d]) == -1) {
+                    break;
+                }
+            }
+            // break early if digit == 4, meaning found out a closest time
+            if (d == 4) {
+                break;
+            }
+        }
+        
+        return new String(next, 0, 2) + ":" + new String(next, 2, 2);
+    }
 }

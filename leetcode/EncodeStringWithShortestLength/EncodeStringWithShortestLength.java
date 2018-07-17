@@ -36,7 +36,7 @@ idea:
 https://www.cnblogs.com/grandyang/p/6194403.html
 DP again
 note, dp[i][j]表示[i, j] substring compressed format e.g. 2[ab] 
-这道题关键是找sub = abcabc这种可压缩的情况
+关键是找sub = abcabc 这种可压缩的情况
 其中sub = s[i,j]
 用sub+sub = abcabcabcabc
 找第二个s在s+s里出现的位置
@@ -66,7 +66,7 @@ class EncodeStringWithShortestLength {
                 String substr = s.substring(i, j + 1);
                 int subLen = j + 1 - i;
                 // Checking if string length < 5. In that case, encoding will not help.
-                if (j - i < 4) {
+                if (subLen < 5) {
                     dp[i][j] = substr;
                 } else {
                     dp[i][j] = substr;
@@ -81,10 +81,10 @@ class EncodeStringWithShortestLength {
                         String repeatStr = substr.substring(0, k + 1);
                         int repeatStrLen = k + 1;
                         if (repeatStr != null && subLen % (k + 1) == 0 && substr.replaceAll(repeatStr, "").length() == 0) {
-                                String duplicateCompressed = subLen / (k + 1) + "[" + dp[i][i + k] + "]";
-                                if (duplicateCompressed.length() < dp[i][j].length()) {
-                                    dp[i][j] = duplicateCompressed;
-                                }
+                            String duplicateCompressed = subLen / (k + 1) + "[" + dp[i][i + k] + "]";
+                            if (duplicateCompressed.length() < dp[i][j].length()) {
+                                dp[i][j] = duplicateCompressed;
+                            }
                         }
                     }
                 }

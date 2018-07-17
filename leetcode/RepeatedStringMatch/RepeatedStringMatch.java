@@ -12,6 +12,29 @@ if no match should return -1
 */
 
 class RepeatedStringMatch {
+	// suppose q times A and q + 1 times A, must in q, q + 1
+	// 不断累加A, 当超过B时 如果包含马上返回 最多再加一个A 如果还不包含 return -1
+	public int repeatedStringMatch(String A, String B) {
+        int n = B.length();
+        
+        String combined = A;
+        int repeatedTimes = 1;
+
+        while (combined.length() < n) {
+            combined += A;
+            repeatedTimes++;
+        }
+        
+        if (combined.contains(B)) {
+            return repeatedTimes;
+        }
+        if ((combined + A).contains(B)) {
+            return repeatedTimes + 1;
+        }
+        
+        return -1;
+    }
+
 	public int repeatedStringMatch(String A, String B) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(A);
@@ -26,24 +49,5 @@ class RepeatedStringMatch {
 		}
 
 		return count;
-	}
-
-	// suppose q times A and q + 1 times A, must in q, q + 1
-	public int repeatedStringMatch(String A, String B) {
-		StringBuilder sb = new StringBuilder();
-		int count = 0;
-		while (sb.length() < B.length()) {
-			sb.append(A);
-			count++;
-		}
-
-		if (sb.toString().contains(B)) {
-			return count;
-		}
-		if (sb.append(A).toString().contains(B)) {
-			return count + 1;
-		}
-		
-		return -1;
 	}
 }

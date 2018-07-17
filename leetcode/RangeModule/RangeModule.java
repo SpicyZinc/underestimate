@@ -23,6 +23,7 @@ The total number of calls to removeRange in a single test case is at most 1000.
 
 idea:
 A list of ranges
+add 和 remove 都是再产生新的 list 然后覆盖 class variable list
 add == insert
 remove 分两种情况 1. one range 分成两个的 2. no change
 query 看cover不cover

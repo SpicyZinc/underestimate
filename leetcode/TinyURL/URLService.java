@@ -32,7 +32,7 @@ If you can enable caching, what would you cache and what's the expiry time? (Con
 idea:
 https://segmentfault.com/a/1190000006140476
 
-why 62 based? 26 upper and lower case letters plus 10 letters
+why 62 based? 26 upper and lower case letters plus 10 digits
 use incremental COUNTER as short url, in order to avoid conflicts, just convert it 62 based
 
 62^6=570亿
@@ -60,6 +60,7 @@ public class URLService {
     Map<Integer, String> stol;
     static int COUNTER;
     String elements;
+    String prefix = "http://tiny.url/";
 
     URLService() {
         ltos = new HashMap<String, Integer>();
@@ -73,11 +74,11 @@ public class URLService {
         ltos.put(url, COUNTER);
         stol.put(COUNTER, url);
         COUNTER++;
-        return "http://tiny.url/" + shorturl;
+        return prefix + shorturl;
     }
 
     public String shortToLong(String url) {
-        url = url.substring("http://tiny.url/".length());
+        url = url.substring(prefix.length());
         int n = base62ToBase10(url);
         return stol.get(n);
     }
@@ -90,6 +91,10 @@ public class URLService {
         return n;
     }
 
+    // '0' - 48
+    // 'A' - 65
+    // 'a' - 97
+    // +10 and + 36 是为了凑成连续的数字
     public int convert(char c) {
         if (c >= '0' && c <= '9')
             return c - '0';

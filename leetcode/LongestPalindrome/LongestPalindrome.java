@@ -46,30 +46,29 @@ public class LongestPalindrome {
     // (lettersAppearOddTimes - 1) is the other letters
 	public int longestPalindrome(String s) {
         if (s.length() == 0 || s == null) {
-        	return 0;
+            return 0;
         }
         int[] map = new int[256];
         for (int i = 0; i < s.length(); i++) {
-        	char c = s.charAt(i);
-        	map[c - '0']++;
+            char c = s.charAt(i);
+            map[c - '0']++;
         }
+
         int maxLength = 0;
-        int maxOdd = 0;
         int lettersAppearOddTimes = 0;
-        int oddCnt = 0;
+        int totalOddTimes = 0;
+
         for (int i = 0; i < map.length; i++) {
             if (map[i] > 0) {
                 if (map[i] % 2 == 0) {
-            		maxLength += map[i];
-            	}
-            	else {
-            		oddCnt += map[i];
-            		maxOdd = Math.max(maxOdd, map[i]);
-					lettersAppearOddTimes++;
-            	}   
+                    maxLength += map[i];
+                } else {
+                    totalOddTimes += map[i];
+                    lettersAppearOddTimes++;
+                }   
             }
         }
-        
-        return maxLength + (oddCnt == 0 ? 0 : maxOdd + ( oddCnt - maxOdd ) - ( lettersAppearOddTimes - 1 ));
+        // 除去 出现最多的odd 要包含 其他只用 奇数次 - 1 
+        return maxLength + (totalOddTimes == 0 ? 0 : totalOddTimes - ( lettersAppearOddTimes - 1 ));
     }
 }

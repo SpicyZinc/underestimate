@@ -15,6 +15,10 @@ case3:                        |----new----|
         overlap 
         newInterval inside current interval
         newInterval outside current interval
+
+对于case1 and case2 要分别处理
+一个是insert
+一个是更新 newInterval
 */
 
 import java.util.*;
@@ -33,38 +37,26 @@ class Interval {
 }
 
 public class InsertInterval {
-	public static void main(String[] args) {
-		
-	}
+	public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        List<Interval> result = new ArrayList<Interval>();
 
-	public ArrayList<Interval> insert(ArrayList<Interval> intervals, Interval newInterval) {
-        ArrayList<Interval> result = new ArrayList<Interval>();
-        if (newInterval == null) {            
-            return intervals;
-        }
-        if (intervals == null || intervals.size() == 0) {
-            result.add(newInterval);
-            return result;
-        }	
-
-        for (Interval interval : intervals) {
-            if (newInterval.end < interval.start) {
-                // make sure the result is sorted
+        for (int i = 0; i < intervals.size(); i++) {
+            Interval interval = intervals.get(i);
+            
+            if (newInterval.start > interval.end) {
+                result.add(interval);
+            } else if (interval.start > newInterval.end) {
                 result.add(newInterval);
                 newInterval = interval;
-            }
-            else if (newInterval.start > interval.end) {
-                result.add(interval);
-            }
-            else if (newInterval.start <= interval.end || newInterval.end >= interval.start) {
-                newInterval.start = Math.min(newInterval.start, interval.start);
-                newInterval.end = Math.max(newInterval.end, interval.end);
+            } else {
+                newInterval.start = Math.min(interval.start, newInterval.start);
+                newInterval.end = Math.max(interval.end, newInterval.end);
             }
         }
         // do not forget to the new interval
-        result.add(newInterval); 
- 
+        result.add(newInterval);
+        
         return result;
-	}
+    }
 }
 

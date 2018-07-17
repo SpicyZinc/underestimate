@@ -21,6 +21,8 @@ Output: 3
 Explanation: The longest consecutive path is [1, 2, 3] or [3, 2, 1].
 
 idea:
+https://www.cnblogs.com/grandyang/p/5252599.html
+
 recursion, dfs
 note, define clearly
 from root to child if increase, it is increment
@@ -63,6 +65,7 @@ public class BinaryTreeLongestConsecutiveSequence {
 		return max[0];
 	}
 
+	// 返回最长递增和递减路径
 	public int[] helper(TreeNode node, TreeNode parent, int[] max) {
 		int[] result = new int[2];
 		
@@ -80,6 +83,7 @@ public class BinaryTreeLongestConsecutiveSequence {
 
 		int increment = 0;
 		int decrement = 0;
+
 		if (node.val == parent.val + 1) {
 			increment = Math.max(left[0], right[0]) + 1;
 		} else if (node.val == parent.val - 1) {
@@ -88,7 +92,7 @@ public class BinaryTreeLongestConsecutiveSequence {
 
 		result[0] = increment;
 		result[1] = decrement;
-
-		return result;
-	}
+        
+        return result;
+    }
 }

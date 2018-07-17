@@ -54,9 +54,8 @@ Could you trade extra space such that move() operation can be done in O(1)?
 You need two arrays: int rows[n], int cols[n], plus two variables: diagonal, anti_diagonal.
 
 idea:
-direct
 是根据 移动到的row col 来判断
-不用在回去了 因为之前判断了
+不用再回去了 因为之前判断了
 */
 
 public class TicTacToe {
@@ -96,6 +95,7 @@ public class TicTacToe {
 	 */
 
 	public int move(int row, int col, int player) {
+		// draw either * or O at this position
 		matrix[row][col] = player;
 
 		int n = matrix.length;
@@ -150,7 +150,7 @@ public class TicTacToe {
 		return 0;
 	}
 
-	// better method
+	// better method for follow up
 	int n;
 	int[] rows;
 	int[] cols;

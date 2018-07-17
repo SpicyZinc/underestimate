@@ -54,16 +54,16 @@ class GroupShiftedStrings {
 	public String getSoloString(String s) {
 		char[] arr = s.toCharArray();
 		if (arr.length > 0) {
-			int diff = arr[0] - 'a';
+			int diff = arr[0];
 			for (int i = 0; i < arr.length; i++) {
-				if (arr[i] - diff < 'a') {
+				if (arr[i] - diff < 0) {
 					arr[i] = (char) (arr[i] - diff + 26);
 				} else {
-					arr[i] = (char) (arr[i] - diff); 
+					arr[i] = (char) (arr[i] - diff);
 				}
 			}
 		}
- 
-        return new String(arr);
+
+		return new String(arr);
 	}
 }

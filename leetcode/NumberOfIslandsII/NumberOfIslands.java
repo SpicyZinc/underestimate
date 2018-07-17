@@ -92,13 +92,11 @@ class NumberOfIslands {
 					}
 				}
 			}
-
-			for (int root : roots) {
-				System.out.printf("%2s,", root);
-			}
-			System.out.println();
-
 			result.add(islandCnt);
+			// for (int root : roots) {
+			// 	System.out.printf("%2s,", root);
+			// }
+			// System.out.println();
 		}
 
 		return result;

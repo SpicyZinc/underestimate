@@ -16,44 +16,38 @@ public class LongestSubstringwithAtMostKDistinctCharacters {
 		int maxLen = eg.lengthOfLongestSubstringKDistinct(s, k);
 		System.out.println(maxLen);
 	}
+	// typical sliding window
 	public int lengthOfLongestSubstringKDistinct(String s, int k) {
-		if (k == 0 || s.length() == 0 || s == null) return 0;
-		if (s.length() <= k) return s.length();
+        int n = s.length();
+        
+        Map<Character, Integer> hm = new HashMap<>();
+        
+        int left = 0;
+        int right = 0;
+        // the worst case all characters are different, so the length is k
+        int maxLen = k;
+        for (; right < n; right++) {
+            char c = s.charAt(right);
+            hm.put(c, hm.getOrDefault(c, 0) + 1);
 
-		// map to keep character - frequency pair
-		Map<Character, Integer> hm = new HashMap<Character, Integer>();
-		int start = 0;
-		// the worst case all characters are different, so the length is k
-		int maxLen = k;
-		String longestSubstring = "";
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			hm.put(c, hm.getOrDefault(c, 0) + 1);
-			// have to calculate maxLen here, (i - 1) - start + 1
-			if (i - start > maxLen) {
-				maxLen = i - start;
-				longestSubstring = s.substring(start, (i - 1) + 1);
-			}
-			// if the number of unique characters bigger than k, against the rule at most k distinct characters
-			while (hm.size() > k) {
-				char charAtStart = s.charAt(start);
-				int cnt = hm.get(charAtStart);
-				if (cnt >= 2) {
-					hm.put(charAtStart, cnt - 1);
-				} else {
-					hm.remove(charAtStart);
-				}
-				start++;
-			}
-		}
-		// last check out of for loop
-		if (s.length() - start > maxLen) {
-			longestSubstring = s.substring(start);
-		}
-		System.out.println(longestSubstring);
+            while (hm.size() > k) {
+                char leftChar = s.charAt(left);
+                int cnt = hm.get(leftChar);
+                // note >= 2
+                if (cnt >= 2) {
+                    hm.put(leftChar, cnt - 1);
+                } else {
+                    hm.remove(leftChar);
+                }
+                
+                left++;
+            }
 
-		return Math.max(maxLen, s.length() - start);
-	}
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+        
+        return maxLen;
+    }
 
 
 	public int lengthOfLongestSubstringKDistinct(String s, int k) {

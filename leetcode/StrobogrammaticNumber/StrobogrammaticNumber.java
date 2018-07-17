@@ -15,26 +15,28 @@ return false
 
 public class StrobogrammaticNumber {
     public boolean isStrobogrammatic(String num) {
-    	HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
-    	hm.put(8, 8);
-    	hm.put(0, 0);
-    	hm.put(1, 1);
-    	hm.put(6, 9);
-    	hm.put(9, 6);
+        Map<Character, Character> hm = new HashMap<>();
+        hm.put('0', '0');
+        hm.put('1', '1');
+        hm.put('8', '8');
+        hm.put('6', '9');
+        hm.put('9', '6');
+        
+        int i = 0;
+        int j = num.length() - 1;
+        // must i <= j, equal is to deal with odd parity length of num, both i and j end at the same position
+        while (i <= j) {
+            char left = num.charAt(i);
+            char right = num.charAt(j);
 
-    	int left = 0;
-    	int right = num.length() - 1;
-    	// must left <= right, equal is to deal with odd parity length of num, both left and right end at the same position
-    	while (left <= right) {
-    		char leftChar = num.charAt(left);
-    		char rightChar = num.charAt(right);
-    		if ( !hm.containsKey(rightChar) || leftChar != map.get(rightChar) ) {
-    			return false;
-    		}
-    		left++;
-    		right--;
-    	}
-
-    	return true;
+            if (!hm.containsKey(left) || right != hm.get(left)) {
+                return false;
+            }
+            
+            i++;
+            j--;
+        }
+        
+        return true;
     }
 }

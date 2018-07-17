@@ -14,10 +14,10 @@ INF  -1 INF  -1
   0  -1 INF INF
 
 After running your function, the 2D grid should be:
-  3  -1   0   1
-  2   2   1  -1
-  1  -1   2  -1
-  0  -1   3   4
+	3  -1   0   1
+	2   2   1  -1
+	1  -1   2  -1
+	0  -1   3   4
 
 idea:
 1. DFS, easy to follow
@@ -41,6 +41,7 @@ public class WallsAndGates {
         
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
+            	// for each gate, gate to itself of course it is zero distance
                 if (rooms[i][j] == 0) {
                     dfsFill(rooms, i, j, 0);
                 }

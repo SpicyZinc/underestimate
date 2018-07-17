@@ -43,7 +43,7 @@ public class HitCounter {
 	Queue<Integer> queue;
 	/** Initialize your data structure here. */  
 	public HitCounter() {
-		queue = LinkedList<Integer>();
+		queue = new LinkedList<Integer>();
 	}
 
 	/**
@@ -82,6 +82,7 @@ public class HitCounter {
     public void hit(int timestamp) {
     	int idx = timestamp % 300;
     	// no hit at this timestamp before or over 5 min
+    	// 因为每秒很多hit 这样保证了只记住300 5min 之内的
     	if (times[idx] != timestamp) {
     		times[idx] = timestamp;
     		hits[idx] = 1;
@@ -97,8 +98,8 @@ public class HitCounter {
 	 */
 	public int getHits(int timestamp) {
 		int hitCnt = 0;
-		for (int i = 0; i < hits.length; i++) {
-			// within 5 mins
+		// within 5 mins, 300 seconds
+		for (int i = 0; i < 300; i++) {
 			if (timestamp - times[i] < 300) {
 				hitCnt += hits[i];
 			}

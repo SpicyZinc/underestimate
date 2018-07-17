@@ -22,20 +22,14 @@ such as add( ), contains( ), remove( ), and size( ), to remain constant even for
 
 import java.util.*;
 
-public class ThreeSum_Correct {
+public class SanSum {
 	public static void main(String[] args) {
-		new ThreeSum_Correct();		
-	}
-	public ThreeSum_Correct() {
+		SanSum eg = new SanSum();
 		int[] nums = {-1, 0, 1, 2, -1, -4};
-		ArrayList<ArrayList<Integer>> result = threeSum(nums);
-		for (int i = 0; i < result.size(); i++) {
-			ArrayList<Integer> t = result.get(i);
-			for (int j = 0; j < t.size(); j++) {
-				System.out.print(t.get(j) + " ");
-			}
-			System.out.print("\n");
-		}
+		List<List<Integer>> result = eg.threeSum(nums);
+        for (List<Integer> path : result) {
+            System.out.println(path);
+        }
 	}
 
 	// recently self written, passed oj

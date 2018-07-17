@@ -24,6 +24,48 @@ a < 0 相反
 import java.util.*;
 
 class SortTransformedArray {
+	// 07/14/2018
+	public int[] sortTransformedArray(int[] nums, int a, int b, int c) {
+        int n = nums.length;
+        int[] transformed = new int[n];
+        int idx;
+        int left = 0;
+        int right = n - 1;
+        if (a > 0) {
+            idx = n - 1;
+            while (left <= right) {
+                int leftVal = applyFunc(nums[left], a, b, c);
+                int rightVal = applyFunc(nums[right], a, b, c);
+                if (leftVal > rightVal) {
+                    transformed[idx--] = leftVal;
+                    left++;
+                } else {
+                    transformed[idx--] = rightVal;
+                    right--;
+                }
+            }
+        } else {
+            idx = 0;
+            while (left <= right) {
+                int leftVal = applyFunc(nums[left], a, b, c);
+                int rightVal = applyFunc(nums[right], a, b, c);
+                if (leftVal > rightVal) {
+                    transformed[idx++] = rightVal;
+                    right--;
+                } else {
+                    transformed[idx++] = leftVal;
+                    left++;
+                }
+            }
+        }
+        
+        return transformed;
+    }
+    
+    public int applyFunc(int x, int a, int b, int c) {
+        return a * x * x + b * x + c;
+    }
+	
 	public static void main(String[] args) {
 		SortTransformedArray eg = new SortTransformedArray();
 		int[] nums = {-4, -2, 2, 4};

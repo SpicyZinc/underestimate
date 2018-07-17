@@ -18,6 +18,7 @@ http://www.programcreek.com/2013/12/leetcode-solution-of-longest-palindromic-sub
 a string of length n, the number of central points should be 2 * n - 1
 字符作为中心有n个, 间隙有n-1个 e.g., abc, 中心可以是a, b, c or ab的间隙, bc的间隙
 往两边同时进行扫描, 直到不是回文串为止
+这个思路是对的 但是不是为了 中心 而是为了到达最后一个char 在string
 3. dynamic programming
 外层循环i从后往前扫
 内层循环j从i当前字符扫到结尾处
@@ -66,32 +67,36 @@ class LongestPalindromicSubstring {
     }
  	// 2nd method
  	public String longestPalindrome(String s) {
-        if (s == null || s.length() == 0) {
+        if (s.length() == 0 || s == null) {
             return "";
         }
-
-        int maxLength = 0;
-        String palindrome = "";
-        for (int i = 0; i < s.length() * 2 - 1; i++) {
-            int leftIdInString = i / 2;
-            int rightIdInString = (i + 1) / 2; // note: good way to handle parity
-
-            String possible = possibleLongestPalindrome(s, leftIdInString, rightIdInString);
-            if (possible.length() > maxLength) {
-                maxLength = possible.length();
-                palindrome = possible;
+        
+        int n = s.length();
+        int max = 0;
+        String longest = "";
+        
+        for (int i = 0; i < n * 2 - 1; i++) {
+            // note, a good way to handle parity
+            int left = i / 2;
+            int right = (i + 1) / 2;
+            
+            String palindrome = getPalindrome(s, left, right);
+            
+            if (palindrome.length() > max) {
+                max = palindrome.length();
+                longest = palindrome;
             }
         }
-
-        return palindrome;
+        
+        return longest;
     }
     
-    private String possibleLongestPalindrome(String s, int left, int right) {
+    private String getPalindrome(String s, int left, int right) {
         while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
             left--;
             right++;
         }
-    	// return s.substring(left, right+1); remember, when while loop exits, left 'turns' into -1
+
         return s.substring(left + 1, right);
     }
 

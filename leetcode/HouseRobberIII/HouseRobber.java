@@ -100,19 +100,25 @@ public class HouseRobber {
 
         return max;
     }
-    // DP, need to rethink
+    // DP
+    // res[0] 表示不包含当前节点的最大值
+    // res[1] 表示包含当前节点的最大值
     public int rob(TreeNode root) {
-        return dfs(root)[0];
+        int[] res = dfs(root);
+
+        return Math.max(res[0], res[1]);
     }
     
-    private int[] dfs(TreeNode root) {
+    private int[] dfs(TreeNode node) {
         int dp[] = {0, 0};
-        if (root != null) {
-            int[] dp_L = dfs(root.left);
-            int[] dp_R = dfs(root.right);
-            dp[1] = dp_L[0] + dp_R[0];
-            dp[0] = Math.max(dp[1] ,dp_L[1] + dp_R[1] + root.val);
+        if (node == null) {
+            return dp;
         }
+
+        int[] left = dfs(node.left);
+        int[] right = dfs(node.right);
+        dp[0] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+        dp[1] = node.val + left[0] + right[0];
 
         return dp;
     }

@@ -34,25 +34,27 @@ value is timestamp
 
 */
 
-public class LoggerRateLimiter {
+public class Logger {
     private Map<String, Integer> hm;
 
-    public LoggerRateLimiter() {
-    	hm = new HashMap<String, Integer>();
+    /** Initialize your data structure here. */
+    public Logger() {
+        hm = new HashMap<String, Integer>();
     }
 
     public boolean shouldPrintMessage(Integer timestamp, String message) {
-    	if (hm.containsKey(message)) {
-    		int ts = hm.get(message);
-    		if (ts - timestamp >= 10) {
-    			// update the hashmap
-    			hm.put(timestamp, message);
-    			return true;
-    		} else {
-    			return false;
-    		}
-    	} else {
-    		hm.put(message, timestamp);
-    	}
+        if (hm.containsKey(message)) {
+            int ts = hm.get(message);
+            if (timestamp - ts >= 10) {
+                // update the hashmap
+                hm.put(message, timestamp);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            hm.put(message, timestamp);
+            return true;
+        }
     }
 }

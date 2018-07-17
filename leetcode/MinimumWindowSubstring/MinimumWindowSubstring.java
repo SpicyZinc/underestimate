@@ -38,6 +38,54 @@ public class MinimumWindowSubstring {
 		System.out.println("minimumWindow == " + minimumWindow);		
 	}
 
+    // 07/09/2018 prepare for Google
+    public String minWindow(String s, String t) {
+        String result = "";
+        if (t.length() > s.length()) {
+            return result;
+        }
+
+        int left = 0;
+        int tCharsCountInS = 0;
+        int size = s.length();
+        int minLen = size + 1; // 就像 initialize Integer.MAX_VALUE
+
+        Map<Character, Integer> hm = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
+            hm.put(c, hm.getOrDefault(c, 0) + 1);
+        }
+
+        for (int right = 0; right < size; right++) {
+            char rightMost = s.charAt(right);
+            if (hm.containsKey(rightMost)) {
+                hm.put(rightMost, hm.get(rightMost) - 1);
+                if (hm.get(rightMost) >= 0) {
+                    tCharsCountInS++;
+                }
+                // move left of the window
+                while (tCharsCountInS == t.length()) {
+                    // update minLen
+                    if (right - left + 1 < minLen) {
+                        minLen = right - left + 1;
+                        result = s.substring(left, right + 1);
+                    }
+                    // start moving left of window
+                    char leftMost = s.charAt(left);
+                    if (hm.containsKey(leftMost)) {
+                        hm.put(leftMost, hm.get(leftMost) + 1);
+                        if (hm.get(leftMost) > 0) {
+                            tCharsCountInS--;
+                        }
+                    }
+                    left++;
+                }
+            }
+        }
+
+        return result;
+    }
+
     // newly written version
     public String minWindow(String s, String t) {
         Map<Character, Integer> hm = new HashMap<Character, Integer>();

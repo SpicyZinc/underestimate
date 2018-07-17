@@ -71,9 +71,10 @@ public class FindKPairsWithSmallestSums {
      */
     public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
         List<int[]> pairs = new ArrayList<int[]>();
-        int len1 = nums1.length;
-        int len2 = nums2.length;
-        if (len1 == 0 || len2 == 0 || k == 0) {
+
+        int m = nums1.length;
+        int n = nums2.length;
+        if (m == 0 || n == 0 || k == 0) {
             return pairs;
         }
         // 一定程度上的BFS 以它们为基础不断扩展
@@ -84,19 +85,20 @@ public class FindKPairsWithSmallestSums {
             }
         });
         // first add k pairs
-        for (int i = 0; i < len1 && i < k; i++) {
+        // m * n combination, 先把所有的m 和n中的一个作为基础 加到队列中
+        for (int i = 0; i < Math.min(m, k); i++) {
             queue.offer(new int[] {nums1[i], nums2[0], 0});
         }
-        // queue 的每个element是一个array whose第三个element是当前到达的index
-        while (k-- > 0 && !queue.isEmpty()) {
+        // queue 的每个element是一个array whose 第三个element是num1中 当前到达的num2中的index
+        while (k > 0 && !queue.isEmpty()) {
             int[] minPair = queue.poll();
-            int idxInNums2 = minPair[2];
             pairs.add(new int[] {minPair[0], minPair[1]});
-            // k--;
-            if (idxInNums2 == len2 - 1) {
+            k--;
+            int nextIdxInNum2 = minPair[2] + 1;
+            if (nextIdxInNum2 == n) {
                 continue;
             }
-            queue.offer(new int[] {minPair[0], nums2[idxInNums2 + 1], idxInNums2 + 1});
+            queue.offer(new int[] {minPair[0], nums2[nextIdxInNum2], nextIdxInNum2});
         }
         
         return pairs;

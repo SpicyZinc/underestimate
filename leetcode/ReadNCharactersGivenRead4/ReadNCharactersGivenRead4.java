@@ -6,7 +6,7 @@ Note:
 The read function will only be called once for each test case.
 
 idea:
-note: use read4 to read n characters, buf can contain more than n or less than n character
+note: use read4 to read n characters不止一次, buf can contain more than n or less than n character
 read4 is read 4 characters from source file to a temporary holder
 
 if read4 returns zero meaning reading is finished
@@ -17,22 +17,23 @@ read4 returns the number of characters actually left in the file
 
 public class ReadNCharactersGivenRead4 extends Reader4 {
 	public int read(char[] buf, int n) {
-		int size = 0;
-		char[] tempBuffer = new char[4];
-		while (true) {
-			int len = read4(tempBuffer);
-			// if no characters left, return whatever size is
-			if (len == 0) {
-				return size;
+        int size = 0;
+        
+        while (true) {
+            char[] temp = new char[4];
+            int len = read4(temp);
+            // if no characters left, return whatever size is
+            if (len == 0) {
+                break;
 			}
-			// require read n characters so size must < n
-			for (int i = 0; i < len && size < n; i++) {
-				buf[size++] = tempBuffer[i];
-			}
-		}
-		// till here, buf has been populated
-		return size;
-	}
+            // require read n characters so size must < n
+            for (int i = 0; i < len && size < n; i++) {
+                buf[size++] = temp[i];
+            }
+        }
+        // till here, buf has been populated
+        return size;
+    }
 
 	int read(char *buf, int n) {
         char _buf[4];   // the buffer for read4()

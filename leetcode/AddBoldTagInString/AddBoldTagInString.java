@@ -43,36 +43,31 @@ public class AddBoldTagInString {
         System.out.println(result);
     }
 
-    class Interval {
-        int start;
-        int end;
-        public Interval() {
-            this.start = 0;
-            this.end = 0;
-        }
-        public Interval(int start, int end) {
-            this.start = start;
-            this.end = end;
-        }
-        public String toString() {
-            return "[" + start + " " + end + "]";
-        }
-    }
-
     public String addBoldTag(String s, String[] dict) {
+        if (dict.length == 0) {
+            return s;
+        }
+        
         List<Interval> intervals = new ArrayList<Interval>();
-        for (String str : dict) {
+
+        for (String word : dict) {
             for (int i = 0; i < s.length(); i++) {
-                if (s.startsWith(str, i)) {
-                    intervals.add(new Interval(i, i + str.length()));
+                if (s.startsWith(word, i)) {
+                    intervals.add(new Interval(i, i + word.length()));
                 }
             }
+            
+            // int pos = s.indexOf(word);
+            // if (pos != -1) {
+            //     intervals.add(new Interval(pos, pos + word.length()));
+            // }
         }
-
-        List<Interval> result = merge(intervals);
+        
+        List<Interval> merged = merge(intervals);
+        
         StringBuilder sb = new StringBuilder();
         int last = 0;
-        for (Interval interval : result) {
+        for (Interval interval : merged) {
             int start = interval.start;
             int end = interval.end;
             // append str not in dict
@@ -86,21 +81,26 @@ public class AddBoldTagInString {
         sb.append(s.substring(last));
 
         return sb.toString();
+        
     }
-    // merge is either to extend the interval which is already in result
-    // or create new interval
+    
     public List<Interval> merge(List<Interval> intervals) {
         List<Interval> merged = new ArrayList<Interval>();
-        if (intervals.size() == 0) return merged;
+        if (intervals.size() == 0) {
+            return merged;
+        }
+        
         // sort intervals based on the start
         Collections.sort(intervals, new Comparator<Interval>() {
             @Override
-            public int compare(Interval i, Interval j) {
-                return i.start - j.start;
+            public int compare(Interval a, Interval b) {
+                return a.start - b.start;
             }
         });
-
+        
+        
         merged.add(intervals.get(0));
+
         for (int i = 1; i < intervals.size(); i++) {
             Interval prev = merged.get(merged.size() - 1);
             Interval curr = intervals.get(i);
@@ -110,7 +110,17 @@ public class AddBoldTagInString {
                 prev.end = Math.max(prev.end, curr.end);
             }
         }
-
+        
         return merged;
+    }
+}
+
+class Interval {
+    int start;
+    int end;
+    
+    public Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
     }
 }

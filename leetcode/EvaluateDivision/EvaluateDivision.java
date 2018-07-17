@@ -18,6 +18,18 @@ The input is always valid. You may assume that evaluating the queries will resul
 
 idea:
 https://discuss.leetcode.com/topic/58321/java-ac-solution-with-explanation
+actually graph problem
+u-v
+v-u
+都要populate到图中 note value 要reverse
+然后dfs找下去 注意几种base return 情况
+a/b = x
+a/c = y
+[
+    a: 
+    [b:x]
+    [c:y]
+]
 */
 
 public class EvaluateDivision {

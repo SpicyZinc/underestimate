@@ -30,6 +30,34 @@ https://protegejj.gitbooks.io/algorithm-practice/content/719-find-k-th-smallest-
 */
 
 class FindKthSmallestPairDistance {
+	// 07/14/2018
+	public int smallestDistancePair(int[] nums, int k) {
+        int min = nums[0];
+        int max = nums[0];
+        
+        for (int num : nums) {
+            min = Math.min(min, num);
+            max = Math.max(max, num);
+        }
+        
+        int[] buckets = new int[max - min + 1];
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int diff = Math.abs(nums[i] - nums[j]);
+                buckets[diff]++;
+            }
+        }
+        
+        for (int i = 0; i < buckets.length; i++) {
+            if (buckets[i] >= k) {
+                return i;
+            }
+            k -= buckets[i];
+        }
+        
+        return -1;
+    }
 	// passed
     public int smallestDistancePair(int[] nums, int k) {
 		int size = 1000000;

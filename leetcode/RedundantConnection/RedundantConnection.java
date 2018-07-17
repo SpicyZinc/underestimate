@@ -99,8 +99,8 @@ class RedundantConnection {
 			int u = edge[0];
 			int v = edge[1];
 
-			int rootU = getRootIdx(roots, u - 1);			
-			int rootV = getRootIdx(roots, v - 1);
+			int rootU = getRoot(roots, u - 1);			
+			int rootV = getRoot(roots, v - 1);
 
 			if (rootU == rootV) {
 				return edge;
@@ -112,7 +112,7 @@ class RedundantConnection {
 		return new int[] {};
 	}
 
-	private int getRootIdx(int[] roots, int i) {
+	private int getRoot(int[] roots, int i) {
 		while (roots[i] != i) {
 			i = roots[i];
 		}

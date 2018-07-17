@@ -6,10 +6,12 @@ but there are certain rules and restrictions you need to follow.
 
 Rules and restrictions:
 You can only travel among N cities, represented by indexes from 0 to N-1. Initially, you are in the city indexed 0 on Monday.
-The cities are connected by flights. The flights are represented as a N*N matrix (not necessary symmetrical), called flights representing the airline status from the city i to the city j.
+The cities are connected by flights. The flights are represented as a N*N matrix (not necessary symmetrical),
+called flights representing the airline status from the city i to the city j.
 If there is no flight from the city i to the city j, flights[i][j] = 0; Otherwise, flights[i][j] = 1. Also, flights[i][i] = 0 for all i.
 
-You totally have K weeks (each week has 7 days) to travel. You can only take flights at most once per day and can only take flights on each week's Monday morning.
+You totally have K weeks (each week has 7 days) to travel. You can only take flights at most once per day
+and can only take flights on each week's Monday morning.
 Since flight time is so short, we don't consider the impact of flight time.
 For each city, you can only have restricted vacation days in different weeks, given an N*K matrix called days representing this relationship.
 For the value of days[i][j], it represents the maximum days you could take vacation in the city i in the week j.
@@ -83,7 +85,7 @@ class MaximumVacationDays {
 		System.out.println(max);
 	}
 
-	// method 1
+	// method 1, TLE
 	int max = 0;
 
 	public int maxVacationDays(int[][] flights, int[][] days) {
@@ -91,34 +93,36 @@ class MaximumVacationDays {
 		return max;
 	}
 
-	public void dfs(int[][] flights, int[][] days, int city, int week, int sum) {
-		int cntCities = flights.length;
+	public void dfs(int[][] flights, int[][] days, int city, int week, int playDays) {
+		int cities = flights.length;
 		int cntWeeks = days[0].length;
 
 		if (week == cntWeeks) {
-			max = Math.max(max, sum);
+			max = Math.max(max, playDays);
 			return;
 		}
 
-		for (int dest = 0; dest < cntCities; dest++) {
+		for (int dest = 0; dest < cities; dest++) {
 			if (city == dest || flights[city][dest] == 1) {
-				dfs(flights, days, dest, week + 1, sum + days[dest][week]);
+				dfs(flights, days, dest, week + 1, playDays + days[dest][week]);
 			}
 		}
 	}
 	// method 2
+	// dp[i][j] week j at city i max vacation days
 	public int maxVacationDays(int[][] flights, int[][] days) {
 		if (days.length == 0 || flights.length == 0) return 0;
 
-        int N = flights.length;
-        int K = days[0].length;
+        int N = flights.length; // cities count
+        int K = days[0].length; // weeks count
+
         int[][] vocationDays = new int[N][K + 1];
-        for (int k = K - 1; k >= 0; k--) {
+        for (int j = K - 1; j >= 0; j--) {
             for (int i = 0; i < N; i++) {
-                vocationDays[i][k] = days[i][k] + vocationDays[i][k + 1];
-                for (int j = 0; j < N; j++) {
-                    if (flights[i][j] == 1) {
-                        vocationDays[i][k] = Math.max(days[j][k] + vocationDays[j][k + 1], vocationDays[i][k]);
+                vocationDays[i][j] = days[i][j] + vocationDays[i][j + 1];
+                for (int c = 0; c < N; c++) {
+                    if (flights[i][c] == 1) {
+                        vocationDays[i][j] = Math.max(vocationDays[i][j], days[c][j] + vocationDays[c][j + 1]);
                     }
                 }
             }

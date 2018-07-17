@@ -46,37 +46,39 @@ class AndroidUnlockPatterns {
 
     public int numberOfPatterns(int m, int n) {
         // Skip array represents number to skip between two pairs
-        int skip[][] = new int[10][10];
-        skip[1][3] = skip[3][1] = 2;
-        skip[1][7] = skip[7][1] = 4;
-        skip[3][9] = skip[9][3] = 6;
-        skip[7][9] = skip[9][7] = 8;
-        skip[1][9] = skip[9][1] = skip[2][8] = skip[8][2] = skip[3][7] = skip[7][3] = skip[4][6] = skip[6][4] = 5;
+        int notSkippables[][] = new int[10][10];
+        notSkippables[1][3] = notSkippables[3][1] = 2;
+        notSkippables[1][7] = notSkippables[7][1] = 4;
+        notSkippables[3][9] = notSkippables[9][3] = 6;
+        notSkippables[7][9] = notSkippables[9][7] = 8;
+        notSkippables[1][9] = notSkippables[9][1] = notSkippables[2][8] = notSkippables[8][2] = notSkippables[3][7] = notSkippables[7][3] = notSkippables[4][6] = notSkippables[6][4] = 5;
+        
         boolean visited[] = new boolean[10];
 
         int ret = 0;
         // dfs search each length from m to n
         for (int i = m; i <= n; i++) {
-            ret += dfs(visited, skip, 1, i - 1) * 4;    // 1, 3, 7, 9 are symmetric
-            ret += dfs(visited, skip, 2, i - 1) * 4;    // 2, 4, 6, 8 are symmetric
-            ret += dfs(visited, skip, 5, i - 1);        // 5
+            ret += dfs(visited, notSkippables, 1, i - 1) * 4;    // 1, 3, 7, 9 are symmetric
+            ret += dfs(visited, notSkippables, 2, i - 1) * 4;    // 2, 4, 6, 8 are symmetric
+            ret += dfs(visited, notSkippables, 5, i - 1);        // 5
         }
 
         return ret;
     }
 
-    public int dfs(boolean visited[], int[][] skip, int currKey, int remainingKeyCnt) {
+    public int dfs(boolean visited[], int[][] notSkippables, int currKey, int remainingKeyCnt) {
         if (remainingKeyCnt < 0) return 0;
         if (remainingKeyCnt == 0) return 1;
         
         int cnt = 0;
         visited[currKey] = true;
         for (int i = 1; i <= 9; i++) {
-        	int skippable = skip[i][currKey];
-        	// two number are adjacent if skippable = 0
-            // If visited[i] is not visited and (two numbers are adjacent or skip number is already visited)
-            if (!visited[i] && (skippable == 0 || (visited[skippable]))) {
-                cnt += dfs(visited, skip, i, remainingKeyCnt - 1);
+        	int notSkippable = notSkippables[i][currKey];
+            // If visited[i] is not visited and two 'or' cases
+            // 1. two number are adjacent if notSkippable = 0 (没有 notSkippable )
+            // 2. notSkippable number is already visited
+            if (!visited[i] && (notSkippable == 0 || (visited[notSkippable]))) {
+                cnt += dfs(visited, notSkippables, i, remainingKeyCnt - 1);
             }
         }
         visited[currKey] = false;

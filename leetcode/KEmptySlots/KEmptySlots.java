@@ -45,35 +45,39 @@ note: i reaches right, found out a valid subarray
 */
 
 class KEmptySlots {
-	public int kEmptySlots(int[] flowers, int k) {
-    	int n = flowers.length;
+    public int kEmptySlots(int[] flowers, int k) {
+        
+        int n = flowers.length;
+        
         // flower blooming days
         // flower 1 blooms at which day
         // flower 2 blooms at which day
         // flower at position i + 1 blooms at days[i]
-        int[] days = new int[n];
+        int[] bloomDays = new int[n];
+        
         for (int i = 0; i < n; i++) {
-            days[flowers[i] - 1] = i + 1;
+            bloomDays[flowers[i] - 1] = i + 1;
         }
-
-		int res = Integer.MAX_VALUE;
-        // maintain a window of size k
-    	int left = 0;
-    	int right = k + 1;
-        // loop through flowers
-        for (int i = 0; right < days.length; i++) {
-            // a valid subarray found, the condition is i reaches right
+        
+        // maintain a window of size k, [left, ..k个..., right]
+        int left = 0;
+        int right = k + 1;
+        
+        int whichDay = Integer.MAX_VALUE;
+        for (int i = 0; right < n; i++) {
             if (i == right) {
-                res = Math.min(res, Math.max(days[left], days[right]));
+                // find a valid subarray, any i in between left and right bloom afters left and right
+                whichDay = Math.min(whichDay, Math.max(bloomDays[left], bloomDays[i]));
             }
+            // fail to satisfy, update
             // make sure no flowers bloom in between, if break the rule, update the window range
-            if (days[i] < days[left] || days[i] <= days[right]) {
+            if (bloomDays[left] > bloomDays[i] || bloomDays[i] <= bloomDays[right]) {
                 // maintain k flowers between left and right
                 left = i;
-                right = k + i + 1;
+                right = i + k + 1;
             }
         }
-
-        return res == Integer.MAX_VALUE ? -1 : res;
+        
+        return whichDay == Integer.MAX_VALUE ? -1 : whichDay;
     }
 }

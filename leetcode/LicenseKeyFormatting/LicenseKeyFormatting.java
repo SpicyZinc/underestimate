@@ -102,4 +102,35 @@ public class LicenseKeyFormatting {
         
         return result.toUpperCase();
     }
+    // self again, TLE again
+    public String licenseKeyFormatting(String S, int K) {
+        int n = S.length();
+        String group = "";
+
+        List<String> list = new ArrayList<>();
+        int k = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            char c = S.charAt(i);
+            if (c != '-') {
+                group += c;
+                k++;
+            }
+            if (k == K)  {
+                list.add(group);
+                k = 0;
+                group = "";
+            }
+        }
+        
+        if (group.length() != 0) {
+            list.add(group);
+        }
+        
+        String result = "";
+        for (int i = 0; i < list.size(); i++) {
+            result += list.get(i).toUpperCase() + (i == list.size() - 1 ? "" : "-");
+        }
+        
+        return new StringBuilder(result).reverse().toString();
+    }
 }

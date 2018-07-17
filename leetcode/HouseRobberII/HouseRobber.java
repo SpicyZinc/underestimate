@@ -20,41 +20,46 @@ dp normally creates an array of length of n + 1,
 of course n works, but you get to deal with dp[1] carefully
 */
 
-public class HouseRobberII {
+public class HouseRobber {
     public int rob(int[] nums) {
-        if ( nums.length == 0 || nums == null ) {
-    		return 0;
-    	}
-    	if (nums.length == 1) {
-    		return nums[0];
-    	}
-        if (nums.length == 2) {
-        	return Math.max(nums[0], nums[1]);
+        if (nums.length == 0 || nums == null) {
+            return 0;
+        }
+        
+        int n = nums.length;
+        if (n == 1) {
+            return nums[0];
+        }
+        
+        return Math.max(rob(nums, 0, n - 2), rob(nums, 1, n - 1));
+    }
+    // rob in a range from i to j inclusive
+    public int rob(int[] nums, int i, int j) {
+        if (i == j) {
+            return nums[i];
         }
 
-        return Math.max( robInLine(nums, 0, nums.length - 2), robInLine(nums, 1, nums.length - 1) );
-    }
-
-    public int robInLine(int[] nums, int start, int end) {
-    	// int n = e - s + 1;
-     //    int[] d = new int[n];
-     //    d[0] = nums[s];
-     //    d[1] = Math.max(nums[s], nums[s+1]);
+        // both working
+//         int n = j - i + 1;
+//         int[] dp = new int[n];
+//         dp[0] = nums[i];
+//         dp[1] = Math.max(nums[i], nums[i + 1]);
           
-     //    for (int i=2; i<n; i++) {
-     //        d[i] = Math.max(d[i-2]+nums[s+i], d[i-1]);
-     //    }
-     //    return d[n-1];
+//         for (int k = 2; k < n; k++) {
+//             dp[k] = Math.max(dp[k - 2] + nums[i + k], dp[k - 1]);
+//         }
 
-    	int n = end - start + 1;
-    	int[] dp = new int[n + 1];
-    	dp[0] = 0;
-    	dp[1] = nums[start];
+//         return dp[n - 1];
 
-    	for (int i = 2; i <= n; i++) {
-    		dp[i] = Math.max( dp[i - 2] + nums[start + i - 1], dp[i-1] );
-    	}
+        int n = j - i + 1;
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = nums[i];
+        for (int k = 2; k <= n; k++) {
+            // rob current or not rob current
+            dp[k] = Math.max(dp[k - 2] + nums[i + k - 1], dp[k - 1]);
+        }
 
-    	return dp[n];
+        return dp[n];
     }
 }

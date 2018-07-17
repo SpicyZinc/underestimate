@@ -63,21 +63,18 @@ class PeekingIterator implements Iterator<Integer> {
 }
 
 class PeekingIterator implements Iterator<Integer> {
-    private Integer current = null;
-    private Iterator<Integer> iter;
-
+    Iterator<Integer> iterator;
+    Integer current;
     public PeekingIterator(Iterator<Integer> iterator) {
         // initialize any member here.
-        iter = iterator;
+        this.iterator = iterator;
+        this.current = null;
     }
 
     // Returns the next element in the iteration without advancing the iterator.
     public Integer peek() {
-        if (current != null) {
-            return current;
-        }
-        if (iter.hasNext()) {
-            current = iter.next();
+        if (current == null && iterator.hasNext()) {
+            current = iterator.next();
         }
         return current;
     }
@@ -91,7 +88,7 @@ class PeekingIterator implements Iterator<Integer> {
             current = null;
             return temp;
         }
-        return iter.next();
+        return iterator.next();
     }
 
     @Override
@@ -99,11 +96,13 @@ class PeekingIterator implements Iterator<Integer> {
         if (current != null) {
             return true;
         }
-        return iter.hasNext();
+        return iterator.hasNext();
     }
 }
 
-
+// similar to List<Integer> list = new ArrayList<>();
+// Iterator iterator = list.iterator();
+// this way makes XinList instance has .iterator() method
 public class XinList<Type> implements Iterable<Type> {
     private Type[] arrayList;
     private int currentSize;

@@ -63,59 +63,68 @@ public class ValidNumber {
         String regex = "[-+]?(\\d+\\.?|\\.\\d+)\\d*(e[-+]?\\d+)?";
         return s.trim().matches(regex);
     }
+    // 07/11/2018
     // 2. all corner cases
     public boolean isNumber(String s) {
         s = s.trim();
+        
         if (s.isEmpty()) {
             return false;
         }
+        
+        int n = s.length();
 
         boolean hasE = false;
         boolean hasDot = false;
-        boolean hasNumber = false;
-        for (int i = 0; i < s.length(); i++) {
+        boolean hasNum = false;
+        
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
             // e cannot be the first character
-            if (i == 0 && s.charAt(i) == 'e') {
+            if (i == 0 && c == 'e') {
                 return false;
             }
-            if (s.charAt(i) == 'e') {
-                // e can neither be replicated nor placed before number
-                if (hasE == true || hasNumber == false) {
+            // e can neither be replicated nor placed before number
+            if (c == 'e') {
+                if (hasE || !hasNum) {
                     return false;
-                } 
-                else {
+                } else {
                     hasE = true;
                 }
-            } 
-            if (s.charAt(i) == '.') {
-                // '.' cannot be replicated nor placed after 'e'
-                if (hasDot == true || hasE == true) {
+            }
+            // '.' cannot be replicated nor placed after 'e'
+            if (c == '.') {
+                if (hasDot || hasE) {
                     return false;
-                } 
-                else {
+                } else {
                     hasDot = true;
                 }
             }
-            // check whether numbers are included.
-            if (s.charAt(i) <= '9' && s.charAt(i) >= '0') {
-                hasNumber = true;
+            // check whether numbers are included
+            if (Character.isDigit(c)) {
+                hasNum = true;
             }
             // the sign can only be placed at the beginning or after 'e'
-            if (i != 0 && s.charAt(i - 1) != 'e' && (s.charAt(i) == '+' || s.charAt(i) == '-')) {
+            if (i > 0 && s.charAt(i - 1) != 'e' && (c == '+' || c == '-')) {
                 return false;
             }
             // no other characters except '+', '-', '.', and 'e'
-            if ((s.charAt(i) > '9' || s.charAt(i) < '0') && s.charAt(i) != '+' && s.charAt(i) != '-' && s.charAt(i) != '.' && s.charAt(i) != 'e') {
+            if (!Character.isDigit(c) &&
+                c != '+' && c != '-' &&
+                c != 'e' && c != '.'
+            ) {
                 return false;
             }
         }
         // '+', '-', and 'e' cannot be the last character
-        if (s.charAt(s.length() - 1) == '-' || s.charAt(s.length() - 1) == '+' || s.charAt(s.length() - 1) == 'e') {
+        char last = s.charAt(n - 1);
+        if (last == '+' || last == '-' || last == 'e') {
             return false;
         }
-
-        return hasNumber;
+        
+        return hasNum;
     }
+
     // 3. modularized  functionalities
     public boolean isNumber(String s) {
         s = s.trim();

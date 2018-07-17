@@ -36,6 +36,8 @@ recursion + consider current node, then + 1
 this is to find consecutive 1's 
 如果最后左右连到 root的两个 edge 没有 同样的数字 没有连接起来
 不能称其为 UnivaluePath 所以到这个root 点 最大edge数就是0
+就是一旦不连续 就是0
+返回的值不是 需要的值 是过渡值
 */
 
 class TreeNode {
@@ -75,6 +77,7 @@ class LongestUnivaluePath {
 				rightEdges = rightUniValuePathLen + 1;
 			}
 		}
+		// note, this is addition, not Math.max()
 		max = Math.max(max, leftEdges + rightEdges);
 
 		return Math.max(leftEdges, rightEdges);

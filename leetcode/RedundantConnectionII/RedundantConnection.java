@@ -34,58 +34,76 @@ The size of the input 2D-array will be between 3 and 1000.
 Every integer represented in the 2D-array will be between 1 and N, where N is the size of the input array.
 
 idea:
-need to go back
+3 cases
+有环
+入度为2
+both
+
+https://www.cnblogs.com/grandyang/p/8445733.html
+https://blog.csdn.net/zjucor/article/details/78153680
 */
 
 class RedundantConnection {
 	public int[] findRedundantDirectedConnection(int[][] edges) {
 		int n = edges.length;
-		int[] root = new int[n + 1];
+
+		int[] roots = new int[n + 1];
+		// 入度为2的 点 的 两个edge
 		int[] first = new int[2];
 		int[] second = new int[2];
 
+		// find indegree will become 2
 		for (int[] edge : edges) {
+			// start -> end
 			int start = edge[0];
 			int end = edge[1];
-			// indegree
-			if (root[end] == 0) {
-				root[end] = start;
-			} else {
-				first[0] = root[end];
+			// end's parent is start
+			if (roots[end] == 0) {
+				roots[end] = start;
+			} else { // end could have two parents
+				first[0] = roots[end];
 				first[1] = end;
-				second = edge;
-				// ?
-				edge[1] = 0;
+
+				second[0] = start;
+				second[1] = end;
+
+				edge[1] = 0; // ?
 			}
 		}
 
 		for (int i = 0; i <= n; i++) {
-			root[i] = i;
+			roots[i] = i;
 		}
 
 		for (int[] edge : edges) {
+			// start -> end
 			int start = edge[0];
 			int end = edge[1];
+			// corresponds to edge[1] = 0
 			if (end == 0) {
 				continue;
 			}
 
-			int x = getRoot(root, start);
-			int y = getRoot(root, end);
+			int x = getRoot(roots, start); // child
+			int y = getRoot(roots, end); // parent
+
+			// there is a cycle
 			if (x == y) {
-				return first.length == 0 ? edge : first;
+				// if first empty 只有环 没有入度为2 返回edge
+				// 既有环又有入度为2 返回first
+				return first[0] == 0 && first[1] == 0 ? edge : first;
 			}
-			root[x] = y;
+			roots[x] = y;
 		}
 
 		return second;
 	}
 
-	public int getRoot(int[] root, int i) {
-		while (i != root[i]) {
-			root[i] = root[root[i]];
-			i = root[i];
+	public int getRoot(int[] roots, int i) {
+		while (roots[i] != i) {
+			i = roots[i];
 		}
+
 		return i;
 	}
 }
