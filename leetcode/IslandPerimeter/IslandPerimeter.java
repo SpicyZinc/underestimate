@@ -6,7 +6,6 @@ The island doesn't have "lakes" (water inside that isn't connected to the water 
 The grid is rectangular, width and height don't exceed 100. Determine the perimeter of the island.
 
 Example:
-
 [[0,1,0,0],
  [1,1,1,0],
  [0,1,0,0],

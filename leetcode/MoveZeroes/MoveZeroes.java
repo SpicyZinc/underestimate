@@ -29,6 +29,16 @@ and keep the relative order, then manually set nums[i] = 0;
 
 
 public class MoveZeroes {
+	// 07/17/2018
+	public void moveZeroes(int[] nums) {
+		for (int i = 0; i < nums.length; i++) {
+	        for (int j = 0; j < nums.length - 1; j++) {
+	            if (nums[j] == 0) {    
+	                swap(nums, j, j + 1);
+	            }
+	        }
+	    }
+    }
 	// method 1
     public void moveZeroes(int[] nums) {
     	int n = nums.length;
@@ -90,14 +100,14 @@ public class MoveZeroes {
 	// Javascript
 	var moveZeroes = function(nums) {
 	    var length = nums.length;
-	    for ( var i = 0; i < length; i++ ) {
-	        if ( nums[i] === 0 ) {
+	    for ( let i = 0; i < length; i++ ) {
+	        if (nums[i] === 0) {
 	            nums.splice(i, 1);
 	            i--;
 	        }
 	    }
 	    var currentLength = nums.length; // have to save to a variable, otherwise nums length keeps changing
-	    for ( i = 0; i < length - currentLength; i++ ) {
+	    for (let i = 0; i < length - currentLength; i++) {
 	        nums.push( 0 );
 	    }
 	};

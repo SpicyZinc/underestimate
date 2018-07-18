@@ -72,15 +72,15 @@ public class PacificAtlanticWaterFlow {
         return result;
     }
 
-	public void dfs(int[][] matrix, boolean[][] visited, int prev, int x, int y) {
+	public void dfs(int[][] matrix, boolean[][] visit, int prev, int x, int y) {
         int m = matrix.length;
         int n = matrix[0].length;
 
-        if (x < 0 || x >= m || y < 0 || y >= n || visited[x][y] || prev > matrix[x][y]) {
+        if (x < 0 || x >= m || y < 0 || y >= n || visit[x][y] || prev > matrix[x][y]) {
         	return;
         }
 
-        visited[x][y] = true;
+        visit[x][y] = true;
 
         int[][] directions = new int[][] {
 			{0,-1}, {-1,0}, {0,1}, {1,0}
@@ -89,7 +89,7 @@ public class PacificAtlanticWaterFlow {
         for (int[] dir : directions) {
         	int newX = x + dir[0];
         	int newY = y + dir[1];
-        	dfs(matrix, visited, matrix[x][y], newX, newY);
+        	dfs(matrix, visit, matrix[x][y], newX, newY);
         }
 	}
     // BFS

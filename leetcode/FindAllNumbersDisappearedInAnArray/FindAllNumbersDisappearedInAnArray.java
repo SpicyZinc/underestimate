@@ -25,7 +25,6 @@ public class FindAllNumbersDisappearedInAnArray {
 	}
     public List<Integer> findDisappearedNumbers(int[] nums) {
         List<Integer> result = new ArrayList<Integer>();
-
         for (int num : nums) {
             int idx = Math.abs(num) - 1;
             if (nums[idx] > 0) {

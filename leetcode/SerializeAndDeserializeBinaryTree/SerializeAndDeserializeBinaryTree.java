@@ -137,8 +137,7 @@ public class SerializeAndDeserializeBinaryTree {
         String val = nodes.remove(0);
         if (val.equals(NULL)) {
             return null;
-        }
-        else {
+        } else {
             TreeNode root = new TreeNode(Integer.parseInt(val));
             root.left = buildTree(nodes);
             root.right = buildTree(nodes);

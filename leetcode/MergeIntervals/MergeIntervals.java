@@ -52,6 +52,36 @@ public class MergeIntervals {
 			System.out.println(newList.get(i).toString());
 		}
 	}
+    // 07/17/2018
+    public List<Interval> merge(List<Interval> intervals) {
+        List<Interval> merged = new ArrayList<>();
+        if (intervals.size() == 0) {
+            return merged;    
+        }
+        
+        Collections.sort(intervals, new Comparator<Interval>() {
+            @Override
+            public int compare(Interval a, Interval b) {
+                return a.start - b.start;
+            }
+        });
+
+        merged.add(intervals.get(0));
+
+        for (int i = 1; i < intervals.size(); i++) {
+            Interval prev = merged.get(merged.size() - 1);
+            Interval curr = intervals.get(i);
+
+            if (curr.start > prev.end) {
+                merged.add(curr);
+            } else {
+                prev.end = Math.max(prev.end, curr.end);
+            }
+        }
+
+        return merged;
+    }
+
 	// method 1
     public List<Interval> merge(List<Interval> intervals) {
         if (intervals.size() < 2) {
@@ -71,8 +101,7 @@ public class MergeIntervals {
             Interval current = intervals.get(i);
             if (current.start <= end) {
                 end = Math.max(end, current.end);
-            }
-            else {
+            } else {
                 result.add(new Interval(start, end));
                 start = current.start;
                 end = current.end;
@@ -102,8 +131,7 @@ public class MergeIntervals {
     		Interval prev = result.get(result.size() - 1);
     		if (curr.start > prev.end) {
     			result.add(curr);
-    		}
-    		else {
+    		} else {
     			if (curr.end > prev.end) {
     				// note: to extend the interval which is already in result or create new interval
     				prev.end = curr.end;

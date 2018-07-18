@@ -11,12 +11,13 @@ and finally 'X' represents a revealed mine.
 Now given the next click position (row and column indices) among all the unrevealed squares ('M' or 'E'),
 return the board after revealing this position according to the following rules:
 If a mine ('M') is revealed, then the game is over - change it to 'X'.
-If an empty square ('E') with no adjacent mines is revealed, then change it to revealed blank ('B') and all of its adjacent unrevealed squares should be revealed recursively.
-If an empty square ('E') with at least one adjacent mine is revealed, then change it to a digit ('1' to '8') representing the number of adjacent mines.
+If an empty square ('E') with no adjacent mines is revealed,
+then change it to revealed blank ('B') and all of its adjacent unrevealed squares should be revealed recursively.
+If an empty square ('E') with at least one adjacent mine is revealed,
+then change it to a digit ('1' to '8') representing the number of adjacent mines.
 Return the board when no more squares will be revealed.
 
 Example 1:
-
 Input:
 [['E', 'E', 'E', 'E', 'E'],
  ['E', 'E', 'M', 'E', 'E'],
@@ -33,7 +34,6 @@ Output:
 
 
 Example 2:
-
 Input:
 [['B', '1', 'E', '1', 'B'],
  ['B', '1', 'M', '1', 'B'],
@@ -58,6 +58,7 @@ you don't need to reveal all the unrevealed mines when the game is over, conside
 idea:
 direct, follow the rule using DFS
 note 'E', keep DFS, not 'E', return
+完全按题意来 但是 我不明白哪里来的 bomb, 没有炸弹啊
 */
 
 public class Minesweeper {
@@ -65,7 +66,8 @@ public class Minesweeper {
         int x = click[0];
         int y = click[1];
         // first time hit the mine, set it to be 'X', game is over
-        if (board[x][y]  == 'M') {
+        // 只要求 看 一次click后的结果
+        if (board[x][y] == 'M') {
             board[x][y] = 'X';
             return board;
         }
@@ -88,6 +90,7 @@ public class Minesweeper {
         int m = board.length;
         int n = board[0].length;
         // why not equal to 'E'? still it is rule
+        // The click position will only be an unrevealed square ('M' or 'E')
         if (x < 0 || x >= m || y < 0 || y >= n || board[x][y] != 'E') {
             return;
         }
@@ -101,9 +104,8 @@ public class Minesweeper {
                 int newY = y + dir[1];
                 dfs(board, newX, newY);
             }
-        }
-        else {
-            board[x][y] = (char)(num + '0');
+        } else {
+            board[x][y] = (char) (num + '0');
         }
     }
     
@@ -128,10 +130,12 @@ public class Minesweeper {
             if (newX < 0 || newX >= m || newY < 0 || newY >= n) {
                 continue;
             }
+            // 周围 发现的 未发现的 mines
             if (board[newX][newY] == 'M' || board[newX][newY] == 'X') {
                 num++;
             }
         }
+
         return num;
     }
 }

@@ -36,7 +36,7 @@ public class LetterCombinationsOfAPhoneNumber {
 
 	// best method 1
 	public List<String> letterCombinations(String digits) {
-        HashMap<Character, String> hm = new HashMap<Character, String>();
+        Map<Character, String> hm = new HashMap<Character, String>();
         hm.put('2', "abc");
         hm.put('3', "def");
         hm.put('4', "ghi");
@@ -50,11 +50,11 @@ public class LetterCombinationsOfAPhoneNumber {
         if (digits.length() == 0 || digits == null) {
             return result;
         }
-        dfs(digits, 0, "", hm, result);
+        dfs(digits, 0, hm, "", result);
         return result;
     }
     
-    private void dfs(String digits, int index, String path, HashMap<Character, String> hm, List<String> result) {
+    private void dfs(String digits, int index, Map<Character, String> hm, String path, List<String> result) {
         if (path.length() == digits.length()) {
             result.add(path);
             return;
@@ -62,7 +62,7 @@ public class LetterCombinationsOfAPhoneNumber {
         char digit = digits.charAt(index);
         String letters = hm.get(digit);
         for (int j = 0; j < letters.length(); j++) {
-            dfs(digits, index + 1, path + letters.charAt(j), hm, result);
+            dfs(digits, index + 1, hm, path + letters.charAt(j), result);
         }
     }
 

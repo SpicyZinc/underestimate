@@ -49,10 +49,10 @@ class RobotRoomCleaner {
 	public void cleanRoom(Robot robot) {
         Set<String> set = new HashSet<>();
         int curDir = 0;
-        backtrack(robot, set, 0, 0, 0);
+        dfs(robot, set, 0, 0, 0);
     }
 
-    public void backtrack(Robot robot, Set<String> set, int x, int y, int curDir) {
+    public void dfs(Robot robot, Set<String> set, int x, int y, int curDir) {
     	String path = x + "->" + y;
     	
 		if (set.contains(path)) {
@@ -90,7 +90,7 @@ class RobotRoomCleaner {
     					break;
     			}
 
-    			backtrack(robot, set, nextX, nextY, curDir);
+    			dfs(robot, set, nextX, nextY, curDir);
 				
 				// go back to the starting position
 				robot.turnLeft();

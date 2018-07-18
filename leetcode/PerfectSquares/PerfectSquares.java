@@ -33,8 +33,9 @@ public class PerfectSquares {
         int minNum = n;
         int i = 2;
         while (i * i <= n) {
-            int num = n / (i * i);
-            int remaining = n % (i * i);
+            int square = i * i;
+            int num = n / square;
+            int remaining = n % square;
             minNum = Math.min(minNum, num + numSquares(remaining));
             i++;
         }

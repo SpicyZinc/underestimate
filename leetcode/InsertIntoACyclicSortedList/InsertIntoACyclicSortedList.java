@@ -64,7 +64,7 @@ class InsertIntoACyclicSortedList {
         while (true) {
             if (prev.val <= insertVal && curr.val >= insertVal ||
                 prev.val >= curr.val && curr.val >= insertVal || // insert even smaller
-                prev.val >= curr.val && prev.val <= insertVal // insert even bigger
+                prev.val >= curr.val && prev.val <= insertVal    // insert even bigger
             ) {
                 Node node = new Node(insertVal);
                 prev.next = node;

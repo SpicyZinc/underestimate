@@ -117,8 +117,7 @@ public class MedianOfTwoSortedArrays {
         int n = nums.length;
         if (n % 2 == 1) {
             return (double)nums[n / 2];
-        }
-        else {
+        } else {
             return (double) (nums[n / 2] + nums[n / 2 - 1]) / 2;
         }
     }
@@ -127,8 +126,9 @@ public class MedianOfTwoSortedArrays {
         int m = A.length;
         int n = B.length;
 
-        int i = 0, j = 0, total = m + n;
-        double prev = 0, last = 0;
+        int i = 0;
+        int j = 0;
+        int total = m + n;
 
         if (total < 2) {
             if (m == 0 && n == 0) {
@@ -136,37 +136,39 @@ public class MedianOfTwoSortedArrays {
             }
             if (m == 1) {
                 return A[0];
-            }
-            else {
+            } else {
                 return B[0];
             }
         }
 
-        while ( (i + j) <= (total / 2) ) {
-            prev = last;
+        double prev = 0;
+        double curr = 0;
+
+        while (i + j <= total / 2) {
+            prev = curr;
             if (i >= m) {
-                last = B[j];
+                curr = B[j];
                 j++;
             }
             else if (j >= n) {
-                last = A[i];
+                curr = A[i];
                 i++;
             }
             else if (A[i] < B[j]) {
-                last = A[i];
+                curr = A[i];
                 i++;
             }
             else {
-                last = B[j];
+                curr = B[j];
                 j++;
             }
+            
         }
 
         if (total % 2 == 0) {
-            return (prev + last) / 2.0;
-        }
-        else {
-            return last;
+            return (prev + curr) / 2.0;
+        } else {
+            return curr;
         }
     }
 }

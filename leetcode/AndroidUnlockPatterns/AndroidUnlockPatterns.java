@@ -74,7 +74,8 @@ class AndroidUnlockPatterns {
         visited[currKey] = true;
         for (int i = 1; i <= 9; i++) {
         	int notSkippable = notSkippables[i][currKey];
-            // If visited[i] is not visited and two 'or' cases
+            // If visited[i] is not visited
+            // and two 'or' cases
             // 1. two number are adjacent if notSkippable = 0 (没有 notSkippable )
             // 2. notSkippable number is already visited
             if (!visited[i] && (notSkippable == 0 || (visited[notSkippable]))) {

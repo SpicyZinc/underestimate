@@ -64,8 +64,10 @@ public class TheSkylineProblem {
             }
         });
 
+        // 将地平线值0先加入堆中
+        // 为了[12 0] 这个点 在这个例子中
         int horizon = 0;
-        int prev = horizon;
+        int prevHighest = horizon;
         pq.offer(horizon);
 
         for (int[] height : heights) {
@@ -75,10 +77,11 @@ public class TheSkylineProblem {
             } else {
                 pq.remove(h);
             }
-            int curr = pq.peek();
-            if (prev != curr) {
-                result.add(new int[] {height[0], curr});
-                prev = curr;
+            int currHighest = pq.peek();
+            // 出现拐点了 要么更高的进来了 要么更高的出去了
+            if (prevHighest != currHighest) {
+                result.add(new int[] {height[0], currHighest});
+                prevHighest = currHighest;
             }
         }
 

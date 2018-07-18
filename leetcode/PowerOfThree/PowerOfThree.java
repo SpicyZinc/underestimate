@@ -23,29 +23,28 @@ return n == 1
 public class PowerOfThree {
     public boolean isPowerOfThree(int n) {
         if (n <= 0) {
-        	return false;
+            return false;
         }
-        if (n == 1) {
-        	return true;
+        while (n % 3 == 0) {
+            n /= 3;
         }
-        else if (n % 3 == 0) {
-        	return isPowerOfThree(n / 3);
-        }
-        else { 
-        	return false;
-        }
-    }
 
+        return n == 1;
+    }
+    
     public boolean isPowerOfThree(int n) {
         if (n <= 0) {
             return false;
         }
-        if (n > 1) {
-	        while (n % 3 == 0) {
-	        	n /= 3;
-	        }
+        if (n == 1) {
+            return true;
         }
-	    return n == 1;
+        else if (n % 3 == 0) {
+            return isPowerOfThree(n / 3);
+        }
+        else { 
+            return false;
+        }
     }
 
 	public boolean isPowerOfThree(int n) {

@@ -23,7 +23,7 @@ public class ClosestBinarySearchTreeValue {
     	int closest = closestValue(current, target);
     	return Math.abs(root.val - target) < Math.abs(closest) ? root.val : closest;
     }
-	// method 2
+	// iteration
     public int closestValue(TreeNode root, double target) {
 		int closestVal = root.val;
 		while (root != null) {
@@ -33,28 +33,30 @@ public class ClosestBinarySearchTreeValue {
 
 		return closestVal;
 	}
-	// method 3
+	// recursion
 	double min = Double.MAX_VALUE;
 	int closestVal = 0;
+
 	public int closestValue(TreeNode root, double target) {
-		helper(root, target);
+		dfs(root, target);
 		return closestVal;
 	}
 
-	public void helper(TreeNode node, double target) {
+	public void dfs(TreeNode node, double target) {
 		if (node == null) {
 			return;
 		}
-		if ( Math.abs(node.val - target) < min ) {
-			min = Math.abs(node.val - target);
+
+		double diff = Math.abs(node.val - target); 
+		if (diff < min) {
+			min = diff;
 			closestVal = node.val;
 		}
 
 		if (target < node.val) {
-			helper(node.left, target);
-		}
-		else (target > node.val) {
-			helper(node.right, target);
+			dfs(node.left, target);
+		} else {
+			dfs(node.right, target);
 		}
 	}
 }

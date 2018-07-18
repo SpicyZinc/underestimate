@@ -13,7 +13,7 @@ Return "acdb"
 idea:
 先建立一个哈希表来统计每个字母出现的次数, 
 还需要一个visited数字来纪录每个字母是否被访问过, 
-我们遍历整个字符串, 
+遍历整个字符串, 
 对于遍历到的字符, 
 先在哈希表中将其值减一, 
 然后看visited中是否被访问过, 
@@ -33,26 +33,31 @@ https://discuss.leetcode.com/topic/31413/easy-to-understand-iterative-java-solut
 */
 public class RemoveDuplicateLetters {
     public String removeDuplicateLetters(String s) {
-    	StringBuilder sb = new StringBuilder();
-        int[] map = new int[256];
-        boolean[] visited = new boolean[256];
+        Map<Character, Integer> hm = new HashMap<Character, Integer>();
         for (int i = 0; i < s.length(); i++) {
-            map[s.charAt(i)]++;
+            char c = s.charAt(i);
+            hm.put(c, hm.getOrDefault(c, 0) + 1);
         }
+        
+        boolean[] visited = new boolean[256];
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
-        	char ch = s.charAt(i);
-            map[ch]--;
-            if (visited[ch]) {
+            char curr = s.charAt(i);
+            hm.put(curr, hm.get(curr) - 1);
+            
+            if (visited[curr]) {
                 continue;
             }
-            int last = sb.length() - 1;
-            while ((sb.length() > 0) && ch < sb.charAt(last) && map[sb.charAt(last)] != 0) { 
-                visited[sb.charAt(last)] = false;
-                sb.deleteCharAt(last);
-                last = sb.length() - 1;
+        
+            int lastPos = sb.length() - 1;
+            while (sb.length() > 0 && sb.charAt(lastPos) > curr && hm.get(sb.charAt(lastPos)) >= 1) {
+                visited[sb.charAt(lastPos)] = false;
+                sb.deleteCharAt(lastPos);
+                lastPos = sb.length() - 1;
             }
-            sb.append(ch);
-            visited[ch] = true;
+            
+            sb.append(curr);
+            visited[curr] = true;
         }
         
         return sb.toString();

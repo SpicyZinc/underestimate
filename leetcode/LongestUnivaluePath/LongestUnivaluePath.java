@@ -38,6 +38,7 @@ this is to find consecutive 1's
 不能称其为 UnivaluePath 所以到这个root 点 最大edge数就是0
 就是一旦不连续 就是0
 返回的值不是 需要的值 是过渡值
+similar to consecutive path in tree
 */
 
 class TreeNode {
@@ -47,24 +48,26 @@ class TreeNode {
 	TreeNode(int x) { val = x; }
 }
 
-class LongestUnivaluePath {
-	int max = 0;	
+class LongestUnivaluePath {	
 
 	public int longestUnivaluePath(TreeNode root) {
-		edgeLength(root);
-		return max;
+		int[] max = new int[1];
+		edgeLength(root, max);
+
+		return max[0];
 	}
 
-	public int edgeLength(TreeNode node) {
+	public int edgeLength(TreeNode node, int[] max) {
 		if (node == null) {
 			return 0;
 		}
 
-		int leftUniValuePathLen = edgeLength(node.left);
-		int rightUniValuePathLen = edgeLength(node.right);
-        
-        int leftEdges = 0;
-        int rightEdges = 0;
+		int leftUniValuePathLen = edgeLength(node.left, max);
+		int rightUniValuePathLen = edgeLength(node.right, max);
+		
+		// 一旦不是univalue, 就是0
+		int leftEdges = 0;
+		int rightEdges = 0;
 
 		if (node.left != null) {
 			if (node.val == node.left.val) {
@@ -78,7 +81,7 @@ class LongestUnivaluePath {
 			}
 		}
 		// note, this is addition, not Math.max()
-		max = Math.max(max, leftEdges + rightEdges);
+		max[0] = Math.max(max[0], leftEdges + rightEdges);
 
 		return Math.max(leftEdges, rightEdges);
 	}

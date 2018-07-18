@@ -52,7 +52,7 @@ class KEmptySlots {
         // flower blooming days
         // flower 1 blooms at which day
         // flower 2 blooms at which day
-        // flower at position i + 1 blooms at days[i]
+        // flower at position i + 1 blooms at bloomDays[i]
         int[] bloomDays = new int[n];
         
         for (int i = 0; i < n; i++) {
@@ -66,11 +66,12 @@ class KEmptySlots {
         int whichDay = Integer.MAX_VALUE;
         for (int i = 0; right < n; i++) {
             if (i == right) {
-                // find a valid subarray, any i in between left and right bloom afters left and right
+                // find a valid subarray of size k, any i in between left and right bloom afters left and right
                 whichDay = Math.min(whichDay, Math.max(bloomDays[left], bloomDays[i]));
             }
             // fail to satisfy, update
             // make sure no flowers bloom in between, if break the rule, update the window range
+            // 中间i 开花的日子不能小于 left 或是 right, 要晚于
             if (bloomDays[left] > bloomDays[i] || bloomDays[i] <= bloomDays[right]) {
                 // maintain k flowers between left and right
                 left = i;

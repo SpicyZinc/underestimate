@@ -41,7 +41,7 @@ public class MaximumXORofTwoNumbersInAnArray {
         int max = 0, mask = 0;
         // start from most significant bit MSB
         for (int i = 31; i >= 0; i--) {
-            HashSet<Integer> set = new HashSet<Integer>();
+            Set<Integer> set = new HashSet<Integer>();
             mask = mask | (1 << i);
             for (int num : nums) {
                 set.add(num & mask); // reserve Left bits and ignore Right bits

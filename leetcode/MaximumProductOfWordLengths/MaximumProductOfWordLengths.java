@@ -49,10 +49,8 @@ public class MaximumProductOfWordLengths {
 		}
 
         int maxProduct = 0;
-        String x = "";
-        String y = "";
         for ( int i = 0; i < n; i++ ) {
-        	for ( int j = i+1; j < n; j++ ) {
+        	for ( int j = i + 1; j < n; j++ ) {
         		boolean flag = true;
         		for ( int k = 0; k < 26; k++ ) {
         			if ( elements[i][k] != 0 && elements[j][k] != 0 ) {
@@ -61,14 +59,11 @@ public class MaximumProductOfWordLengths {
         			}
         		}
         		if ( flag && words[i].length() * words[j].length() > maxProduct ) {
-        			x = words[i];
-        			y = words[j];
         			maxProduct = words[i].length() * words[j].length();
         		}
 	        }
         }
-        System.out.println( x );
-        System.out.println( y );
+
         return maxProduct;
     }
 

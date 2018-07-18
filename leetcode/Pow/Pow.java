@@ -2,7 +2,6 @@
 Implement pow(x, n)
 
 idea:
-
 one thing to note:
 avoid recursion too deep when (n < 0)
 not recursively call function, just {
@@ -14,7 +13,7 @@ not recursively call function, just {
 		return 1.0 / pow(x, -n); 
 		
 1. direct thought is recursion
-2. ***** binary (odd, even), pay attention to (n < 0) *****
+2. note, binary (odd, even), pay attention to (n < 0)
 3. bitwise operation, pay attention to (n < 0)
    n >>= 1 <==> n /= 2
 */

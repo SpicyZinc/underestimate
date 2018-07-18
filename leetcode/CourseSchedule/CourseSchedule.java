@@ -53,39 +53,45 @@ public class CourseSchedule {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         int n = numCourses;
         int[] visited = new int[n];
-
+        
         // construct the graph
-        int[][] graph = new int[n][n];
+        boolean[][] graph = new boolean[n][n];
         for (int[] prerequisite : prerequisites) {
             int taken = prerequisite[0];
             int prere = prerequisite[1];
-            graph[taken][prere] = 1;
+            
+            graph[taken][prere] = true;
         }
-    
+        
         for (int i = 0; i < n; i++) {
             if (!canFinishDFS(graph, visited, i)) {
                 return false;
             }
         }
-
+        
         return true;
     }
-
-    public boolean canFinishDFS(int[][] graph, int[] visited, int i) {
-        if (visited[i] == -1) return true;
-        if (visited[i] == 1) return false;
-
-        visited[i] = 1;
-        for (int j = 0; j < graph[i].length; j++) {
+    
+    public boolean canFinishDFS(boolean[][] graph, int[] visited, int course) {
+        if (visited[course] == 1) {
+            return false;
+        }
+        
+        if (visited[course] == -1) {
+            return true;
+        }
+        
+        visited[course] = 1;
+        for (int i = 0; i < graph[course].length; i++) {
             // if there is a dependency
-            if (graph[i][j] == 1) {
-                if (!canFinishDFS(graph, visited, j)) {
+            if (graph[course][i]) {
+                if (!canFinishDFS(graph, visited, i)) {
                     return false;
-                }    
+                }
             }
         }
-        visited[i] = -1;
-    
+        visited[course] = -1;
+        
         return true;
     }
     // correct method, but TLE, 40 / 42 test cases passed

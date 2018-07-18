@@ -67,6 +67,7 @@ public class GameOfLife {
                     int y = j + dir[1];
                     if (x >= 0 && x < m && y >= 0 && y < n) {
                         // board[x][y] == 2 means from live to dead, so count it as live
+                        // 因为 == 2 是 后面 assign的 实际上还是 live的 要考虑进去
                         if (board[x][y] == 1 || board[x][y] == 2) {
                             liveNeighbors++;
                         }

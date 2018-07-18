@@ -79,6 +79,6 @@ public class Sqrt {
             guess = (guess + x / guess) / 2;
         }
         
-        return  (int) guess;
+        return (int) guess;
     }
 }

@@ -15,6 +15,6 @@ public class PowerOfTwo {
 			return false;
 		}
 
-		return ( n&(n-1) ) == 0;
+		return (n & (n - 1)) == 0;
     }
 }

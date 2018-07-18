@@ -40,9 +40,7 @@ public class InsertInterval {
 	public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
         List<Interval> result = new ArrayList<Interval>();
 
-        for (int i = 0; i < intervals.size(); i++) {
-            Interval interval = intervals.get(i);
-            
+        for (Interval interval : intervals) {
             if (newInterval.start > interval.end) {
                 result.add(interval);
             } else if (interval.start > newInterval.end) {

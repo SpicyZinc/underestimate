@@ -1,5 +1,6 @@
 /*
-Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+Given n non-negative integers representing an elevation map where the width of each bar is 1,
+compute how much water it is able to trap after raining.
 For example, 
 Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6.
 
@@ -12,7 +13,7 @@ and rightMostHeight[i] to the right of i (exclusively)
 if min(left, right) > height[i], so trapped water amount on i == min(right, left) - height[i]
 note:
 finally, container[i] == minHeightValue( right, left )
-loop three times
+loop 3 times
 
 there is 3rd solution to scan from both ends, like Minimum Window Substring
 http://blog.csdn.net/linhuanmars/article/details/20888505
@@ -46,30 +47,5 @@ public class TrappingRainWater {
         }
 
         return maxTrapped;
-    }
-
-    public int trap(int[] height) {
-        if (height == null || height.length < 3) {
-            return 0;
-        }
-        int res = 0;
-        int max = 0;
-        int[] minHeightValues = new int[height.length];
-        for (int i = 0; i < height.length; i++) {
-            minHeightValues[i] = max;
-            max = Math.max(max, height[i]);
-        }
-        max = 0;
-        for (int i = height.length - 1; i >= 0; i--) {
-            minHeightValues[i] = Math.min(max, minHeightValues[i]);
-            max = Math.max(max, height[i]);
-        }
-        for (int i = 0; i < height.length; i++) {
-            if ( minHeightValues[i] > height[i] ) {
-                res += ( minHeightValues[i] - height[i] );
-            }
-        }
-        
-        return res;
     }
 }

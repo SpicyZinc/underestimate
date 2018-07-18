@@ -80,10 +80,6 @@ public class ValidNumber {
         
         for (int i = 0; i < n; i++) {
             char c = s.charAt(i);
-            // e cannot be the first character
-            if (i == 0 && c == 'e') {
-                return false;
-            }
             // e can neither be replicated nor placed before number
             if (c == 'e') {
                 if (hasE || !hasNum) {
@@ -105,6 +101,7 @@ public class ValidNumber {
                 hasNum = true;
             }
             // the sign can only be placed at the beginning or after 'e'
+            // sign cannot be in the middle; if it can, must follow 'e'
             if (i > 0 && s.charAt(i - 1) != 'e' && (c == '+' || c == '-')) {
                 return false;
             }
