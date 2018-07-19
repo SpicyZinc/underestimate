@@ -1,6 +1,5 @@
 /*
 Determine the number of bits required to flip if you want to convert integer n to integer m.
-
 Example
 Given n = 31 (11111), m = 14 (01110), return 2.
 
@@ -16,6 +15,7 @@ while ( n != 0) { // n == 1
 	n = n & (n - 1);
 }
 */
+
 class FlipBits {
 	public int bitSwapRequired(int n, int m) {
 		int cnt = 0;

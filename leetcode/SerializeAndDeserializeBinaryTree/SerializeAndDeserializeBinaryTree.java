@@ -19,6 +19,9 @@ Note: Do not use class member/global/static variables to store states. Your seri
 idea:
 http://yuanhsh.iteye.com/blog/2171113
 NOTE: splitter MUST be appended after TreeNode value or # 
+
+不用什么 StringTokenizer next()
+用 StringBuilder, linkedlist remove()
 */
 
 import java.util.*;
@@ -68,9 +71,48 @@ public class SerializeAndDeserializeBinaryTree {
 	}
 
     public static final String splitter = ",";
-    public static final String NULL = "#";
-    // method 1
+    public static final String emptySign = "#";
+
+    // 07/19/018
     // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        buildString(root, sb);
+        return sb.toString();
+    }
+    
+    public void buildString(TreeNode node, StringBuilder sb) {
+        if (node == null) {
+            sb.append(emptySign).append(splitter);
+        } else {
+            sb.append(node.val).append(splitter);
+            buildString(node.left, sb);
+            buildString(node.right, sb);
+        }
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        List<String> nodes = new LinkedList<String>();
+
+        nodes.addAll(Arrays.asList(data.split(splitter)));
+
+        return buildTree(nodes);
+    }
+    
+    public TreeNode buildTree(List<String> nodes) {
+        String val = nodes.remove(0);
+        if (val.equals(emptySign)) {
+            return null;
+        } else {
+            TreeNode root = new TreeNode(Integer.parseInt(val));
+            root.left = buildTree(nodes);
+            root.right = buildTree(nodes);
+            return root;
+        }
+    }
+    
+    // method 2
     public String serialize(TreeNode root) {  
         StringBuilder sb = new StringBuilder();  
         serialize(root, sb);  
@@ -79,7 +121,7 @@ public class SerializeAndDeserializeBinaryTree {
        
     private void serialize(TreeNode x, StringBuilder sb) {
         if (x == null) {  
-            sb.append(NULL).append(splitter);
+            sb.append(emptySign).append(splitter);
         } else {
             sb.append(x.val).append(splitter);
             serialize(x.left, sb);  
@@ -99,49 +141,12 @@ public class SerializeAndDeserializeBinaryTree {
             return null;  
         }
         String val = st.nextToken();  
-        if (val.equals(NULL)) {
+        if (val.equals(emptySign)) {
             return null;  
         }
         TreeNode root = new TreeNode(Integer.parseInt(val));  
         root.left = deserialize(st);  
         root.right = deserialize(st);  
         return root;  
-    }
-	// method 2
-    // Encodes a tree to a single string.
-    public String serialize(TreeNode root) {
-        StringBuilder sb = new StringBuilder();
-        buildString(root, sb);
-        return sb.toString();
-    }
-    
-    public void buildString(TreeNode node, StringBuilder sb) {
-        if (node == null) {
-            sb.append(NULL).append(splitter);
-        }
-        else {
-            sb.append(node.val).append(splitter);
-            buildString(node.left, sb);
-            buildString(node.right, sb);
-        }
-    }
-
-    // Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
-        List<String> nodes = new LinkedList<String>();
-        nodes.addAll(Arrays.asList(data.split(splitter)));
-        return buildTree(nodes);
-    }
-    
-    public TreeNode buildTree(List<String> nodes) {
-        String val = nodes.remove(0);
-        if (val.equals(NULL)) {
-            return null;
-        } else {
-            TreeNode root = new TreeNode(Integer.parseInt(val));
-            root.left = buildTree(nodes);
-            root.right = buildTree(nodes);
-            return root;
-        }
     }
 }

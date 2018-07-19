@@ -34,6 +34,8 @@ faker --> 2 --> 1 --> 3 --> 4 --> 5
 (1) swap the first single pair of nodes
 (2) then the rest keep calling swapSinglePair(StartingNodeInnextPair)
     assign it to node.next.next
+
+https://www.cnblogs.com/grandyang/p/5648424.html
 */
 
 class ListNode {
@@ -46,6 +48,37 @@ class ListNode {
 }
 
 public class SwapNodesInPairs {
+    public static void main(String[] args) {
+        SwapNodesInPairs eg = new SwapNodesInPairs();
+
+        ListNode node = new ListNode(1);
+        node.next = new ListNode(2);
+        node.next.next = new ListNode(3);
+        node.next.next.next = new ListNode(4);
+        node.next.next.next.next = new ListNode(5);
+        node.next.next.next.next.next = new ListNode(6);
+
+        eg.swapPairs(node);
+        
+    }
+
+    // 07/18/2018
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        
+        ListNode curr = head;
+        ListNode next = head.next;
+        ListNode rest = head.next.next;
+        
+        next.next = curr;
+        head = next;
+        curr.next = swapPairs(rest);
+        
+        return head;
+    }
+
     // recursive version
     public ListNode swapPairs(ListNode head) {  
         if (head == null || head.next == null) {
@@ -53,7 +86,7 @@ public class SwapNodesInPairs {
         }  
           
         return swapSinglePair(head);  
-    } 
+    }
     private ListNode swapSinglePair(ListNode node) {
         if (node == null || node.next == null) {
             return node;
@@ -75,17 +108,19 @@ public class SwapNodesInPairs {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
         
-        ListNode n1 = dummy;
-        ListNode n2 = head;
+        ListNode prev = dummy;
+        ListNode curr = head;
         
-        while (n2 != null && n2.next != null) {
-            ListNode n3 = n2.next.next;
-            n2.next.next = n1.next;
-            n1.next = n2.next;
-            n2.next = n3;
+        while (curr != null && curr.next != null) {
+            ListNode rest = curr.next.next;
+
+            curr.next.next = prev.next;
+            prev.next = curr.next;
+            curr.next = rest;
             
-            n1 = n2;
-            n2 = n2.next;
+            prev = curr;
+            curr = prev.next;
+
         }
         
         return dummy.next;

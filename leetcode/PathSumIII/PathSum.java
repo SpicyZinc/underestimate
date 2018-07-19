@@ -2,7 +2,8 @@
 You are given a binary tree in which each node contains an integer value.
 Find the number of paths that sum to a given value.
 
-The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).
+The path does not need to start or end at the root or a leaf,
+but it must go downwards (traveling only from parent nodes to child nodes).
 The tree has no more than 1,000 nodes and the values are in the range -1,000,000 to 1,000,000.
 
 Example:
@@ -39,7 +40,6 @@ public class PathSum {
     public int pathSum(TreeNode root, int sum) {
         if (root == null) return 0;
         return dfs(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
-
     }
 
     public int dfs(TreeNode node, int remaining) {
@@ -56,15 +56,17 @@ public class PathSum {
     public int pathSum(TreeNode root, int sum) {
         Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
         hm.put(0, 1);
-        return backtrack(root, 0, sum, hm);
+        return dfs(root, 0, sum, hm);
     }
 
-    public int backtrack(TreeNode node, int preSum, int target, Map<Integer, Integer> hm) {
+    public int dfs(TreeNode node, int preSum, int target, Map<Integer, Integer> hm) {
         if (node == null) return 0;
+
         preSum += node.val;
+        
         int cntPathToCurr = hm.getOrDefault(preSum - target, 0);
         hm.put(preSum, hm.getOrDefault(preSum, 0) + 1);
-        int res = cntPathToCurr + backtrack(node.left, preSum, target, hm) + backtrack(node.right, preSum, target, hm);
+        int res = cntPathToCurr + dfs(node.left, preSum, target, hm) + dfs(node.right, preSum, target, hm);
         hm.put(preSum, hm.get(preSum) - 1);
 
         return res;

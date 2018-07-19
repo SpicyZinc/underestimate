@@ -10,6 +10,8 @@ Output: [2,3]
 idea:
 similar to FindAllNumbersDisappearedInAnArray
 there has detailed explanation
+
+different from Find the Duplicate Number
 */
 
 import java.util.*;

@@ -53,7 +53,7 @@ public class BestTimetToBuySellStock {
         }
 
         int maxProfit = 0;
-        // get the maximum of forward[i]+backward[i]
+        // get the maximum of forward[i] + backward[i]
         for (int i = 0; i < n; i++) {
             maxProfit = Math.max(maxProfit, preMaxProfit[i] + postMaxProfit[i]);
         }

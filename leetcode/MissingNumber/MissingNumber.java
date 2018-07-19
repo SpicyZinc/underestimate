@@ -26,7 +26,7 @@ public class MissingNumber {
 	        sum = sum + nums[i];
 	    }
 	    // Sum of n distinct numbers = n * (n + 1) / 2;
-	    int sumShouldBe = ((nums.length) * (nums.length + 1)) / 2;
+	    int sumShouldBe = (nums.length * (nums.length + 1)) / 2;
 
 	    return (sumShouldBe - sum);
 	}

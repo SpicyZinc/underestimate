@@ -27,12 +27,12 @@ public class PalindromePermutation {
         	if (cnts[i] % 2 == 1) {
 	        	if (!hasOneOddChar) {
 	        		hasOneOddChar = true;
-	        	}
-	        	else {
+	        	} else {
 	        		return false;
 	        	}
         	}
         }
+
         return true;
     }
 }

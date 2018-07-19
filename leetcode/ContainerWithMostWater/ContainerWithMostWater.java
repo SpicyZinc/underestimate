@@ -21,9 +21,11 @@ Our final goal is to find i, j, such that
 A(i,j) = (j−i) * min(height(i), height(j)) is maximized. 
 At every step, if height[i] < height[j], move i up by one. 
 Otherwise move j down by one, until the two pointers meet.
-谁高度小 谁往中间移动 以期望用更可能高的高度抵消宽度变小的损失
 
+谁高度小 谁往中间移动 以期望用更可能高的高度抵消宽度变小的损失
 两边搜索, 短板往里走. 因为往里走, 代表宽度减小, 那么宽度小的时候, 只有遇上更高的高度才能组成更加大的container.
+
+isn't this trapping water problem?
 */
 
 import java.util.*;

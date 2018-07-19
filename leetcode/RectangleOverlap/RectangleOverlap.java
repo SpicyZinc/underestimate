@@ -27,18 +27,19 @@ exclude the possibilities
 
 class RectangleOverlap {
     public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
-        // bottom-left
-        // top-right
-        int x1Left = rec1[0];
-        int y1Bottom = rec1[1];
-        int x1Right = rec1[2];
-        int y1Top = rec1[3];
-        
-        int x2Left = rec2[0];
-        int y2Bottom = rec2[1];
-        int x2Right = rec2[2];
-        int y2Top = rec2[3];
-        
-        return !(x1Right <= x2Left || x2Right <= x1Left || y1Top <= y2Bottom || y2Top <= y1Bottom);
+        int OneBotLeftX = rec1[0];
+        int OneBotLeftY = rec1[1];
+        int OneTopRightX = rec1[2];
+        int OneTopRightY = rec1[3];
+
+        int TwoBotLeftX = rec2[0];
+        int TwoBotLeftY = rec2[1];
+        int TwoTopRightX = rec2[2];
+        int TwoTopRightY = rec2[3];
+
+        return !(OneBotLeftX >= TwoTopRightX ||
+            OneTopRightX <= TwoBotLeftX ||
+            OneBotLeftY >= TwoTopRightY ||
+            OneTopRightY <= TwoBotLeftY);
     }
 }

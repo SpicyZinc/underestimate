@@ -89,10 +89,9 @@ public class StringIterator {
 
 	public char next() {
 		if (repetitions > 0) {
-		    repetitions--;
+			repetitions--;
 			return ch;
-		}
-		else if (i < compressedString.length()) {
+		} else if (i < compressedString.length()) {
 			ch = compressedString.charAt(i);
 			int j = i + 1;
 			while (j < compressedString.length() && Character.isDigit(compressedString.charAt(j))) {
@@ -101,8 +100,7 @@ public class StringIterator {
 			repetitions = Long.parseLong(compressedString.substring(i + 1, j)) - 1;
 			i = j;
 			return ch;
-		}
-		else {
+		} else {
 			return ' ';
 		}
 	}

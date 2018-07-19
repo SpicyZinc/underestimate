@@ -104,7 +104,7 @@ public class LexicographicalNumbers {
         // after all, n 个数是不变的
         for (int i = 0; i < n; i++) {
             result.add(current);
-
+            // start increase current in lexicographical order
             if (current * 10 <= n) {
                 current *= 10;
             } else if (current % 10 != 9 && current + 1 <= n) {
@@ -117,7 +117,6 @@ public class LexicographicalNumbers {
                     current /= 10;
                 }
                 current = current / 10 + 1;
-                
             }
         }
 

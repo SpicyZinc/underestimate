@@ -1,12 +1,9 @@
 /*
-Best Time to Buy and Sell Stock
 Say you have an array for which the ith element is the price of a given stock on day i.
-
 If you were only permitted to complete at most one transaction
 (ie, buy one and sell one share of the stock), design an algorithm to find the maximum profit.
 
 idea:
-
 At first glance, you might think that finding the minimum and maximum value would do, 
 but it does have a hidden restriction, that is: You must buy before you can sell.
 
@@ -35,6 +32,22 @@ public class BestTimeToBuyAndSellStock {
 		System.out.print("\n");
 		System.out.println("The maximum profit is: " + maxProfit(prices));		
 	}
+
+    public int maxProfit(int[] prices) {
+        int maxProfit = 0;
+        if (prices.length == 0 || prices == null) {
+            return maxProfit;
+        }
+        int currMin = prices[0];
+        for (int price : prices) {
+            currMin = Math.min(currMin, price);
+            maxProfit = Math.max(maxProfit, price - currMin);
+        }
+
+        return maxProfit;
+    }
+
+    // this version also find where to sell and buy to get max
 	public int maxProfit(int[] prices) {
         int min = 0;
         int maxVal = 0;
@@ -45,27 +58,14 @@ public class BestTimeToBuyAndSellStock {
 				min = i;
 			}
 			int val = prices[i] - prices[min];
-			if (val > maxVal) {
+			if (maxVal < val) {
 				buy = min;
 				sell = i;
+
 				maxVal = val;
 			}
 		}
 		
         return maxVal;
-    }
-    // self written recent
-    public int maxProfit(int[] prices) {
-        int maxProfit = 0;
-        if (prices.length == 0 || prices == null) {
-            return maxProfit;
-        }
-        int min_so_far = prices[0];
-        for (int price : prices) {
-            min_so_far = Math.min(min_so_far, price);
-            maxProfit = Math.max(maxProfit, price - min_so_far);
-        }
-
-        return maxProfit;
     }
 }

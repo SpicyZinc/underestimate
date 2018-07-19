@@ -19,6 +19,48 @@ deQueue(q)
 */
 
 class QueueWithStacks {
+    // 07/18/2018
+    // make push costly
+    Stack<Integer> One;
+    Stack<Integer> Two;
+
+    /** Initialize your data structure here. */
+    public MyQueue() {
+        One = new Stack<Integer>();
+        Two = new Stack<Integer>();
+    }
+    
+    /** Push element x to the back of queue. */
+    public void push(int x) {
+        while (!One.isEmpty()) {
+            Two.push(One.pop());
+        }
+
+        One.push(x);
+        
+        while (!Two.isEmpty()) {
+            One.push(Two.pop());
+        }
+    }
+    
+    /** Removes the element from in front of queue and returns that element. */
+    public int pop() {
+        return One.pop();
+    }
+    
+    /** Get the front element. */
+    public int peek() {
+        return One.peek();     
+    }
+    
+    /** Returns whether the queue is empty. */
+    public boolean empty() {
+        return One.isEmpty() && Two.isEmpty();
+    }
+
+
+
+
     private Stack<Integer> stack1 = new Stack<Integer>(); // back of queue
     private Stack<Integer> stack2 = new Stack<Integer>(); // front of queue
 

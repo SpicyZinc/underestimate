@@ -39,12 +39,16 @@ dfs, speechless about I cannot think of it
 two cases about a node out of range [L, R]
 < L, return recursion on node.right
 > R, return recursion on node.left
+
+还是根据BST特性
+root < 更小的L 那就 recurse on right
+root > 更大的R 那就 recurse on left
 */
 class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
+	int val;
+	TreeNode left;
+	TreeNode right;
+	TreeNode(int x) { val = x; }
 }
 
 class TrimABinarySearchTree {
@@ -53,11 +57,17 @@ class TrimABinarySearchTree {
 
 		TreeNode left = trimBST(root.left, L, R);
 		TreeNode right = trimBST(root.right, L, R);
-		if (root.val < L) return right;
-		if (root.val > R) return left;
+
+		if (root.val < L) {
+			return right;
+		}
+		if (root.val > R) {
+			return left;
+		}
 
 		root.left = left;
 		root.right = right;
+
 		return root;
 	}
 }

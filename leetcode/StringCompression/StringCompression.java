@@ -44,28 +44,35 @@ j moves to count how many chars
 if only one char j - i == 1, no need to save number
 else convert cnt (j - i) to string and then append to char
 last i = j, next char
+
+note, if not in for loop i = j, need to add i = j in continue
 */
 class StringCompression {
 	public int compress(char[] chars) {
-		int n = chars.length;
-		
-		int idx = 0;
-		for (int i = 0, j = 0; i < n; i = j) {
-			while (j < n && chars[j] == chars[i]) {
-				j++;
-			}
-			chars[idx++] = chars[i];
-			// only one char, no need to use number to 表示几个
-			if (j - i == 1) {
-				continue;
-			}
-			// convert cnt to string format
-			String cnt = "" + (j - i);
-			for (int k = 0; k < cnt.length(); k++) {
-				chars[idx++] = cnt.charAt(k);
-			}
-		}
-
-		return idx;
-	}
+        int size = chars.length;
+        System.out.println(size);
+        int idx = 0;
+        for (int i = 0; i < size;) {
+            chars[idx++] = chars[i];
+            
+            int j = i;
+            while (j < size && chars[i] == chars[j]) {
+                j++;
+            }
+            // only one, no repeating chars
+            if (j - i == 1) {
+                i = j;
+                continue;
+            }
+            // convert cnt to string format
+            String cnt = "" + (j - i);
+            for (int k = 0; k < cnt.length(); k++) {
+                chars[idx++] = cnt.charAt(k);
+            }
+            // update i
+            i = j;
+        }
+        
+        return idx;
+    }
 }

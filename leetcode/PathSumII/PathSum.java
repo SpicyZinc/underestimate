@@ -30,7 +30,7 @@ class TreeNode {
 	}
 }
 
-public class PathSumII {
+public class PathSum {
 	public static void main(String[] args) {
 		TreeNode aTreeRoot = new TreeNode(5);
 		aTreeRoot.left = new TreeNode(4);
@@ -47,14 +47,10 @@ public class PathSumII {
 		System.out.println("Please input a sum to find all root-to-leaf paths");
 		int sum = scanner.nextInt();
 		
-		PathSumII eg = new PathSumII();
-		ArrayList<ArrayList<Integer>> all = eg.pathSum(aTreeRoot, sum);
-		for (int i=0; i<all.size(); i++) {
-			System.out.print("[ ");
-			for (Integer a : all.get(i)) {
-				System.out.print(a + " ");
-			}
-			System.out.print("]\n");
+		PathSum eg = new PathSum();
+		List<List<Integer>> all = eg.pathSum(aTreeRoot, sum);
+		for (List<Integer> path : all) {
+            System.out.println(path);
 		}
 	}
     // recursion dfs
@@ -66,22 +62,24 @@ public class PathSumII {
     }
     
     public void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> result) {
-        if (node == null) return;
+        if (node == null) {
+            return;
+        }
 
-        path.add(node.val);
+        path.add(node.value);
         
-        if (node.left == null && node.right == null && remaining == node.val) {
+        if (node.left == null && node.right == null && remaining == node.value) {
             result.add(new ArrayList<Integer>(path));
         }
-        dfs(node.left, remaining - node.val, path, result);
-        dfs(node.right, remaining - node.val, path, result);
+        dfs(node.left, remaining - node.value, path, result);
+        dfs(node.right, remaining - node.value, path, result);
 
         path.remove(path.size() - 1);
     }
 
 	// iterative
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;
         
         Stack<TreeNode> nodes = new Stack<TreeNode>();
@@ -107,7 +105,7 @@ public class PathSumII {
 				// both needs to empty the path for other round adding
                 path.remove(path.size()-1); 
 				// if not remove beforehand for once, the num of nodes in the list of "path" not matching
-				// why path.peekLast().right != nodes.peek()??????				
+				// why path.peekLast().right != nodes.peek() ?
 				// I guess this corresponds to add right before adding left
 				// completely empty because it is root-to-leaf
                 while (!nodes.isEmpty() && !path.isEmpty() && path.peekLast().left != nodes.peek()) {
@@ -129,8 +127,8 @@ public class PathSumII {
         return res;
     }
     
-    public ArrayList<Integer> getPath(LinkedList<TreeNode> s) {
-        ArrayList<Integer> onePath = new ArrayList<Integer>();
+    public List<Integer> getPath(LinkedList<TreeNode> s) {
+        List<Integer> onePath = new ArrayList<Integer>();
         for (TreeNode node : s) {
             onePath.add(node.value);
         }
