@@ -36,9 +36,10 @@ Operation #4: addLand(2, 1) turns the water at grid[2][1] into a land.
 We return the result as an array: [1, 1, 2, 3]
 
 idea:
-good article about union-find, https://blog.csdn.net/dm_vincent/article/details/7655764
-note:
-ids[ids[ids[ids[root]]]] ... till ids[root] = root
+good article about union-find
+https://blog.csdn.net/dm_vincent/article/details/7655764
+
+note, ids[ids[ids[ids[root]]]] ... till ids[root] = root
 底层仍然是[] 但是是 tree 结构
 */
 
@@ -93,10 +94,6 @@ class NumberOfIslands {
 				}
 			}
 			result.add(islandCnt);
-			// for (int root : roots) {
-			// 	System.out.printf("%2s,", root);
-			// }
-			// System.out.println();
 		}
 
 		return result;
@@ -111,4 +108,59 @@ class NumberOfIslands {
 
 		return i;
 	}
+
+	// 07/24/2018
+	public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        List<Integer> result = new ArrayList<>();
+        
+        int[][] directions = new int[][] {
+            {0, 1},
+            {0, -1},
+            {-1, 0},
+            {1, 0}
+        };
+        
+        int[] roots = new int[m * n];
+        Arrays.fill(roots, -1);
+        int islandCnt = 0;
+        
+        
+        for (int[] position : positions) {
+            int x = position[0];
+            int y = position[1];
+            
+            int index = x * n + y;
+            roots[index] = index;
+            
+            islandCnt++;
+            for (int[] dir : directions) {
+                int nextX = x + dir[0];
+                int nextY = y + dir[1];
+                
+                int nextIndex = nextX * n + nextY;
+                
+                if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && roots[nextIndex] != -1) {
+                    int rootIdx = getRoot(roots, nextIndex);
+                    if (index != rootIdx) {
+                        // note, roots[index], not roots[nextIndex]
+                        roots[index] = rootIdx;
+                        index = rootIdx;
+
+                        islandCnt--;
+                    }
+                }
+            }
+            result.add(islandCnt);
+        }
+        
+        return result;
+    }
+    
+    private int getRoot(int[] roots, int i) {
+        while (roots[i] != i) {
+            i = roots[i];
+        }
+        
+        return i;
+    }
 }

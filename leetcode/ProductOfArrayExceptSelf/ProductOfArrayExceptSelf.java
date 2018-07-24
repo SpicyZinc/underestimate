@@ -17,19 +17,25 @@ then scan the array again, do the same thing, two result multiply together, then
 public class ProductOfArrayExceptSelf {
     // optimal solution with constant space
     public int[] productExceptSelf(int[] nums) {
-        int[] product = new int[nums.length];
+        int size = nums.length;
+        int[] product = new int[size];
+
         product[0] = 1;
-        for ( int i = 1; i < nums.length; i++ ) {
+        for (int i = 1; i < size; i++) {
             product[i] = product[i - 1] * nums[i - 1];
         }
+
         int right = 1;
-        for ( int j = nums.length - 1; j >= 0; j-- ) {
+        for (int j = size - 1; j >= 0; j--) {
             product[j] *= right;
             right *= nums[j]; 
         }
+
         return product;
     }
+
     // self written version wasting space
+    // but easy to understand
     public int[] productExceptSelf(int[] nums) {
         int n = nums.length;
         int[] leftProduct = new int[n];

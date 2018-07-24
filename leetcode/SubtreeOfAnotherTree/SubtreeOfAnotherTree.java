@@ -37,6 +37,8 @@ isEqual() is important
 recursion until null, if value not equal, return false
 so if can recurse to null, meaning value equal, only compare t1 == t2
 
+直接的想法就是 看 left 或是 right 是 t的子树么? by recursion call
+
 */
 
 class TreeNode {
@@ -62,6 +64,7 @@ public class SubtreeOfAnotherTree {
         if (s.val != t.val) {
 			return false;
         }
+
         return isEqual(s.left, t.left) && isEqual(s.right, t.right);
     }
 }

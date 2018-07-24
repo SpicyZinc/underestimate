@@ -74,11 +74,11 @@ public class WordLadder {
         int distance = 1;
         while (!wordsReached.contains(endWord)) {
             Set<String> wordsToReach = new HashSet<String>();
-            for (String reachedWord : wordsReached) {
-                for (int i = 0; i < reachedWord.length(); i++) {
+            for (String wordReached : wordsReached) {
+                for (int i = 0; i < wordReached.length(); i++) {
                     // where to toCharArray is crucial
                     // 每个位置有26个可能性
-                    char[] chars = reachedWord.toCharArray();
+                    char[] chars = wordReached.toCharArray();
                     for (char c = 'a'; c <= 'z'; c++) {
                         chars[i] = c;
                         String next = new String(chars);
@@ -93,6 +93,7 @@ public class WordLadder {
             if (wordsToReach.size() == 0) {
                 return 0;
             }
+
             distance++;
             wordsReached = wordsToReach;
         }

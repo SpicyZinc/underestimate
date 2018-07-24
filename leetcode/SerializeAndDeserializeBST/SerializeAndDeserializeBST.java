@@ -31,10 +31,9 @@ public class SerializeAndDeserializeBST {
 
     public void serialize(TreeNode root, StringBuilder sb) {
         if (root == null) {
-        	sb.append("& ");
-        }
-        else {
-        	sb.append(root.val + " ");
+        	sb.append("&").append(",");
+        } else {
+        	sb.append(root.val + ",");
         	serialize(root.left, sb);
         	serialize(root.right, sb);
         }

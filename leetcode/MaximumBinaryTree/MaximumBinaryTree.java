@@ -38,12 +38,14 @@ class MaximumBinaryTree {
     }
 
     public TreeNode buildTree(int[] nums, int start, int end) {
-        if (start > end) return null;
+        if (start > end) {
+            return null;
+        }
 
         int max = nums[start];
         int maxPos = start;
-        int i = start;
-        for (i = start; i <= end; i++) {
+
+        for (int i = start; i <= end; i++) {
             if (max < nums[i]) {
                 max = nums[i];
                 maxPos = i;

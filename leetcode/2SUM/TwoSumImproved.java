@@ -39,12 +39,11 @@ public class TwoSumImproved {
 	// passed test
     public int[] twoSum(int[] numbers, int target) {
         int[] ret = new int[2];
-		HashMap<Integer, Integer> eleToIndex = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> eleToIndex = new HashMap<Integer, Integer>();
         for (int i=0; i<numbers.length; i++) {
 			if ( !eleToIndex.containsKey(numbers[i]) ) {
 				eleToIndex.put(numbers[i], i+1);
-			}
-			else {
+			} else {
 			    if ( numbers[i] * 2 == target ) { 
     				ret[0] = eleToIndex.get(numbers[i]);
     				ret[1] = i + 1;
@@ -77,7 +76,7 @@ public class TwoSumImproved {
 
     // passed test
     public int[] twoSum(int[] numbers, int target) {
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 	    int[] result = new int[2];
  
     	for (int i = 0; i < numbers.length; i++) {
@@ -93,22 +92,5 @@ public class TwoSumImproved {
     	}
      
     	return result;
-    }
-
-    // self written version passed test
-    public int[] twoSum(int[] numbers, int target) {  
-        int[] res = new int[2];  
-        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
-        
-        for (int i=0; i<numbers.length; i++) {
-            if (hm.containsKey(target-numbers[i]) ) {
-                res[0] = hm.get(target-numbers[i]) + 1;
-                res[1] = i + 1;
-                break;
-            }
-            hm.put(numbers[i], i);
-        }
-        
-        return res;
     }
 }

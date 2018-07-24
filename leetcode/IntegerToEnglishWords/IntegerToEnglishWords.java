@@ -23,11 +23,14 @@ create a helper to get English words for number less than a thousand
 import java.util.*;
 
 public class IntegerToEnglishWords {
+
     public static final int BILLION = 1000000000;
     public static final int MILLION = 1000000;
     public static final int THOUSAND = 1000;
-    public static HashMap<Integer, String> GetHM() {
-        HashMap<Integer, String> hm = new HashMap<Integer, String>();
+    
+    public String numberToWords(int num) {
+        Map<Integer, String> hm = new HashMap<Integer, String>();
+
         hm.put(0, "Zero");
         hm.put(1, "One");
         hm.put(2, "Two");
@@ -39,78 +42,94 @@ public class IntegerToEnglishWords {
         hm.put(8, "Eight");
         hm.put(9, "Nine");
         hm.put(10, "Ten");
-        hm.put(11, "Eleven" );  
-        hm.put(12, "Twelve" );  
-        hm.put(13, "Thirteen" );  
-        hm.put(14, "Fourteen" );  
-        hm.put(15, "Fifteen" );  
-        hm.put(16, "Sixteen" );  
-        hm.put(17, "Seventeen" ); 
-        hm.put(18, "Eighteen" ); 
-        hm.put(19, "Nineteen" ); 
-        hm.put(20, "Twenty" ); 
-        hm.put(30, "Thirty" ); 
-        hm.put(40, "Forty" ); 
-        hm.put(50, "Fifty" ); 
-        hm.put(60, "Sixty" ); 
-        hm.put(70, "Seventy" ); 
-        hm.put(80, "Eighty" ); 
-        hm.put(90, "Ninety" );
-        return hm;
-    }
-    public static final HashMap<Integer, String> hm = GetHM();    
-
-    public String numberToWords(int num) {
+        hm.put(11, "Eleven");  
+        hm.put(12, "Twelve");  
+        hm.put(13, "Thirteen");  
+        hm.put(14, "Fourteen");  
+        hm.put(15, "Fifteen");  
+        hm.put(16, "Sixteen");  
+        hm.put(17, "Seventeen"); 
+        hm.put(18, "Eighteen"); 
+        hm.put(19, "Nineteen"); 
+        hm.put(20, "Twenty"); 
+        hm.put(30, "Thirty"); 
+        hm.put(40, "Forty"); 
+        hm.put(50, "Fifty"); 
+        hm.put(60, "Sixty"); 
+        hm.put(70, "Seventy"); 
+        hm.put(80, "Eighty"); 
+        hm.put(90, "Ninety");
+        
+        // edge case
         if (num == 0) {
-            return hm.get(num);
+            return hm.get(0);
         }
+        
         StringBuilder sb = new StringBuilder();
+        String word = "";
         if (num >= BILLION) {
-            sb.append(numberToWordsLessThanThousand(num / BILLION) + " Billion");
+            word = lessThan1000Number(num / BILLION, hm) + " Billion";
+            sb.append(word);
             num %= BILLION;
         }
+        
         if (num >= MILLION) {
-            if (sb.length() != 0) {
+            if (sb.length() > 0) {
                 sb.append(" ");
             }
-            sb.append(numberToWordsLessThanThousand(num / MILLION) + " Million");
+            word = lessThan1000Number(num / MILLION, hm) + " Million";
+            sb.append(word);
             num %= MILLION;
         }
+        
         if (num >= THOUSAND) {
-            if (sb.length() != 0) {
+            if (sb.length() > 0) {
                 sb.append(" ");
             }
-            sb.append(numberToWordsLessThanThousand(num / THOUSAND) + " Thousand");
+            word = lessThan1000Number(num / THOUSAND, hm) + " Thousand";
+            sb.append(word);
             num %= THOUSAND;
         }
+        
         if (num > 0) {
-            if (sb.length() != 0) {
+            if (sb.length() > 0) {
                 sb.append(" ");
             }
-            sb.append(numberToWordsLessThanThousand(num));
+            
+            word = lessThan1000Number(num, hm);
+            sb.append(word);
         }
+        
         return sb.toString();
     }
-    // helper method to deal with thousands (3 digits)
-    public String numberToWordsLessThanThousand(int num) {
+    // helper to convert number < 1000 to English words
+    public String lessThan1000Number(int num, Map<Integer, String> hm) {
+        // take 156 as an example
         StringBuilder sb = new StringBuilder();
+        String word = "";
         if (num >= 100) {
-            sb.append(hm.get(num / 100) + " Hundred");
+            word = hm.get(num / 100) + " Hundred";
+            sb.append(word);
             num %= 100;
         }
-        if (num >= 20) {
-            if (sb.length() != 0) {
+
+        if (num > 20) {
+            if (sb.length() > 0) {
                 sb.append(" ");
             }
-            sb.append( hm.get(num / 10 * 10) );
+            word = hm.get(num / 10 * 10);
+            sb.append(word);
             num %= 10;
         }
+        
         if (num > 0) {
-            if (sb.length() != 0) {
+            if (sb.length() > 0) {
                 sb.append(" ");
             }
-            sb.append( hm.get(num) );
+            word = hm.get(num);
+            sb.append(word);
         }
+        
         return sb.toString();
     }
 }

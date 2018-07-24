@@ -36,15 +36,13 @@ public class WordLadder {
     }
 
 	public List<List<String>> findLadders(String start, String end, Set<String> dict) {
-        List<List<String>> result = new ArrayList<List<String>>();
-        
         dict.add(start);
-        
+
+        List<List<String>> result = new ArrayList<List<String>>();        
         List<Rung> ladderPath = new ArrayList<Rung>();
         Queue<Rung> queue = new LinkedList<Rung>();
         queue.add(new Rung(start, 0));
         int minLevel = Integer.MAX_VALUE;
-        // boolean found = false;
         while (!queue.isEmpty()) {
             Rung curr = queue.poll();
             if (curr.level > minLevel) {
@@ -58,8 +56,8 @@ public class WordLadder {
                     chars[i] = c;
                     String newWord = new String(chars);
                     // found one path
+                    // note, this is different from leetcode version
                     if (newWord.equals(end)) {
-                        // found = true;
                         minLevel = curr.level;
                         Rung ladderPathEnd = new Rung(newWord, curr.level + 1);
                         ladderPathEnd.previous = curr;

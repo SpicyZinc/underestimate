@@ -27,7 +27,7 @@ if there is only one 3, continue
 import java.util.*;
 
 public class TwoSumWithDataStructure {
-	HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+	Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
 
 	public static void main(String[] args) {
 		TwoSumWithDataStructure eg = new TwoSumWithDataStructure();
@@ -40,11 +40,7 @@ public class TwoSumWithDataStructure {
 	}
 
 	public void add(int number) {
-		if (hm.containsKey(number)) {
-			hm.put(number, hm.get(number) + 1);
-		} else {
-			hm.put(number, 1);
-		}
+		hm.put(number, hm.getOrDefault(number, 0) + 1);
 	}
  
 	public boolean find(int value) {

@@ -23,6 +23,12 @@ You may assume beginWord and endWord are non-empty and are not the same.
 
 idea:
 Rung class with prev Rung pointer
+minLevel是记录最短路径的长度, 
+这样的好处是, 
+如果某条路径的长度超过了已有的最短路径的长度, 
+那么舍弃, 
+这样会提高运行速度, 
+相当于一种 prune.
 */
 
 import java.util.*;
@@ -44,6 +50,7 @@ public class WordLadder {
             System.out.println(path);
         }
     }
+
     // latest best method
     class Rung {
         String word;
@@ -60,23 +67,24 @@ public class WordLadder {
     public List<List<String>> findLadders(String start, String end, List<String> wordList) {
         // move words into hashset
         Set<String> dict = new HashSet<String>();
+        dict.add(start);
         for (String word : wordList) {
             dict.add(word);
         }
-        dict.add(start);
-        dict.add(end);
 
         List<List<String>> result = new ArrayList<List<String>>();        
         List<Rung> ladderPath = new ArrayList<Rung>();
+
         Queue<Rung> queue = new LinkedList<Rung>();
         queue.add(new Rung(start, 0));
         int minLevel = Integer.MAX_VALUE;
-        // boolean found = false;
+
         while (!queue.isEmpty()) {
             Rung curr = queue.poll();
             if (curr.level > minLevel) {
                 break;
             }
+
             dict.remove(curr.word);
             char[] chars = curr.word.toCharArray();
             for (int i = 0; i < chars.length; i++) {
@@ -85,8 +93,8 @@ public class WordLadder {
                     chars[i] = c;
                     String newWord = new String(chars);
                     // found one path
-                    if (newWord.equals(end) && dict.contains(end)) {
-                        // found = true;
+                    // note, this is different from lintcode version
+                    if (newWord.equals(end) && dict.contains(newWord)) {
                         minLevel = curr.level;
                         Rung ladderPathEnd = new Rung(newWord, curr.level + 1);
                         ladderPathEnd.previous = curr;
@@ -167,8 +175,7 @@ public class WordLadder {
                         if (!curWord.equals(beginWord) && newWord.equals(endWord)) {
                             queue.offer(newWord);
                             preWords.get(endWord).add(curWord);
-                        }
-                        else if (!curWord.equals(newWord) && wordList.contains(newWord)) {
+                        } else if (!curWord.equals(newWord) && wordList.contains(newWord)) {
                             if (!queue.contains(newWord)) {
                                 queue.offer(newWord);
                             }

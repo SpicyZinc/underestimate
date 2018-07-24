@@ -20,20 +20,19 @@ public class SumOfSquareNumbers {
 			return false;
 		}
 		int left = 0;
-		int right = (int)Math.sqrt(c);
+		int right = (int) Math.sqrt(c);
 
 		while (left <= right) {
 			int val = left * left + right * right;
 			if (val < c) {
 				left++;
-			}
-			else if (val > c) {
+			} else if (val > c) {
 				right--;
-			}
-			else {
+			} else {
 				return true;
 			}
 		}
+
 		return false;
 	}
 }

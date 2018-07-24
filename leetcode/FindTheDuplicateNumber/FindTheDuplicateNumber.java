@@ -44,11 +44,13 @@ public class FindTheDuplicateNumber {
             	break;
             }
         }
+
         int duplicate = 0;
         while (duplicate != slow) {
             duplicate = nums[duplicate];
             slow = nums[slow];
         }
+
         return duplicate;
     }
 }

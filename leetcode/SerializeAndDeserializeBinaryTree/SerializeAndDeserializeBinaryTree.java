@@ -108,6 +108,7 @@ public class SerializeAndDeserializeBinaryTree {
             TreeNode root = new TreeNode(Integer.parseInt(val));
             root.left = buildTree(nodes);
             root.right = buildTree(nodes);
+
             return root;
         }
     }
