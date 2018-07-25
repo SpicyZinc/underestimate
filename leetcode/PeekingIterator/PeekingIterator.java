@@ -51,9 +51,9 @@ class PeekingIterator implements Iterator<Integer> {
     // Override them if needed.
     @Override
     public Integer next() {
-        Integer res = next;
+        Integer nextResult = next;
         next = iter.hasNext() ? iter.next() : null;
-        return res;
+        return nextResult;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class ContainsDuplicate {
     public boolean containsDuplicate(int[] nums) {
         Arrays.sort(nums);
         for (int i = 0; i < nums.length - 1; i++) {
-            if ( nums[i+1] == nums[i] ) {
+            if (nums[i + 1] == nums[i]) {
                 return true;
             }
         }
@@ -37,7 +37,7 @@ public class ContainsDuplicate {
     }
     // method 2
     public boolean containsDuplicate1(int[] nums) {
-        HashSet<Integer> hs = new HashSet<Integer>();
+        Set<Integer> hs = new HashSet<Integer>();
         for ( int i = 0; i < nums.length; i++ ) {
             if ( !hs.add(nums[i] ) ) {
                 return true;

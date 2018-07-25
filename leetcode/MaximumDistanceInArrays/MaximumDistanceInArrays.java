@@ -35,6 +35,7 @@ public class MaximumDistanceInArrays {
 		int maxDis = Integer.MIN_VALUE;
 		int min = arrays[0][0];
 		int max = arrays[0][arrays[0].length - 1];
+
 		for (int i = 1; i < arrays.length; i++) {
 			int n = arrays[i].length;
 			maxDis = Math.max( maxDis, Math.abs(max - arrays[i][0]) );

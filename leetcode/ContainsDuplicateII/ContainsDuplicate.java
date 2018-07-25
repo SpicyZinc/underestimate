@@ -12,20 +12,19 @@ the hash table is to keep record of value <-> position relation and value could 
 
 public class ContainsDuplicate  {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
-        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
         for (int i = 0; i < nums.length; i++) {
         	int current = nums[i];
-        	if ( hm.containsKey( current ) ) {
-        		int index = hm.get( current );
+        	if (hm.containsKey(current)) {
+        		int index = hm.get(current);
         		int diff = Math.abs(index - i);
 
-        		if ( diff <= k ) {
+        		if (diff <= k) {
         			return true;
         		}
         	}
-        	
+
         	hm.put(current, i);
-    
         }
 
         return false;

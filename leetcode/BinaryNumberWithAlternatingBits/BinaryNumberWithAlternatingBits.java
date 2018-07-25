@@ -26,9 +26,11 @@ Explanation:
 The binary representation of 10 is: 1010.
 
 idea:
-convert binary format, saved to list.
+convert number to binary format, saved to list.
 see if 1 and 0 is alternating
 did not use bit operation
+
+https://www.cnblogs.com/grandyang/p/7696387.html
 */
 
 import java.util.*;
@@ -49,6 +51,14 @@ class BinaryNumberWithAlternatingBits {
 				list.add(0);
 			}
 		}
+
+		// for (int i = 1; i < list.size(); i++) {
+		// 	if (list.get(i - 1) == list.get(i)) {
+		// 		return false;
+		// 	}
+		// }
+		// return true;
+
 		// position to last '1'
 		int pos = list.size() - 1;
 		for (int i = list.size() - 1; i >= 0; i--) {
@@ -79,4 +89,9 @@ class BinaryNumberWithAlternatingBits {
 	public boolean isSetBit(int n, int pos) {
 		return (n & (1 << pos)) != 0;
 	}
+
+	// quick method
+	public boolean hasAlternatingBits(int n) { 
+        return ((n + (n >> 1) + 1) & (n + (n >> 1))) == 0;
+    }
 }

@@ -42,7 +42,7 @@ public class ContainsDuplicate {
             return false;
         }
 
-        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
         for ( int i = 0; i < nums.length; i++ ) {
             int key = (int) Math.floor( nums[i] / Math.max(1, t) );
             int[] temp = {key, key - 1, key + 1};

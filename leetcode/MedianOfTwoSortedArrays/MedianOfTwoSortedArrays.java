@@ -149,16 +149,13 @@ public class MedianOfTwoSortedArrays {
             if (i >= m) {
                 curr = B[j];
                 j++;
-            }
-            else if (j >= n) {
+            } else if (j >= n) {
                 curr = A[i];
                 i++;
-            }
-            else if (A[i] < B[j]) {
+            } else if (A[i] < B[j]) {
                 curr = A[i];
                 i++;
-            }
-            else {
+            } else {
                 curr = B[j];
                 j++;
             }

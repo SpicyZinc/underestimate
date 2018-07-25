@@ -33,7 +33,10 @@ public class IncreasingSubsequences {
         Set<Integer> hs = new HashSet<Integer>();
         for (int i = index; i < nums.length; i++) {
             // skip the duplicate, if not skip, must i++
-            if (hs.contains(nums[i])) continue;
+            if (hs.contains(nums[i])) {
+                continue;
+            }
+
             if (index == 0 || index > 0 && nums[i] >= nums[index - 1]) {
                 hs.add(nums[i]);
                 path.add(nums[i]);
