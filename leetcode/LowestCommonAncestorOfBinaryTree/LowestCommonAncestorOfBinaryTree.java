@@ -35,11 +35,12 @@ public class LowestCommonAncestorOfBinaryTree {
         if (root == null || root == p || root == q) {
             return root;
         }
-        // since not root == p nor root = q
+        // since neither root == p nor root = q
         // find in two sides
         TreeNode leftCommonAncestor = lowestCommonAncestor(root.left, p, q);
         TreeNode rightCommonAncestor = lowestCommonAncestor(root.right, p, q);
         // none of them null
+        // 都有祖先
         if (leftCommonAncestor != null && rightCommonAncestor != null) {
             return root;
         }
@@ -49,23 +50,31 @@ public class LowestCommonAncestorOfBinaryTree {
 
     // method 2, note know how to get path from some root to target node using list
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || p == root || q == root) return root;
-        List<TreeNode> pathP = new ArrayList<TreeNode>();
-        List<TreeNode> pathQ = new ArrayList<TreeNode>();
-        path(root, p, pathP);
-        path(root, q, pathQ);
+        if (root == null || p == root || q == root) {
+            return root;
+        }
+
+        List<TreeNode> pathToP = new ArrayList<TreeNode>();
+        List<TreeNode> pathToQ = new ArrayList<TreeNode>();
+        path(root, p, pathToP);
+        path(root, q, pathToQ);
+
         int i = 0;
-        while (i < pathP.size() && i < pathQ.size()) {
-            if (pathP.get(i) != pathQ.get(i)) {
+        while (i < pathToP.size() && i < pathToQ.size()) {
+            if (pathToP.get(i) != pathToQ.get(i)) {
                 break;
             }
             i++;
         }
-        return pathP.get(i - 1);
+
+        return pathToP.get(i - 1);
     }
     
     public boolean path(TreeNode node, TreeNode target, List<TreeNode> path) {
-        if (node == null) return false;
+        if (node == null) {
+            return false;
+        }
+
         path.add(node);
         if (node == target) {
             return true;
@@ -75,32 +84,7 @@ public class LowestCommonAncestorOfBinaryTree {
         }
         // continually remove last element from list, make sure no wrong element on correct path
         path.remove(path.size() - 1);
-        return false;
-    }
-}
 
-// implement DFS on tree with stack
-class DepthFirstSearch {
-    public static boolean search( Node node, int value ) {
-        if ( node == null ) {
-            return false;
-        }
-        Stack<Node> stack = new Stack<Node>( );
-        stack.push( node );
-        while ( !stack.isEmpty() ) {
-            Node currentNode = stack.pop( );
-            if ( currentNode.data == value ) {
-                // Found the value!
-                return true;
-            }
-            if ( currentNode.right != null ) {
-                stack.push( currentNode.right );
-            }
-            // As we want to visit left child first, we must push this node last
-            if ( currentNode.left != null ) {
-                stack.push( currentNode.left );
-            }
-        }
         return false;
     }
 }

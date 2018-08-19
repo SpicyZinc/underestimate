@@ -1,19 +1,31 @@
 /*
-The count-and-say sequence is the sequence of integers beginning as follows:
-1, 11, 21, 1211, 111221, 312211, 13112221
+The count-and-say sequence is the sequence of integers with the first five terms as following:
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
 
 1 is read off as "one 1" or 11.
 11 is read off as "two 1s" or 21.
 21 is read off as "one 2, then one 1" or 1211.
-Given an integer n, generate the nth sequence.
+Given an integer n, generate the nth term of the count-and-say sequence.
 
-Note: The sequence of integers will be represented as a string.
+Note: Each term of the sequence of integers will be represented as a string.
+
+Example 1:
+Input: 1
+Output: "1"
+
+Example 2:
+Input: 4
+Output: "1211"
 
 idea:
 The idea is simple, compare the current char in the string with the previous one, if they are the same, count +1, 
 if not, print the previous char (count + char), set the new char and count, until the string ends.
 
-One thing to note:
+note,
 any sequence whose last digit is always 1
 */
 
@@ -45,9 +57,9 @@ public class CountAndSay {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < chars.length; i++) {
             int count = 1;
-            while (i+1 < chars.length && chars[i] == chars[i+1]) {
+            while (i < chars.length - 1 && chars[i] == chars[i + 1]) {
                 count++;
-				i++;                
+				i++;
             }
             sb.append(String.valueOf(count) + String.valueOf(chars[i]));
         }  
@@ -68,7 +80,7 @@ public class CountAndSay {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             int count = 1;
-            while ( i + 1 < s.length() && s.charAt(i + 1) == s.charAt(i) ) {
+            while (i + 1 < s.length() && s.charAt(i + 1) == s.charAt(i)) {
                 count++;
                 i++;
             }

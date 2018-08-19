@@ -47,7 +47,9 @@ class ValidParenthesisString {
                 count++;
             } else if (c == ')') {
                 count--;
-                if (count < 0) return false;
+                if (count < 0) {
+                    return false;
+                }
             } else if (c == '*') {
                 return check(s, i + 1, count) || check(s, i + 1, count + 1) || check(s, i + 1, count - 1);
             }

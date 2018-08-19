@@ -12,28 +12,29 @@ canConstruct("aa", "aab") -> true
 
 idea:
 this problem is one string contains another string without repeatedly using a letter
-build an integer array of length 26, char-'a' as index
-so simple
+build an integer array of length 26, char - 'a' as index
 */
-
 
 public class RansomNote {
     public boolean canConstruct(String ransomNote, String magazine) {
         if (ransomNote.length() > magazine.length()) {
             return false;
         }
+
         int[] cnt = new int[26];
         for (int i = 0; i < magazine.length(); i++) {
-            char ch = magazine.charAt(i);
-            cnt[ch - 'a'] += 1;
+            char c = magazine.charAt(i);
+            cnt[c - 'a']++;
         }
+
         for (int i = 0; i < ransomNote.length(); i++) {
-            char ch = ransomNote.charAt(i);
-            cnt[ch - 'a'] -= 1;
-            if (cnt[ch - 'a'] < 0) {
+            char c = ransomNote.charAt(i);
+            cnt[c - 'a']--;
+            if (cnt[c - 'a'] < 0) {
                 return false;
             }
         }
+
         return true;
     }
 }

@@ -15,8 +15,10 @@ For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6.
 Another example is LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
 
 idea:
-recursion, use root.left or root.right in the recursion
+recursion, 比较 root.val 与 Math.max(p, q) and Math.min(p, q), 利用BST性质
+use root.left or root.right in the recursion
 */
+
 class TreeNode {
     int val;
     TreeNode left;
@@ -29,6 +31,7 @@ public class LowestCommonAncestorOfBST {
 		if (root == null) {
 			return null;
 		}
+
 		if (root.val > Math.max(p.val, q.val)) {
 			return lowestCommonAncestor(root.left, p, q);
 		} else if (root.val < Math.min(p.val, q.val)) {

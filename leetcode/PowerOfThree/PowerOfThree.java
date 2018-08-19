@@ -21,10 +21,12 @@ return n == 1
 */
 
 public class PowerOfThree {
+    // general method
     public boolean isPowerOfThree(int n) {
         if (n <= 0) {
             return false;
         }
+
         while (n % 3 == 0) {
             n /= 3;
         }
@@ -36,13 +38,12 @@ public class PowerOfThree {
         if (n <= 0) {
             return false;
         }
+
         if (n == 1) {
             return true;
-        }
-        else if (n % 3 == 0) {
+        } else if (n % 3 == 0) {
             return isPowerOfThree(n / 3);
-        }
-        else { 
+        } else { 
             return false;
         }
     }

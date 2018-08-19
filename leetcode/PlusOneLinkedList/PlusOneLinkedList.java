@@ -68,7 +68,7 @@ class PlusOneLinkedList {
 			}
             curr = curr.next;
         }
-        // separate treat last one
+        // separately treat last one
         sum = curr.val + carry;
         curr.val = sum % 10;
 

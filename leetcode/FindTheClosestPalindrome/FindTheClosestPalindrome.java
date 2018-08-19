@@ -11,12 +11,14 @@ If there is a tie, return the smaller one as answer.
 
 idea:
 1. nearest palindrome, take left part containing the mid part for odd, for even, exactly left half
-12345 left = 123, then apply -1, 0, 1 to left, 122, 123, 124, then mirror it, find the minDiff one
+e.g. 12345 left = 123, then apply -1, 0, 1 to left, 122, 123, 124, then mirror it, find the minDiff one
+note, all 9 string special case
 
 2. this is to find next closest palindrome
 http://www.geeksforgeeks.org/given-a-number-find-next-smallest-palindrome-larger-than-this-number/
 If one digit is greater than the corresponding digit in right side digit,
 then copying the left side to the right side is sufficient to get the closest palindrome
+if not sufficient, then add 1 to the middle digit 
 */
 
 public class FindTheClosestPalindrome {
@@ -34,8 +36,11 @@ public class FindTheClosestPalindrome {
         long[] increments = {-1, 0, 1};
         for (long increment : increments) {
             String possible = Long.toString(Long.valueOf(left) + increment);
+            // 1000
+            // if possible is 10, it is even
+            // 99 is answer, but 999 is nearest palindrome
             String closestPalindrome = getPalindrome(possible, isOdd);
-            // among < size, only 999 is nearest palindrome
+            // note, need to check
             if (size >= 2 && (closestPalindrome.length() < size || Long.parseLong(closestPalindrome) == 0)) {
                 closestPalindrome = generateAll9Palindrome(size);
             }
@@ -85,7 +90,7 @@ public class FindTheClosestPalindrome {
         return sb.toString();
     }
 
-	// 2, this is to find next closest palindrome
+	// method 2, this is to find next closest palindrome
 	public String nearestPalindromic(String n) {
         int size = n.length();
         if ( AreAll9s(n) ) {
@@ -114,7 +119,7 @@ public class FindTheClosestPalindrome {
             i--;
         }
         // Handle the case where middle digit(s) must be incremented
-        if (leftsmaller == true) {
+        if (leftsmaller) {
             int carry = -1;
             i = mid - 1;
             // If there are odd digits, then increment the middle digit and store the carry
@@ -123,8 +128,7 @@ public class FindTheClosestPalindrome {
                 carry = nums[mid] / 10;
                 nums[mid] %= 10;
                 j = mid + 1;
-            }
-            else {
+            } else {
                 j = mid;
             }
             // Add 1 to the rightmost digit of the left side, propagate the carry towards MSB digit

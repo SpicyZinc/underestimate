@@ -41,25 +41,26 @@ public class Search2Dmatrix {
         if (matrix == null || matrix.length == 0 ||  matrix[0].length == 0) {
             return 0;
         }
+
         int m = matrix.length;
         int n = matrix[0].length;
         int row = 0;
         int col = n - 1;
         int cnt = 0;
+
         // towards the middle or the center
         while (row < m && col >= 0) {
             if (matrix[row][col] > target) {
                 col--;
-            }
-            else if (matrix[row][col] < target) {
+            } else if (matrix[row][col] < target) {
                 row++;
-            }
-            else {
+            } else {
                 cnt++;
                 col--;
                 row++;
             }
         }
+
         return cnt;
     }
 

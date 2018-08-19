@@ -12,12 +12,12 @@ Return 4.
 
 idea:
 https://segmentfault.com/a/1190000003709497
+某个点为正方形右下角时最大的正方形时, 那它的上方, 左方和左上方三个点也一定是某个正方形的右下角
 
 dp[i][j] is the maximum side length of the square based on (i, j) as bottom right corner of the square
 dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1;
-
-the ideal thing is also the only thing
-current = min_side_length(top to current, left to current, diagonal to current) + 1
+in term of bottom right point
+current = min(top to current, left to current, diagonal to current) + 1
 */
 
 public class MaximalSquare {
@@ -25,9 +25,10 @@ public class MaximalSquare {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
         	return 0;
         }
+
+        int max = 0;
         int m = matrix.length;
         int n = matrix[0].length;
-        int max = 0;
         int[][] dp = new int[m][n];
         // update 1st column
         for (int i = 0; i < m; i++) {
@@ -43,14 +44,14 @@ public class MaximalSquare {
         for (int i = 1; i < m; i++) {
 			for (int j = 1; j < n; j++) {
 				if (matrix[i][j] == '1') {
-					int min = minOfThree(dp[i-1][j-1], dp[i][j-1], dp[i-1][j]);
-					dp[i][j] = min + 1;
+					dp[i][j] = minOfThree(dp[i - 1][j - 1], dp[i][j - 1], dp[i - 1][j]) + 1;
 				} else {
 					dp[i][j] = 0;
 				}
 				max = Math.max(max, dp[i][j]);		
 			}
 		}
+
 		return max * max;
     }
 

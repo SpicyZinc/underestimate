@@ -21,11 +21,43 @@ class ListNode {
 }
 
 public class MergeTwoSortedLists {
+    // 07/28/2018
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        if (l1 == null || l2 == null) {
-            return l1 == null ? l2 : l1;
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+            
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                curr.next = new ListNode(l1.val);
+                curr = curr.next;
+                l1 = l1.next;
+            } else if (l1.val > l2.val) {
+                curr.next = new ListNode(l2.val);
+                curr = curr.next;
+                l2 = l2.next;
+            } else {
+                curr.next = new ListNode(l1.val);
+                curr = curr.next;
+                l1 = l1.next;
+                curr.next = new ListNode(l2.val);
+                curr = curr.next;
+                l2 = l2.next;
+            }
         }
         
+        if (l1 != null) {
+            curr.next = l1;
+        }
+        
+        if (l2 != null) {
+            curr.next = l2;
+        }
+        
+        return dummy.next;
+    }
+
+    // simpler method
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {        
         ListNode sorted = new ListNode(0);
         ListNode current = sorted;
         while (l1 != null && l2 != null) {

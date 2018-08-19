@@ -47,10 +47,12 @@ then return empty []
 
 public class Find DuplicateFileInSystem {
     public List<List<String>> findDuplicate(String[] paths) {
-        HashMap<String, List<String>> hm = new HashMap<String, List<String>>();
+        Map<String, List<String>> hm = new HashMap<String, List<String>>();
+
         for (String path : paths) {
             String[] parts = path.split("\\s");
-            String prefix = parts[0];
+            String directory = parts[0];
+
             for (int i = 1; i < parts.length; i++) {
                 String part = parts[i];
                 if (part.indexOf("(") != -1) {
@@ -61,18 +63,21 @@ public class Find DuplicateFileInSystem {
                     if (locations == null) {
                         locations = new ArrayList<String>();
                     }
-                    String fullPath = parts[0] + "/" + part.substring(0, start);
+
+                    String fullPath = directory + "/" + part.substring(0, start);
                     locations.add(fullPath);
                     hm.put(content, locations);
                 }
             }
         }
+
         List<List<String>> result = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : hm.entrySet()) {
             if (entry.getValue().size() > 1) {
                 result.add(entry.getValue());    
             }
         }
+
         return result;
     }
 }

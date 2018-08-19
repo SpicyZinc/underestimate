@@ -57,7 +57,7 @@ public class SubarraySumEqualsK {
     public int subarraySum(int[] nums, int k) {
         int cnt = 0;
         int sum = 0;
-        // sum : appearence frequency hash
+        // sum : appearance frequency hash
         Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
         // note, don't forget initialization
         hm.put(0, 1);

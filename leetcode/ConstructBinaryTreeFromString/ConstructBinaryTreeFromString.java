@@ -52,29 +52,30 @@ public class ConstructBinaryTreeFromString {
 		TreeNode result = eg.str2tree("4(2(3)(1))(6(5))");
 		System.out.println(result.toString());
 	}
+
 	public TreeNode str2tree(String s) {
-		if (s == "") return null;
-		int open = 0;
-		int closing = 0;
-		int firstPos = s.indexOf("(");
-		int val = firstPos == -1 ? Integer.parseInt(s) : Integer.parseInt(s.substring(0, firstPos));
+		if (s.length() == 0 || s == null) {
+			return null;
+		}
+
+		int start = s.indexOf("(");
+		int val = start == -1 ? Integer.parseInt(s) : Integer.parseInt(s.substring(0, start));
 		TreeNode root = new TreeNode(val);
-		if (firstPos == -1) {
+		if (start == -1) {
 			return root;
 		}
-		else {
-			open = 1;
-		}
-		for (int i = firstPos + 1; i < s.length(); i++) {
+        
+        int cnt = 1;
+		for (int i = start + 1; i < s.length(); i++) {
 			char c = s.charAt(i);
 			if (c == '(') {
-				open++;
+                cnt++;
+			} else if (c == ')') {
+                cnt--;
 			}
-			else if (c == ')') {
-				closing++;
-			}
-			if (open == closing) {
-				String left = s.substring(firstPos + 1, i);
+
+			if (cnt == 0) {
+				String left = s.substring(start + 1, i);
 				String right = "";
 				if (i + 2 < s.length() - 1) {
 					right = s.substring(i + 2, s.length() - 1);
@@ -88,6 +89,7 @@ public class ConstructBinaryTreeFromString {
 				break;
 			}
 		}
+
 		return root;
 	}
 }

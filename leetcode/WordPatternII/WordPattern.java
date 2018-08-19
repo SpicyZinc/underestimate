@@ -3,7 +3,6 @@ Given a pattern and a string str, find if str follows the same pattern.
 Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty substring in str.
 
 Examples:
-
 pattern = "abab", str = "redblueredblue" should return true.
 pattern = "aaaa", str = "asdasdasdasd" should return true.
 pattern = "aabb", str = "xyzabcxzyabc" should return false.
@@ -29,24 +28,36 @@ public class WordPattern {
 	}
 
 	public boolean wordPatternMatch(String pattern, String str) {
-		if (pattern.length() == 0 && str.length() == 0) return true;
+		if (pattern.length() == 0 && str.length() == 0) {
+			return true;
+		}
+
 		return dfs(pattern, str, 0, 0, new HashMap<Character, String>());
 	}
 
 	public boolean dfs(String pattern, String str, int i, int j, Map<Character, String> hm) {
-		if (i == pattern.length() && j == str.length()) return true;
-		if (i > pattern.length() || j > str.length()) return false; 
+		if (i == pattern.length() && j == str.length()) {
+			return true;
+		}
+
+		if (i == pattern.length() || j == str.length()) {
+			return false; 
+		}
 
 		char c = pattern.charAt(i);
-		// where a potential word ends, note: <= str.length()
+		// note, substring(), k <= str.length()
 		for (int k = j + 1; k <= str.length(); k++) {
 			String word = str.substring(j, k);
 			if (!hm.containsKey(c) && !hm.containsValue(word)) {
 				hm.put(c, word);
-				if (dfs(pattern, str, i + 1, k, hm)) return true;
+				if (dfs(pattern, str, i + 1, k, hm)) {
+					return true;
+				}
 				hm.remove(c);
 			} else if (hm.containsKey(c) && hm.get(c).equals(word)) {
-				if (dfs(pattern, str, i + 1, k, hm)) return true;
+				if (dfs(pattern, str, i + 1, k, hm)) {
+					return true;
+				}
 			}
 		}
 

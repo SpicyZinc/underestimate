@@ -1,6 +1,32 @@
 /*
 Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
 
+Example 1:
+Input: [[1,1],[2,2],[3,3]]
+Output: 3
+Explanation:
+^
+|
+|        o
+|     o
+|  o  
++------------->
+0  1  2  3  4
+
+Example 2:
+Input: [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]
+Output: 4
+Explanation:
+^
+|
+|  o
+|     o        o
+|        o
+|  o        o
++------------------->
+0  1  2  3  4  5  6
+
+
 idea:
 two points form a line
 each point can be one of the two, 
@@ -9,9 +35,10 @@ the other one is any one of the rest points
 outside loop all points
 for each point, treat as starting point, get the max number of points which compose a line starting from the starting point
 
-Use hashmap<slope,  Integer(# of points)>
+Use hashmap<slope, Integer(# of points)>
 to record one slope how many points.
 */
+
 class Point {
     int x;
     int y;
@@ -19,8 +46,8 @@ class Point {
     Point(int a, int b) { x = a; y = b; }
 }
 
-public class MaxPointsOnALine {    
-    public int maxPoints(Point[] points) {
+public class MaxPointsOnALine {
+	public int maxPoints(Point[] points) {
         if (points.length == 0 || points == null) {
     		return 0;
     	}
@@ -28,56 +55,54 @@ public class MaxPointsOnALine {
     		return points.length;
     	}
 
-		HashMap<Double, Integer> slopes = new HashMap<Double, Integer>();
+		Map<Double, Integer> slopes = new HashMap<Double, Integer>();
     	int size = points.length;
     	double slope;    	
-    	int tmp = 1;
-    	int max = 1;
+    	int maxCnt = 1;
+
     	for (int i = 0; i < size; i++) {
-    		tmp = 1; // count current zero (starting) point in 
-    		slopes.clear();
     		Point zero = points[i];
+            // 把起始点算进去 但是原点不算
+            int cnt = (zero.x != 0 || zero.y != 0) ? 1 : 0;
+            slopes.clear();
+
     		for (int j = 0; j < size; j++) {
     			Point other = points[j];
+                // 相同的点
     			if (i == j) {
     				continue;
     			}
+                // 不同的点 有同样的坐标 肯定在一条线上
     			if (zero.x == other.x && zero.y == other.y) {
-    				tmp++;
-    			}    			
-    			else {
+    				cnt++;
+    			} else {
     				if (zero.x == other.x) {
     					slope = Double.MAX_VALUE;
-    				}
-    				else {
-						slope = getSlope(other, zero);
+    				} else {
+						slope = getSlope(zero, other);
     				}
 
-    				if ( slopes.containsKey(slope) ) {
-    					slopes.put(slope, slopes.get(slope) + 1);
-    				}
-    				else {
-    					slopes.put(slope, 1);
-    				}
-    			}
+                    slopes.put(slope, slopes.getOrDefault(slope, 0) + 1);
+                }
     		}
-    		int cnt = 0; // key point
-    		for (Integer tempCnt : slopes.values()) {
-    			if (cnt < tempCnt) {
-    				cnt = tempCnt;
-    			}
+
+    		int currMax = 0; // key point
+    		for (Integer count : slopes.values()) {
+                currMax = Math.max(currMax, count);
     		}
-    		cnt = cnt + tmp;
+    		currMax += cnt;
+
+            maxCnt = Math.max(maxCnt, currMax);
             
-    		if (cnt > max) {
-    			max = cnt;
+    		if (currMax > maxCnt) {
+    			maxCnt = currMax;
     		}
     	}
 
-        return max;
+        return maxCnt;
     }
 
     private double getSlope(Point A, Point B) {
-        return (double)(B.y - A.y) / (double)(B.x - A.x);
+        return (double) (B.y - A.y) / (double) (B.x - A.x);
     }
 }

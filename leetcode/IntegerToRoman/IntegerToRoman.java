@@ -97,19 +97,16 @@ public class IntegerToRoman {
         if (num == 9) {
             result += oneSymbol;
             result += tenSymbol;
-        }
-        else if (num >= 5) {
+        } else if (num >= 5) {
             result += fiveSymbol;
             while (num > 5) {
                 result += oneSymbol;
                 num--;
             }
-        }
-        else if (num == 4) {
+        } else if (num == 4) {
             result += oneSymbol;
             result += fiveSymbol;
-        }
-        else if (num > 0 && num < 4)
+        } else if (num > 0 && num < 4)
             while (num > 0) {
                 result += oneSymbol;
                 num--;

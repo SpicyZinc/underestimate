@@ -26,23 +26,20 @@ public class CombinationSum {
         CombinationSum eg = new CombinationSum();
         List<List<Integer>> result = eg.combinationSum(candidates, target);
         System.out.println(result.size() + " combinations:");
-        for (int i=0; i<result.size(); i++) {
-            List<Integer> tmp = result.get(i);
-            for (int j = 0; j < tmp.size(); j++) {
-                System.out.print(tmp.get(j) + "  ");
-            }
-            System.out.print("\n");
+        for (List<Integer> path : result) {
+            System.out.println(path);
         }
     }
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(candidates);
-        dfs(candidates, target, 0, new ArrayList<Integer>(), result);
+        dfs(candidates, 0, target, new ArrayList<Integer>(), result);
+
         return result;
     }
     
-    private void dfs(int[] candidates, int remaining, int pos, List<Integer> path, List<List<Integer>> result) {
+    private void dfs(int[] candidates, int pos, int remaining, List<Integer> path, List<List<Integer>> result) {
         if (remaining < 0) {
             return;
         }
@@ -54,7 +51,7 @@ public class CombinationSum {
 
         for (int i = pos; i < candidates.length; i++) {
             path.add(candidates[i]);
-            dfs(candidates, remaining - candidates[i], i, path, result);
+            dfs(candidates, i, remaining - candidates[i], path, result);
             path.remove(path.size() - 1);
         }
     }

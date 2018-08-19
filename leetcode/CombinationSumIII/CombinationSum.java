@@ -29,8 +29,7 @@ public class CombinationSum {
         }
         if (temp.size() == k && sum == n) {
             res.add(new ArrayList<Integer>(temp));
-        }
-        else {
+        } else {
             for (int i = cur; i <= 9; i++) {
                 temp.add(i);
                 dfs(res, i + 1, sum + i, k, n, temp);

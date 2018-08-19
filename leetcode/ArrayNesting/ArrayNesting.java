@@ -22,40 +22,77 @@ The elements of A are all distinct.
 Each element of array A is an integer within the range [0, N-1].
 
 idea:
+based on description, for each number, do this nested stuff to count
+find the maxCnt each iteration
+TLE, add hash to pass test
 
+other idea: https://www.cnblogs.com/grandyang/p/6932727.html
 */
 public class ArrayNesting {
-	// self written, 854 / 856 test cases passed
+    // 07/28/2018 simpler version to TLE
     public int arrayNesting(int[] nums) {
         int max = 1;
         int N = nums.length;
         for (int i = 0; i < N; i++) {
-            max = Math.max(max, getLength(nums, i));
+            max = Math.max(max, getSetLength(nums, i));
         }
+
         return max;
     }
     
-    public int getLength(int[] nums, int K) {
+    public int getSetLength(int[] nums, int K) {
+        int cnt = 0;
+        // note, this is assign K to val
+        int val = K;
+
+        while (cnt == 0 || val != K) {
+            val = nums[val];
+            cnt++;
+        }
+
+        return cnt;
+    }
+	// self written, 855 / 856 test cases passed
+    public int arrayNesting(int[] nums) {
+        int max = 1;
+        int N = nums.length;
+        for (int i = 0; i < N; i++) {
+            max = Math.max(max, getSetLength(nums, i));
+        }
+
+        return max;
+    }
+    
+    public int getSetLength(int[] nums, int K) {
         int cnt = 1;
         int val = nums[K];
-        if (val == K) return cnt;
+        if (val == K) {
+            return cnt;
+        }
+
         while (val != K) {
             val = nums[val];
             cnt++;
         }
+
         return cnt;
     }
-
     // add a visited map to reduce time
-    // why continue, because this number was visited previously, skip it, otherwise the path actually covered before, size must be smaller than previous one
+    // why continue, because this number was visited previously, skip it;
+    // if not skip, size < the size of the path found before
     public int arrayNesting(int[] nums) {
         int n = nums.length;
         boolean[] visited = new boolean[n];
+        
         int max = 1;
+
         for (int i = 0; i < n; i++) {
-            if (visited[i]) continue; 
+            if (visited[i]) {
+                continue; 
+            }
             max = Math.max(max, getLength(nums, i, visited));
         }
+
         return max;
     }
     
@@ -68,5 +105,22 @@ public class ArrayNesting {
             cnt++;
         }
         return cnt;
+    }
+
+    public int arrayNesting(int[] nums) {
+        int n = nums.size();
+        int res = 0;
+
+        for (int i = 0; i < n; i++) {
+            int cnt = 1;
+            while (nums[i] != i && nums[i] != nums[nums[i]]) {
+                swap(nums, i, nums[i]);
+                cnt++;
+            }
+
+            res = Math.max(res, cnt);
+        }
+
+        return res;
     }
 }

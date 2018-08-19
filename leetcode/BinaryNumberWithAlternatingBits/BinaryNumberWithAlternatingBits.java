@@ -43,6 +43,11 @@ class BinaryNumberWithAlternatingBits {
 	}
 
 	public boolean hasAlternatingBits(int n) {
+        // edge case
+        if (n == 1) {
+            return true;
+        }
+
 		List<Integer> list = new ArrayList<Integer>();
 		for (int i = 0; i < 32; i++) {
 			if (isSetBit(n, i)) {
@@ -51,38 +56,21 @@ class BinaryNumberWithAlternatingBits {
 				list.add(0);
 			}
 		}
-
-		// for (int i = 1; i < list.size(); i++) {
-		// 	if (list.get(i - 1) == list.get(i)) {
-		// 		return false;
-		// 	}
-		// }
-		// return true;
-
-		// position to last '1'
-		int pos = list.size() - 1;
-		for (int i = list.size() - 1; i >= 0; i--) {
-			if (list.get(i) == 1) {
-				pos = i;
-                break;
-			}
-        }
-        for (int i = pos; i >= 0; i--) {
-            if (pos % 2 == 0) {
-                if (i % 2 == 1 && list.get(i) != 0) {
-                    return false;
-                } else if (i % 2 == 0 && list.get(i) != 1) {
-                	return false;
-                }
-            } else {
-                if (i % 2 == 0 && list.get(i) != 0) {
-                    return false;
-                } else if (i % 2 == 1 && list.get(i) != 1) {
-                	return false;
-                }
-            }
+        // remove trailing zeros
+		int left = 0;
+		int right = list.size() - 1;
+		while (list.get(right) == 0) {
+			right--;
 		}
-
+		List<Integer> result = list.subList(left, right + 1);
+        if (result.size() == 1) {
+            return false;
+        }
+		for (int i = 1; i < result.size(); i++) {
+			if (result.get(i - 1) == result.get(i)) {
+				return false;
+			}
+		}
 		return true;
 	}
 

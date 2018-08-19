@@ -17,4 +17,21 @@ public class PowerOfTwo {
 
 		return (n & (n - 1)) == 0;
     }
+
+    // general method
+	public boolean isPowerOfTwo(int n) {
+        return isPowerOfBase(n, 2);
+    }
+    
+    public boolean isPowerOfBase(int n, int base) {
+        if (n <= 0) {
+            return false;
+        }
+
+        while (n % base == 0) {
+            n /= base;
+        }
+
+        return n == 1;
+    }
 }

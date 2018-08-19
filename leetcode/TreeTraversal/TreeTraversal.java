@@ -35,22 +35,23 @@ class TreeNode {
 	int value;
 	TreeNode left;
 	TreeNode right;
+
 	public TreeNode(int value){
 		this.value = value;
 		left = right = null;
 	}
+
 /***************InOrder Traversal*************************/		
 	public void inorderStack() {
-		Stack<TreeNode> myStack = new Stack<TreeNode>();
+		Stack<TreeNode> stack = new Stack<TreeNode>();
 		TreeNode current = this;
 		
-		while (current != null || !myStack.empty()) {
+		while (current != null || !stack.empty()) {
 			if (current != null) {
-				myStack.push(current);
+				stack.push(current);
 				current = current.left;
-			}
-			else {
-				current = myStack.pop();
+			} else {
+				current = stack.pop();
 				System.out.print(current.value + " ");
 				current = current.right;
 			}
@@ -71,18 +72,17 @@ class TreeNode {
 	}
 /****************PreOrder Traversal***********************/	
 	public void preorderStack() {
-		Stack<TreeNode> myStack = new Stack<TreeNode>();
+		Stack<TreeNode> stack = new Stack<TreeNode>();
 		TreeNode current = this;
 		
-		while (current != null || !myStack.empty()) {
+		while (current != null || !stack.empty()) {
 			if (current != null) {
 				System.out.print(current.value + " "); // because each time current.value is already printed out
-				myStack.push(current.right);
-				// myStack.push(current.left);
+				stack.push(current.right);
+				// stack.push(current.left);
 				current = current.left;
-			}			
-			else {
-				current = myStack.pop();				
+			} else {
+				current = stack.pop();				
 			}
 		}
 	}
@@ -111,20 +111,19 @@ class TreeNode {
 		while (!myStack.isEmpty()) {
 			TreeNode current = myStack.peek();
 			
-			if (current == null) 
+			if (current == null) {
 				myStack.pop();			
-			else if (current.left==null && current.right==null) {				
+			} else if (current.left == null && current.right == null) {				
 				System.out.print(current.value + " ");
 				myStack.pop();
-			}			
-			else if (current.left == previous) 
+			} else if (current.left == previous) {
 				myStack.push(current.right);			
-			else if (current.right == previous) {
+			} else if (current.right == previous) {
 				System.out.print(current.value+ " ");
 				myStack.pop();
-			}			
-			else
+			} else {
 				myStack.push(current.left);			
+			}
 			
 			previous = current;
 		}

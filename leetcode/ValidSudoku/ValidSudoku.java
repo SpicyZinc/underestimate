@@ -1,7 +1,49 @@
 /*
-Valid Sudoku
-Determine if a Sudoku is valid, according to: Sudoku Puzzles - The Rules.
-Is a partially filled sudoku valid?
+Determine if a 9x9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+Each row must contain the digits 1-9 without repetition.
+Each column must contain the digits 1-9 without repetition.
+Each of the 9 3x3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+
+A partially filled sudoku which is valid.
+The Sudoku board could be partially filled, where empty cells are filled with the character '.'.
+
+Example 1:
+Input:
+[
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+Output: true
+
+Example 2:
+Input:
+[
+  ["8","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+Output: false
+Explanation: Same as Example 1, except with the 5 in the top left corner being 
+    modified to 8. Since there are two 8's in the top left 3x3 sub-box, it is invalid.
+
+Note:
+A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+Only the filled cells need to be validated according to the mentioned rules.
+The given board contain only digits 1-9 and the character '.'.
+The given board size is always 9x9.
 
 idea:
 use hashset to store ever appearing elements in row, column, small block
@@ -14,59 +56,7 @@ another version see link as below:
 http://blog.csdn.net/u010500263/article/details/18905027
 */
 public class ValidSudoku {
-    public boolean isValidSudoku(char[][] board) {
-		for (int i=0; i<9; i++) {
-            for (int j=0; j<9; j++) {
-				if (!isValid(board, i, j)) {
-					return false;
-                }
-			}
-        }
-
-        return true;          
-    }
-	
-	private boolean isValid(char[][] board, int a, int b) {
-		// check each column when one row is fixed
-        Set<Character> contained = new HashSet<Character>();
-        for (int j=0; j<9; j++) {
-            if (contained.contains(board[a][j])) {
-				return false;
-            }
-            if (board[a][j] > '0' && board[a][j] <= '9') {
-                contained.add(board[a][j]);
-            }
-        }
-		// check each row when one column is fixed
-		contained = new HashSet<Character>();
-        for (int i=0; i<9; i++) {
-            if (contained.contains(board[i][b])) {
-				return false;
-            }
-            if (board[i][b] > '0' && board[i][b] <= '9') {
-                contained.add(board[i][b]);
-            }
-        }
-		// check each small block of nine blocks
-		// i, j can locate which small block of the nine blocks		
-        contained = new HashSet<Character>();
-        for (int m=0; m<3; m++) {
-            for (int n=0; n<3; n++) {
-                int x = a / 3 * 3 + m;
-				int y = b / 3 * 3 + n;
-                if (contained.contains(board[x][y])) {
-					return false;
-                }
-				if (board[x][y] > '0' && board[x][y] <= '9') {
-					contained.add(board[x][y]);
-                }
-            }  
-        }
-    
-        return true;
-    }
-
-    // best version
+    // 07/28/2018
     public boolean isValidSudoku(char[][] board) {
         Set<Character> ifContains = new HashSet<Character>();
         

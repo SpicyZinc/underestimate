@@ -1,7 +1,14 @@
 /*
 Write a function that takes an unsigned integer and returns the number of ’1' bits it has (also known as the Hamming weight).
-For example, the 32-bit integer '11' has binary representation 00000000000000000000000000001011, 
-so the function should return 3.
+Example 1:
+Input: 11
+Output: 3
+Explanation: Integer 11 has binary representation 00000000000000000000000000001011
+
+Example 2:
+Input: 128
+Output: 1
+Explanation: Integer 128 has binary representation 00000000000000000000000010000000
 
 idea:
 http://articles.leetcode.com/2010/09/number-of-1-bits.html
@@ -15,12 +22,12 @@ In addition, this solution is not very efficient too, as you need to iterate 32 
 making use x & (x-1) to get a single 1 bit erased
 */
 
-public class NumberOfBits  {
+public class NumberOfOneBits  {
     // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
         int count = 0;
         for (int i = 1; i <= 32; i++) {
-        	if ( isOneBit(n, i) == true ) {
+        	if ( isSetBit(n, i) == true ) {
         		count++;
         	}
         }
@@ -28,14 +35,15 @@ public class NumberOfBits  {
         return count;
     }
 
-    private boolean isOneBit(int n, int i) {
-    	return ( n & (1<<i) ) != 0;
+    private boolean isSetBit(int n, int i) {
+    	return ( n & (1 << i) ) != 0;
     }
+
     // 2. bit hack
     public int hammingWeight(int n) {
         int count = 0;
         while ( n != 0 ) {
-            n &= (n-1);
+            n &= (n - 1);
             count++;
         }
 

@@ -2,26 +2,55 @@
 Two elements of a binary search tree (BST) are swapped by mistake.
 Recover the tree without changing its structure.
 
-Note:
-A solution using O(n) space is pretty straight forward. Could you devise a constant space solution?
+Example 1:
+Input: [1,3,null,null,2]
+   1
+  /
+ 3
+  \
+   2
+Output: [3,1,null,null,2]
+
+   3
+  /
+ 1
+  \
+   2
+
+Example 2:
+Input: [3,1,4,null,null,2]
+  3
+ / \
+1   4
+   /
+  2
+Output: [2,1,4,null,null,3]
+  2
+ / \
+1   4
+   /
+  3
+
+Follow up:
+A solution using O(n) space is pretty straight forward.
+Could you devise a constant space solution?
 
 idea:
 1. space complexity is O(n), not required O(1) constant space
 in order traversal bst, and save nodes' values into array,
 sort them, then evaluate them
 
-2. inorder traverse BST, find this pair of nodes, return as TreeNode[] of length 2
+2. inorder traverse BST, find the pair of swapped nodes, return as TreeNode[] of length 2
 use swap(TreeNode a, TreeNode b) to swap their values.
+
 How to find this pair of nodes
+这一对节点
+先出现的那个肯定是比其中序后继大的
+后出现的那个节点的后继, 肯定不大于先出现这个错误节点的值.
 
-这一对节点先出现的那个肯定是比其中序后继大的, 后出现的那个节点的后继, 肯定不大于先出现这个错误节点的值.
-
-	constant space solution 就是用递归的方式进行inorder traverse, 
-	然后在遍历的过程中记录一个前驱节点, 然后比较前驱节点和当前节点的值, 将结果存到TreeNode array, 最后交换一下就行了.
-	
-	in order traverse不存,只存前一个node, 比较current与前一个的值.
-	如果只有一次不满足 current.val >= previous.val, swap their values.
-	如果有两次不满足, 记录第一次的 previous 和第二次的current, swap their values
+best explanation,
+use inorder traversal
+https://leetcode.com/problems/recover-binary-search-tree/discuss/32535/No-Fancy-Algorithm-just-Simple-and-Powerful-In-Order-Traversal
 */
 
 import java.util.*;
@@ -65,11 +94,16 @@ public class RecoverBST {
 		List<Integer> values = new ArrayList<Integer>();
 
 		inOrderPrintToArray(root, values, nodes);
-		int[] nums = buildIntArray(values);
-		Arrays.sort(nums);
-
-		for (int i = 0; i < nums.length; i++) {
-			nodes.get(i).val = nums[i];
+        
+        Collections.sort(values, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer a, Integer b) {
+                return a - b;
+            }
+        });
+        
+		for (int i = 0; i < values.size(); i++) {
+			nodes.get(i).val = values.get(i);
 		}
 	}
 
@@ -85,17 +119,9 @@ public class RecoverBST {
 			inOrderPrintToArray(root.right, values, nodes);
 		}		
 	}
-	
-	private int[] buildIntArray(List<Integer> integers) {
-		int[] ints = new int[integers.size()];
-		int i = 0;
-		for (Integer n : integers) {
-			ints[i++] = n;
-		}
-		return ints;
-	}
+
 	// method 1
-    TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+	TreeNode prev = new TreeNode(Integer.MIN_VALUE);
     TreeNode[] dislocations = new TreeNode[] { null, null };
 
 	public void recoverTree(TreeNode root) {
@@ -105,9 +131,7 @@ public class RecoverBST {
 
 		inorder(root);
 
-		int tmp = dislocations[0].val;
-		dislocations[0].val = dislocations[1].val;
-		dislocations[1].val = tmp;
+        swap();
 
 		return;
 	}
@@ -119,16 +143,24 @@ public class RecoverBST {
 
 		inorder(node.left);
 
-		if ( dislocations[0] == null && prev.val >= node.val) {
-			 dislocations[0] = prev;
+		if (dislocations[0] == null && prev.val >= node.val) {
+			dislocations[0] = prev;
 		}
-		if ( dislocations[0] != null && prev.val >= node.val) {
+		if (dislocations[0] != null && prev.val >= node.val) {
 			dislocations[1] = node;
 		}
+
 		prev = node;
 
 		inorder(node.right);
 	}
+
+	public void swap() {
+		int tmp = dislocations[0].val;
+		dislocations[0].val = dislocations[1].val;
+		dislocations[1].val = tmp;
+	}
+
 	// method 2
 	public void recoverTree(TreeNode root) {
 		if (root == null) {
@@ -157,8 +189,7 @@ public class RecoverBST {
             if (res[0] == null) {
                 res[0] = last;
                 res[1] = root;
-            }
-            else {
+            } else {
                 res[1] = root;
             }
         }
@@ -178,4 +209,62 @@ public class RecoverBST {
 			inOrderPrint(root.right);
 		}		
 	}
+
+	// need to go back and think
+	public void recoverTree(TreeNode root) {
+        TreeNode n1 = null;
+        TreeNode n2 = null;    
+        TreeNode current = root, prev = null, a = null;
+        boolean first = true;
+		
+        while (current != null) {
+            if (current.left == null) {
+                if (a != null && a.val > current.val) {
+                    if (first) {
+                        n1 = a;
+                        first = false;
+                    }
+					else {
+                        n2 = current;
+                    }
+                }
+                if (n1 != null && a == n1) {
+					n2 = current;
+                }
+                a = current;
+                current = current.right;
+            }
+			else {
+                prev = current.left;
+                while (prev.right != null && prev.right != current)
+                    prev = prev.right;
+                if (prev.right == null) {
+                    prev.right = current;
+                    current = current.left;
+                }
+				else {
+                    if (a != null && a.val > current.val) {
+                        if (first) {
+                            n1 = a;
+                            first = false;
+                        }
+						else {
+                            n2 = current;
+                        }
+                    }
+                    if (n1 != null && a == n1) {
+						n2 = current;
+                    }
+                    a = current;
+                    prev.right = null;
+                    current = current.right;
+                }
+            }
+        }
+        assert(n1 != null && n2 != null);
+
+        int temp = n1.val;
+        n1.val = n2.val;
+        n2.val = temp;
+    }
 }

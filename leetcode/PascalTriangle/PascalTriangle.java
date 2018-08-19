@@ -19,55 +19,40 @@ import java.util.*;
 
 public class PascalTriangle {
 	public static void main(String[] args) {
-		PascalTriangle aTest = new PascalTriangle();
-		ArrayList<ArrayList<Integer>> aTriangle = aTest.generateTriangle(5);
-		for (int i=0; i<5; i++) {
-			ArrayList<Integer> aRow = aTriangle.get(i);
-			for (int j=0; j<aRow.size(); j++) {
-				System.out.print(aRow.get(j) + " ");
-			}
-			System.out.println();
+		PascalTriangle eg = new PascalTriangle();
+		List<List<Integer>> aTriangle = eg.generate(5);
+		for (List<Integer> layer : aTriangle) {
+			System.out.println(layer);
 		}
 	}
-    public ArrayList<ArrayList<Integer>> generateTriangle(int numRows) {
-        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
-        for (int i = 0; i < numRows; i++) {
-            ArrayList<Integer> temp = new ArrayList<Integer>();
-            temp.add(1);
-            if (i > 0) {
-                for (int j = 0; j < res.get(i-1).size()-1; j++) {
-                    temp.add( res.get(i-1).get(j) + res.get(i-1).get(j+1) );
-                }
-            	temp.add(1);
-            }
-            
-            res.add(temp);
-        }
 
-        return res;
-    }
-
-    // self written version passed test
-    public ArrayList<ArrayList<Integer>> generate(int numRows) {
-        ArrayList<ArrayList<Integer>> ret = new ArrayList<ArrayList<Integer>>();
+	public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> result = new ArrayList<>();
         if (numRows == 0) {
-            return ret;
-        }
-        for (int i = 0; i < numRows; i++) {
-            ArrayList<Integer> temp = new ArrayList<Integer>();
-            temp.add(1);
-            
-            if (i > 0) {
-                ArrayList<Integer> preceding = ret.get(i-1);
-                for ( int j = 0; j < preceding.size() - 1; j++ ) {
-                    temp.add( preceding.get(j) + preceding.get(j+1) );
-                }
-                temp.add(1);
-            }
-            
-            ret.add(temp);
+            return result;
         }
         
-        return ret;
+        List<Integer> rowOne = new ArrayList<>();
+        rowOne.add(1);
+        result.add(rowOne);
+        
+        for (int r = 1; r < numRows; r++) {
+            List<Integer> layer = new ArrayList<>();
+            // 开头
+            layer.add(1);
+            // 中间
+            List<Integer> previousLayer = result.get(r - 1);
+            for (int i = 1; i < previousLayer.size(); i++) {
+                int first = previousLayer.get(i - 1);
+                int second = previousLayer.get(i);
+                layer.add(first + second);
+            }
+            // 结尾
+            layer.add(1);
+            
+            result.add(layer);
+        }
+        
+        return result;
     }
 }

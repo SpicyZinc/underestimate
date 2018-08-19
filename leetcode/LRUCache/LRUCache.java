@@ -2,8 +2,8 @@
 Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and put.
 
 get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
-put(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity,
-it should invalidate the least recently used item before inserting a new item.
+put(key, value) - Set or insert the value if the key is not already present.
+When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
 
 Follow up:
 Could you do both operations in O(1) time complexity?
@@ -24,6 +24,9 @@ cache.get(4);       // returns 4
 
 
 idea:
+doubly linkedlist
+首位就是recently used, 末位就是least recently used
+
 https://www.programcreek.com/wp-content/uploads/2013/03/LRU-Cache-650x296.png
 
 http://www.cnblogs.com/feiling/p/3426967.html
@@ -31,7 +34,6 @@ http://www.cnblogs.com/feiling/p/3426967.html
 use LinkedHashMap
 http://www.codewalk.com/2012/04/least-recently-used-lru-cache-implementation-java.html
 http://blog.csdn.net/whuwangyi/article/details/15495845
-
 
 get == visit 
 set == insert

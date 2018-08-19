@@ -22,16 +22,17 @@ reversedLeft "ba" is contained in the map, right ece is palindrome
 "eceab", "ba"
 pay attention to the pair order
 
-Another way to avoid duplicates is to use Set<List<Integer>> ret = new HashSet<>(); and return new ArrayList<>(ret);
+Another way to avoid duplicates is to use Set<List<Integer>> ret = new HashSet<>();
+and return new ArrayList<>(ret);
 */
 
 import java.util.*;
 
 public class PalindromePairs {
-
     public static void main(String[] args) {
         String[] words = {"a", ""};
         // String[] words = {"abcd","dcba","lls","s","sssll"};
+        // Cigar? Toss it in a can. It is so tragic.
         PalindromePairs pp = new PalindromePairs();
         pp.palindromePairs(words);
 
@@ -40,6 +41,7 @@ public class PalindromePairs {
         System.out.println();
         System.out.println(ss + "|");
     }
+
     public List<List<Integer>> palindromePairs(String[] words) {
         List<List<Integer>> pairs = new ArrayList<>();
         if (words.length == 0 || words == null) {
@@ -53,11 +55,11 @@ public class PalindromePairs {
 
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
-            int len = word.length();
-            // j <= len to cover 
+            int size = word.length();
+            // note, substring() j can be size
             // 1. current word self is palindrome
             // 2. get reversed string of whole current word, case of ["a", ""]
-            for (int j = 0; j <= len; j++) {
+            for (int j = 0; j <= size; j++) {
                 String left = word.substring(0, j);
                 String right = word.substring(j);
                 String reversedLeft = reverse(left);
@@ -105,7 +107,7 @@ public class PalindromePairs {
         if (words.length == 0 || words == null) {
             return pairs;
         }
-        HashMap<String, Integer> hm = new HashMap<String, Integer>();
+        Map<String, Integer> hm = new HashMap<String, Integer>();
         for (int i = 0; i < words.length; i++) {
             hm.put(words[i], i);
         }
