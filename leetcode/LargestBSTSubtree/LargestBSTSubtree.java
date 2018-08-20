@@ -22,7 +22,7 @@ Can you figure out ways to solve it with O(n) time complexity?
 
 
 idea:
-
+https://www.cnblogs.com/grandyang/p/5188938.html
 */
 
 class TreeNode {
