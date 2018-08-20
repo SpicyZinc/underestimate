@@ -49,7 +49,6 @@ class TreeNode {
 }
 
 class LongestUnivaluePath {	
-
 	public int longestUnivaluePath(TreeNode root) {
 		int[] max = new int[1];
 		edgeLength(root, max);
