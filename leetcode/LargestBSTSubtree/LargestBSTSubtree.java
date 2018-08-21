@@ -23,6 +23,9 @@ Can you figure out ways to solve it with O(n) time complexity?
 
 idea:
 https://www.cnblogs.com/grandyang/p/5188938.html
+不断check root, root.left, root.right 是否是bst
+if so, count the number of nodes
+a lot of dfs() in count(), isValidBST(), largestBSTSubtree()
 */
 
 class TreeNode {
@@ -34,21 +37,36 @@ class TreeNode {
 
 class LargestBSTSubtree {
 	public int largestBSTSubtree(TreeNode root) {
+		if (root == null) {
+			return 0;
+		}
+		if (isValidBST(root)) {
+			return count(root);
+		}
 
+		return Math.max(largestBSTSubtree(root.left), largestBSTSubtree(root.right));
 	}
 
 	public boolean isValidBST(TreeNode root) {
-        return dfs(root, Long.MIN_VALUE, Long.MAX_VALUE);
-    }
-    
-    public boolean dfs(TreeNode node, long min, long max) {
-        if (node == null) {
-            return true;
-        }
+		return dfs(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
 
-        boolean isLeftValid = dfs(node.left, min, node.val);
-        boolean isRightValid = dfs(node.right, node.val, max);
-        
-        return min < node.val && node.val < max && isLeftValid && isRightValid;
-    }
+	public boolean dfs(TreeNode node, int min, int max) {
+		if (node == null) {
+			return true;
+		}
+
+		boolean isLeftValid = dfs(node.left, min, node.val);
+		boolean isRightValid = dfs(node.right, node.val, max);
+
+		return min < node.val && node.val < max && isLeftValid && isRightValid;
+	}
+
+	public int count(TreeNode node) {
+		if (node == null) {
+			return 0;
+		}
+
+		return 1 + count(node.left) + count(node.right);
+	}
 }
