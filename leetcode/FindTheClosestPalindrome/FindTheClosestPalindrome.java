@@ -181,4 +181,32 @@ public class FindTheClosestPalindrome {
 
         return sb.toString();
     }
+	
+	// direct method
+	public String nearestPalindromic(String n) {
+        long N = Long.parseLong(n);
+        for (long i = 1; i <= N; i++) {
+            if (isPalindrome(N - i)) {
+                return "" + (N - i);
+            }
+            if (isPalindrome(N + i)) {
+                return "" + (N + i);
+            }
+        }
+        
+        return "0";
+    }
+
+    public boolean isPalindrome(long n) {
+        String str = String.valueOf(n);
+        int l = str.length();
+        
+        for (int i = 0; i < l / 2; i++) {
+            if (str.charAt(i) != str.charAt(l - 1 - i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
