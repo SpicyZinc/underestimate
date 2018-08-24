@@ -31,6 +31,8 @@ Note: The length of each dimension in the given grid does not exceed 50.
 idea:
 take self as anchored
 dfs, visited, one shape as one path
+note, need to know and remember why (i - r0) * n * 2, 用多余的一倍去中和 minus column
+otherwise duplicates sum generated but different location, e.g. as in main method
 */
 import java.util.*;
 
@@ -43,10 +45,17 @@ class NumberOfDistinctIslands {
 			// {0, 0, 0, 1, 1},
 			// {0, 0, 0, 1, 0},
 
-			{1,1,0,1,1},
-			{1,0,0,0,0},
-			{0,0,0,0,1},
-			{1,1,0,1,1},
+			// {1,1,0,1,1},
+			// {1,0,0,0,0},
+			// {0,0,0,0,1},
+			// {1,1,0,1,1},
+
+			{1,1,1,1},
+			{1,0,1,0},
+			{0,0,0,0},
+			{0,1,1,1},
+			{1,1,0,1}
+
 		};
 
 		int cnt = eg.numDistinctIslands(grid);
@@ -58,12 +67,13 @@ class NumberOfDistinctIslands {
 		int n = grid[0].length;
 
         boolean[][] visited = new boolean[m][n];
-        Set shapes = new HashSet<Set<Integer>>();
+        Set<Set<Integer>> shapes = new HashSet<>();
 
-        for (int r = 0; r < m; r++) {
-            for (int c = 0; c < n; c++) {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 Set<Integer> shape = new HashSet<Integer>();
-                dfs(grid, r, c, r, c, shape, visited);
+                dfs(grid, i, j, i, j, shape, visited);
+
                 if (!shape.isEmpty()) {
                 	// if there are duplicates, set shapes will filter off
                     shapes.add(shape);
@@ -74,7 +84,7 @@ class NumberOfDistinctIslands {
         return shapes.size();
     }
 
-	public void dfs(int[][] grid, int r, int c, int r0, int c0, Set<Integer> shape, boolean[][] visited) {
+	public void dfs(int[][] grid, int i, int j, int r0, int c0, Set<Integer> shape, boolean[][] visited) {
 		int m = grid.length;
 		int n = grid[0].length;
 
@@ -85,16 +95,61 @@ class NumberOfDistinctIslands {
 			{0, -1},
 		};
 
-		if (r >= 0 && r < m && c >= 0 && c < n && grid[r][c] == 1 && !visited[r][c]) {
-			visited[r][c] = true;
+		if (i >= 0 && i < m && j >= 0 && j < n && grid[i][j] == 1 && !visited[i][j]) {
+			visited[i][j] = true;
 
-			shape.add((r - r0) * 2 * n + (c - c0));
+			shape.add((i - r0) * n * 2 + (j - c0));
 
             for (int[] dir : directions) {
-            	int newRow = r + dir[0];
-            	int newCol = c + dir[1];
+            	int newRow = i + dir[0];
+            	int newCol = j + dir[1];
             	dfs(grid, newRow, newCol, r0, c0, shape, visited);
             }
+        }
+    }
+
+    // self better method with encoded string
+    public int numDistinctIslands(int[][] grid) {
+		int m = grid.length;
+		int n = grid[0].length;
+
+		boolean[][] visited = new boolean[m][n];
+		Set<Set<String>> shapes = new HashSet<>();
+
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				Set<String> islandShape = new HashSet<>();
+				dfs(grid, i, j, i, j, islandShape, visited);
+				if (!islandShape.isEmpty()) {
+					shapes.add(islandShape);
+				}
+			}
+		}
+
+        return shapes.size();
+    }
+
+	public void dfs(int[][] grid, int i, int j, int r0, int c0, Set<String> islandShape, boolean[][] visited) {
+		int m = grid.length;
+		int n = grid[0].length;
+
+		int[][] directions = {
+			{1, 0},
+			{-1, 0},
+			{0, 1},
+			{0, -1},
+		};
+
+		if (i >= 0 && i < m && j >= 0 && j < n && grid[i][j] == 1 && !visited[i][j]) {
+			visited[i][j] = true;
+
+			islandShape.add((i - r0) + "-" + (j - c0));
+
+			for (int[] dir : directions) {
+				int newRow = i + dir[0];
+				int newCol = j + dir[1];
+				dfs(grid, newRow, newCol, r0, c0, islandShape, visited);
+			}
         }
     }
 }

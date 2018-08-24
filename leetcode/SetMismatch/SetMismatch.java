@@ -18,18 +18,21 @@ The given array's numbers won't have any order.
 idea:
 many ways to solve these problems
 this kind of hash method
+record appear times for each number
 */
 public class SetMismatch {
 	public int[] findErrorNums(int[] nums) {
+		int n = nums.length;
+
 		int duplicate = -1;
 		int missing = 1;
 
-		int[] arr = new int[nums.length + 1];
-		for (int i = 0; i < nums.length; i++) {
+		int[] arr = new int[n + 1];
+		for (int i = 0; i < n; i++) {
 			arr[nums[i]] += 1;
 		}
 
-		for (int i = 1; i < arr.length; i++) {
+		for (int i = 1; i <= n; i++) {
 			if (arr[i] == 0) {
 				missing = i;
 			} else if (arr[i] == 2) {

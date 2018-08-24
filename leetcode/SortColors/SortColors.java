@@ -1,6 +1,4 @@
 /*
-Sort Colors
-
 Given an array with n objects colored red, white or blue, 
 sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue. 
 
@@ -38,14 +36,10 @@ public class SortColors {
                 swap(A, i, l);                
                 i++;
 				l++;
-            }
-			// if belongs in the bottom, swap it with the element just above the bottom
-            else if (A[i] == 2) {
+            } else if (A[i] == 2) { // if belongs in the bottom, swap it with the element just above the bottom
                 swap(A, i, r);
                 r--;
-            }
-			// if in the middle, leave it
-            else {
+            } else { // if in the middle, leave it
                 i++;
             }
         }

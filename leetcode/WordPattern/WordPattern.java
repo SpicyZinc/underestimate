@@ -25,7 +25,7 @@ import java.util.*;
 
 public class WordPattern {
 	public static void main(String[] args) {
-		HashMap hm = new HashMap();
+		Map<Character, String> hm = new HashMap();
 		System.out.println(hm.put('A', "111"));    // null
 		System.out.println(hm.put('A', "222"));    // 111
 		System.out.println(hm.get('A'));           // 222
