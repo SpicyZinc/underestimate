@@ -91,7 +91,7 @@ public class MaxPointsOnALine {
                 currMax = Math.max(currMax, count);
     		}
     		currMax += cnt;
-		maxCnt = Math.max(maxCnt, currMax);
+			maxCnt = Math.max(maxCnt, currMax);
     	}
 
         return maxCnt;
