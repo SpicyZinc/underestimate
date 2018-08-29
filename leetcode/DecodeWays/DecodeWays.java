@@ -29,15 +29,23 @@ ways[i] is the number of decoding ways for substring(0, i)
 public class DecodeWays {
     // 240 / 259 test cases passed
     public int numDecodings(String s) {
-        if (s.length() == 0 || s == null) return 0;
+        if (s.length() == 0 || s == null) {
+            return 0;
+        }
+
         return dfs(s);
     }
     
     public int dfs(String s) {
         // stopping case
-        if (s.length() == 0 || s == null) return 1;
+        if (s.length() == 0 || s == null) {
+            return 1;
+        }
         // case '0' as input
-        if (s.charAt(0) == '0') return 0; 
+        if (s.charAt(0) == '0') {
+            return 0; 
+        }
+
         int cnt = dfs(s.substring(1));
         if (s.length() >= 2) {
             char first = s.charAt(0);
@@ -60,9 +68,13 @@ public class DecodeWays {
         for (int i = 2; i <= s.length(); i++) {
             char first = s.charAt(i - 2);
             char second = s.charAt(i - 1);
+            // 12 1(A and 2(B) or 12 as L 两种
+            // 但是一旦有0 就不行了
             if (second != '0') {
                 ways[i] += ways[i - 1];  
             }
+            // 如果是1 second可以是[0-9] 没有限制
+            // 如果是2 second只能是[0-6]
             if (first == '1' || first == '2' && second >= '0' && second <= '6') {
                 ways[i] += ways[i - 2];  
             }

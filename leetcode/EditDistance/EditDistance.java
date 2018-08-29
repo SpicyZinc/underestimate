@@ -27,39 +27,38 @@ public class EditDistance {
 		System.out.print("Min of 1 2 3 == " + aTest.min(1, 2, 3));
 		
 	}
-    // self written version
+    // 08/25/2018
     public int minDistance(String word1, String word2) {
         int size1 = word1.length();
         int size2 = word2.length();
-        int[][] minDistance = new int[size1 + 1][size2 + 1];
-        // initialization
-        // the edit distance between the prefixes of word1 and an empty string
-        for (int i = 0; i <= size1; i++) {
-            minDistance[i][0] = i;
+        
+        int[][] dp = new int[size1 + 1][size2 + 1];
+        // empty to empty string, 0 change
+        dp[0][0] = 0;
+        // i chars to empty string, i times of changes
+        for (int i = 1; i <= size1; i++) {
+            dp[i][0] = i;
         }
-        // the edit distance between the prefixes of word2 and an empty string
-        for (int j = 0; j <= size2; j++) {
-            minDistance[0][j] = j;
+        for (int j = 1; j <= size2; j++) {
+            dp[0][j] = j;
         }
-
+        
         for (int i = 1; i <= size1; i++) {
             for (int j = 1; j <= size2; j++) {
-                char c1 = word1.charAt(i-1);
-                char c2 = word2.charAt(j-1);
+                char c1 = word1.charAt(i - 1);
+                char c2 = word2.charAt(j - 1);
                 if (c1 == c2) {
-                    minDistance[i][j] = minDistance[i-1][j-1];
-                }
-                else {
-                    int insert = minDistance[i-1][j] + 1;
-                    int replace = minDistance[i-1][j-1] + 1;
-                    int remove = minDistance[i][j-1] + 1;
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    int insert = dp[i][j - 1] + 1;
+                    int remove = dp[i - 1][j] + 1;
+                    int replace = dp[i - 1][j - 1] + 1;
                     // min of insertion, deletion, replacement
-                    int min = Math.min( Math.min(insert, replace), remove );
-                    minDistance[i][j] = min;
+                    dp[i][j] = Math.min(replace, Math.min(insert, remove));
                 }
             }
         }
-
-        return minDistance[size1][size2];
+        
+        return dp[size1][size2];
     }
 }

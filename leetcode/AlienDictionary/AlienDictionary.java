@@ -1,5 +1,5 @@
 /*
-There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you.
+There is a new alien language which uses the Latin alphabet. However, the order among letters are unknown to you.
 You receive a list of words from the dictionary, where words are sorted lexicographically by the rules of this new language.
 Derive the order of letters in this language.
 
@@ -16,7 +16,6 @@ Given the following words in dictionary,
 The correct order is: "wertf".
 
 Note:
-
 You may assume all letters are in lowercase.
 If the order is invalid, return an empty string.
 There may be multiple valid order of letters, return any one of them is fine.
@@ -28,14 +27,13 @@ inDegree char <-> frequency
 in essence, this is topological sorting of DAG
 
 有多少个letter 就是多少个vertex 在 graph 中
-有的点没有 入度 那它们就是 起始点 
+有的点没有 入度 入度为0 那它们就是 起始点 (lexicographically smallest)
 它们指向的点再 一步步减少入度
 */
 
 import java.util.*;
 
 class AlienDictionary {
-
 	public static void main(String[] args) {
 		AlienDictionary eg = new AlienDictionary();
 		String[] words = {
@@ -92,7 +90,7 @@ class AlienDictionary {
 				}
 			}
 		}
-
+		// queue只放放入度为0的 char
 		Queue<Character> queue = new LinkedList<Character>();
 		// add char of 0 in-degree to queue
 		for (Map.Entry<Character, Integer> entry : inDegree.entrySet()) {

@@ -37,37 +37,44 @@ public class LongestIncreasingPathInAMatrix {
 		{-1, 0}
 	};
 
-    public int longestIncreasingPath(int[][] matrix) {
+	public int longestIncreasingPath(int[][] matrix) {
 		if (matrix.length == 0 || matrix == null) {
 			return 0;
 		}
 
 		int m = matrix.length;
 		int n = matrix[0].length;
-		int[][] dp = new int[m][n];
+		int[][] memo = new int[m][n];
 		int max = 0;
+
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				max = Math.max(max, dfs(matrix, i, j, m, n, dp));
+				// 以每个点作为起点 求最长的 increasing path
+				max = Math.max(max, dfs(matrix, i, j, memo));
 			}
 		}
 
 		return max;
-    }
+	}
 
-    private int dfs(int[][] matrix, int x, int y, int m, int n, int[][] dp) {
-    	if (dp[x][y] != 0) {
-    		return dp[x][y];
-    	}
+	private int dfs(int[][] matrix, int x, int y, int[][] memo) {
+		int m = matrix.length;
+		int n = matrix[0].length;
 
-    	for (int[] direction : directions) {
-    		int nextX = x + direction[0];
-    		int nextY = y + direction[1];
-    		if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && matrix[x][y] < matrix[nextX][nextY]) {
-    			dp[x][y] = Math.max(dp[x][y], dfs(matrix, nextX, nextY, m, n, dp));
-    		}
-    	}
+		if (memo[x][y] != 0) {
+			return memo[x][y];
+		}
 
-    	return ++dp[x][y];
-    }
+		for (int[] direction : directions) {
+			int nextX = x + direction[0];
+			int nextY = y + direction[1];
+
+			if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && matrix[x][y] < matrix[nextX][nextY]) {
+				memo[x][y] = Math.max(memo[x][y], dfs(matrix, nextX, nextY, memo));
+			}
+		}
+		// 增加了1步
+		memo[x][y] += 1;
+		return memo[x][y];
+	}
 }

@@ -50,6 +50,7 @@ node => node.left
 node => node.right
 node => node.parent
 know how to dfs (node, parent, hm)
+每个点都会有两个 list, to parent and to children
 */
 
 class TreeNode {
@@ -61,38 +62,40 @@ class TreeNode {
 
 class ClosestLeafInBinaryTree {
     public int findClosestLeaf(TreeNode root, int k) {
-        Map<TreeNode, List<TreeNode>> graph = new HashMap();
+        Map<TreeNode, List<TreeNode>> graph = new HashMap<>();
+        // populate the graph
         dfs(graph, root, null);
-
-        Queue<TreeNode> queue = new LinkedList();
-        Set<TreeNode> visited = new HashSet();
-
+        
+        Queue<TreeNode> queue = new LinkedList<>();
+        Set<TreeNode> visited = new HashSet<>();
+        
+        // 只有变成graph也就是个HashMap后才可以loop找到target of k
         for (TreeNode node : graph.keySet()) {
             if (node != null && node.val == k) {
                 queue.add(node);
                 visited.add(node);
+                break;
             }
         }
 
         while (!queue.isEmpty()) {
             TreeNode node = queue.poll();
-            if (node != null) {
-                if (graph.get(node).size() <= 1) {
-                    return node.val;
-                }
-                // 通过 neighbor 找, 一定是最小的 最 closest
-                for (TreeNode neighbor : graph.get(node)) {
-                    if (!visited.contains(neighbor)) {
-                        visited.add(neighbor);
-                        queue.add(neighbor);
-                    }
+            // 所指的list中只有node 显然是Leaf
+            if (node != null && graph.get(node).size() == 1) {
+                return node.val;
+            }
+            // 通过 neighbor 找, 一定是距离最小的 最closest
+            for (TreeNode neighbor : graph.get(node)) {
+                if (!visited.contains(neighbor)) {
+                    queue.add(neighbor);
+                    visited.add(neighbor);
                 }
             }
         }
-
+        
         return -1;
     }
-
+    
     public void dfs(Map<TreeNode, List<TreeNode>> graph, TreeNode node, TreeNode parent) {
         if (node != null) {
             if (!graph.containsKey(node)) {
@@ -101,7 +104,7 @@ class ClosestLeafInBinaryTree {
             if (!graph.containsKey(parent)) {
                 graph.put(parent, new LinkedList<TreeNode>());
             }
-
+                    
             graph.get(node).add(parent);
             graph.get(parent).add(node);
 

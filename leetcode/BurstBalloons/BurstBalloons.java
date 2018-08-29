@@ -45,6 +45,7 @@ public class BurstBalloons {
         
         int n = copy.length;
         int[][] dp = new int[n][n];
+
         for (int span = 2; span < n; span++) {
             for (int left = 0; left < n - span; left++) {
                 int right = left + span;
@@ -52,7 +53,7 @@ public class BurstBalloons {
                 for (int mid = left + 1; mid <= right - 1; mid++) {
                     // left, left + 1, ..., mid - 1, mid, mid + 1, ..., right - 1, right
                     // burst [left + 1, mid - 1] and [mid + 1, right - 1]
-                    // the rest is left, mid, right, then  burst mid
+                    // the rest is left, mid, right, then burst mid
                     int max = dp[left][mid] + copy[left] * copy[mid] * copy[right] + dp[mid][right];
                     dp[left][right] = Math.max(dp[left][right], max);
                 }

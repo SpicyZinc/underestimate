@@ -1,5 +1,4 @@
 /*
-N-Queens II
 Follow up for N-Queens problem, instead outputting board configurations, 
 return the total number of distinct solutions.
 
@@ -35,11 +34,11 @@ i .
 
 import java.util.*;
 
-public class N_QueensII {	
+public class N_Queens {	
 	public static void main(String[] args) {
-		new N_QueensII();
+		new N_Queens();
 	}
-	public N_QueensII() {
+	public N_Queens() {
 		int result = totalNQueens(5);
 		System.out.print("5-Queens has " + result + " distinct ways");
 	}
@@ -61,8 +60,7 @@ public class N_QueensII {
 		if (row == n) {
 			count[0]++;
 			return;
-		}
-		else {
+		} else {
 			// i is element in solution[]
 			// in fact it is column index
 			// key part I
@@ -101,16 +99,16 @@ public class N_QueensII {
         
         return count[0];
     }
+
     public void total(int[] count, int[] solutions, int row) {
         int n = solutions.length;
         if (row == n) {
             count[0]++;
-        }
-        else {
+        } else {
             for (int i = 0; i < n; i++) {
                 solutions[row] = i;
                 if ( isValid(solutions, row, i) ) {
-                    total(count, solutions, row+1);
+                    total(count, solutions, row + 1);
                 }
             }
         }

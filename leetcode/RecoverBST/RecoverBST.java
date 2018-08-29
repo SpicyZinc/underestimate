@@ -45,7 +45,7 @@ use swap(TreeNode a, TreeNode b) to swap their values.
 
 How to find this pair of nodes
 这一对节点
-先出现的那个肯定是比其中序后继大的
+先出现的那个肯定是比其中序(inorder)后继大的
 后出现的那个节点的后继, 肯定不大于先出现这个错误节点的值.
 
 best explanation,
@@ -84,7 +84,7 @@ public class RecoverBST {
 		wrongBST.inOrderPrint(root);		
 	}
 
-	// direct method with O(n) space cost
+	// direct method with O(n) space
 	public void recoverTree(TreeNode root) {
 		if (root == null) {
 			return ;
@@ -122,44 +122,38 @@ public class RecoverBST {
 
 	// method 1
 	TreeNode prev = new TreeNode(Integer.MIN_VALUE);
-    TreeNode[] dislocations = new TreeNode[] { null, null };
+    TreeNode[] dislocations = new TreeNode[2];
 
-	public void recoverTree(TreeNode root) {
-		if (root == null) {
-			return ;
-		}
-
-		inorder(root);
-
-        swap();
-
-		return;
-	}
-
-	public void inorder(TreeNode node) {
-		if (node == null) {
+    public void recoverTree(TreeNode root) {
+        inorder(root);
+        // note, swap value, not reference
+        int temp = dislocations[0].val;
+        dislocations[0].val = dislocations[1].val;
+        dislocations[1].val = temp;
+    }
+    
+    public void inorder(TreeNode node) {
+        if (node == null) {
 			return;
 		}
 
-		inorder(node.left);
-
-		if (dislocations[0] == null && prev.val >= node.val) {
-			dislocations[0] = prev;
-		}
-		if (dislocations[0] != null && prev.val >= node.val) {
-			dislocations[1] = node;
-		}
-
-		prev = node;
-
-		inorder(node.right);
-	}
-
-	public void swap() {
-		int tmp = dislocations[0].val;
-		dislocations[0].val = dislocations[1].val;
-		dislocations[1].val = tmp;
-	}
+        inorder(node.left);
+        
+        // 在 inorder traversal 中 这两个dislocations 是前后紧挨的
+        // 1 3 2 4 => 3 and 2
+        // supposed prev.val < node.val
+        if (dislocations[0] == null && prev.val >= node.val) {
+            dislocations[0] = prev;
+        }
+        
+        if (dislocations[0] != null && prev.val >= node.val) {
+            dislocations[1] = node;
+        }
+        
+        prev = node;
+        
+        inorder(node.right);
+    }
 
 	// method 2
 	public void recoverTree(TreeNode root) {
@@ -223,8 +217,7 @@ public class RecoverBST {
                     if (first) {
                         n1 = a;
                         first = false;
-                    }
-					else {
+                    } else {
                         n2 = current;
                     }
                 }
@@ -233,22 +226,19 @@ public class RecoverBST {
                 }
                 a = current;
                 current = current.right;
-            }
-			else {
+            } else {
                 prev = current.left;
                 while (prev.right != null && prev.right != current)
                     prev = prev.right;
                 if (prev.right == null) {
                     prev.right = current;
                     current = current.left;
-                }
-				else {
+                } else {
                     if (a != null && a.val > current.val) {
                         if (first) {
                             n1 = a;
                             first = false;
-                        }
-						else {
+                        } else {
                             n2 = current;
                         }
                     }

@@ -1,11 +1,20 @@
 /*
-Simplify Path
 Given an absolute path for a file (Unix-style), simplify it.
+
+For example,
+path = "/home/", => "/home"
+path = "/a/./b/../../c/", => "/c"
+
+Corner Cases:
+Did you consider the case where path = "/../"?
+In this case, you should return "/".
+Another corner case is the path might contain multiple slashes '/' together, such as "/home//foo/".
+In this case, you should ignore redundant slashes and return "/home/foo".
 
 idea:
 . current directory
-.. parent direcotry
-"cd -" go to last direcotry or previous directory
+.. parent directory
+"cd -" go to last directory or previous directory
 
 "segment" is a string holder used to record "last" real "files" before "/", set to null each time
 get rid of // or /, only push "files" names into the stack "simplePath"
@@ -16,82 +25,44 @@ if segment.equals("."), don't push into stack, ignore it
 if segment.equals(".."), pop "file" at the stack's top
  
 after all elements are in the stack, pop all elements, 
-concatenate string from right to left by adding "/" 
+concatenate string from right to left by adding "/"
 */
+
 import java.util.*;
 
 public class SimplifyPath {
     public String simplifyPath(String path) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        Stack<String> simplePath = new Stack<String>();
+        Stack<String> files = new Stack<>();
         String segment = "";
+        int n = path.length();
 		// path = "/home/", => "/home"
 		// path = "/a/./b/../../c/", => "/c"
-        for (int i = 0; i <= path.length(); i++) {
-            // i == path.length() in order to push last segment into stack
-            if (i == path.length() || path.charAt(i) == '/') {
+        for (int i = 0; i <= n; i++) {
+        	// i == path.length() in order to push last segment into stack
+            if (i == n || path.charAt(i) == '/') {
                 if (segment.equals("..")) {
-                    if (simplePath.size() > 0) {
-                        simplePath.pop();
-                    } 
-					else {
-						// error, in the test set, this case just ignore
-                        // return "/";
+                    if (files.size() > 0) {
+                        files.pop();
                     }
-                } 
-				else if (segment.equals(".")) {
-                    // do nothing
-                }
-				else if (segment.length() > 0) {
-                    simplePath.push(segment);
+                } else if (segment.length() > 0 && !segment.equals(".")) { // can only be file
+                    files.push(segment);
                 }
                 segment = "";
-            } 
-			else {
+            } else {
                 segment += path.charAt(i);
             }
         }
-		
-        String ret = "/";
-        for (int i = 0; i < simplePath.size(); i++) {
-            if (i > 0) 
-				ret += "/";
-            ret += simplePath.get(i);
-        }
-        return ret;
-    }
 
-
-    // cleaner version
-    public String simplifyPath(String path) {
-        Stack<String> simplePath = new Stack<String>();
-        String segment = "";
-        for (int i = 0; i <= path.length(); i++) {
-            if (i == path.length() || path.charAt(i) == '/') {
-                if (segment.equals("..")) {
-                    if (simplePath.size() > 0) {
-                        simplePath.pop();
-                    } 
-                } 
-                else if (segment.equals(".")) {
-                }
-                else if (segment.length() > 0) {
-                    simplePath.push(segment);
-                }
-                segment = "";
-            } 
-            else {
-                segment += path.charAt(i);
-            }
+        if (files.isEmpty()) {
+            return "/";
         }
         
-        String ret = "/";
-        for (int i = 0; i < simplePath.size(); i++) {
-            if (i > 0) 
-                ret += "/";
-            ret += simplePath.get(i);
+        String result = "";
+        // can index access stack
+        for (int i = 0; i < files.size(); i++) {
+            result += "/" + files.get(i);
         }
-        return ret;
+        
+        return result;
     }
 }

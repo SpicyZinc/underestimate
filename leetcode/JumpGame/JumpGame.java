@@ -1,5 +1,4 @@
 /*
-Jump Game
 Given an array of non-negative integers, you are initially positioned at the first index of the array.
 Each element in the array represents your maximum jump length at that position.
 Determine if you are able to reach the last index.
@@ -46,7 +45,7 @@ public class JumpGame {
 
         return true;
     }
-    // one version
+    // direct version
     public boolean canJump(int[] A) {
         if (A.length <= 1) {
             return true;

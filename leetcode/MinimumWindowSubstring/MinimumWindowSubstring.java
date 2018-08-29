@@ -37,6 +37,51 @@ public class MinimumWindowSubstring {
 		String minimumWindow = aTest.minWindow(S, T);
 		System.out.println("minimumWindow == " + minimumWindow);		
 	}
+    // 08/25/2018 prepare for Amazon
+    // although fail 267 / 268 test cases passed, but good to try
+    public String minWindow(String s, String t) {
+        String result = "";
+        if (t.length() > s.length()) {
+            return result;
+        }
+        
+        int[] letters = new int[256];
+        for (int i = 0; i < t.length(); i++) {
+            int c = t.charAt(i);
+            letters[c]++;
+        }
+        
+        int min = s.length() + 1;
+        
+        for (int i = 0; i < s.length(); i++) {
+            int[] copy = Arrays.copyOf(letters, letters.length);
+            for (int j = i; j < s.length(); j++) {
+                int c = s.charAt(j);
+                if (copy[c] >= 1) {
+                    copy[c]--;
+                }
+                if (isEmpty(copy)) {
+                    int len = j - i + 1;
+                    if (min > len) {
+                        min = len;
+                        result = s.substring(i, j + 1);
+                    }
+                }
+            }
+        }
+        
+        return min == s.length() + 1 ? "" : result;
+    }
+    
+    public boolean isEmpty(int[] letters) {
+        for (int cnt : letters) {
+            if (cnt != 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
     // 07/09/2018 prepare for Google
     public String minWindow(String s, String t) {
@@ -63,14 +108,14 @@ public class MinimumWindowSubstring {
                 if (hm.get(rightMost) >= 0) {
                     tCharsCountInS++;
                 }
-                // move left of the window
+                // move the window's left
                 while (tCharsCountInS == t.length()) {
                     // update minLen
                     if (right - left + 1 < minLen) {
                         minLen = right - left + 1;
                         result = s.substring(left, right + 1);
                     }
-                    // start moving left of window
+                    // start moving window's left
                     char leftMost = s.charAt(left);
                     if (hm.containsKey(leftMost)) {
                         hm.put(leftMost, hm.get(leftMost) + 1);

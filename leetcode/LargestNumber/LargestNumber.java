@@ -34,6 +34,7 @@ public class LargestNumber {
         if (largestNumber.charAt(0) == '0') {
             return "0";
         }
+
         return largestNumber;
     }
 }

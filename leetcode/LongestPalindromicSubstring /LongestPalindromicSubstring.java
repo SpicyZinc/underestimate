@@ -41,7 +41,7 @@ class LongestPalindromicSubstring {
         int maxSubPalindromeLength = 0;
 
         for (int i = 0; i < s.length(); i++) {
-            for (int j = i+1; j <= s.length(); j++) {
+            for (int j = i + 1; j <= s.length(); j++) {
                 String temp = s.substring(i, j);
                 int len = j - i + 1;
                 if ( isPalindromic(temp) ) {
@@ -58,7 +58,7 @@ class LongestPalindromicSubstring {
     
     private boolean isPalindromic(String s) {
         int size = s.length();
-        for (int i = 0; i < size/2; i++) {
+        for (int i = 0; i < size / 2; i++) {
             if (s.charAt(i) != s.charAt(size - 1 - i)) {
                 return false;
             }
@@ -81,7 +81,7 @@ class LongestPalindromicSubstring {
             int right = (i + 1) / 2;
             
             String palindrome = getPalindrome(s, left, right);
-            
+
             if (palindrome.length() > max) {
                 max = palindrome.length();
                 longest = palindrome;
@@ -112,7 +112,7 @@ class LongestPalindromicSubstring {
         boolean[][] palindromic = new boolean[size][size];
         for (int i = size - 1; i >= 0; i--) {
             for (int j = i; j < size; j++) {
-                if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i+1][j-1]) ) {
+                if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i + 1][j - 1]) ) {
                     palindromic[i][j] = true;
                     if (maxLength < j - i + 1) {
                         maxLength = j - i + 1;

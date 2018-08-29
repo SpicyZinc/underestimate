@@ -32,7 +32,7 @@ public class CompareVersionNumbers  {
         String[] m2 = version2.split("\\.");
         
         int len = Math.max(m1.length, m2.length);
-        for ( int i = 0; i < len; i++ ) {
+        for (int i = 0; i < len; i++) {
             int val1 = i < m1.length ? Integer.valueOf(m1[i]) : 0;
             int val2 = i < m2.length ? Integer.valueOf(m2[i]) : 0;
             if ( val1 > val2 ) {
@@ -54,19 +54,13 @@ public class CompareVersionNumbers  {
         String[] parts1 = integerAndFraction(version1);
         String[] parts2 = integerAndFraction(version2);
 
-        int firstVersion1 = Integer.valueOf(parts1[0]);
-        int firstVersion2 = Integer.valueOf(parts2[0]);
+        Integer firstVersion1 = Integer.valueOf(parts1[0]);
+        Integer firstVersion2 = Integer.valueOf(parts2[0]);
 
         String restVersion1 = parts1[1];
         String restVersion2 = parts2[1];
-        
-        if (firstVersion1 > firstVersion2) {
-            return 1;
-        } else if (firstVersion1 < firstVersion2) {
-            return -1;
-        } else {
-            return compareVersion(restVersion1, restVersion2);
-        }
+
+        return firstVersion1 == firstVersion2 ? compareVersion(restVersion1, restVersion2) : firstVersion1.compareTo(firstVersion2);
     }
 
     // helper to extract integer and fraction part of the number

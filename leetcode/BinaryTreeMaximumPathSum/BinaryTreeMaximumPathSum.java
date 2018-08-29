@@ -1,11 +1,11 @@
 /*
 Given a binary tree, find the maximum path sum.
-For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child connections.
+For this problem,
+a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child connections.
 The path must contain at least one node and does not need to go through the root.
 
 For example:
 Given the below binary tree,
-
        1
       / \
      2   3
@@ -24,27 +24,29 @@ class TreeNode {
 }
 
 public class BinaryTreeMaximumPathSum {
-	int max = Integer.MIN_VALUE;
+    int max = Integer.MIN_VALUE;
     
     public int maxPathSum(TreeNode root) {
-    	getMaxPathSum(root);
-    	return max;
+        getMaxPathSum(root);
+        return max;
     }
-    
+    // 这个就是 严格 求 最大 一条路径 不拐弯
     public int getMaxPathSum(TreeNode node) {
-        if (node == null) return 0;
+        if (node == null) {
+            return 0;
+        }
+
         int leftPathSum = getMaxPathSum(node.left);
         int rightPathSum = getMaxPathSum(node.right);
         int maxPathSum = Math.max(node.val, node.val + Math.max(leftPathSum, rightPathSum));
-        // also don't forget to update max
+        // update real max value
         // max value can be the current max, can be returnVal, can be the arcValue which means no need to go to parent
         // till here I have the biggest value since there could be negative values in the tree
         max = Math.max(max, Math.max(maxPathSum, leftPathSum + node.val + rightPathSum));
-
         return maxPathSum;
     }
 
-	// help understand
+	// version with explanation and without global max
 	public int maxPathSum(TreeNode root) {
     	int[] max = {Integer.MIN_VALUE};
     	getMaxPathAcrossRootToParent(root, max);

@@ -46,29 +46,36 @@ public class ReverseNodesInKGroup {
         int i = 0;
         ListNode prev = dummy;
         while (head != null) {
+            head = head.next;
             i++;
             if (i % k == 0) {
-                prev = reverse(prev, head.next);
+                prev = reverseInBetween(prev, head);
                 head = prev.next;
-            } else {
-                head = head.next;
             }
         }
         
         return dummy.next;
     }
-    // return the reversed list's last node, which is the precedence of parameter next
-    public ListNode reverse(ListNode prev, ListNode next) {
-        ListNode last = prev.next;
-        ListNode curr = last.next;
+    // return the reversed list's last node, which is the preceding node before parameter end
+    // reverse a->b->c, reverseInBetween(dummy, d)
+    // a->b->c->d->e
+    // c->b->a->d->3
+    // return a
+    public ListNode reverseInBetween(ListNode start, ListNode end) {
+        ListNode last = start.next;
+        ListNode prev = start;
+        ListNode curr = prev.next;
         
-        while (curr != next) {
-            last.next = curr.next;
-            curr.next = prev.next;
-            prev.next = curr;
-            
-            curr = last.next;
+        while (curr != end) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
+
+        // prev is now the reversed list head
+        start.next = prev;
+        last.next = curr;
         
         return last;
     }

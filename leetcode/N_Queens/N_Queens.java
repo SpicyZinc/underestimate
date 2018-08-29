@@ -1,7 +1,7 @@
 /*
 The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
+https://leetcode.com/static/images/problemset/8-queens.png
 Given an integer n, return all distinct solutions to the n-queens puzzle.
-
 Each solution contains a distinct board configuration of the n-queens' placement,
 where 'Q' and '.' both indicate a queen and an empty space respectively.
 
@@ -21,7 +21,7 @@ There exist two distinct solutions to the 4-queens puzzle:
 
 
 idea:
-note two parts:
+path[i] = j represents row i at position of j has 'Q'
 
 1. recursion
 one solution[] index is row, value is which column is queen 'Q'
@@ -60,7 +60,7 @@ public class N_Queens {
 		}
 	}
 
-	public List<List<String>> solveNQueens(int n) {
+    public List<List<String>> solveNQueens(int n) {
         List<List<String>> result = new ArrayList<>();
         dfs(0, new int[n], result);
         
@@ -70,8 +70,7 @@ public class N_Queens {
     public void dfs(int pos, int[] path, List<List<String>> result) {
         int n = path.length;
         if (pos == n) {
-            result.add(constructSolution(path));
-            return;
+            result.add(buildSolution(path));
         } else {
             for (int i = 0; i < n; i++) {
                 path[pos] = i;
@@ -82,9 +81,8 @@ public class N_Queens {
         }
     }
     
-    private List<String> constructSolution(int[] path) {
+    public List<String> buildSolution(int[] path) {
         int n = path.length;
-
         List<String> solution = new ArrayList<String>();
         for (int i = 0; i < n; i++) {
             // for each row, find where the Q is
@@ -97,12 +95,13 @@ public class N_Queens {
         
         return solution;
     }
-    
-    private boolean isValid(int[] path, int currentRow) {
-        // path[] represents all rows, itself guarantees that same row cannot have two queens
+    // 只检查 当前 row 之前的 row
+    public boolean isValid(int[] path, int currentRow) {
+        // path[] represents all different rows, which guarantees that same row cannot have two queens
         for (int i = 0; i < currentRow; i++) {
+            // 如果之前的某row也有同样的column
             // same column
-            if (path[currentRow] == path[i]) {
+            if (path[i] == path[currentRow]) {
                 return false;
             }
             // check if on major or minor diagonal by absolute diff value of y1 - y2 == x1 - x2
@@ -110,7 +109,7 @@ public class N_Queens {
                 return false;
             }
         }
-
+        
         return true;
     }
 }

@@ -1,5 +1,5 @@
 /*
-Given an input string , reverse the string word by word. 
+Given an input string, reverse the string word by word. 
 Example:
 Input:  ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
 Output: ["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]

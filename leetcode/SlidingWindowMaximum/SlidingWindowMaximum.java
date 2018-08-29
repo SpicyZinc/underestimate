@@ -26,7 +26,20 @@ Hint:
 How about using a data structure such as deque (double-ended queue)?
 
 idea:
-https://segmentfault.com/a/1190000003903509, double ended queue
+double ended queue
+https://segmentfault.com/a/1190000003903509
+
+双向队列中存着 目前为止 降序的 最大值的index
+它的长度不一定对应于 window of k 因为有可能加入一些小的数 最大值还是原来的
+[1]
+[3]
+[3, -1]
+[3, -1, -3]
+[5]
+[5, 3]
+[6]
+[7]
+
 
 Each element in the queue is being inserted and then removed at most once. 
 The total number of insert and delete operations is 2n; therefore, it is an O(n) solution.
@@ -34,7 +47,52 @@ The total number of insert and delete operations is 2n; therefore, it is an O(n)
 sliding window length = (length - 1) - (k - 1) + 1 = length - k + 1
 maintain a queue less than or equal to k, this guarantees window of size k
 */
+import java.util.*;
+
 public class SlidingWindowMaximum {
+    public static void main(String[] args) {
+        SlidingWindowMaximum eg = new SlidingWindowMaximum();
+        int[] nums = {1,3,-1,-3,5,3,6,7};
+        int k = 3;
+
+        eg.maxSlidingWindow(nums, k);
+    }
+    // 08/26/2018
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums.length == 0 || nums == null) {
+            return new int[0];
+        }
+        
+        LinkedList<Integer> deque = new LinkedList<>();
+        int[] maxs = new int[nums.length - k + 1];
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (!deque.isEmpty() && deque.peekFirst() == i - k) {
+                deque.poll();
+            }
+            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+                deque.removeLast();
+            }
+            deque.add(i);
+            if (i + 1 >= k) {
+                maxs[i + 1 - k] = nums[deque.peek()];
+            }
+            // System.out.println(deque);
+            System.out.println(convert(nums, deque));
+        }
+        
+        return maxs;
+    }
+
+    private List<Integer> convert(int[] nums, LinkedList<Integer> indices) {
+        List<Integer> values = new LinkedList<>();
+        for (int i = 0; i < indices.size(); i++) {
+            values.add( nums[indices.get(i)] );
+        }
+
+        return values;
+    }
+
     // best solution
     public int[] maxSlidingWindow(int[] nums, int k) {
         if (nums.length == 0 || nums == null) {
@@ -63,6 +121,7 @@ public class SlidingWindowMaximum {
                 maxs[i - k + 1] = nums[dequeue.get(0)];
             }
         }
+
         return maxs;
     }
 
@@ -123,4 +182,5 @@ public class SlidingWindowMaximum {
         
         return result;
     }
+
 }

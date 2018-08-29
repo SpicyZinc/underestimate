@@ -20,13 +20,29 @@ not recursively call function, just {
 
 public class Pow {
 	public static void main(String[] args) {
-		new Pow();				
+		Pow eg = new Pow();
+
+		System.out.println("pow(3, 3) == " + pow(3, 3));
+		System.out.println("pow(-0.3, 3) == " + pow(-0.3, 3));
+		System.out.println("pow(-3.1, 2) == " + pow(-3.1, 2));
+		System.out.println("pow(-3.0, 4) == " + pow(-3.0, 4));
+		System.out.println("pow(1, 9) == " + pow(1, 9));
+		System.out.println("pow(0, 1) == " + pow(0, 1));
+		
+		System.out.println("ipow(0.3, 3) == " + ipow(0.3, 3));
+		System.out.println("power(0.5, 4) == " + power(0.5, 4));
+		System.out.println("power(-3.1, 2) == " + power(-3.1, 2));
+		System.out.println("ipow(-3.1, 2) == " + ipow(-3.1, 2));
+		System.out.println("=====");
+		System.out.println("power(2, 4) == " + power(2, 4));
+		System.out.println("Bitwise AND & example 7&1 == " + (7&1));
+		System.out.println("Bitwise AND & example 6&1 == " + (6&1));
+
+		System.out.println("pow(1, 3) == " + myPow(1, 3));
+		System.out.println("power(2, 4) == " + myPow(2, 4));
+		System.out.println("power(0, 1) == " + myPow(0, 1));
 	}
-	public Pow() {
-		System.out.println("pow(1, 3) == " + pow(1, 3));		
-		System.out.println("power(2, 4) == " + pow(2, 4));
-		System.out.println("power(0, 1) == " + pow(0, 1));
-	}
+
 	// good to use
 	public double myPow(double x, int n) {
 		if (n == 0) {
@@ -69,7 +85,7 @@ public class Pow {
             return x * myPow(x * x, n / 2);
         }
     }
-/*	
+	
 	// direct recursion
 	public double myPow(double x, int n) { 
 		if (n == 0) {
@@ -83,6 +99,23 @@ public class Pow {
 		return x * myPow(x, n - 1);
 	}
 
+	// direct and easy method
+	public double myPow(double x, int n) {
+		if (x == 0) return 0;
+		if (n == 0) return 1;
+		if (n < 0) {
+			x = 1.0 / x;
+			n = -n;
+		}
+
+		double result = 1.0;
+		for (int i = 1; i <= n; i++) {
+			result *= x;
+		}
+
+		return result;
+	}
+
 	// binary cut version 1
 	public double pow(double x, int n) {
 		if (n < 0)  
@@ -94,11 +127,11 @@ public class Pow {
 		if (n == 0) {
 			return 1;  
 		}
+
 		double v = power(x, n / 2);  
 		if (n % 2 == 0) {
 			return v * v;  
-		}
-		else  {
+		} else  {
 			return v * v * x;
 		}
 	}
@@ -112,18 +145,21 @@ public class Pow {
             x = 1.0 / x;
         }		
 		double tmp = pow(x, n / 2);  
-		if (n % 2 == 0)
+		if (n % 2 == 0) {
 			return tmp * tmp;  
-		else  
+		} else {
 			return tmp * tmp * x;     
+		}
 	}
-	
+
 	// bitwise operation
 	// thought is the same as binary, use right shift to count how many times to multiply
 	// if n is odd, must multiply one more
 	public double pow(double x, int n) {  
-    	if (n == 0) 
+    	if (n == 0) {
 			return 1.0;
+    	}
+
         if (n < 0) {
             n =- n;
             x = 1.0 / x;
@@ -131,13 +167,13 @@ public class Pow {
         
         double res = 1.0;
         while(n > 0) {
-            if (n % 2 == 1) 
             // if((n & 1) == 1) 
+            if (n % 2 == 1) {
                 res *= x;
+            }
             x *= x;
             n >>= 1;
         }
         return res;
     }
-*/
 }

@@ -4,7 +4,8 @@ Given a string, find the length of the longest substring without repeating chara
 Examples:
 Given "abcabcbb", the answer is "abc", which the length is 3.
 Given "bbbbb", the answer is "b", with the length of 1.
-Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+Given "pwwkew", the answer is "wke", with the length of 3.
+Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
 similar:
 Substring with Concatenation of All Words, Minimum Window Substring
@@ -51,7 +52,9 @@ public class LongestSubstringWithoutRepeatingChars {
     }
     // method 2
     public int lengthOfLongestSubstring(String s) {
-        if (s.length() == 0 || s == null) return 0;
+        if (s.length() == 0 || s == null) {
+            return 0;
+        }
 
         boolean[] letters = new boolean[256];
         int left = 0;

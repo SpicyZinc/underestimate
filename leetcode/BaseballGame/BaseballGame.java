@@ -1,6 +1,5 @@
 /*
 You're now a baseball game point recorder.
-
 Given a list of strings, each string can be one of the 4 following types:
 
 Integer (one round's score): Directly represents the number of points you get in this round.
@@ -44,6 +43,32 @@ run into "C", removeLast()
 */
 
 class BaseballGame {
+    // no need use linkedlist
+    public int calPoints(String[] ops) {
+        List<Integer> list = new ArrayList<>();
+        for (String op : ops) {
+            if (op.equals("C")) {
+                list.remove(list.size() - 1);
+            } else if (op.equals("D")) {
+                int last = list.get(list.size() - 1);
+                list.add(last * 2);
+            } else if (op.equals("+")) {
+                int last = list.get(list.size() - 1);
+                int secondToLast = list.get(list.size() - 2);
+                list.add(secondToLast + last);
+            } else {
+                list.add(Integer.parseInt(op));
+            }
+        }
+        
+        int sum = 0;
+        for (int num : list) {
+            sum += num;
+        }
+        
+        return sum;
+    }
+
 	public int calPoints(String[] ops) {
 	    LinkedList<Integer> list = new LinkedList<Integer>();
         for (int i = 0; i < ops.length; i++) {

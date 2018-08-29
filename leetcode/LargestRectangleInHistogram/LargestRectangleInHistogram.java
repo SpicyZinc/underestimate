@@ -23,30 +23,31 @@ minHeight * (# of heights)
 
 O(n): find last height whose next height will decrease in height
     check all heights before and including this last height
-	moving forward, use this last height+1 as starting point to finish walking through the height array
+	moving forward, use this last height + 1 as starting point to finish walking through the height array
 */
 public class LargestRectangleInHistogram {
 	// two nested looping ways
-    // i, j = i; j < length
-    // i, j = 0; j <= i; j++
-
+	// i, j = i; j < length
+	// i, j = 0; j <= i; j++
 
 	// 95 / 96 test cases passed
-    public int largestRectangleArea(int[] height) {
+	// 08/25/2018 passed OJ no errors
+	public int largestRectangleArea(int[] height) {
 		int maxArea = 0;
 		for (int i = 0; i < height.length; i++) {
 			int minHeight = height[i];			
 			for (int j = i; j >= 0; j--) {
-				minHeight = Math.min(height[j], minHeight);			
+				minHeight = Math.min(minHeight, height[j]);
 				int area = minHeight * (i - j + 1);
 				maxArea = Math.max(maxArea, area);
 			}
 		}
 
-        return maxArea;
-    }
-    // 94 / 96 test cases passed
-    public int largestRectangleArea(int[] heights) {
+		return maxArea;
+	}
+	// 94 / 96 test cases passed
+	// 08/25/2018 passed OJ no errors
+	public int largestRectangleArea(int[] heights) {
 		int maxArea = 0;
 		int[] minHeights = new int[heights.length]; // to i inclusive, minimum Height
 		for (int i = 0; i < heights.length; i++) {
@@ -60,8 +61,8 @@ public class LargestRectangleInHistogram {
 			}
 		}
 
-        return maxArea;
-    }
+		return maxArea;
+	}
     // failed [2,0,2]
     public int largestRectangleArea(int[] heights) {
     	Arrays.sort(heights);
@@ -75,27 +76,30 @@ public class LargestRectangleInHistogram {
     }
 
 	// passed OJ
+	// 是以质取胜还是以量取胜 高度连续增长序列可能很高Height需要很短 x 距离 或是 很长 x 距离 一般的Height
     public int largestRectangleArea(int[] heights) {
-        int max = 0;
+        int n = heights.length;
         int start = 0;
-        while (start < heights.length) {
-            int end = heights.length - 1;
+        int maxArea = 0;
+        
+        while (start < n) {
+            int end = n - 1;
             for (int i = start + 1; i <= end; i++) {
                 // find where the decreasing bar, set end to be bar before the decreasing point
-                if ( heights[i - 1] > heights[i] ) {
+                if (heights[i - 1] > heights[i]) {
                     end = i - 1;
-                    break;
                 }
             }
             int minHeight = heights[end];
             for (int i = end; i >= 0; i--) {
                 minHeight = Math.min(minHeight, heights[i]);
-                max = Math.max(max, minHeight * (end - i + 1));
+                int area = minHeight * (end - i + 1);
+                maxArea = Math.max(maxArea, area);
             }
             start = end + 1;
         }
-
-        return max;
+        
+        return maxArea;
     }
     // http://www.cnblogs.com/lichen782/p/leetcode_Largest_Rectangle_in_Histogram.html
     public int largestRectangleArea(int[] heights) {
