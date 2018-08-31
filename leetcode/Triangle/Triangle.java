@@ -1,12 +1,13 @@
 /*
-Given a triangle, find the minimum path sum from top to bottom. 
-Each step you may move to adjacent numbers on the row below.
+Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
+For example, given the following triangle
 [
      [2],
     [3,4],
    [6,5,7],
   [4,1,8,3]
 ]
+The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).
 
 idea: 
 http://blog.csdn.net/linhuanmars/article/details/23230657
@@ -14,7 +15,7 @@ http://blog.csdn.net/linhuanmars/article/details/23230657
 For triangle, the bottom row length is equal to the height of triangle, 
 so use pathSum to hold the bottom row's value, then from bottom to up, find minimum path
 
-DP Attention: 
+DP note: 
 1. it is "adjacent"
 2. ArrayList.add(index, val) is like set() method, suppress others to the behind
 
@@ -29,6 +30,7 @@ so Math.min(left, right) + current element, put it in the current position in th
 difference between method 2 and 3 is from top or from bottom
 */
 import java.util.*;
+
 public class Triangle {
 	public static void main(String[] args) {	
 		ArrayList<ArrayList<Integer>> delta = new ArrayList<ArrayList<Integer>>();
@@ -56,11 +58,11 @@ public class Triangle {
 		delta.add(line3);
 		delta.add(line4);
 		
-		Triangle aTest = new Triangle();
-		int minimum = aTest.minimumTotal(delta);
+		Triangle eg = new Triangle();
+		int minimum = eg.minimumTotal(delta);
 		System.out.println(minimum);		
 	}
-	// method 1
+	// method 1, bottom up
 	public int minimumTotal(List<List<Integer>> triangle) {
 		if (triangle == null || triangle.size() == 0) {
 			return 0;
@@ -72,6 +74,7 @@ public class Triangle {
         for (int i = 0; i < triangle.get(depth - 1).size(); i++) {
             minSum[depth - 1][i] = triangle.get(depth - 1).get(i);
         }
+
         // loop through triangle from second last level from bottom to top
         for (int i = depth - 2; i >= 0; i--) {
             for (int j = 0; j <= i; j++) {
@@ -81,6 +84,63 @@ public class Triangle {
 
         return minSum[0][0];
     }
+
+	// best method and easily understand
+    // method 2: for each row in the triangle, starting from the right to left, and use array as result
+    // sum[i] current row to position i, min sum accumulated
+	public int minimumTotal(List<List<Integer>> triangle) {
+        if (triangle.size() == 0) {
+            return 0;
+        }
+
+        int m = triangle.size();
+        int n = triangle.get(n - 1).size();
+        int[] sum = new int[n];
+
+        sum[0] = triangle.get(0).get(0);
+
+        for (int i = 1; i < n; i++) {
+            List<Integer> level = triangle.get(i);
+            for (int j = level.size() - 1; j >= 0; j--) {
+                if (j == 0) {
+                    sum[j] = sum[j] + level.get(j);
+                } else if (j == level.size() - 1) {
+                    sum[j] = sum[j - 1] + level.get(j);
+                } else {
+                    sum[j] = Math.min(sum[j], sum[j - 1]) + level.get(j);
+                }
+            }
+        }
+
+        int min = Integer.MAX_VALUE;
+        for (int a : sum) {
+            min = Math.min(min, a);
+        }
+
+        return min;
+    }
+
+    // TLE, 42 / 43 test cases passed.
+    // http://blog.csdn.net/guixunlong/article/details/8850169
+    public int minimumTotal(List<List<Integer>> triangle) {
+        if (triangle.size() == 0) {
+            return 0;
+        }
+
+        return add(triangle, 0, 0);
+    }
+
+    public int add(List<List<Integer>> triangle, int pos, int level) {
+        if (level == triangle.size()) {
+            return 0;
+        }
+
+        List<Integer> curr = triangle.get(level);
+        int value = curr.get(pos);
+        return value + Math.min(add(triangle, pos, level + 1), add(triangle, pos + 1, level + 1));
+    }
+
+
     // lintcode version
     public int minimumTotal(int[][] triangle) {
         if (triangle.length == 0 || triangle[0].length == 0) {
@@ -98,43 +158,14 @@ public class Triangle {
             // minSum has extra space, not used at all,
             // triangle has a feature row index + 1 is the length of this row
             // no need to worry about j + 1 == i + 1 == height - 1 (max), minSum max is height - 1
-            for (int j = 0; j <= i; j++) {
-            // for (int j = 0; j < triangle[i].length; j++) { also work
+            for (int j = 0; j <= i; j++) { // for (int j = 0; j < triangle[i].length; j++) { also work
                 minSum[i][j] = Math.min(minSum[i + 1][j], minSum[i + 1][j + 1]) + triangle[i][j];
             }
         }
         
         return minSum[0][0];
     }
-	// method 2: for each row in the triangle, starting from the right to left, and uses array as result
-	// best method and easily understand
-	public int minimumTotal(List<List<Integer>> triangle) {
-        if (triangle.size() == 0) {
-            return 0;
-        }
-        int[] sum = new int[triangle.get(triangle.size() - 1).size()];
-        sum[0] = triangle.get(0).get(0);
-        for (int i = 1; i < triangle.size(); i++) {
-            List<Integer> level = triangle.get(i);
-            for (int j = level.size() - 1; j >= 0; j--) {
-                if (j == 0) {
-                    sum[j] = sum[j] + level.get(j);
-                }
-                else if (j == level.size() - 1) {
-                    sum[j] = sum[j - 1] + level.get(j);
-                }
-                else {
-                    sum[j] = Math.min(sum[j], sum[j - 1]) + level.get(j);
-                }
-            }
-        }
-        int min = Integer.MAX_VALUE;
-        for (int a : sum) {
-            min = Math.min(min, a);
-        }
-        return min;
-    }
-	// method 3: bottom up
+
 	public int minimumTotal(ArrayList<ArrayList<Integer>> triangle) {
 		if (triangle.size() == 0 || triangle == null) {
 			return 0;
@@ -153,23 +184,4 @@ public class Triangle {
 
 		return pathSum[0];
 	}
-	// method 4: recursion, TLE
-	// http://blog.csdn.net/guixunlong/article/details/8850169
-    public int minimumTotal(List<List<Integer>> triangle) {
-        if (triangle.size() == 0) {
-            return 0;
-        }
-        return add(triangle, 0, 0);
-    }
-
-    public int add(List<List<Integer>> triangle, int level, int pos) {
-        if (level < triangle.size()) {
-            List<Integer> curr = triangle.get(level);
-            int value = curr.get(pos);
-            return value + Math.min( add(triangle, level + 1, pos), add(triangle, level + 1, pos + 1) );
-        }
-        else {
-            return 0;
-        }
-    }
 }

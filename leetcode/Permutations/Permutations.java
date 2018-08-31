@@ -42,7 +42,9 @@ public class Permutations {
         }
         for (int i = 0; i < nums.length; i++) {
             // note how to avoid duplicate elements
-            if (path.contains(nums[i])) continue;
+            if (path.contains(nums[i])) {
+                continue;
+            }
             path.add(nums[i]);
             dfs(result, path, nums);
             path.remove(path.size() - 1);
@@ -62,8 +64,7 @@ public class Permutations {
                 temp.add(n);
             }
     		ret.add(temp);
-    	}
-    	else {
+    	} else {
     		for (int j = i; j < num.length; j++) {
     			swap(num, i, j);
     			permute(num, i + 1, ret);

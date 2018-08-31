@@ -31,7 +31,7 @@ public class CountPrimes {
     }
     // time out
     public int countPrimes(int n) {
-        ArrayList<Integer> primes = new ArrayList<Integer>();
+        List<Integer> primes = new ArrayList<Integer>();
 
         if ( n == 2 ) {
             return 0;
@@ -72,7 +72,7 @@ public class CountPrimes {
         
         for ( int i = 2; i < n; i++ ) {
             if ( isPrime[i] ) {
-                for ( int j = i+i; j < n; j+=i ) { // this is already meaning j is divisible by multiple of i
+                for (int j = i + i; j < n; j += i) { // this is already meaning j is divisible by multiple of i
                     isPrime[j] = false;
                 }
             }

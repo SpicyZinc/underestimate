@@ -87,7 +87,7 @@ public class NextPermutation {
 			i--;
 		}
 
-		// i still in nums[], partially descending
+		// if i still in nums[], partially descending
 		// 再找比下降点高一点的value
 		if (i >= 0) {
 			int j = n - 1;
@@ -99,6 +99,10 @@ public class NextPermutation {
 			swap(nums, i, j);
 		}
 		// actually make it ascending by reverse()
+		// 从后往前看 ascending
+		// 从前往后看 descending
+		// if want to sort it to be ascending
+		// just reverse() is enough
 		reverse(nums, i + 1, n - 1);
 	}
 

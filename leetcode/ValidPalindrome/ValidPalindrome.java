@@ -30,7 +30,7 @@ public class ValidPalindrome {
             return true;
         }
 		
-		s = s.replaceAll("\\W", ""); 
+		s = s.replaceAll("\\W", "");
     	s = s.toLowerCase();
 
         int n = s.length();

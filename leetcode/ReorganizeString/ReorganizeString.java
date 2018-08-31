@@ -39,6 +39,7 @@ class ReorganizeString {
                     index = j;
 				}
 			}
+			// 如果没有符合情况的 early return
 			if (max == 0) {
 				return "";
 			}

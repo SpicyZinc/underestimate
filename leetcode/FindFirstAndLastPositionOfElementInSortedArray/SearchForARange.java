@@ -41,6 +41,29 @@ public class SearchForARange {
             System.out.println(i);
         }
     }
+    // direct method
+    public int[] searchRange(int[] nums, int target) {
+        // note, not List interface
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == target) {
+                list.add(i);
+            }
+        }
+
+        int[] res = new int[2];
+        if (list.size() > 1) {
+            res[0] = list.peekFirst();
+            res[1] = list.peekLast();
+        } else if (list.size() == 1) {
+            res[0] = res[1] = list.peekFirst();
+        } else {
+            res[0] = res[1] = -1;
+        }
+        
+        return res;
+    }
+
     // method 1
     public int[] searchRange(int[] nums, int target) {
         int[] result = {-1, -1};
@@ -58,21 +81,21 @@ public class SearchForARange {
         }
         result[0] = leftMost + 1;
         result[1] = rightMost - 1;
+
         return result;
     }
     // typical binary search, not guarantee that found index is the leftmost
     private int binarySearch(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
+
         while (left <= right) {
             int mid = left + (right - left) / 2;
             if (nums[mid] < target) {
                 left = mid + 1;
-            }
-            else if (nums[mid] > target) {
+            } else if (nums[mid] > target) {
                 right = mid - 1;
-            }
-            else {
+            } else {
                 return mid;
             }
         }
@@ -103,8 +126,7 @@ public class SearchForARange {
 			int m = l + (r - l) / 2;
             if (A[m] > target) {
                 r = m - 1;
-            }
-            else {
+            } else {
                 idx = m;
                 l = m + 1;
             }
@@ -128,34 +150,20 @@ public class SearchForARange {
         int idx = -1;
 
         while (l <= r) {
-            int m = (l + r) / 2;
+            int m = l + (r - l) / 2;
             if (A[m] == target) {
                 if (m == 0) return m;
                 if (A[m - 1] == target) {
                     r = m - 1; 
-                } 
-                else {
+                } else {
                     return m;
                 }
-            }
-            else if (A[m] > target) {
+            } else if (A[m] > target) {
                 r = m - 1;
-            }
-            else {
+            } else {
                 l = m + 1;  
             }
         }
-        // this one not working as I expected
-        // while (l <= r) {
-        //     int mid = l + (r - l) / 2;
-        //     if (A[mid] >= target) {
-        //         idx = mid;
-        //         r = mid - 1;
-        //     }
-        //     else {
-        //         l = mid + 1;
-        //     }
-        // }
 
         return idx;
     }
@@ -166,59 +174,24 @@ public class SearchForARange {
         int idx = -1;
 
         while (l <= r) {
-            int m = (l + r) / 2;
+            int m = l + (r - l) / 2;
             if (A[m] == target) {
-                if (m == A.length - 1) return m;
-                if (A[m + 1] == target) {
-                    l = m + 1; 
-                } 
-                else {
+                if (m == A.length - 1) {
                     return m;
                 }
-            }
-            else if (A[m] > target) {
+
+                if (A[m + 1] == target) {
+                    l = m + 1; 
+                } else {
+                    return m;
+                }
+            } else if (A[m] > target) {
                 r = m - 1;
-            }
-            else {
+            } else {
                 l = m + 1;  
             }
         }
 
-        // while (l <= r) {
-        //     int m = l + (r - l) / 2;
-        //     if (A[m] > target) {
-        //         r = m - 1;
-        //     }
-        //     else {
-        //         idx = m;
-        //         l = m + 1;
-        //     }
-        // }
-
         return idx;
-    }
-
-    // method 4
-    public int[] searchRange(int[] nums, int target) {
-        // note, not List interface
-        LinkedList<Integer> list = new LinkedList<Integer>();
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == target) {
-                list.add(i);
-            }
-        }
-        int[] res = new int[2];
-        if (list.size() > 1) {
-            res[0] = list.peekFirst();
-            res[1] = list.peekLast();
-        }
-        else if (list.size() == 1) {
-            res[0] = res[1] = list.peekFirst();
-        }
-        else {
-            res[0] = res[1] = -1;
-        }
-        
-        return res;
     }
 }

@@ -25,59 +25,17 @@ public class FindKClosestElements {
         for (int i : arr) {
             nums.add((Integer) i);
         }
+
         Collections.sort(nums, new Comparator<Integer>() {
             @Override
             public int compare(Integer a, Integer b) {
                 return a == b ? 0 : Math.abs(a - x) - Math.abs(b - x);
             }
 		});
+
 		nums = nums.subList(0, k);
         Collections.sort(nums);
+
 		return nums;
     }
-    // not sure this works or not
-	public List<Integer> findClosestElements(List<Integer> arr, int k, int x) {
-		int min = arr.get(0);
-		int max = arr.get(arr.size() - 1);
-		List<Integer> result = new ArrayList<Integer>();
-		if (x < min) {
-			for (int i = 0; i < k; i++) {
-				result.add(arr.get(i));
-			}
-		} else if (x >= max) {
-			for (int i = arr.size() - k; i < arr.size(); i++) {
-				result.add(arr.get(i));
-			}
-		} else {
-			int pos = FindInsertionPosition(arr, x);
-			int start = 0;
-			while (start + k < pos) {
-				start++;
-			}
-
-			for (int i = start; i < start + k; i++) {
-				result.add(arr.get(i));
-			}
-		}
-		return result;
-    }
-
-    public int FindInsertionPosition(List<Integer> arr, int T) {
-        int start = 0;
-		int end = arr.size() - 1;
-		
-		while (start < end) {
-			int mid = start + (end - start) / 2;
-			if (arr.get(mid) > T) {
-				end = mid;
-			} else {
-				start = mid + 1;
-			}
-        }
-        if (arr.get(start) > T) {
-			return start;
-        } else {
-			return start + 1;
-        } 
-	}
 }
