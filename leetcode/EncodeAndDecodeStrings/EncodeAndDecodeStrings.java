@@ -35,8 +35,7 @@ public class EncodeAndDecodeStrings {
     public String encode(List<String> strs) {
         StringBuilder output = new StringBuilder();
         for (String str : strs) {
-            output.append(str.length() + "#");
-            output.append(str);
+            output.append(str.length() + "#" + str);
         }
 
         return output.toString();

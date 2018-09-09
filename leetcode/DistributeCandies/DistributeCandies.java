@@ -34,10 +34,12 @@ public class DistributeCandies {
         if (candies.length == 0 || candies == null) {
         	return 0;
         }
-        HashSet<Integer> hs = new HashSet<Integer>();
+
+        Set<Integer> hs = new HashSet<Integer>();
         for (int candy : candies) {
         	hs.add(candy);
         }
+
         return hs.size() >= candies.length / 2 ? candies.length / 2 : hs.size();
     }
 }

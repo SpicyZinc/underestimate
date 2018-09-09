@@ -14,7 +14,9 @@ The input array may contain duplicates, so ascending order here means <=.
 
 idea:
 1. sort array first, then compare and find mismatch
-2. see below
+2.
+从前到后找到最后一个下降点 (supposed to be ascending)
+从后往前找到最后一个上升点 (supposed to be descending)
 */
 
 public class ShortestUnsortedContinuousSubarray {
@@ -29,37 +31,52 @@ public class ShortestUnsortedContinuousSubarray {
     public int findUnsortedSubarray(int[] nums) {
         int[] copy = Arrays.copyOf(nums, nums.length);
         Arrays.sort(copy);
+        
         int n = nums.length;
         int start = n - 1;
         int end = 0;
+
         for (int i = 0; i < n; i++) {
-            System.out.println(copy[i]);
-            if (nums[i] != copy[i]) {start = i; break;}
+            if (nums[i] != copy[i]) {
+                start = i;
+                break;
+            }
         }        
         for (int i = 0; i < n; i++) {
-            if (nums[n - 1 - i] != copy[n - 1 - i]) {end = n - 1 - i; break;}
+            if (nums[n - 1 - i] != copy[n - 1 - i]) {
+                end = n - 1 - i;
+                break;
+            }
         }
-
+        // if nums already sorted
         if (start == n - 1 && end == 0) {
             return 0;
         }
+
         return end - start + 1;
     }
+
     // method 2
 	public int findUnsortedSubarray(int[] nums) {
         int n = nums.length;
         // initialize this way, if no change to start and end, then the array already sorted
         int start = -1;
         int end = -2;
+
         int max = nums[0];
         int min = nums[n - 1];
+
         for (int i = 0; i < n; i++) {
             max = Math.max(max, nums[i]);
             min = Math.min(min, nums[n - 1 - i]);
-            // find last decreasing point
-            if (max > nums[i]) end = i; 
-            // find last increasing point
-            if (min < nums[n - 1 - i]) start = n - 1 - i;
+            // find last 最后一个 decreasing point
+            if (max > nums[i]) {
+                end = i; 
+            }
+            // find last 最后一个 increasing point
+            if (min < nums[n - 1 - i]) {
+                start = n - 1 - i;
+            }
         }
         
         return end - start + 1;
