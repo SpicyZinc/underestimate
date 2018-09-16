@@ -13,12 +13,9 @@ return -1.
 
 idea:
 https://leetcode.com/discuss/76217/java-both-iterative-recursive-solutions-with-explanations
-dynamic programming
 1. recursion
-count[remainder] is array to memorize the minimum number of coins to sum up to remainder
-this array will be passed into the helper function(coins[], remainder, count[])
-
-2. iteration
+count[remaining] is array to memorize the minimum number of coins to sum up to remaining
+this array will be passed into the helper function(coins[], remaining, count[])
 */
 
 public class CoinChange {
@@ -26,53 +23,34 @@ public class CoinChange {
 	    if (amount < 1) {
 	    	return 0;
 	    }
+
 	    int[] count = new int[amount];
-	    return helper(coins, amount, count);
+	    return dfs(coins, amount, count);
 	}
 
-	// remainder: remaining coins after the last step
-	// count[remainder]: minimum number of coins to sum up to remainder
-	private int helper(int[] coins, int remainder, int[] count) { 
-	    if (remainder < 0) {
+	// remaining: remaining amount after the last step
+	// count[remaining]: minimum number of coins to sum up to remaining
+	private int dfs(int[] coins, int remaining, int[] count) { 
+	    if (remaining < 0) {
 	    	return -1;
 	    }
-	    if (remainder == 0) {
+	    if (remaining == 0) {
 	    	return 0;
 	    }
-	    if (count[remainder - 1] != 0) {
-	    	return count[remainder - 1];
+	    if (count[remaining - 1] != 0) {
+	    	return count[remaining - 1];
 	    }
-	    int min = Integer.MAX_VALUE;
+
+	    int minCnt = Integer.MAX_VALUE;
+	    // 可以重复用同一个coin
 	    for (int coin : coins) {
-	        int res = helper(coins, remainder - coin, count);
-	        if (res >= 0 && res < min) {
-	            min = res + 1;
+	        int cnt = dfs(coins, remaining - coin, count);
+	        if (cnt >= 0 && cnt < minCnt) {
+	            minCnt = cnt + 1;
 	        }
 	    }
-	    count[remainder - 1] = (min == Integer.MAX_VALUE) ? -1 : min;
+	    count[remaining - 1] = (minCnt == Integer.MAX_VALUE) ? -1 : minCnt;
 
-	    return count[remainder - 1];
-	}
-	// iterative
-	public int coinChange(int[] coins, int amount) {
-	    if (amount < 1) {
-	    	return 0;
-	    }
-	    int[] dp = new int[amount + 1];
-	    int sum = 1;
-	    while (sum <= amount) {
-	    	// sentinel as -1
-	        int min = -1;
-	        for (int coin : coins) {
-	            if (sum >= coin && dp[sum - coin] != -1) {
-	                int temp = dp[sum - coin] + 1;
-	                min = min < 0 ? temp : Math.min(temp, min);
-	            }
-	        }
-	        dp[sum] = min;
-	        sum++;
-	    }
-
-	    return dp[amount];
+	    return count[remaining - 1];
 	}
 }

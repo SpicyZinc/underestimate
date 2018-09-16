@@ -14,13 +14,13 @@ The relative order inside both the even and odd groups should remain as it was i
 The first node is considered odd, the second node even and so on ...
 
 idea:
-it is simple,
 two pointers odd and even, which will collect odds and evens separately
 odd.next = odd.next.next
 even.next = even.next.next
-finally let odd point to even_head
-*/
+finally let odd point to evenHead
 
+damn, Amazon
+*/
 
 class ListNode {
     int val;
@@ -37,18 +37,18 @@ public class OddEvenLinkedList {
         ListNode odd = head;
         ListNode even = head.next;
         // save even head
-        ListNode even_head = head.next;
-        while ( odd.next != null && even.next != null ) {
+        ListNode evenHead = head.next;
+
+        while (odd.next != null && even.next != null) {
             odd.next = odd.next.next;
             even.next = even.next.next;
-            // until here, odd 1 next will point to 3
-            // even 2 next will point to 4
-            // because two lines as above
+            // 此next非彼next
             odd = odd.next;
             even = even.next;
         }
-        
-        odd.next = even_head;
+
+        odd.next = evenHead;
+
         return head;
     }
 }

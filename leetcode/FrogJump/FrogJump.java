@@ -1,17 +1,19 @@
 /*
-A frog is crossing a river. The river is divided into x units and at each unit there may or may not exist a stone. The frog can jump on a stone, but it must not jump into the water.
-Given a list of stones' positions (in units) in sorted ascending order, determine if the frog is able to cross the river by landing on the last stone.
+A frog is crossing a river. The river is divided into x units and at each unit there may or may not exist a stone.
+The frog can jump on a stone, but it must not jump into the water.
+Given a list of stones' positions (in units) in sorted ascending order,
+determine if the frog is able to cross the river by landing on the last stone.
+
 Initially, the frog is on the first stone and assume the first jump must be 1 unit.
-If the frog's last jump was k units, then its next jump must be either k - 1, k, or k + 1 units. Note that the frog can only jump in the forward direction.
+If the frog's last jump was k units, then its next jump must be either k - 1, k, or k + 1 units.
+Note that the frog can only jump in the forward direction.
 
 Note:
-
 The number of stones is ≥ 2 and is < 1,100.
 Each stone's position will be a non-negative integer < 231.
 The first stone's position is always 0.
 
 Example 1: [0,1,3,5,6,8,12,17]
-
 There are a total of 8 stones.
 The first stone at the 0th unit, second stone at the 1st unit,
 third stone at the 3rd unit, and so on...
@@ -27,11 +29,12 @@ Example 2: [0,1,2,3,4,8,9,11]
 Return false. There is no way to jump to the last stone as 
 the gap between the 5th and 6th stone is too large.
 
-idea: recursion dfs
+idea:
+dfs
 note some index
 arr[j] <= arr[start] + (steps + 1) && arr[j] >= arr[start] + (steps - 1)
-
 */
+
 public class FrogJump {
     public boolean canCross(int[] stones) {
         if (stones[1] > 1) {
@@ -40,6 +43,7 @@ public class FrogJump {
         if (stones.length == 2) {
         	return true;
         }
+
         return dfs(stones, 1, 1);
     }
     private boolean dfs(int[] arr, int start, int steps) {

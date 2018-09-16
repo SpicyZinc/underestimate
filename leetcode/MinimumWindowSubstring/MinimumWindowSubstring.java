@@ -37,6 +37,58 @@ public class MinimumWindowSubstring {
 		String minimumWindow = aTest.minWindow(S, T);
 		System.out.println("minimumWindow == " + minimumWindow);		
 	}
+    // 09/11/2018 prepare for VMware
+	public String minWindow(String s, String t) {
+		String minWindowStr = "";
+
+		int sLen = s.length();
+		int tLen = t.length();
+
+		if (sLen < tLen) {
+			return minWindowStr;
+		}
+
+		int left = 0;
+		int tUniqueCharsCountInS = 0;
+		int minLen = sLen + 1;
+
+		Map<Character, Integer> tMap = new HashMap<>();
+		for (int i = 0; i < tLen; i++) {
+			char c = t.charAt(i);
+			tMap.put(c, tMap.getOrDefault(c, 0) + 1);
+		}
+
+		for (int right = 0; right < sLen; right++) {
+			char c = s.charAt(right);
+            // only operate when current char appear in T
+            if (tMap.containsKey(c)) {
+                tMap.put(c, tMap.get(c) - 1);
+                if (tMap.get(c) >= 0) {
+                    tUniqueCharsCountInS++;
+                }
+
+                while (tUniqueCharsCountInS == tLen) {
+                    // update minWindowStr
+                    if (minLen > right - left + 1) {
+                        minLen = right - left + 1;
+                        minWindowStr = s.substring(left, right + 1);
+                    }
+
+                    char charAtLeft = s.charAt(left);
+                    // start to move left on the condition that some minWindowStr found out
+                    if (tMap.containsKey(charAtLeft)) {
+                        tMap.put(charAtLeft, tMap.get(charAtLeft) + 1);
+                        if (tMap.get(charAtLeft) > 0) {
+                            tUniqueCharsCountInS--;
+                        }
+                    }
+                    left++;
+                }
+            }
+		}
+        
+        return minWindowStr;
+	}
     // 08/25/2018 prepare for Amazon
     // although fail 267 / 268 test cases passed, but good to try
     public String minWindow(String s, String t) {

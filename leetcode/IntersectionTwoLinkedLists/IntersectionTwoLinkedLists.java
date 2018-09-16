@@ -108,6 +108,7 @@ public class Solution {
     		if (longer == shorter) {
     			return longer;
     		}
+
     		longer = longer.next;
     		shorter = shorter.next;
     	}
