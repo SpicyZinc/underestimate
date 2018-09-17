@@ -10,8 +10,9 @@ Explanation: The longest harmonious subsequence is [3,2,2,2,3].
 Note: The length of the input array will not exceed 20,000.
 
 idea:
+只有2个元素
 harmonious subsequence actually contains only 2 elements
-note: don't forget to check if containsKey(key + 1)
+note, don't forget to check if containsKey(key + 1)
 */
 
 public class LongestHarmoniousSubsequence {

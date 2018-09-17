@@ -60,6 +60,7 @@ public class MergeTwoSortedLists {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {        
         ListNode sorted = new ListNode(0);
         ListNode current = sorted;
+
         while (l1 != null && l2 != null) {
             if (l1.val < l2.val) {
                 current.next = l1;

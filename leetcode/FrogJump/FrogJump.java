@@ -30,64 +30,84 @@ Return false. There is no way to jump to the last stone as
 the gap between the 5th and 6th stone is too large.
 
 idea:
-dfs
-note some index
-arr[j] <= arr[start] + (steps + 1) && arr[j] >= arr[start] + (steps - 1)
+dfs(pos, prevJumpedSteps) with memorization
 */
 
 public class FrogJump {
+    // 09/16/2018 LiveRamp
     public boolean canCross(int[] stones) {
-        if (stones[1] > 1) {
-        	return false;
-        }
-        if (stones.length == 2) {
-        	return true;
+        if (stones[1] >= 2) {
+            return false;
         }
 
-        return dfs(stones, 1, 1);
-    }
-    private boolean dfs(int[] arr, int start, int steps) {
-        if (start == arr.length - 1) {
-        	return true;
+        if (stones.length == 2) {
+            return true;
         }
-        for (int j = start + 1; j < arr.length; j++) {
-            if (arr[j] <= arr[start] + (steps + 1) && arr[j] >= arr[start] + (steps - 1)) {
-                if (dfs(arr, j, arr[j] - arr[start])) {
-                    return true;
-                }
+        
+        
+        Map<String, Boolean> hm = new HashMap<String, Boolean>();
+
+        return dfs(stones, 1, 1, hm);
+    }
+
+    public boolean dfs(int[] stones, int pos, int prevJumps, Map<String, Boolean> hm) {
+        if (pos == stones.length - 1) {
+            return true;
+        }
+
+        String key = pos + "-" + prevJumps;
+        if (hm.containsKey(key)) {
+            return hm.get(key);
+        }
+
+        for (int i = pos + 1; i < stones.length; i++) {
+            int jumpedSteps = stones[i] - stones[pos];
+            // if jumpedSteps in [prevSteps - 1, prevSteps + 1]
+            if (jumpedSteps < prevJumps - 1) {
+                continue;
+            }
+            if (jumpedSteps > prevJumps + 1) {
+                hm.put(key, false);
+                return false;
+            }
+            if (dfs(stones, i, jumpedSteps, hm)) {
+                hm.put(key, true);
+                return true;
             }
         }
+
+        hm.put(key, false);
 
         return false;
     }
 
+    // TLE, 16 / 39 test cases passed
     public boolean canCross(int[] stones) {
-        if (stones.length == 1) {
-            return true;
-        }
         // the first jump must be 1 unit
         // frog already at stone 1 which is zero-based index of 0
         // always stones[0] == 0
         if (stones[1] >= 2) {
             return false;
         }
-        int len = stones.length;
-        if (len == 2) {
+
+        if (stones.length == 2) {
             return true;
         }
+
         // not zero based position
-        // now start jumping
         return dfs(stones, 1, 1);
     }
 
-    private boolean dfs(int[] stones, int currPos, int lastSteps) {
-        if (currPos == stones.length - 1) {
+    private boolean dfs(int[] stones, int pos, int prevSteps) {
+        if (pos == stones.length - 1) {
             return true;
         }
-        for (int i = currPos + 1; i < stones.length; i++) {
-            int gap = stones[i] - stones[currPos];
-            if (gap >= lastSteps - 1 && gap <= lastSteps + 1) {
-                if (dfs(stones, i, gap)) {
+
+        for (int i = pos + 1; i < stones.length; i++) {
+            int jumpedSteps = stones[i] - stones[pos];
+            // if jumpedSteps in [prevSteps - 1, prevSteps + 1] 
+            if (jumpedSteps >= prevSteps - 1 && jumpedSteps <= prevSteps + 1) {
+                if (dfs(stones, i, jumpedSteps)) {
                     return true;
                 }
             }

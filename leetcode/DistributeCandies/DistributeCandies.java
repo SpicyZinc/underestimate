@@ -24,6 +24,7 @@ The length of the given array is in range [2, 10,000], and will be even.
 The number in given array is in range [-100,000, 100,000].
 
 idea:
+[candy 1, candy 1, candy 2, candy 2, candy 3, candy 3]
 HashSet to get the number of unique kind of candies
 if the number is bigger than the half length of the array,
 the half will be maximum 

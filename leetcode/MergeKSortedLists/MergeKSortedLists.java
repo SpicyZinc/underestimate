@@ -1,5 +1,16 @@
 /*
-Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity. 
+Merge k sorted linked lists and return it as one sorted list.
+Analyze and describe its complexity.
+
+Example:
+Input:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+Output: 1->1->2->3->4->4->5->6
+
 
 idea:
 http://blog.csdn.net/linhuanmars/article/details/19899259
@@ -40,7 +51,7 @@ public class MergeKSortedLists {
 		
 		ListNode c = new ListNode(6);
 		
-		ArrayList<ListNode> lists = new ArrayList<ListNode>();
+		List<ListNode> lists = new ArrayList<ListNode>();
 		lists.add(a);
 		lists.add(b);
 		lists.add(c);
@@ -53,6 +64,7 @@ public class MergeKSortedLists {
 			h = h.next;
 		}
 	}
+
 	public ListNode mergeKLists(ListNode[] lists) {
         if (lists.length == 0 || lists == null) {
             return null;
@@ -70,12 +82,15 @@ public class MergeKSortedLists {
                 pq.add(head);
             }
         }
+
         ListNode dummyMerged = new ListNode(0);
         ListNode current = dummyMerged;
+
         while (!pq.isEmpty()) {
             ListNode currMin = pq.poll();
             current.next = currMin;
-            current = currMin;
+            current = current.next;
+
             if (currMin.next != null) {
                 pq.add(currMin.next);    
             }
@@ -84,56 +99,54 @@ public class MergeKSortedLists {
         return dummyMerged.next;
     }
 
-    // method 2 without creating extra space, timeout
-    public ListNode mergeKLists(List<ListNode> lists) {
-		if (lists.size() == 0) {
+	// method 2
+	public ListNode mergeKLists(ListNode[] lists) {
+		if (lists.length == 0) {
 			return null;
 		}
 		
-		ListNode head = new ListNode(0);
-		head.next = lists.get(0);
-		// head is already taken out of the arraylist
-		for (int i = 1; i < lists.size(); i++) {
-			merge2SortedList(head, lists.get(i));
+		ListNode dummyHead = new ListNode(0);
+		dummyHead.next = lists[0];
+
+		for (int i = 1; i < lists.length; i++) {
+			merge2SortedList(dummyHead, lists[i]);
 		}
 		
-		return head.next;
+		return dummyHead.next;
 	}
 	// helper merge2SortedList
 	// merge into one list passed as parameter to save space
 	// also this pseudo list is placed a head at the front of 
-	public void merge2SortedList(ListNode head, ListNode q) {
-		ListNode p = head.next;
-		ListNode prev = head;
+	public void merge2SortedList(ListNode dummyHead, ListNode q) {
+		ListNode prev = dummyHead;
+		ListNode p = dummyHead.next;
 		
 		if (p == null) {
-			head.next = q;
+			dummyHead.next = q;
 		}
 		
 		while (p != null && q != null) {
 			// stay as it does at head list
 			if (p.val < q.val) {
 				if (p.next != null) {
-					// p.next = q;
 					// update prev
 					prev = p;
 					// update p
 					p = p.next;
 				} else {
 					p.next = q;
-					// return head.next;
 					break;
 				}
 			} else {
-				// memorize q position
-				ListNode tmp = q.next;
-				prev.next = q;
-				q.next = p;
-				// update prev
+                prev.next = q;
+                // update prev
 				prev = q;
-				// update q
+
+				ListNode tmp = q.next;
+				q.next = p;				
+				// update q with q.next;
 				q = tmp;
-			}
+            }
 		}
 	}
 }
