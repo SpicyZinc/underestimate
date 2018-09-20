@@ -70,6 +70,7 @@ public class WordDictionary {
     	if (index == word.length()) {
     		return node.hasWord;
     	}
+
     	char c = word.charAt(index);
     	if (c == '.') {
     		// test against all 26 children
