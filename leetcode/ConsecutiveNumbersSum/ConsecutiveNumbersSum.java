@@ -19,6 +19,7 @@ Explanation: 15 = 15 = 8 + 7 = 4 + 5 + 6 = 1 + 2 + 3 + 4 + 5
 Note: 1 <= N <= 10 ^ 9.
 
 idea:
+need to go back
 */
 
 class ConsecutiveNumbersSum {
@@ -27,7 +28,9 @@ class ConsecutiveNumbersSum {
 		int mid = N / 2;
 
 		if (N % 2 == 0) {
-
+			return 1 + consecutiveNumbersSum(mid);
+		} else {
+			return 1 + 1 + consecutiveNumbersSum(mid) * consecutiveNumbersSum(N - mid);
 		}
 	}
 }
