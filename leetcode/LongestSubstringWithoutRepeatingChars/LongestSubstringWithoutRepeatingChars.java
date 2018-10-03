@@ -67,8 +67,8 @@ public class LongestSubstringWithoutRepeatingChars {
                     if (c == s.charAt(j)) {
                         // update the window start position
                         left = j + 1;
-                        // it has to break early, in the new substring, c still in map
-                        // otherwise set to false
+                        // it has to break early, in the new substring, letters[c] should be true;
+                        // if not break, it will be set to be false
                         break;
                     }
                     // window left moves, so remove all chars to left of the window from map
@@ -77,6 +77,7 @@ public class LongestSubstringWithoutRepeatingChars {
             } else {
                 letters[c] = true;
             }
+
             maxLen = Math.max(maxLen, i - left + 1);
         }
         
@@ -128,6 +129,7 @@ public class LongestSubstringWithoutRepeatingChars {
             }
             maxLen = Math.max(maxLen, i - start + 1);
         }
+
         return maxLen;
     }
 }

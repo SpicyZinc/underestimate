@@ -29,7 +29,7 @@ public class ShuffleAnArray {
     int[] copy;
     Random random;
 
-    public Solution(int[] nums) {
+    public ShuffleAnArray(int[] nums) {
         this.nums = nums;
         this.copy = Arrays.copyOf(nums, nums.length);
         this.random = new Random();

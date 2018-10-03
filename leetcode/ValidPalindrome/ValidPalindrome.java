@@ -25,6 +25,7 @@ public class ValidPalindrome {
 		ValidPalindrome eg = new ValidPalindrome();
 		System.out.println("a ba is Palindrome: " + eg.isPalindrome("a ba"));
 	}
+
     public boolean isPalindrome(String s) {
         if (s.length() == 0 || s == null) {
             return true;

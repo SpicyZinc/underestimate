@@ -31,6 +31,43 @@ concatenate string from right to left by adding "/"
 import java.util.*;
 
 public class SimplifyPath {
+	// 09/27/2018
+	public String simplifyPath(String path) {
+        int n = path.length();
+        
+        Stack<String> directories = new Stack<>();
+        String chars = "";
+        
+        for (int i = 0; i <= n; i++) {
+            char c = i == n ? '0' : path.charAt(i);
+            
+            if (i == n || c == '/') {
+                if (chars.equals("..")) {
+                    if (!directories.isEmpty()) {
+                        directories.pop();
+                    }
+                } else if (chars.length() > 0 && !chars.equals(".")) { // can only be directory
+                    directories.push(chars);
+                }
+                chars = "";
+            } else {
+                chars += c;
+            }
+        }
+        
+        // if nothing, return current directory
+        if (directories.isEmpty()) {
+            return "/";
+        }
+        
+        String result = "";
+        for (int i = 0; i < directories.size(); i++) {
+            result += "/" + directories.get(i);
+        }
+        
+        return result;
+    }
+
     public String simplifyPath(String path) {
         Stack<String> files = new Stack<>();
         String segment = "";

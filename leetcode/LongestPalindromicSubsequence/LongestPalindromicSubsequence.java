@@ -13,7 +13,7 @@ Output: 2
 One possible longest palindromic subsequence is "bb".
 
 idea:
-dp[i][j] represents [i,j] the length of longest palindrome
+dp[i][j] represents the length of longest palindrome in substring [i, j]
 dp, populate from the end to start of the array
 */
 
@@ -25,7 +25,7 @@ public class LongestPalindromicSubsequence {
         for (int i = n - 1; i >= 0; i--) {
             dp[i][i] = 1;
             for (int j = i + 1; j < n; j++) {
-                dp[i][j] = s.charAt(i) == s.charAt(j) ? (dp[i+1][j-1] + 2) : Math.max(dp[i+1][j], dp[i][j-1]);
+                dp[i][j] = s.charAt(i) == s.charAt(j) ? (dp[i + 1][j - 1] + 2) : Math.max(dp[i + 1][j], dp[i][j - 1]);
             }
         }
 

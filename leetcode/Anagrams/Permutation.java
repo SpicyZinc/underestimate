@@ -10,18 +10,21 @@ class Permutation {
 
 	private static int count = 0;
 
-	public  static void main(String[] args) {
+	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		String str = scanner.next();
-		permutation("", str); 
+
+		Permutation eg = new Permutation();
+		eg.permutation("", str); 
 	}
 
-	private static void permutation(String prefix, String str) {
+	private void permutation(String prefix, String str) {
 		int n = str.length();
-		if (n == 0) System.out.println(++count + " " + prefix);
-		else {
+		if (n == 0) {
+			System.out.println(++count + " " + prefix);
+		} else {
 			for (int i = 0; i < n; i++) {
-			   permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i+1, n));
+				permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i + 1, n));
 			}
 		}
 	}
