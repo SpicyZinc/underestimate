@@ -1,9 +1,10 @@
 /*
-Given a binary tree where all the right nodes are either leaf nodes with a sibling (a left node that shares the same parent node) or empty, 
+Given a binary tree where all the right nodes
+are either leaf nodes with a sibling (a left node that shares the same parent node) or empty, 
 flip it upside down and turn it into a tree where the original right nodes turned into left leaf nodes. 
 Return the new root.
 
-For example:
+Example:
 Given a binary tree {1,2,3,4,5},
     1
    / \
@@ -11,11 +12,21 @@ Given a binary tree {1,2,3,4,5},
  / \
 4   5
 return the root of the binary tree [4,5,2,#,#,3,1].
-   4
-  / \
- 5   2
-    / \
-   3   1  
+  4
+ / \
+5   2
+   / \
+  3   1
+
+idea:
+https://www.cnblogs.com/grandyang/p/5172838.html
+
+image turn the tree clockwise by 90
+dfs to the most left
+left.left = right;
+left.right = root;
+root.left = null;
+root.right = null;
 */
    
 class TreeNode {
@@ -28,27 +39,22 @@ class TreeNode {
 }
 
 public class BinaryTreeUpsideDown {
-    TreeNode upsideDownBinaryTree(TreeNode root) {
-        TreeNode temp = null;
-        TreeNode newRoot = null;
-        temp = buildUpsideDownBT(root, newRoot);
-        return newRoot;
-    }
-    
-    TreeNode buildUpsideDownBT(TreeNode root, TreeNode newRoot) {
-        if (!root) {
-            return root; 
-        }
-        if (!root.left && !root.right) {
-            newRoot = root;
-            return root;
-        }
-        TreeNode parent = buildUpsideDownBT(root.left, newRoot);
-        parent.left = root.right;
-        parent.right = root;
-        root.left = null;
-        root.right = null;
+	TreeNode upsideDownBinaryTree(TreeNode root) {
+		if (root == null || root.left == null) {
+			return root;
+		}
 
-        return parent.right;
-    }
+		TreeNode left = root.left;
+		TreeNode right = root.right;
+
+		TreeNode result = upsideDownBinaryTree(left);
+		left.left = right;
+		left.right = root;
+
+		// remove left and right from root by setting to null
+		root.left = null;
+		root.right = null;
+
+		return result;
+	}
 }

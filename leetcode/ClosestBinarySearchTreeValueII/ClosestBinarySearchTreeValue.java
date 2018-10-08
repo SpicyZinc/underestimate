@@ -24,8 +24,6 @@ how to maintain a queue of size K
 when size < k, keep adding
 when size >= k, compare head with current, poll() then add, or break
 
-this is iterative in order traverse tree
-can be done recursively as well
 
 2. https://www.cnblogs.com/grandyang/p/5247398.html
 use two stacks, precedessor and successor
@@ -52,6 +50,7 @@ public class ClosestBinarySearchTreeValue {
 			stack.push(root);
 			root = root.left;
 		}
+
 		while (!stack.isEmpty()) {
 			TreeNode node = stack.pop();
 			if (list.size() < k) {
@@ -78,27 +77,32 @@ public class ClosestBinarySearchTreeValue {
 		return (List<Integer>) list;
 	}
 
+	// recursively inorder traverse tree
+	// note this is bst, so compare and remove from position 0
 	public List<Integer> closestKValues(TreeNode root, double target, int k) {
 		List<Integer> result = new ArrayList<Integer>();
 		inorder(root, target, k, result);
 		return result;
 	}
-	// recursively inorder traverse tree
-	public void inorder(TreeNode node, double target, int k, List<Integer> res) {
-		if (node == null) return;
-		
-		inorder(node.left, target, k, res);
-		if (res.size() < k) {
-			res.add(node.val);
-        } else if (Math.abs(node.val - target) < Math.abs(res.get(0) - target)) {
-            res.remove(0);
-            res.add(node.val);
-        } else {
-        	return;
-        }
-        inorder(node.right, target, k, res);
-    }
 
+	public void inorder(TreeNode node, double target, int k, List<Integer> result) {
+		if (node == null) {
+			return;
+		}
+		
+		inorder(node.left, target, k, result);
+
+		if (result.size() < k) {
+			result.add(node.val);
+		} else if (Math.abs(node.val - target) < Math.abs(result.get(0) - target)) {
+			result.remove(0);
+			result.add(node.val);
+		}
+
+		inorder(node.right, target, k, result);
+	}
+
+	// use two stacks
 	public List<Integer> closestKValues(TreeNode root, double target, int k) {
 		List<Integer> result = new ArrayList<Integer>();
 		if (root == null) return result;
@@ -124,19 +128,27 @@ public class ClosestBinarySearchTreeValue {
 	}
 
     private void populatePredecessor(TreeNode root, double target, Stack<Integer> precedessor) {
-        if (root == null) return;
+        if (root == null) {
+        	return;
+        }
 
 		populatePredecessor(root.left, target, precedessor);
-        if (root.val > target) return;
+        if (root.val > target) {
+        	return;
+        }
 		precedessor.push(root.val);
 		populatePredecessor(root.right, target, precedessor);
     }
     
     private void populateSuccessor(TreeNode root, double target, Stack<Integer> successor) {
-        if (root == null) return;
+        if (root == null) {
+        	return;
+        }
         
         populateSuccessor(root.right, target, successor);
-        if (root.val <= target) return;
+        if (root.val <= target) {
+        	return;
+        }
         successor.push(root.val);
         populateSuccessor(root.left, target, successor);
     }

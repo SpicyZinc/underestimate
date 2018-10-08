@@ -51,11 +51,16 @@ public class NestedListWeightSum {
 
 		while (!nestedList.isEmpty()) {
 			List<NestedInteger> nextLevel = new ArrayList<>();
+
 			for (NestedInteger ni : nestedList) {
-				if (ni.isInteger()) levelSum += ni.getInteger();
-				else nextLevel.addAll(ni.getList());
+				if (ni.isInteger()) {
+					levelSum += ni.getInteger();
+				} else {
+					nextLevel.addAll(ni.getList());
+				}
 			}
-			weightedSum += levelSum
+
+			weightedSum += levelSum;
 			nestedList = nextLevel;
 		}
 

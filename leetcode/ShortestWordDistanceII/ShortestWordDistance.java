@@ -22,53 +22,57 @@ or add flag "turn"
 
 import java.util.*;
 
-public class ShortestWordDistance {
-	HashMap<String, ArrayList<Integer>> hm;
-	public ShortestWordDistance(String[] words) {
-		hm = new HashMap<String, ArrayList<Integer>>();
+class WordDistance {
+	Map<String, List<Integer>> hm;
+
+	public WordDistance(String[] words) {
+		hm = new HashMap<>();
+
 		for (int i = 0; i < words.length; i++) {
 			String word = words[i];
-			ArrayList<Integer> indexes = hm.get(word);
+			List<Integer> indexes = hm.get(word);
 			if (indexes == null) {
-				indexes = new ArrayList<Integer>();
+				indexes = new ArrayList<>();
 			}
 			indexes.add(i);
 			hm.put(word, indexes);
 		}
-		System.out.println(hm);
 	}
 
-    public int shortest(String word1, String word2) {
-		ArrayList<Integer> indexesOne = hm.get(word1);
-		ArrayList<Integer> indexesTwo = hm.get(word2);
+	public int shortest(String word1, String word2) {
+		List<Integer> indexesOne = hm.get(word1);
+		List<Integer> indexesTwo = hm.get(word2);
 		int i = 0;
 		int j = 0;
 		int minDistance = Integer.MAX_VALUE;
+
 		while (i < indexesOne.size() && j < indexesTwo.size()) {
 			int pos1 = indexesOne.get(i);
 			int pos2 = indexesTwo.get(j);
+
 			minDistance = Math.min(minDistance, Math.abs(pos1 - pos2));
 			if (pos1 < pos2) {
 				i++;
-			}
-			else {
+			} else {
 				j++;
 			}
 		}
 
 		return minDistance;
-    }
+	}
 
-    public static void main(String[] args) {
-    	String[] words = {"practice", "makes", "perfect", "coding", "makes"};
-    	ShortestWordDistance eg = new ShortestWordDistance(words);
-    	String word1 = "coding";
-    	String word2 = "practice";
+	public static void main(String[] args) {
+		String[] words = {"practice", "makes", "perfect", "coding", "makes"};
+		WordDistance eg = new WordDistance(words);
+
+		String word1 = "coding";
+		String word2 = "practice";
 		int dis = eg.shortest(word1, word2); //  return 3
 		System.out.println("dis == " + dis);
+
 		word1 = "makes";
 		word2 = "coding";
 		dis = eg.shortest(word1, word2); //  return 1
 		System.out.println("dis == " + dis);
-    }
+	}
 }

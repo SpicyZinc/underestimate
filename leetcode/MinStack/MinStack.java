@@ -39,6 +39,7 @@ class MinStack {
         // prepare for the pop()
         // push extra 2nd min
         // note equal
+        // 保留下 second min for further use, otherwise on way to retrieve second min
         if (x <= min) {
             stack.push(min);
             min = x;
@@ -69,8 +70,7 @@ class MinStack {
         if (actual.isEmpty() && min.isEmpty()) {
             actual.push(x);
             min.push(x);
-        }
-        else {
+        } else {
             actual.push(x);
             int y = min.peek();
             min.push(y > x ? x : y);

@@ -22,41 +22,43 @@ then if current house color is the same as prevMin, then use prevSecMin; otherwi
 */
 
 public class PaintHouse {
-    public int minCostII(int[][] costs) {
-    	if (costs == null || costs.length == 0) {
-    		return 0;
-    	}
+	public int minCostII(int[][] costs) {
+		if (costs == null || costs.length == 0) {
+			return 0;
+		}
 
-    	int prevSecMin = 0;
-    	int prevMin = 0;
-    	int prexIdx = -1;
+		int prevSecMin = 0;
+		int prevMin = 0;
+		int prexIdx = -1;
 
-    	for (int i = 0; i < costs.length; i++) {
-	    	int currSecMin = Integer.MAX_VALUE;
-	    	int currMin = Integer.MAX_VALUE;
-	    	int currIdx = -1;
-	    	// house i painted with different colors
-	    	// min cost and second min cost
-	    	// min cost uses which color j
-	    	for (int j = 0; j < costs[i].length; j++) {
-	    		// all prev, no current
-	    		// paint another house, if use the same color as previous house uses, use second min
-	    		costs[i][j] = costs[i][j] + (j == prexIdx ? prevSecMin : prevMin);
+		for (int i = 0; i < costs.length; i++) {
+			int currSecMin = Integer.MAX_VALUE;
+			int currMin = Integer.MAX_VALUE;
+			int currIdx = -1;
 
-	    		if (costs[i][j] < currMin) {
-	    			currSecMin = currMin;
-	    			currMin = costs[i][j];
-	    			currIdx = j;
-	    		} else if (costs[i][j] < currSecMin) {
-	    			currSecMin = costs[i][j];
-	    		}
-	    	}
-    		
+			// house i painted with different colors
+			// min cost and second min cost
+			// min cost uses color j
+			int k = costs[i].length;
+			for (int j = 0; j < k; j++) {
+				// all prev, no current
+				// paint another house, if use the same color as previous house uses, use second min
+				costs[i][j] += j == prexIdx ? prevSecMin : prevMin;
+
+				if (costs[i][j] < currMin) {
+					currSecMin = currMin;
+					currMin = costs[i][j];
+					currIdx = j;
+				} else if (costs[i][j] < currSecMin) {
+					currSecMin = costs[i][j];
+				}
+			}
+
 			prevSecMin = currSecMin;
 			prevMin = currMin;
 			prexIdx = currIdx;
-    	}
+		}
 
-    	return prevMin;
-    }
+		return prevMin;
+	}
 }

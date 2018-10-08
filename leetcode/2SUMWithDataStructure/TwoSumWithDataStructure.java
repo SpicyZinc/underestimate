@@ -42,7 +42,7 @@ public class TwoSumWithDataStructure {
 	public void add(int number) {
 		hm.put(number, hm.getOrDefault(number, 0) + 1);
 	}
- 
+
 	public boolean find(int value) {
 		for (int one : hm.keySet()) {
 			int another = value - one;
