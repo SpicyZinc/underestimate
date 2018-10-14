@@ -49,30 +49,29 @@ note, if not in for loop i = j, need to add i = j in continue
 */
 class StringCompression {
 	public int compress(char[] chars) {
-        int size = chars.length;
-        System.out.println(size);
-        int idx = 0;
-        for (int i = 0; i < size;) {
-            chars[idx++] = chars[i];
-            
-            int j = i;
-            while (j < size && chars[i] == chars[j]) {
-                j++;
-            }
-            // only one, no repeating chars
-            if (j - i == 1) {
-                i = j;
-                continue;
-            }
-            // convert cnt to string format
-            String cnt = "" + (j - i);
-            for (int k = 0; k < cnt.length(); k++) {
-                chars[idx++] = cnt.charAt(k);
-            }
-            // update i
-            i = j;
-        }
-        
-        return idx;
-    }
+		int size = chars.length;
+		int idx = 0;
+		for (int i = 0; i < size;) {
+			chars[idx++] = chars[i];
+
+			int j = i;
+			while (j < size && chars[i] == chars[j]) {
+				j++;
+			}
+			// only one, no repeating chars
+			if (j - i == 1) {
+				i = j;
+				continue;
+			}
+			// convert cnt to string format
+			String cnt = "" + (j - i);
+			for (int k = 0; k < cnt.length(); k++) {
+				chars[idx++] = cnt.charAt(k);
+			}
+			// update i
+			i = j;
+		}
+
+		return idx;
+	}
 }

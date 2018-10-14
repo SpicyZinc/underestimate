@@ -18,7 +18,7 @@ Note: Do not use class member/global/static variables to store states. Your seri
 
 idea:
 http://yuanhsh.iteye.com/blog/2171113
-NOTE: splitter MUST be appended after TreeNode value or # 
+NOTE: delimiter MUST be appended after TreeNode value or empty value # 
 
 不用什么 StringTokenizer next()
 用 StringBuilder, linkedlist remove()
@@ -35,10 +35,10 @@ class TreeNode {
     public void print() {
     	if (this != null) {
     		System.out.print(this.val + " ");
-    		if ( this.left != null ) {
+    		if (this.left != null) {
     			this.left.print();
     		}
-    		if ( this.right != null ) {
+    		if (this.right != null) {
     			this.right.print();
     		}
     	}
@@ -70,8 +70,8 @@ public class SerializeAndDeserializeBinaryTree {
 		System.out.println();
 	}
 
-    public static final String splitter = ",";
-    public static final String emptySign = "#";
+    public static final String delimiter = ",";
+    public static final String emptyValue = "#";
 
     // 07/19/018
     // Encodes a tree to a single string.
@@ -83,9 +83,9 @@ public class SerializeAndDeserializeBinaryTree {
     
     public void buildString(TreeNode node, StringBuilder sb) {
         if (node == null) {
-            sb.append(emptySign).append(splitter);
+            sb.append(emptyValue).append(delimiter);
         } else {
-            sb.append(node.val).append(splitter);
+            sb.append(node.val).append(delimiter);
             buildString(node.left, sb);
             buildString(node.right, sb);
         }
@@ -95,14 +95,14 @@ public class SerializeAndDeserializeBinaryTree {
     public TreeNode deserialize(String data) {
         List<String> nodes = new LinkedList<String>();
 
-        nodes.addAll(Arrays.asList(data.split(splitter)));
+        nodes.addAll(Arrays.asList(data.split(delimiter)));
 
         return buildTree(nodes);
     }
     
     public TreeNode buildTree(List<String> nodes) {
         String val = nodes.remove(0);
-        if (val.equals(emptySign)) {
+        if (val.equals(emptyValue)) {
             return null;
         } else {
             TreeNode root = new TreeNode(Integer.parseInt(val));
@@ -114,40 +114,40 @@ public class SerializeAndDeserializeBinaryTree {
     }
     
     // method 2
-    public String serialize(TreeNode root) {  
-        StringBuilder sb = new StringBuilder();  
-        serialize(root, sb);  
-        return sb.toString();  
-    }  
+    // public String serialize(TreeNode root) {  
+    //     StringBuilder sb = new StringBuilder();  
+    //     serialize(root, sb);  
+    //     return sb.toString();  
+    // }  
        
-    private void serialize(TreeNode x, StringBuilder sb) {
-        if (x == null) {  
-            sb.append(emptySign).append(splitter);
-        } else {
-            sb.append(x.val).append(splitter);
-            serialize(x.left, sb);  
-            serialize(x.right, sb);  
-        }  
-    }
-    // Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
-        if ( data == null || data.length() == 0 ) {
-            return null;
-        }
-        StringTokenizer st = new StringTokenizer(data, splitter);
-        return deserialize(st);
-    }
-    private TreeNode deserialize(StringTokenizer st) {
-        if (!st.hasMoreTokens()) {
-            return null;  
-        }
-        String val = st.nextToken();  
-        if (val.equals(emptySign)) {
-            return null;  
-        }
-        TreeNode root = new TreeNode(Integer.parseInt(val));  
-        root.left = deserialize(st);  
-        root.right = deserialize(st);  
-        return root;  
-    }
+    // private void serialize(TreeNode x, StringBuilder sb) {
+    //     if (x == null) {  
+    //         sb.append(emptyValue).append(delimiter);
+    //     } else {
+    //         sb.append(x.val).append(delimiter);
+    //         serialize(x.left, sb);  
+    //         serialize(x.right, sb);  
+    //     }  
+    // }
+    // // Decodes your encoded data to tree.
+    // public TreeNode deserialize(String data) {
+    //     if ( data == null || data.length() == 0 ) {
+    //         return null;
+    //     }
+    //     StringTokenizer st = new StringTokenizer(data, delimiter);
+    //     return deserialize(st);
+    // }
+    // private TreeNode deserialize(StringTokenizer st) {
+    //     if (!st.hasMoreTokens()) {
+    //         return null;  
+    //     }
+    //     String val = st.nextToken();  
+    //     if (val.equals(emptyValue)) {
+    //         return null;  
+    //     }
+    //     TreeNode root = new TreeNode(Integer.parseInt(val));  
+    //     root.left = deserialize(st);  
+    //     root.right = deserialize(st);  
+    //     return root;  
+    // }
 }

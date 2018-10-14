@@ -27,10 +27,10 @@ import java.util.*;
 
 public class LetterCombinationsOfAPhoneNumber {
 	public static void main(String[] args) {
-		LetterCombinationsOfAPhoneNumber aTest = new LetterCombinationsOfAPhoneNumber();
-		ArrayList<String> res = aTest.letterCombinations("234");
-		for (int i=0; i<res.size(); i++) {
-			System.out.print(res.get(i) + "  ");
+		LetterCombinationsOfAPhoneNumber eg = new LetterCombinationsOfAPhoneNumber();
+		List<String> result = eg.letterCombinations("234");
+		for (String s : result) {
+			System.out.println(s);
 		}
 	}
 
@@ -116,14 +116,13 @@ public class LetterCombinationsOfAPhoneNumber {
 
 		return result;        
     }
-    // eg. 563, level is the pointer for each digit
+	// eg. 563, level is the pointer for each digit
 	public void letterCombine(ArrayList<String> result, int level, char[] digit, StringBuilder sb) {
 		for (int i = 0; i < getLength(digit[level]); i++) {
 			if (level == digit.length - 1) {
 				result.add( sb.append(getChar(digit[level], i)).toString() ); 
 				sb.deleteCharAt( sb.length() - 1 );
-			}
-			else {
+			} else {
 				letterCombine( result, level+1, digit, sb.append(getChar(digit[level], i)) );
 				sb.deleteCharAt( sb.length() - 1 );
 			}
@@ -131,7 +130,7 @@ public class LetterCombinationsOfAPhoneNumber {
 	}
 	
 	public char getChar(char x, int i) {
-        char[][] mapping = {
+		char[][] mapping = {
 			{' '}, // 0
 			{},  // 1
 			{'a', 'b', 'c'}, // 2
@@ -144,11 +143,11 @@ public class LetterCombinationsOfAPhoneNumber {
 			{'w', 'x', 'y', 'z'} // 9
 		};
 
-        return mapping[x - '0'][i];
-    }
+		return mapping[x - '0'][i];
+	}
 	
 	public int getLength(char x) {
-        char[][] mapping = {
+		char[][] mapping = {
 			{' '}, // 0
 			{},  // 1
 			{'a', 'b', 'c'}, // 2
@@ -161,6 +160,6 @@ public class LetterCombinationsOfAPhoneNumber {
 			{'w', 'x', 'y', 'z'} // 9
 		};
 
-        return mapping[x - '0'].length;
-    }
+		return mapping[x - '0'].length;
+	}
 }

@@ -32,14 +32,17 @@ public class SanSum {
         }
 	}
 
-	// recently self written, passed oj
+	// 10/12/2018
 	public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
+
         List<List<Integer>> result = new ArrayList<>();
         Set<List<Integer>> hs = new HashSet<>();
+
         if (nums == null || nums.length < 3) {
 			return result;
 		}
+
         for (int i = 0; i < nums.length; i++) {
             for (int j = i + 1, k = nums.length - 1; j < k;) {
                 List<Integer> path = new ArrayList<Integer>();
@@ -54,11 +57,9 @@ public class SanSum {
                     }
                     j++;
                     k--;
-                }
-                else if (sum > 0) {
+                } else if (sum > 0) {
                     k--;
-                }
-                else {
+                } else {
                     j++;
                 }
             }

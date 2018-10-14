@@ -18,7 +18,11 @@ idea:
 in the process of getting max depth of the tree, get max diameter
 very similar to maxDepth of a binary tree and maximum path sum of binary tree
 note: return is not result
+
+就root而言 左边的最大深度和右边的最大深度 之和就是 diameter
+同时有可能 root.left or root.right diameterOfBinaryTree() has the max diameter
 */
+
 class TreeNode {
     int val;
     TreeNode left;
@@ -27,17 +31,43 @@ class TreeNode {
 }
 
 public class DiameterOfBinaryTree {
+	// method 1
+	public int diameterOfBinaryTree(TreeNode root) {
+		if (root == null) {
+			return 0;
+		}
+
+		int maxDiameter = getMaxDepth(root.left) + getMaxDepth(root.right);
+		return Math.max(maxDiameter, Math.max(diameterOfBinaryTree(root.left), diameterOfBinaryTree(root.right)));
+	}
+
+    public int getMaxDepth(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        int left = getMaxDepth(node.left);
+        int right = getMaxDepth(node.right);
+       
+        return Math.max(left, right) + 1;
+    }
+    // method 2
     public int diameterOfBinaryTree(TreeNode root) {
         int[] maxDiameter = new int[] {0};
         getMaxDepth(root, maxDiameter);
+
         return maxDiameter[0];
     }
-    
+
     public int getMaxDepth(TreeNode node, int[] maxDiameter) {
-        if (node == null) return 0;
+        if (node == null) {
+            return 0;
+        }
+
         int left = getMaxDepth(node.left, maxDiameter);
         int right = getMaxDepth(node.right, maxDiameter);
         maxDiameter[0] = Math.max(maxDiameter[0], left + right);
+
         return Math.max(left, right) + 1;
     }
 }
