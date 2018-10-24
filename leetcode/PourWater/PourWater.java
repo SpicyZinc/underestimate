@@ -2,7 +2,8 @@
 We are given an elevation map, heights[i] representing the height of the terrain at that index.
 The width at each index is 1. After V units of water fall at index K, how much water is at each index?
 
-Water first drops at index K and rests on top of the highest terrain or water at that index. Then, it flows according to the following rules:
+Water first drops at index K and rests on top of the highest terrain or water at that index.
+Then, it flows according to the following rules:
 
 If the droplet would eventually fall by moving left, then move left.
 Otherwise, if the droplet would eventually fall by moving right, then move right.
@@ -103,6 +104,7 @@ Input: heights = [1,2,3,4], V = 2, K = 2
 Output: [2,3,3,4]
 Explanation:
 The last droplet settles at index 1, since moving further left would not cause it to eventually fall to a lower height.
+
 Example 3:
 Input: heights = [3,1,3], V = 5, K = 1
 Output: [4,4,4]
@@ -119,25 +121,30 @@ https://www.cnblogs.com/grandyang/p/8460541.html
 
 class PourWater {
 	public int[] pourWater(int[] heights, int V, int K) {
-		while (V-- > 0) {
+		// 分V次drop 每次1滴
+		while (V > 0) {
 			dropWater(heights, K);
+			V--;
 		}
+
 		return heights;
 	}
 
 	private void dropWater(int[] heights, int K) {
 		int dropStopPos = K;
-		// 先往左 再往右 trick 统一起来
+		// 先往左 再往右 用这个trick d = -1 or 1 统一起来
 		for (int d = -1; d <= 1; d += 2) {
 			int i = K + d;
 			// monotonically decreasing => heights[i] <= heights[i - d]
 			// non-increasing
 			while (i >= 0 && i < heights.length && heights[i] <= heights[i - d]) {
-				if (heights[i] <= heights[dropStopPos]) {
+				// note, no equal sign
+				if (heights[i] < heights[dropStopPos]) {
 					dropStopPos = i;
 				}
 				i += d;
 			}
+			// 看是否往前滚了, stop 往前滚了
 			if (dropStopPos != K) {
 				break;
 			}

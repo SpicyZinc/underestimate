@@ -42,7 +42,7 @@ class EmployeeFreeTime {
 		for (List<Interval> avail : avails) {
 			timeLine.addAll(avail);
 		}
-		Collections.sort(timeLine, ((a, b) -> a.start - b.start));
+		Collections.sort(timeLine, (a, b) -> a.start - b.start);
 
 		Interval prev = timeLine.get(0);
 		for (Interval interval : timeLine) {

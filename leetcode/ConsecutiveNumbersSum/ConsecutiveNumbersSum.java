@@ -19,18 +19,32 @@ Explanation: 15 = 15 = 8 + 7 = 4 + 5 + 6 = 1 + 2 + 3 + 4 + 5
 Note: 1 <= N <= 10 ^ 9.
 
 idea:
-need to go back
+N写成公差为1的正等差数列的和的方式有多少种
+	1, 2, 3, 4, 5  (1 + 5) * 5 / 2
+	+
+1	1, 1, 1, 1, 1
+i + 1 = 5 + 1 = 6
 */
 
 class ConsecutiveNumbersSum {
 	public int consecutiveNumbersSum(int N) {
-
-		int mid = N / 2;
-
-		if (N % 2 == 0) {
-			return 1 + consecutiveNumbersSum(mid);
-		} else {
-			return 1 + 1 + consecutiveNumbersSum(mid) * consecutiveNumbersSum(N - mid);
+		int count = 0;
+		for (int i = 0; i < N; i++) {
+			int sum = (1 + i) * i / 2;
+			if (sum > N) {
+				break;
+			}
+			int remaining = N - sum;
+			// 不能整除继续
+			if (remaining % (i + 1) != 0) {
+				continue;
+			}
+			// 开始的数字a大于0
+			if (remaining / (i + 1) > 0) {
+				count++;
+			}
 		}
+
+		return count;
 	}
 }

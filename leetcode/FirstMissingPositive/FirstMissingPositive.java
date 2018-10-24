@@ -24,10 +24,10 @@ import java.util.*;
 
 public class FirstMissingPositive {
 	public static void main(String[] args) {
-		FirstMissingPositive aTest = new FirstMissingPositive();
+		FirstMissingPositive eg = new FirstMissingPositive();
 		int[] A = {3, 2, 0, 2, 4, -1, 1};
 		
-		System.out.println("\nA_1stMissingPositive == " + aTest.firstMissingPositive(A));
+		System.out.println("\nA_1stMissingPositive == " + eg.firstMissingPositive(A));
 	}
 
     // note, use while

@@ -22,15 +22,16 @@ Return a NestedInteger object containing a nested list with 2 elements:
          a. An integer containing value 789.
 
 idea:
+need go back
 to get a taste of full implementation of NestedInteger,
 take a look at https://buttercola.blogspot.com/2015/11/airbnb-mini-parser.html 
 
 http://blog.csdn.net/yeqiuzs/article/details/52208388
 
 "[123,[654],[456,[789]]]"
-when [, create a NestedInteger object into stack
+when [ create a NestedInteger object into stack
 when , Integer.parseInt(), create a NestedInteger object with this number, to the peek() NestedInteger
-when ], pop()
+when ] pop()
 */
 
 // This is the interface that allows for creating nested lists.
@@ -62,43 +63,73 @@ public interface NestedInteger {
 
 
 public class MiniParser {
+	public NestedInteger deserialize(String s) {
+		if (s.length() == 0 || s == null) {
+			return new NestedInteger();
+		}
+
+		if (s.charAt(0) != '[') {
+			return new NestedInteger(Integer.parserInt(s));
+		}
+		if (s.length() <= 2) {
+			return new NestedInteger();
+		}
+
+		NestedInteger result = new NestedInteger();
+		int start = 1;
+		int cnt = 0;
+		for (int i = 1; i < s.length(); i++) {
+			if (cnt == 0 && (s.charAt(i) == ',' || i == s.length() - 1)) {
+				result.add(deserialize(s.substring(start, i)));
+				start = i + 1;
+			} else if (s.charAt(i) == '[') {
+				cnt++;
+			} else if (s.charAt(i) == ']') {
+				cnt--;
+			}
+		}
+
+		return result;
+	}
+
     public NestedInteger deserialize(String s) {
         if (s.length() == 0 || s == null) {
         	return null;
         }
-        // since only . [ ] and number, not [, must be an integer
+        // since only , [ ] and number, not [ , ] must be an integer
         if (s.charAt(0) != '[') {
         	return new NestedInteger(Integer.parseInt(s));
         }
 
         int i = 0;
         int numStart = 0;
+
         Stack<NestedInteger> stack = new Stack<NestedInteger>();
         NestedInteger ni = null;
 
         while (i < s.length()) {
-        	char ch = s.charAt(i);
-        	if (ch == '[') {
+        	char c = s.carAt(i);
+        	if (c == '[') {
         		NestedInteger num = new NestedInteger();
         		if (!stack.isEmpty()) {
         			stack.peek().add(num);
         		}
         		stack.push(num);
         		numStart = i + 1;
-        	}
-        	else if (ch == ',' || ch == ']') {
+        	} else if (c == ',' || c == ']') {
         		if (numStart < i) {
         			int value = Integer.parseInt(s.substring(numStart, i));
         			NestedInteger num = new NestedInteger(value);
         			stack.peek().add(num);
         		}
-        		if (ch == ']') {
+        		if (c == ']') {
         			ni = stack.pop();
         		}
         		numStart = i + 1;
         	}
         	i++;
         }
+
         return ni;
     }
 }

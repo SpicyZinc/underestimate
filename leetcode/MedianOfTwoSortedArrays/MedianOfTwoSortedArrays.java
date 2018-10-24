@@ -57,7 +57,7 @@ public class MedianOfTwoSortedArrays {
         if (total % 2 == 0) {
         	return (double) ( findKth(nums1, 0, m - 1, nums2, 0, n - 1, total / 2) + findKth(nums1, 0, m - 1, nums2, 0, n - 1, total / 2 + 1) ) / 2.0;
         } else {
-        	return findKth(nums1, 0, nums1.length - 1, nums2, 0, nums2.length - 1, total/2 + 1);
+        	return findKth(nums1, 0, nums1.length - 1, nums2, 0, nums2.length - 1, total / 2 + 1);
         }
     }
     // find kth, parameter is k
@@ -71,7 +71,8 @@ public class MedianOfTwoSortedArrays {
         // note k == 1, a good stopping case
         if (k == 1) return Math.min(a[s1], b[s2]);  
 
-        int midA = Math.min(k / 2, m), midB = k - midA;
+        int midA = Math.min(k / 2, m);
+        int midB = k - midA;
         // midA length is found out, so k - midA
         if (a[s1 + midA - 1] < b[s2 + midB - 1]) {
             return findKth(a, s1 + midA, e1, b, s2, e2, k - midA);
@@ -91,12 +92,10 @@ public class MedianOfTwoSortedArrays {
             if (nums1[i] < nums2[j]) {
                 sorted[idx++] = nums1[i];
                 i++;
-            }
-            else if (nums1[i] > nums2[j]) {
+            } else if (nums1[i] > nums2[j]) {
                 sorted[idx++] = nums2[j];
                 j++;
-            }
-            else {
+            } else {
                 sorted[idx++] = nums1[i];
                 i++;
                 sorted[idx++] = nums2[j];
@@ -111,6 +110,7 @@ public class MedianOfTwoSortedArrays {
         while (j < n) {
             sorted[idx++] = nums2[j++];
         }
+
         return getMedian(sorted);
     }
     private double getMedian(int[] nums) {
@@ -159,7 +159,6 @@ public class MedianOfTwoSortedArrays {
                 curr = B[j];
                 j++;
             }
-            
         }
 
         if (total % 2 == 0) {
