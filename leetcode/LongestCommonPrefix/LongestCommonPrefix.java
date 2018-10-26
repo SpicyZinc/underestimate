@@ -1,12 +1,11 @@
 /*
 Write a function to find the longest common prefix string amongst an array of strings.
 
-Two ideas:
-one is to combine first two strings to find the first prefix, then combine this prefix with the 3rd string to get 2nd prefix...
-one is pick char in the 1st string, same position's char in other strings
 
 idea:
-1. every time use current prefix and next string to generate new prefix
+1. combine first two strings to find the first prefix,
+then combine this prefix with the 3rd string to get 2nd prefix...
+every time use current prefix and next string to generate new prefix
 brute force, simple and direct
 base = strs[0]
 take the first string in the array of string as comparing "base"
@@ -21,8 +20,8 @@ s1	s2    s3    s4    s5
 |________________|
 |______________________|
 
-idea:
-2. compare each char in the first string with the rest strings' char at the same position
+2. pick char in the 1st string, same position's char in other strings
+compare each char in the first string with the rest strings' char at the same position
 save each iteration's base to return value so far
 if k == 1st string length, break;
 if k == length of any other string except 1st one, break;
@@ -34,7 +33,7 @@ if length == 0, charAt(0) is nonsense
 
 public class LongestCommonPrefix {
 	public static void main(String[] args) {
-		LongestCommonPrefix aTest = new LongestCommonPrefix();		
+		LongestCommonPrefix eg = new LongestCommonPrefix();		
 	}
 	// constructor
 	public LongestCommonPrefix() {
@@ -51,9 +50,9 @@ public class LongestCommonPrefix {
         }
         prefix = strs[0];
         for (int i = 1; i < strs.length; i++) {
-            int k = 0;
-            String tmpPrefix = "";
             String str = strs[i];
+            String tmpPrefix = "";
+            int k = 0;
             while (k < str.length() && k < prefix.length() && str.charAt(k) == prefix.charAt(k)) {
                 tmpPrefix += str.charAt(k);
                 k++;
