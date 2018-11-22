@@ -138,8 +138,7 @@ public class ValidNumber {
         }
         if (eIndex >= 0) {
             return isDecimals(cs, s, eIndex) && isInteger(cs, eIndex + 1, e);
-        }
-        else {
+        } else {
             return isDecimals(cs, s, e);
         }
     }
@@ -150,8 +149,7 @@ public class ValidNumber {
         }
         if (cs[s] == '-' || cs[s] == '+') {
             return isDecimalsPositive(cs, s + 1, e);
-        }
-        else {
+        } else {
             return isDecimalsPositive(cs, s, e);
         }
     }
@@ -166,8 +164,7 @@ public class ValidNumber {
         }
         if (dotIndex >= 0) {
             return e - s > 1 && (isIntegerPositive(cs, s, dotIndex) || s == dotIndex) && (isIntegerPositive(cs, dotIndex + 1, e) || dotIndex + 1 == e);
-        }
-        else {
+        } else {
             return isIntegerPositive(cs, s, e);
         }
     }
@@ -178,8 +175,7 @@ public class ValidNumber {
         }
         if (cs[s] == '-' || cs[s] == '+') {
             return isIntegerPositive(cs, s + 1, e);
-        }
-        else {
+        } else {
             return isIntegerPositive(cs, s, e);
         }
     }
