@@ -20,7 +20,7 @@ public class FindKthLargest {
 	public static void main(String[] args) {
 		int[] nums = {4, 2, 6, 5, 3, 9};
 		FindKthLargest eg = new FindKthLargest();
-		// 3th largest
+		// 3rd largest
 		System.out.println(eg.findKthLargest(nums, 3));
 	}
 
@@ -45,7 +45,7 @@ public class FindKthLargest {
             while (i <= j && nums[i] <= pivotVal) i++;
             while (i <= j && nums[j] >= pivotVal) j--;
             // i j stop moving, but there are still values bigger than pivotVal on the left
-            // or smaller values than pivotVal on the right
+            // or values smaller than pivotVal on the right
             if (i <= j) swap(nums, i, j);
         }
         // put the real pivotVal into the position
@@ -64,7 +64,7 @@ public class FindKthLargest {
     public int getKth(int[] nums, int k, int start, int end) {
 		int pivot = nums[end];
 		int left = start;
-		int right = end;	 
+		int right = end;
 		while (true) {
 			while (left < right && nums[left] < pivot) {
 				left++;

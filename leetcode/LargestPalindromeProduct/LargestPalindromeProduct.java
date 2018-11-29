@@ -11,8 +11,9 @@ Note:
 The range of n is [1,8].
 
 idea:
-n = 2时, 数字可选区间就是(9, 99].
-最大的product 就是 99*99 = 9801. 最大的位数是2n which is even number. 
+n = 2, 数字可选区间就是(9, 99].
+最大product 99 * 99 = 9801.
+最大的位数是2n which is even number. 
 
 https://blog.csdn.net/magicbean2/article/details/78683871
 
@@ -24,17 +25,17 @@ class LargestPalindromeProduct {
 			return 9;
 		}
 
-        int max = (int) Math.pow(10, n) - 1;
+		int max = (int) Math.pow(10, n) - 1;
 
-        // (max / 10, max]
-        for (int v = max - 1; v > max / 10; v--) {
+		// (max / 10, max]
+		for (int v = max - 1; v > max / 10; v--) {
 			long palindrome = Long.valueOf(v + new StringBuilder().append(v).reverse().toString());
-            for (long x = max; x * x >= palindrome; x--) {
-                if (palindrome % x == 0) {
-                    return (int) (palindrome % 1337);
-                }
-            }
-        }
+			for (long x = max; x * x >= palindrome; x--) {
+				if (palindrome % x == 0) {
+					return (int) (palindrome % 1337);
+				}
+			}
+		}
 
         return 0;
 	}

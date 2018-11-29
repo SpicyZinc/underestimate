@@ -1,6 +1,6 @@
 /*
-Given a binary tree where all the right nodes are either leaf nodes with a sibling 
-(a left node that shares the same parent node) or empty, 
+Given a binary tree where all the right nodes are
+either leaf nodes with a sibling (a left node that shares the same parent node) or empty, 
 flip it upside down and turn it into a tree where the original right nodes turned into left leaf nodes.
 Return the new root.
 
@@ -52,12 +52,12 @@ class TreeNode {
 
 public class BinaryTreeUpsideDown {
     public void print(TreeNode node) {
-        if ( node != null ) {
-            if ( node.left != null ) {
+        if (node != null) {
+            if (node.left != null) {
                 print(node.left);
             }
             System.out.print(node.val + " ");
-            if ( node.right != null ) {
+            if (node.right != null) {
                 print(node.right);
             }
         }
@@ -104,7 +104,7 @@ public class BinaryTreeUpsideDown {
         TreeNode parent = null;
         TreeNode parentRight = null;
 
-        while ( node != null ) {
+        while (node != null) {
             TreeNode left = node.left;
 
             node.left = parentRight;
@@ -128,13 +128,14 @@ public class BinaryTreeUpsideDown {
             p = c; 
             c = t1;
         }
-        TreeNode rel = p;
+        TreeNode result = p;
         while (p.right != null) {
             p.left = p.right.left;
             p.right.left = null;
             p = p.right;
         }
-        return rel;
+
+        return result;
     }
 }
 
