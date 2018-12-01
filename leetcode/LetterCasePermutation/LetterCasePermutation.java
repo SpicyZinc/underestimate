@@ -20,30 +20,32 @@ idea:
 BFS permutation
 for each letter, no more than 2 cases, try them both
 then push to queue again
+note, LinkedList<String> queue
 */
 
 class LetterCasePermutation {
 	public List<String> letterCasePermutation(String S) {
-		LinkedList<String> queue = new LinkedList<String>();
+        LinkedList<String> queue = new LinkedList<>();
         queue.add(S);
-		if (S.length() == 0 || S == null) {
-			return queue;
-		}
-		
-		for (int i = 0; i < S.length(); i++) {
-			char c = S.charAt(i);
-			if (Character.isLetter(c)) {
-				int size = queue.size();
-				for (int j = 0; j < size; j++) {
-					String s = queue.poll();
-					String lowercase = s.substring(0, i) + Character.toLowerCase(c) + s.substring(i + 1);
-					String uppercase = s.substring(0, i) + Character.toUpperCase(c) + s.substring(i + 1);
-					queue.add(lowercase);
-					queue.add(uppercase);
-				}
-			}
-		}
+        
+        if (S.length() == 0 || S == null) {
+            return queue;    
+        }
 
-		return queue;
-	}
+        for (int i = 0; i < S.length(); i++) {
+            char c = S.charAt(i);
+            if (Character.isLetter(c)) {
+                int size = queue.size();
+                for (int j = 0; j < size; j++) {
+                    String str = queue.poll();
+                    String upperCaseStr = str.substring(0, i) + Character.toUpperCase(c) + str.substring(i + 1);
+                    String lowerCaseStr = str.substring(0, i) + Character.toLowerCase(c) + str.substring(i + 1);
+                    queue.add(upperCaseStr);
+                    queue.add(lowerCaseStr);
+                }
+            }
+        }
+
+        return queue;
+    }
 }
