@@ -25,18 +25,17 @@ class LargestPalindromeProduct {
 			return 9;
 		}
 
-		int max = (int) Math.pow(10, n) - 1;
+		int upper = (int) Math.pow(10, n) - 1;
 
-		// (max / 10, max]
-		for (int v = max - 1; v > max / 10; v--) {
-			long palindrome = Long.valueOf(v + new StringBuilder().append(v).reverse().toString());
-			for (long x = max; x * x >= palindrome; x--) {
-				if (palindrome % x == 0) {
-					return (int) (palindrome % 1337);
+		for (int i = upper; i > upper / 10; i--) {
+			long candidate = Long.valueOf(i + new StringBuilder().append(i).reverse().toString());
+			for (long j = upper; j * j >= candidate; j--) {
+				if (candidate % j == 0) {
+					return (int) (candidate % 1337);
 				}
 			}
 		}
 
-        return 0;
+		return 0;
 	}
 }

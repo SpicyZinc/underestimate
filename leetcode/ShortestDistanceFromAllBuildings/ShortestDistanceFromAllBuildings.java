@@ -28,8 +28,8 @@ need another reach[][] to track how many buildings each '0' can be reached
 loop again,
 Our building should be placed at those empty places and reach[i][j] == totalBuildingNum
 
-note: Be careful the case where there are only buildings and no empty lands, like [[1]].
-so shortest distance at last is still Integer.MAX_VALUE should be turned to -1
+note, the case where there are only buildings and no empty lands, like [[1]].
+so shortest distance at last is still Integer.MAX_VALUE should be returned to -1
 */
 
 import java.util.*;
@@ -45,6 +45,79 @@ public class ShortestDistanceFromAllBuildings {
 		int shortest = eg.shortestDistance(grid);
 
 		System.out.println(shortest);
+	}
+	// 12/01/2018
+	public int shortestDistance(int[][] grid) {
+		if (grid == null || grid[0].length == 0) {
+			return 0;
+		}
+
+		int[][] directions = {
+			{0, 1},
+			{0, -1},
+			{1, 0},
+			{-1, 0},
+		};
+
+		int m = grid.length;
+		int n = grid[0].length;
+
+		int[][] distance = new int[m][n];
+		int[][] reachable = new int[m][n];
+
+		int buildingCnt = 0;
+
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				// from each building
+				if (grid[i][j] == 1) {
+					buildingCnt++;
+
+					Queue<int[]> queue = new LinkedList<int[]>();
+					queue.offer(new int[] {i, j});
+
+					boolean[][] isVisited = new boolean[m][n];
+					int dist = 1;
+					
+					while (!queue.isEmpty()) {
+						int size = queue.size();
+						for (int k = 0; k < size; k++) {
+
+							int[] position = queue.poll();
+							int x = position[0];
+							int y = position[1];
+
+							for (int[] dir : directions) {
+								int newX = x + dir[0];
+								int newY = y + dir[1];
+
+								if (newX >= 0 && newX < m && newY >= 0 && newY < n && grid[newX][newY] == 0 && !isVisited[newX][newY]) {
+									// The shortest distance from [newX][newY] to this building is 'dist'.
+									distance[newX][newY] += dist;
+									reachable[newX][newY]++;
+
+									isVisited[newX][newY] = true;
+									queue.offer(new int[] {newX, newY});
+								}
+							}
+						}
+
+						dist++;
+					}
+				}
+			}
+		}
+
+		int shortest = Integer.MAX_VALUE;
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (grid[i][j] == 0 && reachable[i][j] == buildingCnt) {
+					shortest = Math.min(shortest, distance[i][j]);
+				}
+			}
+		}
+
+		return shortest == Integer.MAX_VALUE ? -1 : shortest;
 	}
 
 	// note, hard copy array is key point
@@ -81,6 +154,7 @@ public class ShortestDistanceFromAllBuildings {
 		int val = 0;
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
+				// from each building
 				if (grid[i][j] == 1) {
 					shortestDistance = Integer.MAX_VALUE;
 
@@ -95,7 +169,7 @@ public class ShortestDistanceFromAllBuildings {
 						int[] position = queue.poll();
 						int x = position[0];
 						int y = position[1];
-                        
+
 						for (int[] dir : directions) {
 							int newX = x + dir[0];
 							int newY = y + dir[1];
@@ -112,71 +186,6 @@ public class ShortestDistanceFromAllBuildings {
 						}
 					}
 					val--;
-				}
-			}
-		}
-
-		return shortestDistance == Integer.MAX_VALUE ? -1 : shortestDistance;
-	}
-
-	public int shortestDistance(int[][] grid) {
-		if (grid == null || grid.length == 0) {
-			return 0;
-		}
-
-		int[][] directions = {
-			{0, 1},
-			{0, -1},
-			{1, 0},
-			{-1, 0},
-		};
-
-		int m = grid.length;
-		int n = grid[0].length;
-		// empty land at i, j distance to some building
-		int[][] distance = new int[m][n];
-		// the number of buildings an empty land at i, j can reaches
-		int[][] reach = new int[m][n];
-		int buildingNum = 0;
-
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				if (grid[i][j] == 1) {
-					buildingNum++;
-					Queue<int[]> queue = new LinkedList<int[]>();
-					queue.offer(new int[] {i, j});
-
-					boolean[][] visited = new boolean[m][n];
-					int level = 1;
-
-					while (!queue.isEmpty()) {
-						int size = queue.size();
-						for (int k = 0; k < size; k++) {
-							int[] position = queue.poll();
-
-							for (int[] dir : directions) {
-								int nextX = position[0] + dir[0];
-								int nextY = position[1] + dir[1];
-
-								if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && grid[nextX][nextY] == 0 && !visited[nextX][nextY]) {
-									distance[nextX][nextY] += level;
-									reach[nextX][nextY]++;
-									visited[nextX][nextY] = true;
-									queue.offer(new int[] {nextX, nextY});
-								}
-							}
-						}
-						level++;
-					}
-				}
-			}
-		}
-
-		int shortestDistance = Integer.MAX_VALUE;
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				if (grid[i][j] == 0 && reach[i][j] == buildingNum) {
-					shortestDistance = Math.min(shortestDistance, distance[i][j]);
 				}
 			}
 		}
