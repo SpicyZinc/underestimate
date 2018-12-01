@@ -1,5 +1,6 @@
 /*
-Given two words word1 and word2, find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)
+Given two words word1 and word2, find the minimum number of steps required to convert word1 to word2.
+(each operation is counted as 1 step.)
 
 You have the following 3 operations permitted on a word:
 a) Insert a character
@@ -9,23 +10,21 @@ c) Replace a character
 idea:
 Edit Distance is also called levenshtein distance (Russian)
 http://en.wikipedia.org/wiki/Levenshtein_distance
-
 http://blog.unieagle.net/2012/09/19/leetcode%E9%A2%98%E7%9B%AE%EF%BC%9Aedit-distance%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B9%8B%E9%97%B4%E7%9A%84%E7%BC%96%E8%BE%91%E8%B7%9D%E7%A6%BB%EF%BC%8C%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/
-time requirement is O(mn)
 
-note: length is length, [0, length-1]
-sstr1(i) is word1's substring, its range is [0, i), length is i, sstr1(0) is empty string
-sstr2(j) is word2's substring, its range is [0, j), length is j, sstr2(0) is empty string
-d[i][j] is edit distance to convert sstr1(i) to sstr2(j)
+dp[i][j] == the number of edits needed
+to make word1[0, i - 1] (first i chars) equals word2[0, j - 1] (first j chars)
 
-dp[i][j] == the count of edits needed
-to make word1[0, i-1] (first i chars) equals word2[0, j-1] (first j chars) 
+time cost O(mn)
+
+2, Recursive with memoization
 */
 public class EditDistance {
 	public static void main(String[] args) {
-		EditDistance aTest = new EditDistance();
-		System.out.print("Min of 1 2 3 == " + aTest.min(1, 2, 3));
-		
+		EditDistance eg = new EditDistance();
+        String word1 = "sea";
+        String word2 = "eat";
+		System.out.println("Min edits of from " + word1 + " to " + word2 + " == " + eg.minDistance(word1, word2));
 	}
     // 08/25/2018
     public int minDistance(String word1, String word2) {
@@ -60,5 +59,44 @@ public class EditDistance {
         }
         
         return dp[size1][size2];
+    }
+
+    // recursive
+    // 12/01/2018
+    public int minDistance(String word1, String word2) {
+        Map<String, Integer> editMemo = new HashMap<String, Integer>();
+        return dfs(word1, 0, word2, 0, editMemo);
+    }
+    
+    private int dfs(String word1, int i, String word2, int j, Map<String, Integer> editMemo) {
+        String key = i + "-" + j;
+        
+        if (editMemo.containsKey(key)) {
+            return editMemo.get(key);
+        }
+        
+        int m = word1.length();
+        int n = word2.length();
+        
+        int editions = 0;
+        if (j == n && i < m) {
+            editions = m - i;
+        } else if (i == m && j < n) {
+            editions = n - j;
+        } else if (i < m && j < n) {
+            if (word1.charAt(i) == word2.charAt(j)) {
+                editions = dfs(word1, i + 1, word2, j + 1, editMemo);
+            } else {
+                int insert = dfs(word1, i + 1, word2, j, editMemo) + 1;
+                int delete = dfs(word1, i, word2, j + 1, editMemo) + 1;
+                int replace = dfs(word1, i + 1, word2, j + 1, editMemo) + 1;
+                
+                editions = Math.min(insert, Math.min(delete, replace));
+            }
+        }
+        
+        editMemo.put(key, editions);
+        
+        return editions;
     }
 }
