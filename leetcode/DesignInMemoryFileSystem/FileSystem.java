@@ -33,16 +33,18 @@ You can assume that all directory names and file names only contain lower-case l
 idea:
 method 1
 https://www.cnblogs.com/grandyang/p/6944331.html
-use two hashmaps
-directories: directory => directories and files, note: absolute path
-{/a=[b], /a/b=[c], /a/b/c=[d], /=[a]}
+use two hashmaps,
+note, absolute path
+第一个map directory => directories and files
+directories: directory => directories and files 
+e.g. {/a=[b], /a/b=[c], /a/b/c=[d], /=[a]}
 files: directory => file content
-{/a/b/c/d=hello}
+e.g. {/a/b/c/d=hello}
 
 ls:
 如果该路径存在于files中
 说明最后一个字符串是文件
-那么我们将文件名取出来返回即可
+那么我们按照文件名取出来返回即可
 如果不存在
 说明最后一个字符串是文件夹
 那么到dirs中取出该文件夹内所有的东西返回
@@ -59,6 +61,105 @@ https://discuss.leetcode.com/topic/90000/java-solution-file-class
 import java.util.*;
 
 public class FileSystem {
+	// 12/02/2018
+    public Map<String, Set<String>> directories;
+    public Map<String, String> files;
+
+    public FileSystem() {
+        directories = new HashMap<>();
+        files = new HashMap<>();
+    }
+    
+    public List<String> ls(String path) {
+        if (files.containsKey(path)) {
+            int lastIndex = path.lastIndexOf("/");
+            String file = path.substring(lastIndex + 1);
+            
+            List<String> result = new ArrayList<>();
+            result.add(file);
+            return result;
+        }
+        
+        if (directories.containsKey(path)) {
+            Set<String> hs = directories.get(path);
+            List<String> result = new ArrayList<>(hs);
+            Collections.sort(result);
+            return result;
+        }
+        
+        return new ArrayList<String>();
+    }
+    
+    public void mkdir(String path) {
+        if (path.length() == 0 || path == null) {
+            return;
+        }
+        
+        String[] dirs = path.split("/");
+        String absolutePath = "";
+
+        for (String dir : dirs) {
+            // skip empty directory
+            if (dir.length() == 0 || dir == null) {
+				continue;
+			}
+            if (absolutePath.length() == 0) {
+                absolutePath += '/';
+            }
+            
+            Set<String> hs = directories.get(absolutePath);
+            if (hs == null) {
+                hs = new HashSet<>();
+            }
+            
+            hs.add(dir);
+            directories.put(absolutePath, hs);
+            
+            // absolutePath = (absolutePath.length() > 1 ? "/" : "") + dir;
+            absolutePath += absolutePath.length() > 1 ? "/" + dir : dir;
+        }
+    }
+
+    public void addContentToFile(String filePath, String content) {
+        int lastIndex = filePath.lastIndexOf("/");
+        String directory = filePath.substring(0, lastIndex);
+        String file = filePath.substring(lastIndex + 1);
+        
+        // if directory is empty
+        if (directory.length() == 0 || directory == null) {
+            directory = "/";
+        }
+        // if directories not contain directory, make it first
+        if (!directories.containsKey(directory)) {
+            mkdir(directory);
+        }
+        
+        // directories
+        Set<String> hs = directories.get(directory);
+        if (hs == null) {
+            hs = new HashSet<>();
+        }
+        hs.add(file);
+        directories.put(directory, hs);
+        
+        // files
+        String fileContent = files.get(filePath);
+        if (fileContent == null || fileContent.length() == 0) {
+            fileContent = content;
+        } else {
+            fileContent += content;
+        }
+        files.put(filePath, fileContent);
+    }
+    
+    public String readContentFromFile(String filePath) {
+        if (!files.containsKey(filePath)) {
+			return "";
+		}
+		return files.get(filePath);
+    }
+
+
 	public static void main(String[] args) {
 // "FileSystem"            []                    		null
 // "mkdir"                 ["/zijzllb"]          		null,

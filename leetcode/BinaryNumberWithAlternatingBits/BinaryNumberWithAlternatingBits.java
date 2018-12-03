@@ -1,5 +1,6 @@
 /*
-Given a positive integer, check whether it has alternating bits: namely, if two adjacent bits will always have different values.
+Given a positive integer, check whether it has alternating bits:
+namely, if two adjacent bits will always have different values.
 
 Example 1:
 Input: 5
@@ -28,9 +29,17 @@ The binary representation of 10 is: 1010.
 idea:
 convert number to binary format, saved to list.
 see if 1 and 0 is alternating
+remove trailing zeros
 did not use bit operation
 
 https://www.cnblogs.com/grandyang/p/7696387.html
+利用了0和1的交替的特性, 进行错位相加
+n是10101, 那么n>>1就是1010, 二者相加就是11111, 再加1就是100000, 二者相‘与’就是0
+
+011111
+&
+100000
+== 0
 */
 
 import java.util.*;
@@ -79,6 +88,7 @@ class BinaryNumberWithAlternatingBits {
 	}
 
 	// quick method
+	// 12/03/2018
 	public boolean hasAlternatingBits(int n) { 
         return ((n + (n >> 1) + 1) & (n + (n >> 1))) == 0;
     }

@@ -4,7 +4,7 @@ This path may or may not pass through the root.
 Note: The length of path between two nodes is represented by the number of edges between them.
 
 Example 1:
-Input: 
+Input:
               5
              / \
             4   5
@@ -14,7 +14,7 @@ Output:
 2
 
 Example 2:
-Input: 
+Input:
               1
              / \
             4   5
@@ -34,8 +34,9 @@ how ?
 recursion + consider current node, then + 1
 
 this is to find consecutive 1's 
-如果最后左右连到 root的两个 edge 没有 同样的数字 没有连接起来
+如果最后左右连到 root 的两个 edge 没有 同样的数字 没有连接起来成为univalve
 不能称其为 UnivaluePath 所以到这个root 点 最大edge数就是0
+如果相等 leftUniValuePathLen rightUniValuePathLen 各自 +1, 然后相加成为max[0]
 就是一旦不连续 就是0
 返回的值不是 需要的值 是过渡值
 similar to consecutive path in tree
@@ -49,13 +50,50 @@ class TreeNode {
 }
 
 class LongestUnivaluePath {	
+	// 12/03/2018
+	public int longestUnivaluePath(TreeNode root) {
+        int[] max = new int[1];
+        edgeLength(root, max);
+        
+        return max[0];
+    }
+    
+    public int edgeLength(TreeNode node, int[] max) {
+        if (node == null) {
+			return 0;
+		}
+
+        int longestLeft = edgeLength(node.left, max);
+        int longestRight = edgeLength(node.right, max);
+        
+        int leftEdges = 0;
+        int rightEdges = 0;
+        
+        if (node.left != null) {
+            if (node.val == node.left.val) {
+                leftEdges = longestLeft + 1;
+            }            
+        }
+        
+        if (node.right != null) {
+            if (node.val == node.right.val) {
+                rightEdges = longestRight + 1;
+            }            
+        }
+        
+        max[0] = Math.max(max[0], leftEdges + rightEdges);
+        
+        return Math.max(leftEdges, rightEdges);
+    }
+
+
 	public int longestUnivaluePath(TreeNode root) {
 		int[] max = new int[1];
 		edgeLength(root, max);
 
 		return max[0];
 	}
-
+	// not include node, the longest edge length under 'node'
 	public int edgeLength(TreeNode node, int[] max) {
 		if (node == null) {
 			return 0;
