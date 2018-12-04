@@ -14,7 +14,9 @@ Return the array [2, 1, 1, 0].
 
 idea:
 1. use search insert position, which contains binary search
-maintain a sorted list which contains all visited number
+maintain a sorted list
+list.add(index, value) will push value at index to the back
+从后往前来 sorted list 的插入位置就是 比这个要插入value 小的 values的个数
 2. Brute force
 3. construct binary search tree
 
@@ -40,12 +42,14 @@ public class CountOfSmallerNumbersAfterSelf {
         List<Integer> sorted = new ArrayList<Integer>();
         int n = nums.length;
         Integer[] counts = new Integer[n];
-        // from back to front, this way, guarantee that inserted index will the number of smaller values after inserted value
+        // from back to front, this way,
+        // guarantee that inserted index will the number of smaller values after inserted value
         for (int i = n - 1; i >= 0; i--) {
             int index = searchInsertPos(sorted, nums[i]);
             counts[i] = index;
             // add to sorted array at the last step
             sorted.add(index, nums[i]);
+            System.out.println(sorted);
         }
         
         return Arrays.asList(counts);
@@ -67,7 +71,7 @@ public class CountOfSmallerNumbersAfterSelf {
         
         return left;
     }
-    // method 2, 15 / 16 test cases passed
+    method 2, 15 / 16 test cases passed
     public List<Integer> countSmaller(int[] nums) {
         List<Integer> list = new ArrayList<Integer>();
         if (nums.length == 0 || nums == null) {
@@ -121,16 +125,13 @@ public class CountOfSmallerNumbersAfterSelf {
         if (node == null) {
             node = new Node(num, 0);
             ans[i] = preSum;
-        }
-        else if (node.val == num) {
+        } else if (node.val == num) {
             node.dup++;
             ans[i] = preSum + node.leftSmaller;
-        }
-        else if (node.val > num) {
+        } else if (node.val > num) {
             node.leftSmaller++;
             node.left = insert(node.left, num, ans, i, preSum);
-        }
-        else {
+        } else {
             node.right = insert(node.right, num, ans, i, preSum + node.dup + node.leftSmaller);
         }
 

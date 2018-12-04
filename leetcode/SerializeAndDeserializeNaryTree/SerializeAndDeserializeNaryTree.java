@@ -14,8 +14,6 @@ https://leetcode.com/static/images/problemset/NaryTreeExample.png
 as [1 [3[5 6] 2 4]]. You do not necessarily need to follow this format,
 so please be creative and come up with different approaches yourself.
 
- 
-
 Note:
 N is in the range of [1, 1000]
 Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.
@@ -32,13 +30,62 @@ class Node {
 
     public Node() {}
 
-    public Node(int _val,List<Node> _children) {
+    public Node(int _val, List<Node> _children) {
         val = _val;
         children = _children;
     }
 };
 
 class SerializeAndDeserializeNaryTree {
+	// 12/04/2018
+	private static final String delimiter = ",";
+	// Encodes a tree to a single string.
+    public String serialize(Node root) {
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        return sb.toString();
+    }
+    
+    public void serialize(Node node, StringBuilder sb) {
+        if (node == null) {
+            return;
+        }
+
+        sb.append(node.val).append(delimiter);
+        sb.append(node.children.size()).append(delimiter);
+        
+        for (Node child : node.children) {
+            serialize(child, sb);
+        }
+    }
+
+    // Decodes your encoded data to tree.
+    public Node deserialize(String data) {
+		if (data.isEmpty()) {
+			return null;
+		}
+        
+        String[] matches = data.split(delimiter);
+        Queue<String> queue = new LinkedList<>(Arrays.asList(matches));
+        
+        return deserialize(queue);
+    }
+    
+    public Node deserialize(Queue<String> queue) {
+        String val = queue.poll();
+        Node root = new Node(Integer.parseInt(val), new ArrayList<Node>());
+        
+        val = queue.poll();
+        int size = Integer.parseInt(val);
+        
+        for (int i = 0; i < size; i++) {
+            // after poll(), actually new queue
+            root.children.add(deserialize(queue));
+        }
+        
+        return root;
+    }
+
 	public static final String delimiter = ",";
 
 	// Encodes a tree to a single string.

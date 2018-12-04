@@ -22,6 +22,13 @@ NOTE: delimiter MUST be appended after TreeNode value or empty value #
 
 不用什么 StringTokenizer next()
 用 StringBuilder, linkedlist remove()
+
+当你看到这段代码时可能觉得没啥问题啊
+不就是返回了一个ArrayList对象吗？问题就出在这里. 这个ArrayList不是java.util包下的
+而是java.util.Arrays.ArrayList
+显然它是Arrays类自己定义的一个内部类！这个内部类没有实现add(), remove()方法
+而是直接使用它的父类AbstractList的相应方法.
+而AbstractList中的add()和remove()是直接抛出java.lang.UnsupportedOperationException异常的
 */
 
 import java.util.*;
@@ -69,6 +76,51 @@ public class SerializeAndDeserializeBinaryTree {
 		t.print();
 		System.out.println();
 	}
+    // 12/04/2018
+    public static final String emptyValue = "#";
+    public static final String delimiter = ",";
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        return sb.toString();
+    }
+    
+    public void serialize(TreeNode node, StringBuilder sb) {
+        if (node == null) {
+            sb.append(emptyValue).append(delimiter);
+            return;
+        }
+        
+        sb.append(node.val).append(delimiter);
+        serialize(node.left, sb);
+        serialize(node.right, sb);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        List<String> nodes = new LinkedList<String>();
+        
+        String[] matches = data.split(delimiter);
+        
+        nodes.addAll(Arrays.asList(matches));
+        return deserialize(nodes);
+    }
+    
+    public TreeNode deserialize(List<String> list) {
+        String val = list.remove(0);
+        if (val.equals(emptyValue)) {
+            return null;
+        } else {
+            TreeNode root = new TreeNode(Integer.parseInt(val));
+            root.left = deserialize(list);
+            root.right = deserialize(list);
+            
+            return root;
+        }
+    }
+
 
     public static final String delimiter = ",";
     public static final String emptyValue = "#";
@@ -114,40 +166,40 @@ public class SerializeAndDeserializeBinaryTree {
     }
     
     // method 2
-    // public String serialize(TreeNode root) {  
-    //     StringBuilder sb = new StringBuilder();  
-    //     serialize(root, sb);  
-    //     return sb.toString();  
-    // }  
+    public String serialize(TreeNode root) {  
+        StringBuilder sb = new StringBuilder();  
+        serialize(root, sb);  
+        return sb.toString();  
+    }  
        
-    // private void serialize(TreeNode x, StringBuilder sb) {
-    //     if (x == null) {  
-    //         sb.append(emptyValue).append(delimiter);
-    //     } else {
-    //         sb.append(x.val).append(delimiter);
-    //         serialize(x.left, sb);  
-    //         serialize(x.right, sb);  
-    //     }  
-    // }
-    // // Decodes your encoded data to tree.
-    // public TreeNode deserialize(String data) {
-    //     if ( data == null || data.length() == 0 ) {
-    //         return null;
-    //     }
-    //     StringTokenizer st = new StringTokenizer(data, delimiter);
-    //     return deserialize(st);
-    // }
-    // private TreeNode deserialize(StringTokenizer st) {
-    //     if (!st.hasMoreTokens()) {
-    //         return null;  
-    //     }
-    //     String val = st.nextToken();  
-    //     if (val.equals(emptyValue)) {
-    //         return null;  
-    //     }
-    //     TreeNode root = new TreeNode(Integer.parseInt(val));  
-    //     root.left = deserialize(st);  
-    //     root.right = deserialize(st);  
-    //     return root;  
-    // }
+    private void serialize(TreeNode x, StringBuilder sb) {
+        if (x == null) {  
+            sb.append(emptyValue).append(delimiter);
+        } else {
+            sb.append(x.val).append(delimiter);
+            serialize(x.left, sb);  
+            serialize(x.right, sb);  
+        }  
+    }
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if ( data == null || data.length() == 0 ) {
+            return null;
+        }
+        StringTokenizer st = new StringTokenizer(data, delimiter);
+        return deserialize(st);
+    }
+    private TreeNode deserialize(StringTokenizer st) {
+        if (!st.hasMoreTokens()) {
+            return null;  
+        }
+        String val = st.nextToken();  
+        if (val.equals(emptyValue)) {
+            return null;  
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(val));  
+        root.left = deserialize(st);  
+        root.right = deserialize(st);  
+        return root;  
+    }
 }

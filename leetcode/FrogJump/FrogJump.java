@@ -1,5 +1,6 @@
 /*
-A frog is crossing a river. The river is divided into x units and at each unit there may or may not exist a stone.
+A frog is crossing a river.
+The river is divided into x units and at each unit there may or may not exist a stone.
 The frog can jump on a stone, but it must not jump into the water.
 Given a list of stones' positions (in units) in sorted ascending order,
 determine if the frog is able to cross the river by landing on the last stone.
@@ -25,15 +26,59 @@ Return true. The frog can jump to the last stone by jumping
 4 units to the 7th stone, and 5 units to the 8th stone.
 
 Example 2: [0,1,2,3,4,8,9,11]
-
 Return false. There is no way to jump to the last stone as 
 the gap between the 5th and 6th stone is too large.
 
 idea:
 dfs(pos, prevJumpedSteps) with memorization
+The river is divided into x units is greater than the number of stones
+use pos + previous jumped steps as key
 */
 
 public class FrogJump {
+    // 12/04/2018
+    public boolean canCross(int[] stones) {
+        if (stones[1] >= 2) {
+            return false;
+        }
+
+        Map<String, Boolean> hm = new HashMap<String, Boolean>();
+        
+        return canCross(stones, 1, 1, hm);
+    }
+    
+    public boolean canCross(int[] stones, int pos, int prevSteps, Map<String, Boolean> hm) {
+        // dont forget base case
+        if (pos == stones.length - 1) {
+            return true;
+        }
+
+        String key = pos + "-" + prevSteps;
+        if (hm.containsKey(key)) {
+            return hm.get(key);
+        }
+        
+        for (int i = pos + 1; i < stones.length; i++) {
+            int jumpedSteps = stones[i] - stones[pos];
+            
+            if (jumpedSteps < prevSteps - 1) {
+                continue;
+            }
+            
+            if (jumpedSteps > prevSteps + 1) {
+                hm.put(key, false);
+                return false;
+            }
+            
+            if (canCross(stones, i, jumpedSteps, hm)) {
+                hm.put(key, true);
+                return true;
+            }
+        }
+        hm.put(key, false);
+        return false;
+    }
+
     // 09/16/2018 LiveRamp
     public boolean canCross(int[] stones) {
         if (stones[1] >= 2) {
@@ -43,8 +88,7 @@ public class FrogJump {
         if (stones.length == 2) {
             return true;
         }
-        
-        
+
         Map<String, Boolean> hm = new HashMap<String, Boolean>();
 
         return dfs(stones, 1, 1, hm);

@@ -1,6 +1,7 @@
 /*
 Median is the middle value in an ordered integer list.
-If the size of the list is even, there is no middle value. So the median is the mean of the two middle value.
+If the size of the list is even, there is no middle value.
+So the median is the mean of the two middle value.
 
 Examples: 
 [2,3,4] , the median is 3
@@ -29,6 +30,33 @@ note: large always has one more element then small or equal size
 import java.util.*;
 
 class MedianFinder {
+    // 12/04/2018
+    // small alway equal or 1 bigger than large
+    Queue<Long> small = null;
+    Queue<Long> large = null;
+
+    /** initialize your data structure here. */
+    public MedianFinder() {
+        small = new PriorityQueue<Long>();
+        large = new PriorityQueue<Long>();
+    }
+    
+    public void addNum(int num) {
+        small.add(-1 * (long) num);
+        large.add(-1 * small.poll());
+        if (large.size() > small.size()) {
+            small.add(-1 * large.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if (small.size() > large.size()) {
+            return -1 * small.peek();
+        } else {
+            return (large.peek() - small.peek()) / 2.0;
+        }
+    }
+
 	Queue<Long> small = null;
     Queue<Long> large = null;
 
