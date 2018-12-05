@@ -8,7 +8,8 @@ It means there are n files (f1.txt, f2.txt ... fn.txt with content f1_content, f
 in directory root/d1/d2/.../dm. Note that n >= 1 and m >= 0. 
 If m = 0, it means the directory is just the root directory.
 
-The output is a list of group of duplicate file paths. For each group, it contains all the file paths of the files that have the same content.
+The output is a list of group of duplicate file paths.
+For each group, it contains all the file paths of the files that have the same content.
 A file path is a string that has the following format:
 "directory_path/file_name.txt"
 
