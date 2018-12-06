@@ -129,9 +129,9 @@ public class PalindromePairs {
                 String rest = word.substring(left, right);
                 if (j != null && j != i && isPalindrome(rest)) {
                     if (l == 0) {
-                        pairs.add(Arrays.asList(new Integer[]{i, j}));
+                        pairs.add(Arrays.asList(new Integer[] {i, j}));
                     } else {
-                        pairs.add(Arrays.asList(new Integer[]{j, i}));
+                        pairs.add(Arrays.asList(new Integer[] {j, i}));
                     }
                 }
 

@@ -44,6 +44,7 @@ How to make sure the duplicated files you find are not false positive?
 idea:
 this is to find duplicate files, so all files appear only once respectively,
 then return empty []
+总的说 这是一道容易想的题目
 */
 
 public class Find DuplicateFileInSystem {

@@ -6,18 +6,17 @@ public class PermuteTest {
 		String str = "abcd";
 		StringBuffer strBuf = new StringBuffer(str);
 		doPerm(strBuf, str.length());
-
 	}
 
-	private static void doPerm(StringBuffer str, int index){
-		if(index == 0)
+	private static void doPerm(StringBuffer str, int index) {
+		if (index == 0) {
 			System.out.println(++count + " " + str);
-		else { //recursively solve this by placing all other chars at current first position
-			doPerm(str, index-1);
-			int currPos = str.length()-index;
-			for (int i = currPos+1; i < str.length(); i++) {//start swapping all other chars with current first char
+		} else { //recursively solve this by placing all other chars at current first position
+			doPerm(str, index - 1);
+			int currPos = str.length() - index;
+			for (int i = currPos + 1; i < str.length(); i++) {//start swapping all other chars with current first char
 				swap(str, currPos, i);
-				doPerm(str, index-1);
+				doPerm(str, index - 1);
 				swap(str, i, currPos);//restore back my string buffer
 			}
 		}
