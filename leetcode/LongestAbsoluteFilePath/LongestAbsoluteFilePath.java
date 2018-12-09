@@ -36,14 +36,16 @@ Time complexity required: O(n) where n is the size of the input string.
 Notice that a/aa/aaa/file1.txt is not the longest file path, if there is another path aaaaaaaaaaaaaaaaaaaaa/sth.png.
 
 idea:
+1. use hashmap
+2. stack, debug as below
+need to go back, did not understand
 dir
     \tsubdir1
     \tsubdir2
         \t\tfile.ext
 
-debug here, idea is clear
 stack is to save each depth length
-if # of stack is longer than depth length, pop()
+if stack size is longer than depth length, pop()
 
 st [0]
 
@@ -94,7 +96,7 @@ public class LongestAbsoluteFilePath {
     // depth == # of "/t/t", not consecutively increase
     public int lengthLongestPath(String input) {
         int maxlen = 0;
-        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> hm = new HashMap<>();
         hm.put(0, 0);
 
         String[] lines = input.split("\n");
@@ -113,7 +115,7 @@ public class LongestAbsoluteFilePath {
     }
 
     public int lengthLongestPath(String input) {
-        int ret = 0;
+        int result = 0;
         String[] paths = input.split("\n");
         Stack<Integer> stack = new Stack<Integer>();
         stack.push(0);
@@ -125,13 +127,13 @@ public class LongestAbsoluteFilePath {
             	stack.pop();
             }
             stack.push(stack.peek() + last.length() + 1); // plus 1 is for "/"
-            // if last is a file not directory or folder
+            // if last is a file not directory
             if (last.contains(".")) {
-            	ret = Math.max(ret, stack.peek() - 1); // minus 1 is for n parts will have n-1 "/"
+            	result = Math.max(result, stack.peek() - 1); // minus 1 is for n parts will have n-1 "/"
             }
         }
 
-        return ret;
+        return result;
     }
 }
 
