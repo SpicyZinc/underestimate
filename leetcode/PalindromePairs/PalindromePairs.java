@@ -6,24 +6,27 @@ Example 1:
 Given words = ["bat", "tab", "cat"]
 Return [[0, 1], [1, 0]]
 The palindromes are ["battab", "tabbat"]
+
 Example 2:
 Given words = ["abcd", "dcba", "lls", "s", "sssll"]
 Return [[0, 1], [1, 0], [3, 2], [2, 4]]
 The palindromes are ["dcbaabcd", "abcddcba", "slls", "llssssll"]
 
 idea:
-note: it is unique words pair
+note, it is unique words pair
 
-for each word in words[]
+for each word in words[] "abece", "ba"
 left = substring(0, k)
 right = substring(k, length)
-"abece", "ba"
-reversedLeft "ba" is contained in the map, right ece is palindrome
-"eceab", "ba"
-pay attention to the pair order
 
-Another way to avoid duplicates is to use Set<List<Integer>> ret = new HashSet<>();
-and return new ArrayList<>(ret);
+"abece" == ab + ece
+reversedLeft of "ab" is "ba", contained in the map
+right ece is palindrome
+ab , "eceab", "ba"
+
+
+Another way to avoid duplicates is to use Set<List<Integer>> result = new HashSet<>();
+and return new ArrayList<>(result);
 */
 
 import java.util.*;
@@ -98,6 +101,7 @@ public class PalindromePairs {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -107,6 +111,7 @@ public class PalindromePairs {
         if (words.length == 0 || words == null) {
             return pairs;
         }
+
         Map<String, Integer> hm = new HashMap<String, Integer>();
         for (int i = 0; i < words.length; i++) {
             hm.put(words[i], i);

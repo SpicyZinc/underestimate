@@ -54,6 +54,7 @@ Could you trade extra space such that move() operation can be done in O(1)?
 You need two arrays: int rows[n], int cols[n], plus two variables: diagonal, anti_diagonal.
 
 idea:
+横 竖 对角线 有同一个sign 这个player就赢了
 是根据 移动到的row col 来判断
 不用再回去了 因为之前判断了
 */
@@ -101,6 +102,7 @@ public class TicTacToe {
 		int n = matrix.length;
 		int i = 0;
 		int j = 0;
+
 		// check row
 		for (j = 1; j < n; j++) {
 			// not consecutive
@@ -156,6 +158,7 @@ public class TicTacToe {
 	int[] cols;
 	int diagonalSum;
 	int antiDiagonalSum;
+
 	public TicTacToe(int n) {
 		this.n = n;
 		this.rows = new int[n];
@@ -176,15 +179,17 @@ public class TicTacToe {
 	 */
 	public int move(int row, int col, int player) {
 		int increment = player == 1 ? 1 : -1;
+
 		rows[row] += increment;
 		cols[col] += increment;
+		
 		if (row == col) {
 			diagonalSum += increment;
 		}
 		if (row + col == n - 1) {
 			antiDiagonalSum += increment;
 		}
-
+		
 		if (Math.abs(rows[row]) == n ||
 			Math.abs(cols[col]) == n ||
 			Math.abs(diagonalSum) == n ||
@@ -192,7 +197,7 @@ public class TicTacToe {
 		) {
 			return player;
 		}
-
+		
 		return 0;
 	}
 }
