@@ -11,15 +11,16 @@ Your solution should be in logarithmic complexity.
 
 idea:
 https://www.cnblogs.com/grandyang/p/4217175.html
-typical binary search, a little variation
-
+typical binary search
+if (nums[mid] < nums[mid + 1])
+只要 > (mid + 1) 里 小于 nums[mid + 1]) 就找到一个 peak
+所以 start = mid + 1
 
       |
 	| |
   | | |
 | | | |
 
-good explanation
 https://siddontang.gitbooks.io/leetcode-solution/content/array/find_peak_element.html
 */
 
@@ -57,6 +58,7 @@ public class FindPeakElement {
     			return i;
     		}
     	}
+
     	return nums.length - 1;
     }
 }

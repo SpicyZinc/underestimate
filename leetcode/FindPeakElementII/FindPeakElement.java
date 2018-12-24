@@ -45,6 +45,7 @@ public class FindPeakElement {
 		int m = A.length;
 		int n = A[0].length;
 
+		// why 1 and m - 2, because 1st and last line cannot be peak
 		int left = 1;
 		int right = m - 2;
 

@@ -11,7 +11,8 @@ Given a binary search tree:
 return 1<->2<->3<->4<->5
 
 idea:
-
+lintcode version
+dfs need to revisit
 */
 
 // Definition of TreeNode
@@ -34,10 +35,50 @@ class DoublyListNode {
 }
 
 public class BSTToDoublyList {
-    /**
-     * @param root: The root of tree
-     * @return: the head of doubly list node
-     */
+	/**
+	 * @param root: The root of tree
+	 * @return: the head of doubly list node
+	 */
+	public DoublyListNode bstToDoublyList(TreeNode root) {
+		if (root == null) {
+			return null;
+		}
+
+		// Init stack
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		TreeNode node = root;    
+		stack.push(node);
+
+		// Create DoublyListNode header
+		DoublyListNode dummy = new DoublyListNode(0);
+		DoublyListNode dllNode = dummy;
+
+		while (!stack.isEmpty()) {
+			while (node != null && node.left != null) {
+				stack.push(node.left);
+				node = node.left;
+			}
+			// add node to doubly linked list
+			node = stack.pop();
+			DoublyListNode currrent = new DoublyListNode(node.val);
+			dllNode.next = currrent;
+			currrent.prev = dllNode;
+			dllNode = currrent;
+
+			// check right node and add to stack
+			node = node.right;
+			if (node != null) {
+				stack.push(node);
+			}
+		}
+
+		return dummy.next;
+	}
+
+	/**
+	 * @param root: The root of tree
+	 * @return: the head of doubly list node
+	 */
     public DoublyListNode bstToDoublyList(TreeNode root) {
         if (root == null) {
             return null;
