@@ -30,7 +30,7 @@ query 看cover不cover
 */
 
 class RangeModule {  
-    class Range {
+	class Range {
 		int start;
 		int end;
 
@@ -38,10 +38,10 @@ class RangeModule {
 			this.start = start;
 			this.end = end;
 		}
-        
-        public String toString() {
-            return "Range(" + start + "," + end + ")";
-        }
+		
+		public String toString() {
+			return "Range(" + start + "," + end + ")";
+		}
 	}
 
 	List<Range> list;

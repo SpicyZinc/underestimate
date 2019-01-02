@@ -21,35 +21,20 @@ public class MaximumSubarray  {
 				sum = 0;
 			}
 		}
- 
+
 		return maxSum;
 	}
 
 	public int maxSubArray(int[] nums) {
-        int max = Integer.MIN_VALUE;
-        int sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (sum >= 0) {
-                sum += nums[i];
-            } else {
-                sum = nums[i];
-            }
-            max = Math.max(max, sum);
-        }
-
-        return max;
-    }
-    // understand why this wrong
-    // when put max_ending_here = 0
-	public int maxSubArray(int[] nums) {
 		int max = Integer.MIN_VALUE;
-		int max_ending_here = 0;
-		for (int num : nums) {
-			max_ending_here += num;
-			max = Math.max(max, max_ending_here);
-			if (max_ending_here < 0) {
-				max_ending_here = 0;
+		int sum = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (sum >= 0) {
+				sum += nums[i];
+			} else {
+				sum = nums[i];
 			}
+			max = Math.max(max, sum);
 		}
 
 		return max;

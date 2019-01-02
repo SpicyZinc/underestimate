@@ -11,6 +11,9 @@ Given a binary search tree:
 return 1<->2<->3<->4<->5
 
 idea:
+lintcode version, not circular
+leetcode version, circular
+
 know in order traversal of a tree
 inorder is sorted
 把left都弄完了后 才弄right 而且right又是从right.left开始

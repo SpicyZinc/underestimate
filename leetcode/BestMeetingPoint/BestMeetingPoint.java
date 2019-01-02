@@ -16,11 +16,14 @@ The point (0,2) is an ideal meeting point, as the total travel distance of 2+2+2
 idea:
 https://segmentfault.com/a/1190000003894693
 
+这道题就是找 median 因为 median 是 离各个点 Manhattan Distance 最近的点
+所以求出distance sum 就可以了
+
 find 2d median point
 because this is Manhattan Distance, where distance(p1, p2) = |p2.x - p1.x| + |p2.y - p1.y|.
 get xPositions and yPositions separately, xPositions already sorted because it is based i increased order
-note:
-yPositions need to be sorted
+
+note, yPositions need to be sorted
 */
 
 import java.util.*;
@@ -35,11 +38,12 @@ public class BestMeetingPoint {
 		};
 		int distance = eg.minTotalDistance(grid);
 		System.out.println(distance);
-
 	}
+
 	public int minTotalDistance(int[][] grid) {
-		List<Integer> xPositions = new ArrayList<Integer>();
-		List<Integer> yPositions = new ArrayList<Integer>();
+		List<Integer> xPositions = new ArrayList<>();
+		List<Integer> yPositions = new ArrayList<>();
+
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
 				if (grid[i][j] == 1) {
@@ -48,6 +52,7 @@ public class BestMeetingPoint {
 				}
 			}
 		}
+
 		int distance = 0;
 		int xLen = xPositions.size();
 		int yLen = yPositions.size();
@@ -59,6 +64,7 @@ public class BestMeetingPoint {
 		for (int j = 0; j < yLen; j++) {
 			distance += Math.abs(yPositions.get(j) - yPositions.get(yLen / 2));
 		}
+
 		return distance;
 	}
 }

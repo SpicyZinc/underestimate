@@ -102,9 +102,9 @@ class LongestPalindromicSubstring {
 
     // 3rd method dynamic programming
     public String longestPalindrome(String s) {
-        String res = "";
+        String result = "";
         if (s == null || s.length() == 0) {
-            return res;
+            return result;
         }
 
         int maxLength = 0;
@@ -116,12 +116,12 @@ class LongestPalindromicSubstring {
                     palindromic[i][j] = true;
                     if (maxLength < j - i + 1) {
                         maxLength = j - i + 1;
-                        res = s.substring(i, j + 1);
+                        result = s.substring(i, j + 1);
                     }
                 }
             }
         }
 
-        return res;
+        return result;
     }
 }

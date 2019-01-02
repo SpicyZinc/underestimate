@@ -15,12 +15,12 @@ The length of words will be in the range of [1, 5000].
 The length of words[i] will be in the range of [1, 50].
 
 idea:
-isSubsequence() method to help, almost TLE
-need to go back for quicker O(n)
+1. isSubsequence() method to help, TLE
+2. https://www.cnblogs.com/grandyang/p/9201323.html, bucket
 */
 
 class NumberOfMatchingSubsequences {
-	// self 1513ms
+	// TLE, 46 / 49 test cases passed
 	public int numMatchingSubseq(String S, String[] words) {
 		int cnt = 0;
 		for (String word : words) {
@@ -47,9 +47,72 @@ class NumberOfMatchingSubsequences {
 			i++;
 		}
 
-		if (j == tLen) {
-			return true;
+		return j == tLen;
+	}
+
+	// method 2
+	public int numMatchingSubseq(String S, String[] words) {
+		Map<Character, List<Pair>> hm = new HashMap<>();
+
+		for (int i = 0; i < words.length; i++) {
+			String word = words[i];
+			Pair pair = new Pair(i, 1);
+			char firstChar = word.charAt(0);
+			if (hm.containsKey(firstChar)) {
+				List<Pair> list = hm.get(firstChar);
+				list.add(pair);
+			} else {
+				List<Pair> list = new ArrayList<Pair>();
+				list.add(pair);
+				hm.put(firstChar, list);
+			}
 		}
-		return false;
+
+		int cnt = 0;
+
+		for (int i = 0; i < S.length(); i++) {
+			char c = S.charAt(i);
+			List<Pair> pairs = hm.get(c);
+			
+			if (pairs == null) {
+				continue;
+			}
+			
+			hm.remove(c);
+
+			for (Pair pair : pairs) {
+				if (pair != null) {
+					int idx = pair.index;
+					int next = pair.nextPos;
+
+					if (next == words[idx].length()) {
+						cnt++;
+					} else {
+						char nextChar = words[idx].charAt(next);
+						pair.nextPos += 1;
+						
+						if (hm.containsKey(nextChar)) {
+							hm.get(nextChar).add(pair);
+						} else {
+							List<Pair> newList = new ArrayList<>();
+							newList.add(pair);
+							hm.put(nextChar, newList);
+						}
+					}
+				}
+			}
+		}
+
+		return cnt;
+	}
+}
+
+class Pair {
+	int index;
+	int nextPos;
+
+	public Pair(int index, int nextPos) {
+		this.index = index;
+		this.nextPos = nextPos;
 	}
 }

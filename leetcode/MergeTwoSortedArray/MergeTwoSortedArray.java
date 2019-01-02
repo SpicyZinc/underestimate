@@ -48,7 +48,7 @@ public class MergeTwoSortedArray {
 				n--;
 			}
 		}
-		
+
 		while (m >= 1) {
 			A[(m-1) + (n-1) + 1] = A[m-1];
 			m--;

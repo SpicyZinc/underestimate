@@ -21,16 +21,18 @@ The input strings will only contain lowercase letters.
 The total length of all the strings will not over 1,000.
 
 idea:
+https://www.cnblogs.com/grandyang/p/6887140.html
 
 "abc", "xyz"
 cba - zyx
 
-cb | a - zyx
-1. sb.append( substring(a) )
-2. sb.append (j rest string)
-3. sb.append (front part rest string)
-4. sb.append( substring(0, a) )
+如果 cut point is at |
+def - cb|a - zyx
 
+1. sb.append(a in cba)
+2. sb.append(all other strings after cba)
+3. sb.append(all other strings before cba)
+4. sb.append(cb in cba)
 */
 
 public class SplitConcatenatedStrings {
@@ -41,40 +43,72 @@ public class SplitConcatenatedStrings {
 		System.out.println(result);
 	}
 
-    public String splitLoopedString(String[] strs) {  
-        for (int i = 0; i < strs.length; i++) {
-        	String cur = strs[i];
-            String rev = new StringBuilder(cur).reverse().toString();  
-            if (cur.compareTo(rev) < 0) {  
-                strs[i] = rev;
-            }  
-        }
+	// method 1, TLE
+	String result = "";
 
-        String res = "a";  
-        for (int i = 0; i < strs.length; i++) {  
-        	String cur = strs[i];
-            String rev = new StringBuilder(cur).reverse().toString();
-            String[] curAndRev = new String[] {cur, rev};
-            for (String str : curAndRev) {  
-                for (int k = 0; k < str.length(); k++) {  
-                    if (str.charAt(k) >= res.charAt(0)) {
-                        StringBuilder sb = new StringBuilder(str.substring(k));  
-                        for (int j = i + 1; j < strs.length; j++) {  
-                            sb.append(strs[j]);  
-                        }  
-                        for (int j = 0; j < i; j++) {  
-                            sb.append(strs[j]);  
-                        }  
-                        sb.append(str.substring(0, k));
+	public String splitLoopedString(String[] strs) {
+		dfs(strs, "", 0);
+		return result;
+	}
 
-                        if (res.compareTo(sb.toString()) < 0) {
-                            res = sb.toString();  
-                        }  
-                    }  
-                }  
-            }  
-        }
+	public void dfs(String[] strs, String s, int i) {
+		int n = strs.length;
+		if (i < n) {
+			dfs(strs, s + strs[i], i + 1);
+			dfs(strs, s + new StringBuilder(strs[i]).reverse().toString(), i + 1);
+		} else {
+			for (int j = 0; j < s.length(); j++) {
+				// choose different cut points by looping j in s.length
+				String t = s.substring(j) + s.substring(0, j);
+				if (t.compareTo(result) > 0) {
+					result = t;
+				}
+			}
+		}
+	}
+	// method 2
+	public String splitLoopedString(String[] strs) {  
+		for (int i = 0; i < strs.length; i++) {
+			String str = strs[i];
+			String reversedStr = new StringBuilder(str).reverse().toString();  
 
-        return res;  
-    }  
-}  
+			if (str.compareTo(reversedStr) < 0) {  
+				strs[i] = reversedStr;
+			}
+		}
+
+		String biggestLexic = "a";
+
+		for (int i = 0; i < strs.length; i++) {
+			String current = strs[i];
+			String reversed = new StringBuilder(current).reverse().toString();
+			String[] curAndRev = new String[] {current, reversed};
+
+			for (String str : curAndRev) {
+				for (int k = 0; k < str.length(); k++) {
+					// find the cut point where lexicographically bigger
+					if (str.charAt(k) >= biggestLexic.charAt(0)) {
+
+						StringBuilder sb = new StringBuilder(str.substring(k));
+
+						// append all other strings, note the order, 题目中描述就是这样
+						for (int j = i + 1; j < strs.length; j++) {
+							sb.append(strs[j]);
+						}
+						for (int j = 0; j < i; j++) {
+							sb.append(strs[j]);
+						}
+
+						sb.append(str.substring(0, k));
+
+						if (biggestLexic.compareTo(sb.toString()) < 0) {
+							biggestLexic = sb.toString();
+						}
+					}
+				}
+			}
+		}
+
+		return biggestLexic;
+	}
+}

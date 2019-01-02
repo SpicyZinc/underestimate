@@ -1,14 +1,39 @@
 /*
-In order to pick out useful "?" and ":", we can always begin with the last "?" and the first ":" after the chosen "?".
-Therefore, directly seek for the last "?" (or you can simply put all "?" into a stack) and update the string depending on T or F until no more "?"s.
+Given a string representing arbitrarily nested ternary expressions, calculate the result of the expression.
+You can always assume that the given expression is valid and only consists of digits 0-9, ?, :,
+T and F (T and F represent True and False respectively).
 
-e.g.
-"(F ? 1 : (T ? 4 : 5))" => "(F ? 1 : 4)" => "4"
-"(T ? (T ? F : 5) : 3)" => "(T ? F : 3)" => "F"
+Note:
+The length of the given string is ≤ 10000.
+Each number will contain only one digit.
+The conditional expressions group right-to-left (as usual in most languages).
+The condition will always be either T or F. That is, the condition will never be a digit.
+The result of the expression will always evaluate to either a digit 0-9, T or F.
+
+Example 1:
+Input: "T?2:3"
+Output: "2"
+Explanation: If true, then result is 2; otherwise result is 3.
+
+Example 2:
+Input: "F?1:T?4:5"
+Output: "4"
+Explanation: The conditional expressions group right-to-left. Using parenthesis, it is read/evaluated as:
+             "(F ? 1 : (T ? 4 : 5))"                   "(F ? 1 : (T ? 4 : 5))"
+          -> "(F ? 1 : 4)"                 or       -> "(T ? 4 : 5)"
+          -> "4"                                    -> "4"
+
+Example 3:
+Input: "T?T?F:5:3"
+Output: "F"
+Explanation: The conditional expressions group right-to-left. Using parenthesis, it is read/evaluated as:
+             "(T ? (T ? F : 5) : 3)"                   "(T ? (T ? F : 5) : 3)"
+          -> "(T ? F : 3)"                 or       -> "(T ? F : 5)"
+          -> "F"                                    -> "F"
 
 idea:
-Since the input is promised to be valid, life is much easier
-Use a stack, check from the end of the string to the front.
+Since the input is promised to be valid, use stack
+note, check from the end of the string to the front.
 
 As long as the next char is not '?', push it to the stack.
 If we see a '?', check the next char (left of '?' in the string), 
@@ -40,7 +65,8 @@ public class TernaryExpressionParser {
 		}
 
 		expression = expression.trim();
-		Stack<Character> stack = new Stack<Character>();
+		Stack<Character> stack = new Stack<>();
+		// from back to front to walk through the string
 		int i = expression.length() - 1;
 		while (i >= 0) {
 			char c = expression.charAt(i);
