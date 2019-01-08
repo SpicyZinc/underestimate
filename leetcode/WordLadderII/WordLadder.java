@@ -1,10 +1,12 @@
 /*
-Given two words (beginWord and endWord), and a dictionary's word list, find all shortest transformation sequence(s) from beginWord to endWord,
+Given two words (beginWord and endWord), and a dictionary's word list,
+find all shortest transformation sequence(s) from beginWord to endWord,
 such that:
 Only one letter can be changed at a time
-Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
-For example,
+Each transformed word must exist in the word list.
+Note that beginWord is not a transformed word.
 
+For example,
 Given:
 beginWord = "hit"
 endWord = "cog"
@@ -35,7 +37,7 @@ import java.util.*;
 
 public class WordLadder {
     public static void main(String[] args) {
-        WordLadderII eg = new WordLadderII();
+        WordLadder eg = new WordLadder();
         String beginWord = "hit";
         String endWord = "cog";
         List<String> wordList = new ArrayList<String>();
@@ -122,7 +124,6 @@ public class WordLadder {
         
         return result;
     }
-
 
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();

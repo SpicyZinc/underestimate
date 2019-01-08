@@ -17,8 +17,10 @@ All words have the same length.
 All words contain only lowercase alphabetic characters.
 
 idea:
-use two queues to traverse the tree, one stores the nodes, the other stores the step numbers. 
-remember to remove found word in set
+set to save initial word
+从这个word出发 用26个字母替换每个位置 如果reached word 在 dict中
+距离+1 
+外层是 while 只到 wordsReached 为空
 
 https://www.cnblogs.com/grandyang/p/4539768.html
 */

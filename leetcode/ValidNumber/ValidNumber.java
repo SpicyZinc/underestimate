@@ -55,6 +55,60 @@ public class ValidNumber {
         System.out.println("Is 2e10 via isNumeric  " + eg.isNumber("2e10"));
         System.out.println("Is 0.1 via isNumeric  " + eg.isNumber("0.1"));    
 	}
+    // 01/04/2019
+    public boolean isNumber(String s) {
+        s = s.trim();
+        
+        if (s.length() == 0 || s == null) {
+            return false;
+        }
+        
+        boolean hasNum = false;
+        boolean hasE = false;
+        boolean hasDot = false;
+        
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            
+            if (c == 'e') {
+                if (hasE || !hasNum) {
+                    return false;
+                } else {
+                    hasE = true;
+                }
+            }
+            
+            if (c == '.') {
+                if (hasDot || hasE) {
+                    return false;
+                } else {
+                    hasDot = true;
+                }
+            }
+            
+            if (Character.isDigit(c)) {
+                hasNum = true;
+            }
+            // in middle of the string, i > 0
+            // current char is sign, c == '+' || c == '-'
+            // previous char is not e, s.charAt(i - 1) != 'e'
+            if (i > 0 && (c == '+' || c == '-') && s.charAt(i - 1) != 'e') {
+                return false;
+            }
+            
+            // other illegal char will return false
+            if (!Character.isDigit(c) && c != 'e' && c != '+' && c != '-' && c != '.') {
+                return false;
+            }
+        }
+        
+        char lastChar = s.charAt(s.length() - 1);
+        if (lastChar == '+' || lastChar == '-' || lastChar == 'e') {
+            return false;
+        }
+        
+        return hasNum;
+    }
     // 1. regular expression
     public boolean isNumber(String s) {
         if (s.trim().isEmpty()) {
@@ -205,11 +259,11 @@ public class ValidNumber {
             return false;
         } 
 
-        boolean hasNum=false;
-        boolean canSign=true;
-        boolean canDot=true;
-        boolean canE=false;
-        boolean hasE=false;
+        boolean hasNum = false;
+        boolean canSign = true;
+        boolean canDot = true;
+        boolean canE = false;
+        boolean hasE = false;
         
         int i=0;
         while (i<s.length()) {
@@ -256,8 +310,7 @@ public class ValidNumber {
                 }
                 
                 canSign=false;
-            }
-            else {
+            } else {
                 return false;
             }
         }
