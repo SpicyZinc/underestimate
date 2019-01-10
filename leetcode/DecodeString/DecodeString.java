@@ -39,16 +39,13 @@ public class DecodeString {
                 	i++;
                 }
                 countStack.push( Integer.parseInt(s.substring(start, i + 1)) );
-            }
-            else if (c == '[') {
+            } else if (c == '[') {
                 result.push("");
-            }
-            else if (c == ']') {
+            } else if (c == ']') {
                 String str = result.pop();
                 int times = countStack.pop();
                 result.push( result.pop() + repeatString(str, times) );
-            }
-            else {
+            } else {
                 result.push(result.pop() + c);
             }
             i++;
@@ -81,18 +78,15 @@ class DecodeString {
 		for (; index < s.length(); index++) {
 			if (Character.isDigit(s.charAt(index))) {
 				count = count * 10 + s.charAt(index) - '0';
-			}
-			else if (s.charAt(index) == '[') {
+			} else if (s.charAt(index) == '[') {
 				index++;
 				StringBuilder sb = dfs(s);
 				for (; count > 0; count--) {
 					res.append(sb);
 				}
-			}
-			else if (s.charAt(index) == ']') {
+			} else if (s.charAt(index) == ']') {
 				break;
-			}
-			else {
+			} else {
 				res.append(s.charAt(index));
 			}
 		}
