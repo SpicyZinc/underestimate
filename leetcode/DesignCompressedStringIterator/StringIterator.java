@@ -35,42 +35,40 @@ idea:
 public class StringIterator {
 	int idx;
 	String s;
-    public StringIterator(String compressedString) {
-        idx = 0;
-        StringBuilder sb = new StringBuilder();
-        char lastChar = ' ';
-        for (int i = 0; i < compressedString.length();) {
-        	int val = 0;
-        	char c = compressedString.charAt(i); 
-            if (Character.isLetter(c)) {
-                lastChar = c;
-                i++;
-            }
-        	else if (Character.isDigit(c)) {
-        		while (i < compressedString.length() && Character.isDigit(compressedString.charAt(i))) {
-        			val = val * 10 + compressedString.charAt(i) - '0';
-        			i++;
-        		}
-        		for (int j = 0; j < val; j++) {
-            		sb.append(lastChar);
-            	}
-        	}
-        }
-        s = sb.toString();
-    }
-    
-    public char next() {
+	public StringIterator(String compressedString) {
+		idx = 0;
+		StringBuilder sb = new StringBuilder();
+		char lastChar = ' ';
+		for (int i = 0; i < compressedString.length();) {
+			int val = 0;
+			char c = compressedString.charAt(i); 
+			if (Character.isLetter(c)) {
+				lastChar = c;
+				i++;
+			} else if (Character.isDigit(c)) {
+				while (i < compressedString.length() && Character.isDigit(compressedString.charAt(i))) {
+					val = val * 10 + compressedString.charAt(i) - '0';
+					i++;
+				}
+				for (int j = 0; j < val; j++) {
+					sb.append(lastChar);
+				}
+			}
+	    }
+	    s = sb.toString();
+	}
+	
+	public char next() {
 		if (idx == s.length()) {
 			return ' ';
-		}
-		else {
+		} else {
 			return s.charAt(idx++);
 		}
-    }
-    
-    public boolean hasNext() {
-        return idx < s.length();
-    }
+	}
+	
+	public boolean hasNext() {
+		return idx < s.length();
+	}
 }
 
 // passed test

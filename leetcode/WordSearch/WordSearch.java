@@ -60,9 +60,11 @@ public class WordSearch {
         if (start == word.length() - 1) {
             return true;
         }
+
         int m = board.length;
         int n = board[0].length;
         int[][] directions = new int[][] {{1,0}, {-1,0}, {0,1}, {0,-1}};
+
         for (int[] dir : directions) {
             int newX = i + dir[0];
             int newY = j + dir[1];
