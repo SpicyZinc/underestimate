@@ -25,8 +25,44 @@ set to save initial word
 https://www.cnblogs.com/grandyang/p/4539768.html
 */
 
-public class WordLadder {	
-	// method 1, best version easy to understand, recently changed hashset to list
+public class WordLadder {
+    // 01/10/2019
+	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+		Set<String> hs = new HashSet<>();
+		for (String word : wordList) {
+			hs.add(word);
+		}
+
+		Set<String> wordsReached = new HashSet<>();
+		wordsReached.add(beginWord);
+		int distance = 1;
+
+		while (!wordsReached.contains(endWord)) {
+			Set<String> wordsToReach = new HashSet<>();
+
+			for (String wordReached : wordsReached) {
+				for (int i = 0; i < wordReached.length(); i++) {
+					for (char c = 'a'; c <= 'z'; c++) {
+						String next = wordReached.substring(0, i) + c + wordReached.substring(i + 1);
+						if (hs.contains(next)) {
+							wordsToReach.add(next);
+							hs.remove(next);
+						}
+					}
+				}
+			}
+			if (wordsToReach.size() == 0) {
+				return 0;
+			}
+
+			distance++;
+			wordsReached = wordsToReach;
+		}
+
+		return distance;
+	}
+
+	// method 1, easy to understand
 	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 		Set<String> dict = new HashSet<String>();
         for (String word : wordList) {
@@ -65,5 +101,5 @@ public class WordLadder {
         }
         
         return distance;
-    }
+	}
 }

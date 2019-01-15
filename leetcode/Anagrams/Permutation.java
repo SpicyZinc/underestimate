@@ -1,5 +1,5 @@
 /*
-Try each of the letters in turn as the first letter and 
+Try each of the letters in turn as the first letter 
 then find all the permutations of the remaining letters using a recursive call.
 The base case is when the input is an empty string the only permutation is the empty string.
 */

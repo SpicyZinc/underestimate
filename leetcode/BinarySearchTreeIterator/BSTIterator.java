@@ -6,6 +6,7 @@ Note: next() and hasNext() should run in average O(1) time and uses O(h) memory,
 
 idea:
 http://blog.csdn.net/whuwangyi/article/details/42304407
+https://www.programcreek.com/2014/04/leetcode-binary-search-tree-iterator-java/
 
 using stack, inorder traversal of BST iteratively
 iterator is basically make a copy of original BST
@@ -28,11 +29,8 @@ public class BSTIterator {
 		root.left.left = new TreeNode(1);
 		root.left.right = new TreeNode(6);
 
-		TreeNode x = new TreeNode(4);
-		TreeNode y = new TreeNode(7);
-
-		root.left.right.left = x;    	
-		root.left.right.right = y;
+		root.left.right.left = new TreeNode(4);
+		root.left.right.right = new TreeNode(7);
 
 		root.right.right = new TreeNode(14);
 		root.right.right.left = new TreeNode(13);
@@ -47,21 +45,21 @@ public class BSTIterator {
 
 	// iteration
 	Stack<TreeNode> stack;
-    public BSTIterator(TreeNode root) {
-        stack = new Stack<TreeNode>();
+	public BSTIterator(TreeNode root) {
+		stack = new Stack<TreeNode>();
 		while (root != null) {
 			stack.push(root);
 			root = root.left;
 		}
-    }
+	}
     /** @return whether we have a next smallest number */
-    public boolean hasNext() {
-		return !stack.isEmpty();   
-    }
+	public boolean hasNext() {
+		return !stack.isEmpty();
+	}
 
     /** @return the next smallest number */
     public int next() {
-        TreeNode node = stack.pop();
+		TreeNode node = stack.pop();
 		int result = node.val;
 		if (node.right != null) {
 			node = node.right;
@@ -72,7 +70,7 @@ public class BSTIterator {
 		}
 
 		return result;
-    }
+	}
 
     // recursion
     int index = 0;

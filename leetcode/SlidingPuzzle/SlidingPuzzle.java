@@ -36,21 +36,56 @@ board will be a 2 x 3 array as described above.
 board[i][j] will be a permutation of [0, 1, 2, 3, 4, 5].
 
 idea:
+https://www.cnblogs.com/grandyang/p/8955735.html
+
+只能交换0和与它相临4个位置, 看最后能否变成[[1,2,3],[4,5,0]]
 DFS + hashmap memory
 */
 
 class SlidingPuzzle {
+	public int slidingPuzzle(int[][] board) {
+		int m = board.length;
+		int n = board[0].length;
+		String target = "123450";
+		String start = "";
+
+		for (int[] line : board) {
+			for (int i = 0; i < line.length; i++) {
+				start += line[i];
+			}
+		}
+
+		Set<Integer> visited = new HashSet<>();
+
+		Queue<String> queue = new LinkedList<>();
+		queue.add(start);
+
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			for (int i = 0; i < size; i++) {
+				String s = queue.poll();
+				if (s.equals(target)) {
+					return cnt;
+				}
+			}
+
+			cnt++;
+		}
+	}
+
 	int min = Integer.MAX_VALUE;
 	Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
 
 	public int slidingPuzzle(int[][] board) {
 		int m = board.length;
 		int n = board[0].length;
+
 		hm.put(123450, 0);
 
 		int zeroX = 0;
 		int zeroY = 0;
 
+		// find 0's position
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				if (board[i][j] == 0) {
@@ -60,6 +95,7 @@ class SlidingPuzzle {
 				}
 			}
 		}
+		// do dfs()
 		dfs(board, zeroX, zeroY, 0);
 		
 		return min == Integer.MAX_VALUE ? -1 : min;

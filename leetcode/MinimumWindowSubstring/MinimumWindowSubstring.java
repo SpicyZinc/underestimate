@@ -37,7 +37,123 @@ public class MinimumWindowSubstring {
 		String minimumWindow = aTest.minWindow(S, T);
 		System.out.println("minimumWindow == " + minimumWindow);		
 	}
-    // 09/11/2018 prepare for VMware
+	// 同向双指针
+	// how to define cover the t
+	// 就是 sLetters[c] >= tLetters[c]
+	public String minWindow(String s, String t) {
+		String minWindowStr = "";
+
+		int sLen = s.length();
+		int tLen = t.length();
+
+		if (sLen < tLen) {
+			return minWindowStr;
+		}
+
+		int tUniqueCharsCount = 0;
+		int[] sLetters = new int[256];
+		int[] tLetters = new int[256];
+
+		for (int i = 0; i < tLen; i++) {
+			char c = t.charAt(i);
+			tLetters[c]++;
+			if (tLetters[c] == 1) {
+				tUniqueCharsCount++;
+			}			
+		}
+
+		int uniqueTCharsCountInWindow = 0;
+		int right = 0;
+
+		for (int left = 0; left < sLen; left++) {
+
+			while (right < sLen && uniqueTCharsCountInWindow < tUniqueCharsCount) {
+				char c = s.charAt(right);
+				sLetters[c]++;
+
+				if (sLetters[c] == tLetters[c]) {
+					uniqueTCharsCountInWindow++;
+				}
+
+				right++;
+			}
+			// found a window
+			if (uniqueTCharsCountInWindow == tUniqueCharsCount) {
+				if (minWindowStr.length() == 0 || right - left < minWindowStr.length()) {
+					minWindowStr = s.substring(left, right);
+				}
+			}
+
+			// remove char at left side of window
+			char charAtLeft = s.charAt(left);
+			sLetters[charAtLeft]--;
+			// 减少一个后还相等
+			if (sLetters[charAtLeft] == tLetters[charAtLeft] - 1) {
+				uniqueTCharsCountInWindow--;
+			}
+		}
+
+		return minWindowStr;
+	}
+	// 01/13/2019 jiuzhang
+	// note, use map, containsKey
+	public String minWindow(String s, String t) {
+		String minWindowStr = "";
+
+		int sLen = s.length();
+		int tLen = t.length();
+
+		if (sLen < tLen) {
+			return minWindowStr;
+		}
+
+		Map<Character, Integer> tLetters = new HashMap<>();
+        
+		for (int i = 0; i < tLen; i++) {
+			char c = t.charAt(i);
+			tLetters.put(c, tLetters.getOrDefault(c, 0) + 1);
+		}
+
+		int cntCharsInT = 0; // total chars in String t
+		int left = 0;
+		int minLen = sLen + 1;
+
+		for (int right = 0; right < sLen; right++) {
+			char c = s.charAt(right);
+			
+			if (tLetters.containsKey(c)) {
+                
+				tLetters.put(c, tLetters.get(c) - 1);
+
+				if (tLetters.get(c) >= 0) {
+					cntCharsInT++;
+				}
+
+				while (cntCharsInT == tLen) {
+					if (minLen > right - left + 1) {
+						minLen = right - left + 1;
+                        if (right >= left) {
+                            minWindowStr = s.substring(left, right + 1);    
+                        }
+					}
+
+					// 开始移动左窗口
+					char charAtLeft = s.charAt(left);
+					left++;
+                    if (tLetters.containsKey(charAtLeft)) {
+                        tLetters.put(charAtLeft, tLetters.get(charAtLeft) + 1);
+                        if (tLetters.get(charAtLeft) > 0) {
+                            cntCharsInT--;
+                        }
+                    }
+				}
+			}
+		}
+
+		return minWindowStr;
+	}
+
+	// 09/11/2018 prepare for VMware
 	public String minWindow(String s, String t) {
 		String minWindowStr = "";
 

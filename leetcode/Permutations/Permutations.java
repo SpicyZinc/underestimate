@@ -12,7 +12,6 @@ For example,
   [3,2,1]
 ]
 
-
 idea:
 1. best method, typical dfs()
 

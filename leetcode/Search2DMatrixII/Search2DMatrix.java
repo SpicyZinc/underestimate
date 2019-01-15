@@ -106,11 +106,9 @@ public class Search2Dmatrix {
                 count++;
                 col++;
                 row--;
-            }
-            else if (cur > target) {
+            } else if (cur > target) {
                 row--;
-            }
-            else {
+            } else {
                 col++;
             }
         }
@@ -132,11 +130,9 @@ public class Solution {
         int cm = (colStart + colEnd) / 2; 
         if (matrix[rm][cm] == target) { 
             return true; 
-        } 
-        else if (matrix[rm][cm] > target) { 
+        } else if (matrix[rm][cm] > target) { 
             return helper(matrix, rowStart, rm-1,colStart, cm-1,target)|| helper(matrix, rm, rowEnd, colStart,cm-1,target) || helper(matrix, rowStart, rm-1,cm, colEnd,target); 
-        } 
-        else { 
+        } else { 
             return helper(matrix, rm+1, rowEnd, cm+1,colEnd,target)|| helper(matrix, rm+1, rowEnd, colStart,cm,target) || helper(matrix, rowStart, rm,cm+1, colEnd,target); 
         }
     }
