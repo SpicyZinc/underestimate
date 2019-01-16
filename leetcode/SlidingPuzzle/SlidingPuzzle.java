@@ -40,23 +40,37 @@ https://www.cnblogs.com/grandyang/p/8955735.html
 
 只能交换0和与它相临4个位置, 看最后能否变成[[1,2,3],[4,5,0]]
 DFS + hashmap memory
+
+2. BFS
 */
+import java.util.*;
 
 class SlidingPuzzle {
+	public static void main(String[] args) {
+		SlidingPuzzle eg = new SlidingPuzzle();
+		int[][] board = {
+			{1,2,3},{4,0,5}
+		};
+
+		eg.slidingPuzzle(board);
+	}
+
 	public int slidingPuzzle(int[][] board) {
 		int m = board.length;
 		int n = board[0].length;
+
+		int[][] directions = new int[][] {
+			{0, -1},
+			{-1, 0},
+			{0, 1},
+			{1, 0},
+		};
+		
+		Set<String> visited = new HashSet<>();
+
 		String target = "123450";
-		String start = "";
-
-		for (int[] line : board) {
-			for (int i = 0; i < line.length; i++) {
-				start += line[i];
-			}
-		}
-
-		Set<Integer> visited = new HashSet<>();
-
+		int cnt = 0;
+		String start = convertToString(board);
 		Queue<String> queue = new LinkedList<>();
 		queue.add(start);
 
@@ -67,98 +81,137 @@ class SlidingPuzzle {
 				if (s.equals(target)) {
 					return cnt;
 				}
+
+				int idx = s.indexOf('0');
+				int x = idx / n;
+				int y = idx % n;
+
+				for (int[] dir : directions) {
+					int newX = x + dir[0];
+					int newY = y + dir[1];
+
+					if (newX >= 0 && newX < m && newY >= 0 && newY < n) {
+						String newStr = swap(s, idx, newX * n + newY);
+
+						if (visited.add(newStr)) {
+							queue.add(newStr);
+						}
+					}
+				}
 			}
 
 			cnt++;
 		}
+
+		return -1;
 	}
 
-	int min = Integer.MAX_VALUE;
-	Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
-
-	public int slidingPuzzle(int[][] board) {
-		int m = board.length;
-		int n = board[0].length;
-
-		hm.put(123450, 0);
-
-		int zeroX = 0;
-		int zeroY = 0;
-
-		// find 0's position
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				if (board[i][j] == 0) {
-					zeroX = i;
-					zeroY = j;
-					break;
-				}
+	private String convertToString(int[][] board) {
+		StringBuilder sb = new StringBuilder();
+		for (int[] line : board) {
+			for (int i : line) {
+				sb.append(i);
 			}
 		}
-		// do dfs()
-		dfs(board, zeroX, zeroY, 0);
+
+		return sb.toString();
+	}
+
+	private String swap(String s, int i, int j) {
+		char[] chars = s.toCharArray();
+		char temp = chars[i];
+		chars[i] = chars[j];
+		chars[j] = temp;
+
+		return new String(chars);
+	}
+
+	// int min = Integer.MAX_VALUE;
+	// Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+
+	// public int slidingPuzzle(int[][] board) {
+	// 	int m = board.length;
+	// 	int n = board[0].length;
+
+	// 	hm.put(123450, 0);
+
+	// 	int zeroX = 0;
+	// 	int zeroY = 0;
+
+	// 	// find 0's position
+	// 	for (int i = 0; i < m; i++) {
+	// 		for (int j = 0; j < n; j++) {
+	// 			if (board[i][j] == 0) {
+	// 				zeroX = i;
+	// 				zeroY = j;
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// 	// do dfs()
+	// 	dfs(board, zeroX, zeroY, 0);
 		
-		return min == Integer.MAX_VALUE ? -1 : min;
-	}
+	// 	return min == Integer.MAX_VALUE ? -1 : min;
+	// }
 
-	public void dfs(int[][] board, int x, int y, int moveCnt) {
-		// some early return cases
-		// 1. if current move count > min, no need to continue
-		// 2. if fount one successful, update min and return
-		// 3. if hashmap contains code <-> moveCnt pair before, avoid duplicate, return
-		if (moveCnt > min) {
-			return;
-		}
-		int code = encode(board);
-		if (code == 123450) {
-			min = moveCnt;
-			return;
-		}
-		// code here cannot be 123450
-		if (hm.containsKey(code)) {
-			if (moveCnt > hm.get(code)) {
-				return;
-			}
-		}
+	// public void dfs(int[][] board, int x, int y, int moveCnt) {
+	// 	// some early return cases
+	// 	// 1. if current move count > min, no need to continue
+	// 	// 2. if fount one successful, update min and return
+	// 	// 3. if hashmap contains code <-> moveCnt pair before, avoid duplicate, return
+	// 	if (moveCnt > min) {
+	// 		return;
+	// 	}
+	// 	int code = encode(board);
+	// 	if (code == 123450) {
+	// 		min = moveCnt;
+	// 		return;
+	// 	}
+	// 	// code here cannot be 123450
+	// 	if (hm.containsKey(code)) {
+	// 		if (moveCnt > hm.get(code)) {
+	// 			return;
+	// 		}
+	// 	}
 
-		hm.put(code, moveCnt);
+	// 	hm.put(code, moveCnt);
 
-		int m = board.length;
-		int n = board[0].length;
-		int[][] directions = {
-			{0, 1},
-			{0, -1},
-			{1, 0},
-			{-1, 0},
-		};
-		for (int[] dir : directions) {
-			int newX = x + dir[0];
-			int newY = y + dir[1];
-			if (newX < m && newX >= 0 && newY < n && newY >= 0) {
-				swap(board, x, y, newX, newY);
-				dfs(board, newX, newY, moveCnt + 1);
-				swap(board, x, y, newX, newY);
-			}
-		}
-	}
+	// 	int m = board.length;
+	// 	int n = board[0].length;
+	// 	int[][] directions = {
+	// 		{0, 1},
+	// 		{0, -1},
+	// 		{1, 0},
+	// 		{-1, 0},
+	// 	};
+	// 	for (int[] dir : directions) {
+	// 		int newX = x + dir[0];
+	// 		int newY = y + dir[1];
+	// 		if (newX < m && newX >= 0 && newY < n && newY >= 0) {
+	// 			swap(board, x, y, newX, newY);
+	// 			dfs(board, newX, newY, moveCnt + 1);
+	// 			swap(board, x, y, newX, newY);
+	// 		}
+	// 	}
+	// }
 
-	public void swap(int[][] board, int m, int n, int x, int y) {
-		int temp = board[m][n];
-		board[m][n] = board[x][y];
-		board[x][y] = temp;
-	}
+	// public void swap(int[][] board, int m, int n, int x, int y) {
+	// 	int temp = board[m][n];
+	// 	board[m][n] = board[x][y];
+	// 	board[x][y] = temp;
+	// }
 
-	public int encode(int[][] board) {
-		int m = board.length;
-		int n = board[0].length;
-		int code = 0;
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				code *= 10;
-				code += board[i][j];
-			}
-		}
+	// public int encode(int[][] board) {
+	// 	int m = board.length;
+	// 	int n = board[0].length;
+	// 	int code = 0;
+	// 	for (int i = 0; i < m; i++) {
+	// 		for (int j = 0; j < n; j++) {
+	// 			code *= 10;
+	// 			code += board[i][j];
+	// 		}
+	// 	}
 
-		return code;
-	}
+	// 	return code;
+	// }
 }

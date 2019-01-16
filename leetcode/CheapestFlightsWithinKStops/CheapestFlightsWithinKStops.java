@@ -34,12 +34,56 @@ k is in the range of [0, n - 1].
 There will not be any duplicated flights or self cycles.
 
 idea:
-Dijkstra's
+https://www.cnblogs.com/grandyang/p/9109981.html
+
+Dijkstra's algorithm (BFS)
 first build graph
 
+dfs
 */
 
 class CheapestFlightsWithinKStops {
+	int minCost = Integer.MAX_VALUE;
+
+	public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+		// build graph first
+		int[][] graph = new int[n][n];
+		for (int[] flight : flights) {
+			graph[flight[0]][flight[1]] = flight[2];
+		}
+
+		Set<Integer> visited = new HashSet<>();
+		dfs(graph, src, dst, K, visited, 0);
+
+		return minCost == Integer.MAX_VALUE ? -1 : minCost;
+	}
+
+	public void dfs(int[][] graph, int current, int dst, int K, Set<Integer> visited, int currCost) {
+		if (current == dst) {
+			minCost = currCost;
+			return;
+		}
+
+		if (K < 0) {
+			return;
+		}
+
+        for (int i = 0; i < graph[current].length; i++) {
+            int stop = i;
+            int cost = graph[current][i];
+            // if there is a flight between current and stop
+            if (cost > 0) {
+                if (visited.contains(stop) || currCost + cost > minCost) {
+                    continue;
+                }
+
+                visited.add(stop);
+                dfs(graph, stop, dst, K, visited, currCost + cost);
+                visited.remove(stop);
+            }
+		}
+	}
+
 	public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
 		// build graph first
 		int[][] graph = new int[n][n];

@@ -22,8 +22,12 @@ Note:
 target will be a non-zero integer in the range [-10^9, 10^9].
 
 idea:
-ith step, if going a same direction, should steps += i;
+https://www.cnblogs.com/grandyang/p/8456022.html
+
+ith step,
+if going a same direction, should steps += i;
 if going opposite direction, (steps + i) - (steps - i) = (i * 2)
+一正一反里外里 就是 2⃣️ 倍
 
 -|--|---|----|-----|------| the same direction
 -|--|---|----|-----|
@@ -41,7 +45,9 @@ class ReachANumber {
 			sum += ++step;
 		}
 		// while () to get even number of difference between steps and target
-		while ((sum - target) % 2 != 0) {
+		// 得到偶数的差值 因为里外里 所以除以 2 找到这时的步数
+		// 虽然超过了target 但是我们知道只要一个反方向就解决了问题
+		while ((sum - target) % 2 == 1) {
 			sum += ++step;
 		}
 
