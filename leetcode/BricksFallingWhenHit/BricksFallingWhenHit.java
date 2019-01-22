@@ -33,34 +33,93 @@ It is guaranteed that each erasure will be different from any other erasure, and
 An erasure may refer to a location with no brick - if it does, no bricks drop.
 
 idea:
-https://leetcode.com/problems/bricks-falling-when-hit/discuss/119829/Python-Solution-by-reversely-adding-hits-bricks-back
-too hard, not finish, need to be back
+https://www.cnblogs.com/grandyang/p/9362777.html
+反着想
+把要去的砖头都去掉 -1
+从边上top row 开始 dfs() four directions and grid[][] == 1的 这些是始终不可能掉的
+再把砖头倒着一个个加上 加上后的砖一定得是1 而且它的四周必须是 noDrop里包含的
+这样差值就是了 别忘-1 本身去掉的砖头不能算
 */
 
+import java.util.*;
+
 class BricksFallingWhenHit {
+	public static int[][] directions = {
+		{0, 1},
+		{0, -1},
+		{1, 0},
+		{-1, 0}
+	};
+
 	public int[] hitBricks(int[][] grid, int[][] hits) {
+		int k = hits.length;
+		int[] result = new int[k];
+
 		int m = grid.length;
 		int n = grid[0].length;
 
+		// 把要去的砖头都先去掉
 		for (int[] hit : hits) {
-			Queue<Integer> queue = new LinkedList<>();
-			int idx = hit[0] * m + hit[1];
-			queue.add(idx);
+			int x = hit[0];
+			int y = hit[1];
 
-			while (!queue.isEmpty()) {
-				int pos = queue.poll();
-				int x = pos / n;
-				int y = pos % n;
+			grid[x][y] -= 1;
+		}
 
-				for (int[] dir : directions) {
-					int newX = x + dir[0];
-					int newY = y + dir[1];
-
-					if (newX > 0 && newX < m && newY >= 0 && newY < n && grid[newX][newY] == 1) {
-
-					}
-				}	
+		Set<Integer> noDrop = new HashSet<>();
+		// top of grid will NOT drop
+		// after this, noDrop is populated
+		for (int i = 0; i < n; i++) {
+			if (grid[0][i] == 1) {
+				dfs(grid, 0, i, noDrop);
 			}
+		}
+
+		for (int i = k - 1; i >= 0; i--) {
+			int oldSize = noDrop.size();
+
+			int x = hits[i][0];
+			int y = hits[i][1];
+
+			// 因为这个brick又放上了可能它作为bridge 其他的bricks也不掉了 
+			// 原来是砖头
+			if (++grid[x][y] != 1) {
+				continue;
+			}
+			
+			// note, noDrop contains current (x,y) 的四个邻居 or top row
+			// then okay to dfs which is to add noDrop set
+			if (x - 1 >= 0 && noDrop.contains((x - 1) * n + y) ||
+				x + 1 < m && noDrop.contains((x + 1) * n + y) ||
+				y - 1 >= 0 && noDrop.contains(x * n + y - 1) ||
+				y + 1 < n && noDrop.contains(x * n + y + 1) ||
+				x == 0) {
+
+				dfs(grid, x, y, noDrop);
+
+				result[i] = noDrop.size() - oldSize - 1; // 减1的原因是去掉的砖头不算掉落的砖头数中
+			}
+		}
+
+		return result;
+	}
+	// 如果我们先把要去掉的所有砖头都先去掉
+	// 遍历所有相连的砖头就是最终还剩下的砖头
+	public void dfs(int[][] grid, int i, int j, Set<Integer> noDrop) {
+
+		int m = grid.length;
+		int n = grid[0].length;
+
+		if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] != 1 || noDrop.contains(i * n + j)) {
+			return;
+		}
+
+		noDrop.add(i * n + j);
+
+		for (int[] dir : directions) {
+			int newX = i + dir[0];
+			int newY = j + dir[1];
+			dfs(grid, newX, newY, noDrop);
 		}
 	}
 }

@@ -5,7 +5,6 @@ it would become:
 
 "reverse" method cannot return a linkedlist, it can only return a Type "Node"
 
-
 Attention: my thought is to create a new Node once meeting a node when traversing the linkedlist
 and use insert at the front of the new linkedlist to implement the "reverse" result
 and return a new linked list with a newHead. It works fine.
@@ -19,7 +18,6 @@ class Node {
 	public int value;
 	public Node next;
 	
-//constructor	
 	public Node(int value){
 		this.value = value;
 		next = null;
@@ -27,7 +25,7 @@ class Node {
 }
 
 public class MyOwnLinkedList{
-	private Node head; // = new Node();
+	private Node head;
 	
 	public static void main(String[] args){
 		MyOwnLinkedList aLL = new MyOwnLinkedList();		
@@ -36,13 +34,12 @@ public class MyOwnLinkedList{
 		aLL.insert(3);
 		aLL.insert(2);
 		aLL.insert(1);	
-		//print linkedlist
+		// print linkedlist
 		System.out.println("Print original LinkedList using two methods: ");
 		aLL.printAll();
 		aLL.printAll(aLL.head);
-		
-				
-		//reverse 1
+
+		// reverse 1
 		System.out.println("Print reversed LinkedList using method 1 without parameter: ");
 		Node reverse = aLL.reverse_regular();
 		while(reverse != null){
@@ -51,7 +48,7 @@ public class MyOwnLinkedList{
 		}
 		System.out.print("null\n");
 		
-		//reverse 2
+		// reverse 2
 		System.out.println("Print reversed LinkedList using method 1 with parameter: ");
 		Node reverse3 = aLL.reverse(aLL.head);
 		while(reverse3 != null){
@@ -60,7 +57,7 @@ public class MyOwnLinkedList{
 		}
 		System.out.print("null\n");
 		
-		//reverse 3
+		// reverse 3
 		System.out.println("Print reversed LinkedList using method 2: ");
 		Node reverse2 = aLL.reverseShouldUse();
 		while(reverse2 != null){
@@ -70,7 +67,7 @@ public class MyOwnLinkedList{
 		System.out.print("null\n");	
 		
 		
-		//reverse not understand
+		// reverse not understand
 		
 		System.out.println("Print reversed LinkedList using method not quite understand: ");
 		Node reverse9 = aLL.reverse_not_understand(aLL.head);
@@ -81,7 +78,6 @@ public class MyOwnLinkedList{
 		System.out.print("null\n");
 	
 	/**	
-	///=====================================================================================================///	
 		System.out.println("=====================");
 		//reverse 4
 		reverse = aLL.recursiveReverse(aLL.head);
@@ -129,9 +125,7 @@ public class MyOwnLinkedList{
 		System.out.print("null\n");
 	}
 
-/**
- all "reverse" methods
-*/ 
+	// all "reverse" methods
 	
 	public Node reverse_regular(){
 		Node current = head;
@@ -145,7 +139,7 @@ public class MyOwnLinkedList{
 		return newHead;
 	}
 	
-// overloaded method reverse_regular()
+	// overloaded method reverse_regular()
 	public Node reverse(Node oldHead){
 		Node current = oldHead;
 		Node newHead = null;
@@ -160,7 +154,7 @@ public class MyOwnLinkedList{
 	
 	
 	
-	//another "reverse" method without creating a newNode
+	// another "reverse" method without creating a newNode
 	
 	public Node reverseShouldUse(){
 		Node current = head;
@@ -177,8 +171,9 @@ public class MyOwnLinkedList{
 	// recursively reverse a linkedlist
 	public Node recursiveReverse(Node n){
 		
-		if(n == null || n.next == null)
-		return n;
+		if (n == null || n.next == null) {
+			return n;
+		}
 
 		reverse(n.next);
 		n.next.next = n;
@@ -189,8 +184,10 @@ public class MyOwnLinkedList{
 	}		
 	// recursively reverse a linkedlist
 	public Node reverseRecursively(Node list){
-		if (list == null || list.next==null) 
+		if (list == null || list.next == null) {
 			return list;
+		}
+
 		Node nextItem = list.next;
 		list.next = null;
 		Node reverseRest = reverse(nextItem);
@@ -200,19 +197,17 @@ public class MyOwnLinkedList{
 	
 	public Node reverse_not_understand(Node head){
 		
-		Node prev   = null;
+		Node prev = null;
 		Node current = head;
 		Node next;
-		while (current != null)
-		{
+		while (current != null)	{
 			next = current.next;  
 			current.next = prev;   
 			prev = current;
 			current = next;
 		}
-		return head = prev;
 
+		return head = prev;
 	}
-	
 }
 
