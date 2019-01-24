@@ -82,6 +82,68 @@ public class TextJustification {
 			System.out.println(line);
 		}
 	}
+	// 01/21/2019
+	public List<String> fullJustify(String[] words, int maxWidth) {
+		List<String> lines = new ArrayList<String>();
+		
+		int size = words.length;
+		int start = 0;
+
+		while (start < size) {
+			int currentLineLen = words[start].length();
+			int currentIdx = start + 1;
+
+			while (currentIdx < size) {
+				// note, where to check and how to check > maxWidth
+				// 要break后 仍然保持 currentLineLen 没有超过 maxWidth
+				if (currentLineLen + 1 + words[currentIdx].length() > maxWidth) {
+					break;
+				}
+				currentLineLen += 1 + words[currentIdx++].length(); // word0 + (" " + word1)
+			}
+			// two conditions to break, currentIdx reaches size or currentLineLen > maxWidth
+			// since break here, inclusive words at positions below will be on this line
+			// [start, currentIdx - 1]
+			
+			int gaps = currentIdx - 1 - start;
+
+			StringBuilder sb = new StringBuilder();
+
+			// if this line is last line or only has one word
+			if (currentIdx == size || gaps == 0) {
+				for (int i = start; i <= currentIdx - 1; i++) {
+					sb.append(i == currentIdx - 1 ? words[i] : words[i] + " ");
+				}
+				// append spaces, because left justified, so at last append spaces
+				appendSpaces(sb, maxWidth - sb.length());
+			} else { // regular justified, last one must be a word
+				int spacesPerGap = (maxWidth - currentLineLen) / gaps;
+				int remainingSpaces = (maxWidth - currentLineLen) % gaps; // 不够所有gaps 所以先即左边 填完为止
+
+				// loop through gaps
+				for (int i = start; i <= currentIdx - 1; i++) {
+					// at first, append word
+					sb.append(words[i]);
+					if (i < currentIdx - 1) {
+						int reCalculatedSpacesPerGap = (spacesPerGap + 1) + ((i - start) < remainingSpaces ? 1 : 0);
+						appendSpaces(sb, reCalculatedSpacesPerGap);
+					}
+				}
+			}
+
+			lines.add(sb.toString());
+			start = currentIdx;
+		}
+
+		return lines;
+	}
+
+	public void appendSpaces(StringBuilder sb, int cnt) {
+		for (int i = 0; i < cnt; i++) {
+			sb.append(" ");
+		}
+	}
+
 	// 09/28/2018
 	public List<String> fullJustify(String[] words, int maxWidth) {
 		List<String> lines = new ArrayList<String>();

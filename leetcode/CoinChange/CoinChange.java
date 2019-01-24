@@ -12,45 +12,91 @@ coins = [2], amount = 3
 return -1.
 
 idea:
-https://leetcode.com/discuss/76217/java-both-iterative-recursive-solutions-with-explanations
-1. recursion
-count[remaining] is array to memorize the minimum number of coins to sum up to remaining
-this array will be passed into the helper function(coins[], remaining, count[])
+1. brute force
+2. recursion with memoization
+https://www.cnblogs.com/grandyang/p/5138186.html
+3. dp
+
 */
 
 public class CoinChange {
-    public int coinChange(int[] coins, int amount) {
-	    if (amount < 1) {
-	    	return 0;
-	    }
+	// brute force, TLE, 114 / 182 test cases passed
+	int minCount = Integer.MAX_VALUE;
+	public int coinChange(int[] coins, int amount) {
+		Arrays.sort(coins);
 
-	    int[] count = new int[amount];
-	    return dfs(coins, amount, count);
+		coinChange(coins.length - 1, 0, coins, amount);
+		return minCount == Integer.MAX_VALUE ? -1 : minCount;
+	}
+
+	private void coinChange(int pos, int currCnt, int[] coins, int remaining) {
+		if (remaining < 0) {
+			return;
+		}
+
+		if (remaining == 0) {
+			minCount = Math.min(minCount, currCnt);
+			return;
+		}
+
+		for (int i = pos; i >= 0; i--) {
+			coinChange(i, currCnt + 1, coins, remaining - coins[i]);
+		}
+	}
+
+	public int coinChange(int[] coins, int amount) {
+		if (amount < 1) {
+			return 0;
+		}
+
+		return dfs(coins, amount, new int[amount]);
 	}
 
 	// remaining: remaining amount after the last step
-	// count[remaining]: minimum number of coins to sum up to remaining
-	private int dfs(int[] coins, int remaining, int[] count) { 
-	    if (remaining < 0) {
-	    	return -1;
-	    }
-	    if (remaining == 0) {
-	    	return 0;
-	    }
-	    if (count[remaining - 1] != 0) {
-	    	return count[remaining - 1];
-	    }
+	// count[] length is amount
+	// count[amount - 1] last element in array, which is minimum number of coins to sum up to amount
+	private int dfs(int[] coins, int remaining, int[] count) {
+		if (remaining < 0) {
+			return -1;
+		}
+		if (remaining == 0) {
+			return 0;
+		}
+		if (count[remaining - 1] != 0) {
+			return count[remaining - 1];
+		}
 
-	    int minCnt = Integer.MAX_VALUE;
-	    // 可以重复用同一个coin
-	    for (int coin : coins) {
-	        int cnt = dfs(coins, remaining - coin, count);
-	        if (cnt >= 0 && cnt < minCnt) {
-	            minCnt = cnt + 1;
-	        }
-	    }
-	    count[remaining - 1] = (minCnt == Integer.MAX_VALUE) ? -1 : minCnt;
+		int minCnt = Integer.MAX_VALUE;
+		// 可以重复用同一个coin
+		for (int coin : coins) {
+			int cnt = dfs(coins, remaining - coin, count);
+			if (cnt >= 0) {
+				// 用了一个coin 所以 +1
+				minCnt = Math.min(minCnt, cnt + 1);
+			}
+		}
+		count[remaining - 1] = (minCnt == Integer.MAX_VALUE) ? -1 : minCnt;
 
-	    return count[remaining - 1];
+		return count[remaining - 1];
+	}
+
+	// 01/23/2019
+	// dp[i] to get amount of i, the min number of coins
+	public int coinChange(int[] coins, int amount) {
+		int[] dp = new int[amount + 1];
+		// note, not forget to initialize with max possible number of coins
+		Arrays.fill(dp, amount + 1);
+		dp[0] = 0;
+
+		for (int i = 1; i <= amount; i++) {
+			for (int coin : coins) {
+				if (coin <= i) {
+					// +1 is used one coin
+					dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+				}
+			}
+		}
+
+		return dp[amount] > amount ? -1 : dp[amount];
 	}
 }

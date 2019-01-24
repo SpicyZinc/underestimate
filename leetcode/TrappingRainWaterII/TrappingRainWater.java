@@ -73,7 +73,7 @@ class Solution {
 		}
 
 		// start bfs
-		int res = 0;
+		int result = 0;
 		int[][] directions = new int[][] {{1,0}, {0,1}, {-1,0}, {0,-1}};
 		while (!queue.isEmpty()) {
 			Cell cell = queue.poll();
@@ -82,7 +82,7 @@ class Solution {
 				int nextY = cell.y + direction[1];
 				if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && !visited[nextX][nextY]) {
 					if (cell.h > heightMap[nextX][nextY]) {
-						res += (cell.h - heightMap[nextX][nextY]);
+						result += (cell.h - heightMap[nextX][nextY]);
 					}
 					visited[nextX][nextY] = true;
 					queue.offer(new Cell(nextX, nextY, Math.max(heightMap[nextX][nextY], cell.h)));
@@ -90,6 +90,6 @@ class Solution {
 			}
 		}
 
-		return res;
+		return result;
     }
 }

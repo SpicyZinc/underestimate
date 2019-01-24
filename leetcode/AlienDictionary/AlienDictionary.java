@@ -85,7 +85,8 @@ class AlienDictionary {
 
 						inDegree.put(c2, inDegree.get(c2) + 1);
 					}
-					// note, immediately break when two chars are NOT equal
+					// note, immediately break when first two chars are NOT equal in the two words
+					// 没有必要往下了 因为下面的无法区别 谁是in 谁是out 严格是 c1 -> c2
 					break;
 				}
 			}

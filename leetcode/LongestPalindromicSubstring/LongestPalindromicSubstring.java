@@ -19,12 +19,11 @@ a string of length n, the number of central points should be 2 * n - 1
 字符作为中心有n个, 间隙有n-1个 e.g., abc, 中心可以是a, b, c or ab的间隙, bc的间隙
 往两边同时进行扫描, 直到不是回文串为止
 这个思路是对的 但是不是为了 中心 而是为了到达最后一个char 在string
-3. dynamic programming
-外层循环i从后往前扫
-内层循环j从i当前字符扫到结尾处
-使用的历史信息是从i+1到n之间的任意子串是否是回文 boolean array is used to record, 需要比较一下头尾字符
-
+3. DP
+palindromic[i][j] refers to 字符串区间[i, j]是否为回文串
+https://www.cnblogs.com/grandyang/p/4464476.html
 */
+
 class LongestPalindromicSubstring {
 	public static void main(String[] args) {
 		new LongestPalindromicSubstring();		
@@ -101,27 +100,30 @@ class LongestPalindromicSubstring {
     }
 
     // 3rd method dynamic programming
+    // 01/23/2019
     public String longestPalindrome(String s) {
-        String result = "";
-        if (s == null || s.length() == 0) {
-            return result;
-        }
+		String result = "";
+		if (s == null || s.length() == 0) {
+			return result;
+		}
 
-        int maxLength = 0;
-        int size = s.length();
-        boolean[][] palindromic = new boolean[size][size];
-        for (int i = size - 1; i >= 0; i--) {
-            for (int j = i; j < size; j++) {
-                if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i + 1][j - 1]) ) {
-                    palindromic[i][j] = true;
-                    if (maxLength < j - i + 1) {
-                        maxLength = j - i + 1;
-                        result = s.substring(i, j + 1);
-                    }
-                }
-            }
-        }
+		int maxLength = 0;
+		int size = s.length();
+		boolean[][] palindromic = new boolean[size][size];
 
-        return result;
-    }
+		for (int j = 0; j < size; j++) {
+			for (int i = 0; i <= j; i++) {
+				// 前一层里的两边的 char 相等
+				if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i + 1][j - 1]) ) {
+					palindromic[i][j] = true;
+					if (maxLength < j - i + 1) {
+						maxLength = j - i + 1;
+						result = s.substring(i, j + 1);
+					}
+				}
+			}
+		}
+
+		return result;
+	}
 }

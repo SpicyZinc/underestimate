@@ -76,6 +76,7 @@ public class WiggleSort {
         if (nums.length <= 1 || nums == null) {
             return;   
         }
+
         int n = nums.length;
         int[] copy = Arrays.copyOf(nums, n);
         Arrays.sort(copy);

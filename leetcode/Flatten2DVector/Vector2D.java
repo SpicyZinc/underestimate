@@ -8,12 +8,12 @@ For example, Given 2d vector =
 ] 
 By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,2,3,4,5,6].
 
-
 idea:
 https://segmentfault.com/a/1190000003791233
 https://www.cnblogs.com/grandyang/p/5209621.html
 1. 压成1D array
 2. 利用Java iterator
+something goes wrong with v[][] 
 */
 
 public class Vector2D {
@@ -64,34 +64,6 @@ public class Vector2D {
 		return index < list.length;
 	}
 
-	// use Java iterator
-    int curr = 0;
-    List<Iterator<Integer>> iterators;
-
-    public Vector2D(List<List<Integer>> vec2d) {
-        this.iterators = new ArrayList<Iterator<Integer>>();
-        for (List<Integer> list : vec2d) {
-            // 只将非空的迭代器加入数组
-            if (list.size() > 0) {
-               this.iterators.add(list.iterator()); 
-            }
-        }
-    }
-
-    public int next() {
-        Integer res = iterators.get(curr).next();
-        // 如果该迭代器用完了, 换到下一个
-        if (!iterators.get(curr).hasNext()) {
-            curr++;
-        }
-
-        return res;
-    }
-
-    public boolean hasNext() {
-        return curr < iterators.size() && iterators.get(curr).hasNext();
-    }
-
     // use java List 1d iterator
 	List<Integer> list;
     Iterator<Integer> itr;
@@ -113,5 +85,35 @@ public class Vector2D {
     @Override
     public boolean hasNext() {
         return itr.hasNext();
+    }
+
+	// use Java iterator
+	// what interviewer wants
+	int curr;
+    List<Iterator<Integer>> iterators;
+
+    public Vector2D(List<List<Integer>> vec2d) {
+    	this.curr = 0;
+        this.iterators = new ArrayList<Iterator<Integer>>();
+        for (List<Integer> list : vec2d) {
+            // 只将非空的迭代器加入数组
+            if (list.size() > 0) {
+               this.iterators.add(list.iterator()); 
+            }
+        }
+    }
+
+    public int next() {
+        Integer val = iterators.get(curr).next();
+        // 如果该迭代器用完了, 换到下一个
+        if (!iterators.get(curr).hasNext()) {
+            curr++;
+        }
+
+        return val;
+    }
+
+    public boolean hasNext() {
+        return curr < iterators.size() && iterators.get(curr).hasNext();
     }
 }

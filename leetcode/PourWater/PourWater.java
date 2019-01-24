@@ -145,10 +145,12 @@ class PourWater {
 				i += d;
 			}
 			// 看是否往前滚了, stop 往前滚了
+			// 滚到第一个符合条件的就行了 不用多滚
 			if (dropStopPos != K) {
 				break;
 			}
 		}
+		// 在最后挺住的位置 +1 加上一滴水
 		heights[dropStopPos]++;
 	}
 }

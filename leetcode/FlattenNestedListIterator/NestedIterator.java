@@ -60,8 +60,7 @@ public class NestedIterator implements Iterator<Integer> {
             NestedInteger top = stack.peek();
             if (top.isInteger()) {
                 return true;
-            }
-            else {
+            } else {
                 stack.pop();
                 List<NestedInteger> temp = top.getList();
                 for (int i = temp.size() - 1; i >= 0; i--) {

@@ -19,28 +19,28 @@ borrow 3 sum smaller
 note: two short length sum > the longest length 
 */
 public class ValidTriangleNumber {
-    public int triangleNumber(int[] nums) {
+	public int triangleNumber(int[] nums) {
 		if (nums.length < 3 || nums == null) {
 			return 0;
 		}
+
 		int cnt = 0;
 		Arrays.sort(nums);
 		for (int i = 2; i < nums.length; i++) {
 			int left = 0;
 			int right = i - 1;
 			while (left < right) {
-			    if (nums[left] + nums[right] > nums[i]) {
-    				cnt += right - left; // left is varying, so change right to avoid duplicate
-    				right--;
-    			}
-    			else {
-    				left++;
-    			
-    			}    
+				if (nums[left] + nums[right] > nums[i]) {
+					cnt += right - left; // left is varying, so change right to avoid duplicate
+					right--;
+				} else {
+					left++;
+				}
 			}
 		}
+
 		return cnt;
-    }
+	}
 
     // lesson, 21 / 220 test cases passed
     public int triangleNumber(int[] nums) {

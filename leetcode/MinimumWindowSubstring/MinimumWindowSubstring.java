@@ -87,7 +87,7 @@ public class MinimumWindowSubstring {
 			// remove char at left side of window
 			char charAtLeft = s.charAt(left);
 			sLetters[charAtLeft]--;
-			// 减少一个后还相等
+			// 减少一个后还相等, 如果去掉的char 也在 t 中 可能有三个 就是少了一个 当前的window也不cover了
 			if (sLetters[charAtLeft] == tLetters[charAtLeft] - 1) {
 				uniqueTCharsCountInWindow--;
 			}

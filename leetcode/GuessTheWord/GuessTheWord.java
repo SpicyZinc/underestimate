@@ -9,7 +9,7 @@ Also, if your guess is not in the given wordlist, it will return -1 instead.
 
 For each test case, you have 10 guesses to guess the word.
 At the end of any number of calls, if you have made 10 or less calls to master.guess and at least one of these guesses was the secret,
-you pass the testcase.
+you pass the test case.
 
 Besides the example test case below, there will be 5 additional test cases, each with 100 words in the word list.
 The letters of each word in those test cases were chosen independently at random from 'a' to 'z',

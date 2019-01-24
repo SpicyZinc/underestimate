@@ -11,7 +11,9 @@ province ids 1, 2, 3, 5, 10, 11, 15, 19 in MZ
 public class SummaryRanges {
     public List<String> summaryRanges(int[] nums) {
         List<String> result = new ArrayList<String>();
-        if (nums.length == 0 || nums == null) return result;
+        if (nums.length == 0 || nums == null) {
+            return result;
+        }
 
         int start = nums[0];
         for (int i = 1; i < nums.length; i++) {

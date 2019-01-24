@@ -1,5 +1,4 @@
 /*
-First Missing Positive
 Given an unsorted integer array, find the first missing positive integer.
 
 [1,2,0] return 3
@@ -10,7 +9,7 @@ Your algorithm should run in O(n) time and uses constant space.
 idea:
 1. 
 constant space requires to use the array
-main idea: change array to be like 1 2 3 in position 0 1 2
+change array to be like 1 2 3 in position 0 1 2
 
 once find A[i] != i+1, return i+1; 
 that is the first missing positive
@@ -29,8 +28,26 @@ public class FirstMissingPositive {
 		
 		System.out.println("\nA_1stMissingPositive == " + eg.firstMissingPositive(A));
 	}
+	// 01/22/2019
+	public int firstMissingPositive(int[] nums) {
+		int n = nums.length;
 
-    // note, use while
+		for (int i = 0; i < n; i++) {
+			// only care about positive number and <= n number
+			while (nums[i] > 0 && nums[i] <= n && nums[i] != nums[nums[i] - 1]) {
+				swap(nums, i, nums[i] - 1);
+			}
+		}
+
+		for (int i = 0; i < n; i++) {
+			if (i + 1 != nums[i]) {
+				return i + 1;
+			}
+		}
+
+		return n + 1;
+	}
+	// note, use while
     // 07/12/2018
     public int firstMissingPositive(int[] nums) {
         int n = nums.length;
