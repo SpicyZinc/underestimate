@@ -1,6 +1,6 @@
 /*
 Implement a basic calculator to evaluate a simple expression string.
-The expression string may contain open ( and closing parentheses ), the plus + or minus sign -, non-negative integers and empty spaces .
+The expression string may contain open ( and closing parentheses ), the plus + or minus sign -, non-negative integers and empty spaces.
 
 You may assume that the given expression is always valid.
 
@@ -36,8 +36,10 @@ public class BasicCalculator {
         Stack<Integer> stack = new Stack<Integer>();
         int result = 0;
         int sign = 1;
+
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
+
             if (Character.isDigit(c)) {
                 int val = 0;
                 while (i < s.length() && Character.isDigit(s.charAt(i))) {
@@ -56,38 +58,39 @@ public class BasicCalculator {
                 stack.push(result);
                 stack.push(sign);
                 // reset the sign and result for the value in the parenthesis
-                result = 0;
                 sign = 1;
+                result = 0;
             } else if (c == ')') {
                 // 1st pop is sign, 2nd pop is previous result
                 // another place to calculate result
                 result = stack.pop() * result + stack.pop();
             }
         }
+
         return result;
     }
+
     // method 2
     public int calculate(String s) {
         String tokens[] = toRPN(s).split("\\s+");
-        int returnValue = 0;
         String operators = "+-";
 
+        int returnValue = 0;
         Stack<String> stack = new Stack<String>();
 
         for (String t : tokens) {
             if (!operators.contains(t)) {
                 stack.push(t);
-            }
-            else {
+            } else {
                 int a = Integer.valueOf(stack.pop());
                 int b = Integer.valueOf(stack.pop());
                 int index = operators.indexOf(t);
-                switch(index) {
+                switch (index) {
                     case 0:
-                        stack.push(String.valueOf(a+b));
+                        stack.push(String.valueOf(b + a));
                         break;
                     case 1:
-                        stack.push(String.valueOf(b-a));
+                        stack.push(String.valueOf(b - a));
                         break;
                 }
             }
@@ -99,44 +102,54 @@ public class BasicCalculator {
     }
     // must remember how convert infix expression to postfix expression
     // this is simple, only + - ( ) no * /
-    public static String toRPN(String input) {
-        char[] in = input.toCharArray();
-        Stack<Character> stack = new Stack<Character>();
-        StringBuilder out = new StringBuilder();
+	public String toRPN(String input) {
+		Stack<Character> stack = new Stack<>();
+		StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < in.length; i++)
-            switch (in[i]) {
-                case '+':
-                case '-':
-                    while (!stack.empty() && stack.peek() != '(') {
-                        out.append(' ');
-                        out.append(stack.pop());
-                    }
-                    out.append(' ');
-                    stack.push(in[i]);
-                    break;
-                case '(':
-                    stack.push(in[i]);
-                    break;
-                case ')':
-                    while (!stack.empty() && stack.peek() != '(') {
-                        out.append(' ');
-                        out.append(stack.pop());
-                    }
-                    stack.pop();
-                    break;
-                case ' ':
-                    break;
-                default:
-                    out.append(in[i]);
-                    break;
-            }
+		for (int i = 0; i < input.length(); i++) {
+			char c = input.charAt(i);
 
-        while (!stack.isEmpty()) {
-            out.append(' ');
-            out.append(stack.pop());
-        }
+			switch (c) {
+				case '+':
+				case '-':
+					while (!stack.isEmpty() && stack.peek() != '(') {
+						sb.append(' ');
+						sb.append(stack.pop());
+					}
+					sb.append(' ');
 
-        return out.toString();
-    }
+					stack.push(c);
+
+					break;
+
+				case '(':
+					stack.push(c);
+					break;
+
+				case ')':
+					while (!stack.isEmpty() && stack.peek() != '(') {
+						sb.append(' ');
+						sb.append(stack.pop());
+					}
+					// pop the '('
+					stack.pop();
+
+					break;
+
+				case ' ':
+					break;
+
+				default:
+					sb.append(c);
+					break;
+			}
+		}
+		// 看最后还有剩下的么
+		while (!stack.isEmpty()) {
+			sb.append(' ');
+			sb.append(stack.pop());
+		}
+
+		return sb.toString();
+	}
 }

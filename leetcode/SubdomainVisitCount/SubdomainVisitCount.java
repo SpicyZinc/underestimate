@@ -43,23 +43,28 @@ note, 如何累追加 key
 import java.util.*;
 
 class SubdomainVisitCount {
+	// 01/29/2019
 	public List<String> subdomainVisits(String[] cpdomains) {
-		Map<String, Integer> hm = new HashMap<String, Integer>();
+		Map<String, Integer> hm = new HashMap<>();
+
 		for (String domain : cpdomains) {
 			String[] matches = domain.split("\\s+");
-			int cnt = Integer.parseInt(matches[0]);
+			int times = Integer.parseInt(matches[0]);
+
 			String[] subdomains = matches[1].split("\\.");
+
 			String key = "";
 			for (int i = subdomains.length - 1; i >= 0; i--) {
 				key = subdomains[i] + (i < subdomains.length - 1 ? "." : "") + key;
-				hm.put(key, hm.getOrDefault(key, 0) + cnt);
+				hm.put(key, hm.getOrDefault(key, 0) + times);
 			}
 		}
 
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		for (Map.Entry<String, Integer> entry : hm.entrySet()) {
 			String key = entry.getKey();
-			Integer value = entry.getValue();
+						int value = entry.getValue();
+
 
 			result.add(value + " " + key);
 		}
