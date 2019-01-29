@@ -65,41 +65,45 @@ public class KthSmallestSumInTwoSortedArrays {
 		int kthSmallestSum = eg.kthSmallestSum(A, B, k);
 		System.out.println(kthSmallestSum);
 	}
-
-    public int kthSmallestSum(int[] A, int[] B, int k) {
-        if (A.length == 0 || B.length == 0 || A == null || B == null) return -1;
+	// 要往外poll()
+	public int kthSmallestSum(int[] A, int[] B, int k) {
+        int[][] directions = {
+            {0, 1},
+            {1, 0}
+        };
 
         int m = A.length;
         int n = B.length;
-        if (m * n < k) return -1;
         
-        int[][] directions = { {0, 1}, {1, 0} };
         boolean[][] visited = new boolean[m][n];
-        PriorityQueue<Node> minHeap = new PriorityQueue<Node>(k, new NodeComparator());
-        minHeap.offer(new Node(0, 0, A[0] + B[0]));
+        
+        PriorityQueue<Node> pq = new PriorityQueue<Node>(new Comparator<Node>() {
+            @Override
+            public int compare(Node a, Node b) {
+                return a.v - b.v;
+            }
+        });
+        
+        pq.offer(new Node(0, 0, A[0] + B[0]));
         visited[0][0] = true;
-        // already added one node to minHeap
-        int idx = 1;
-        while (idx < k) {
-            Node smallest = minHeap.poll();
+        
+        int i = 1; // already added one node to pq
+        while (i < k) {
+            Node node = pq.poll();
             for (int[] dir : directions) {
-                int nextX = smallest.x + dir[0];
-                int nextY = smallest.y + dir[1];
-                if (isValid(A, B, nextX, nextY, visited)) {
+                int nextX = node.i + dir[0];
+                int nextY = node.j + dir[1];
+                
+                if (nextX < m && nextY < n && !visited[nextX][nextY]) {
                     visited[nextX][nextY] = true;
-                    minHeap.offer(new Node(nextX, nextY, A[nextX] + B[nextY]));
+                    pq.offer(new Node(nextX, nextY,  A[nextX] + B[nextY]));
                 }
             }
-            idx++;
+            i++;
         }
 
-        return minHeap.peek().sum;
-    }
-
-    public boolean isValid(int[] A, int[] B, int i, int j, boolean[][] visited) {
-        int m = A.length;
-        int n = B.length;
-        return i < m && j < n && !visited[i][j];
+        
+        return pq.peek().v;
     }
 
     // method 2
@@ -131,8 +135,7 @@ public class KthSmallestSumInTwoSortedArrays {
             }
             if (midPosition < k) {
                 min = midVal + 1;
-            }
-            else {
+            } else {
                 max = midVal;
             }
         }

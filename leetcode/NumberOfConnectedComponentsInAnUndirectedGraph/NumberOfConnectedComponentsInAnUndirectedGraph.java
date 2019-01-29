@@ -1,4 +1,5 @@
-/*Given n nodes labeled from 0 to n - 1 and a list of undirected edges (each edge is a pair of nodes),
+/*
+Given n nodes labeled from 0 to n - 1 and a list of undirected edges (each edge is a pair of nodes),
 write a function to find the number of connected components in an undirected graph.
 
 Example 1:
@@ -38,6 +39,50 @@ class NumberOfConnectedComponentsInAnUndirectedGraph {
 		};
 	}
 
+	// 01/27/2019, fast
+	// hashset to count unique components
+	public int countComponents(int n, int[][] edges) {
+		int[] f = new int[n];
+		for (int i = 0; i < n; i++) {
+			f[i] = i;
+		}
+		// connect based on edges, union
+		for (int[] edge : edges) {
+			int a = edge[0];
+			int b = edge[1];
+
+			int fa = find(a, f);
+			int fb = find(b, f);
+
+			if (fa != fb) {
+				f[fa] = fb;
+			}
+		}
+
+		Set<Integer> hs = new HashSet<>();
+		for (int i = 0; i < n; i++) {
+			hs.add(find(i, f));
+		}
+
+		return hs.size();
+	}
+
+	public int find(int i, int[] f) {
+		int j = i;
+		while (j != f[j]) {
+			j = f[j];
+		}
+
+		while (i != j) {
+			int fi = f[i];
+			f[i] = j;
+			i = fi;
+		}
+
+		return i;
+	}
+
+	// dfs with hashmap and visited
 	public int countComponents(int n, int[][] edges) {
 		Map<Integer, List<Integer>> hm = new HashMap<>();
 		for (int i = 0; i < n; i++) {
@@ -63,6 +108,7 @@ class NumberOfConnectedComponentsInAnUndirectedGraph {
 				dfs(i, visited, hm);
 			}
 		}
+
 		return cnt;
 	}
 

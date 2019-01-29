@@ -30,14 +30,14 @@ public class LargestRectangleInHistogram {
 	// i, j = i; j < length
 	// i, j = 0; j <= i; j++
 
-	// 95 / 96 test cases passed
 	// 08/25/2018 passed OJ no errors
-	public int largestRectangleArea(int[] height) {
+	// 01/26/2019 passed OJ no errors 530 ms
+	public int largestRectangleArea(int[] heights) {
 		int maxArea = 0;
-		for (int i = 0; i < height.length; i++) {
-			int minHeight = height[i];			
+		for (int i = 0; i < heights.length; i++) {
+			int minHeight = heights[i];
 			for (int j = i; j >= 0; j--) {
-				minHeight = Math.min(minHeight, height[j]);
+				minHeight = Math.min(minHeight, heights[j]);
 				int area = minHeight * (i - j + 1);
 				maxArea = Math.max(maxArea, area);
 			}
@@ -45,8 +45,8 @@ public class LargestRectangleInHistogram {
 
 		return maxArea;
 	}
-	// 94 / 96 test cases passed
-	// 08/25/2018 passed OJ no errors
+	// 01/26/2019 passed OJ no errors 989 ms
+	// 开一个array 存放到i 为止最小的 height 包括i
 	public int largestRectangleArea(int[] heights) {
 		int maxArea = 0;
 		int[] minHeights = new int[heights.length]; // to i inclusive, minimum Height
@@ -55,27 +55,17 @@ public class LargestRectangleInHistogram {
 				if (i == j) {
 					minHeights[j] = heights[j];
 				} else {
-					minHeights[j] = (heights[j] < minHeights[j - 1]) ? heights[j] : minHeights[j - 1];
+					minHeights[j] = heights[j] < minHeights[j - 1] ? heights[j] : minHeights[j - 1];
 				}
+
 				maxArea = Math.max(maxArea, minHeights[j] * (j - i + 1));
 			}
 		}
 
 		return maxArea;
 	}
-    // failed [2,0,2]
-    public int largestRectangleArea(int[] heights) {
-    	Arrays.sort(heights);
-        int maxArea = 0;
-    	for (int i = heights.length - 1; i >= 0; i--) {
-    		int height = heights[i];            
-    		maxArea = Math.max(maxArea, height * ( heights.length - i));
-    	}
 
-    	return maxArea;
-    }
-
-	// passed OJ
+	// passed OJ, so fast 3 ms
 	// 是以质取胜还是以量取胜 高度连续增长序列可能很高Height需要很短 x 距离 或是 很长 x 距离 一般的Height
     public int largestRectangleArea(int[] heights) {
         int n = heights.length;
@@ -101,21 +91,32 @@ public class LargestRectangleInHistogram {
         
         return maxArea;
     }
-    // http://www.cnblogs.com/lichen782/p/leetcode_Largest_Rectangle_in_Histogram.html
+
+    // 用单调递增 stack
+    // 01/26/2019 17 ms
     public int largestRectangleArea(int[] heights) {
-        Stack<Integer> stack = new Stack<Integer>();
-        int i = 0;
+        if (heights.length == 0 || heights == null) {
+            return 0;
+        }
+
+        Stack<Integer> stack = new Stack<>();
+        
         int maxArea = 0;
-        int[] h = new int[heights.length + 1];
-        h = Arrays.copyOf(heights, heights.length + 1);
-        while (i < h.length) {
-            if (stack.isEmpty() || h[stack.peek()] <= h[i]) {
-                stack.push(i);
-                i++;
-           	} else {
-               	int index = stack.pop();
-              	maxArea = Math.max(maxArea, h[index] * (stack.isEmpty() ? i : i - stack.peek() - 1));
-           	}
+
+        for (int i = 0; i <= heights.length; i++) {
+            int curr = i == heights.length ? 0 : heights[i]; 
+            
+            while (!stack.isEmpty() && curr <= heights[stack.peek()]) {
+                // this is the height of the bar just kicked out
+                int h = heights[stack.pop()];
+                int left = stack.isEmpty() ? 0 : stack.peek() + 1;
+                int right = i - 1;
+                int thisArea = h * (right - left + 1);
+
+                maxArea = Math.max(maxArea, thisArea);
+            }
+
+            stack.push(i);
         }
 
         return maxArea;

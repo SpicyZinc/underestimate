@@ -63,7 +63,8 @@ public class WordDictionary {
 	public boolean search(String word) {
 		return dfs(word, 0, root);
 	}
-
+	// 不为null是继续往下找的关键
+	// 01/27/2019
 	public boolean dfs(String word, int idx, TrieNode node) {
 		if (idx == word.length()) {
 			return node.hasWord;

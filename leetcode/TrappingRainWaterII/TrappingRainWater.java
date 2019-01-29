@@ -28,6 +28,10 @@ if h < any 1 of 4, put it into queue, mark h visited
 
 create a cell class to wrap x, y and height, and declare comparator
 of course, directions = {{1,0}, {0,1}, {-1,0}, {0,-1}}
+
+把吃水线 放在 priority queue 中
+计算出 这个cell 上的 水量
+不考虑其他上的 只是这个cell 上的水量
 */
 
 class Solution {
@@ -36,6 +40,7 @@ class Solution {
         int x;
         int y;
         int h;
+
         public Cell(int x, int y, int h) {
             this.x = x;
             this.y = y;

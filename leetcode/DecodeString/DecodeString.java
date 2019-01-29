@@ -69,27 +69,32 @@ public class DecodeString {
 class DecodeString {
 	// note, this index is global
 	private int index = 0;
+
 	public String decodeString(String s) {
 		return dfs("1[" + s + "]").toString();
 	}
+
 	public StringBuilder dfs(String s) {
 		int count = 0;
-		StringBuilder res = new StringBuilder();
+		StringBuilder result = new StringBuilder();
+
 		for (; index < s.length(); index++) {
 			if (Character.isDigit(s.charAt(index))) {
 				count = count * 10 + s.charAt(index) - '0';
 			} else if (s.charAt(index) == '[') {
 				index++;
 				StringBuilder sb = dfs(s);
+				// append 'count' times
 				for (; count > 0; count--) {
-					res.append(sb);
+					result.append(sb);
 				}
 			} else if (s.charAt(index) == ']') {
 				break;
 			} else {
-				res.append(s.charAt(index));
+				result.append(s.charAt(index));
 			}
 		}
-		return res;
+
+		return result;
 	}
 }

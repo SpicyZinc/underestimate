@@ -25,7 +25,26 @@ left++, move left towards the end of the array
 */
 
 public class MinimumSizeSubarraySum {
-	// recently wrote, sliding window
+    // lintcode version
+    public int minimumSize(int[] nums, int s) {
+        int min = Integer.MAX_VALUE;
+        int left = 0;
+        int sum = 0;
+        for (int right = 0; right < nums.length; right++) {
+            sum += nums[right];
+            
+            while (sum >= s) {
+                
+                min = Math.min(min, right - left + 1);
+                sum -= nums[left++];
+                
+            }
+        }
+        
+        return min == Integer.MAX_VALUE ? -1 : min;
+    }
+	// sliding window
+    // 01/26/2019
 	public int minSubArrayLen(int s, int[] nums) {
         if (s == 0 || nums.length == 0 || nums == null) {
             return 0;

@@ -16,6 +16,43 @@ public class LongestSubstringwithAtMostKDistinctCharacters {
 		int maxLen = eg.lengthOfLongestSubstringKDistinct(s, k);
 		System.out.println(maxLen);
 	}
+	// 01/26/2019
+	public int lengthOfLongestSubstringKDistinct(String s, int k) {
+		if (s.length() == 0 || s == null) {
+            return 0;
+        }
+        
+        if (k == 0) {
+            return 0;
+        }
+        
+        int[] letters = new int[256];
+        int left = 0;
+        int max = k;
+        int uniqueCnt = 0;
+        
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            
+            letters[c]++;
+            if (letters[c] == 1) {
+                uniqueCnt++;
+            }
+            
+            while (uniqueCnt > k && left < s.length()) {
+                // move window's left
+                if (--letters[s.charAt(left)] == 0) {
+                    uniqueCnt--;
+                }
+                left++;
+            }
+            
+            max = Math.max(max, right - left + 1);
+        }
+        
+        return s.length() < k ? s.length() : max;
+    }
+
 	// typical sliding window
 	public int lengthOfLongestSubstringKDistinct(String s, int k) {
         int n = s.length();
@@ -48,34 +85,4 @@ public class LongestSubstringwithAtMostKDistinctCharacters {
         
         return maxLen;
     }
-
-
-	public int lengthOfLongestSubstringKDistinct(String s, int k) {
-		int[] letters = new int[256];
-		int maxLen = k;
-		String longestSubstring = "";
-		int start = 0;
-		int uniqueCnt = 0;
-		for (int i = 0; i < s.length(); i++) {
-			// a new unique character appears, so uniqueCnt++
-			if (letters[s.charAt(i)] == 0) {
-				uniqueCnt++;
-			}
-			letters[s.charAt(i)]++;
-
-			char c = s.charAt(start);
-			while (uniqueCnt > k && start < s.length()) {
-				if (--letters[c] == 0) uniqueCnt--;
-				c = s.charAt(++start);
-			}
-
-			if (i - start + 1 > maxLen) {
-				maxLen = i - start + 1;
-				// note, it is i + 1
-				longestSubstring = s.substring(start, i + 1);
-			}
-		}
-
-		return maxLen;
-	}
 }

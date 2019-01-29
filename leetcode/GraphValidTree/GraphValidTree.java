@@ -39,6 +39,7 @@ tree is 连通无环图
 返回false
 反之返回true
 */
+
 import java.util.*;
 
 public class GraphValidTree {
@@ -139,6 +140,53 @@ public class GraphValidTree {
 				return false;
 			}
 		}
+
 		return true;
+	}
+
+	// union find
+	// see if only 1 connected component
+	// 先比较 再union
+	public boolean validTree(int n, int[][] edges) {
+        // tree should have n nodes with n-1 edges
+        if (n - 1 != edges.length) {
+            return false;
+        }
+
+		int[] f = new int[n];
+		for (int i = 0; i < n; i++) {
+			f[i] = i;
+		}
+
+		for (int[] edge : edges) {
+			int a = edge[0];
+			int b = edge[1];
+
+			int fa = find(a, f);
+			int fb = find(b, f);
+            
+            // 还没有union 就相等了 说明有环
+			if (fa == fb) {
+				return false;
+			}
+			f[fa] = fb;
+		}
+
+		return true;
+	}
+
+	public int find(int i, int[] f) {
+		int j = i;
+		while (j != f[j]) {
+			j = f[j];
+		}
+		// compress path
+		while (i != j) {
+			int fi = f[i];
+			f[i] = j;
+			i = f[i];
+		}
+
+		return j;
 	}
 }
