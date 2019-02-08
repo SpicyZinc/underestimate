@@ -102,7 +102,7 @@ public class TextJustification {
 				currentLineLen += 1 + words[currentIdx++].length(); // word0 + (" " + word1)
 			}
 			// two conditions to break, currentIdx reaches size or currentLineLen > maxWidth
-			// since break here, inclusive words at positions below will be on this line
+			// since break here, inclusive words at positions before will be on this line
 			// [start, currentIdx - 1]
 			
 			int gaps = currentIdx - 1 - start;

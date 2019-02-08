@@ -106,9 +106,10 @@ public class LargestRectangleInHistogram {
         for (int i = 0; i <= heights.length; i++) {
             int curr = i == heights.length ? 0 : heights[i]; 
             
-            while (!stack.isEmpty() && curr <= heights[stack.peek()]) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= curr) {
                 // this is the height of the bar just kicked out
                 int h = heights[stack.pop()];
+
                 int left = stack.isEmpty() ? 0 : stack.peek() + 1;
                 int right = i - 1;
                 int thisArea = h * (right - left + 1);

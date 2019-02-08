@@ -54,7 +54,7 @@ public class Sqrt {
         if (x <= 1) {
             return x;
         }
-        
+        // 二分答案
         int guess = x / 2;
         while (guess * guess > x || guess > 46340) {
             guess = (guess + x / guess) / 2; 

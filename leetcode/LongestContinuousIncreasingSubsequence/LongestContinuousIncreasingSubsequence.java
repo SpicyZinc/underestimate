@@ -15,34 +15,14 @@ Explanation: The longest continuous increasing subsequence is [2], its length is
 Note: Length of the array will not exceed 10,000.
 
 idea:
-I think it is longest continuous increasing substring
-take each element as start of substring, this substring could be the longest, so update the maxLen
-
+发现比前面大的就update maxLen 
 */
 
 class LongestContinuousIncreasingSubsequence {
-    public int findLengthOfLCIS(int[] nums) {
-    	if (nums.length == 0 || nums == null) {
-    		return 0;
-    	}
-		int maxLen = 1;
-		for (int i = 0; i < nums.length; i++) {
-			int right = i;
-			while (right < nums.length - 1) {
-				if (nums[right] < nums[right + 1]) {
-					right++;
-				} else {
-					break;
-				}
-			}
-			maxLen = Math.max(maxLen, right - i + 1);
-		}
-		return maxLen;      
-    }
-    // I want to do this way, but did not implement it
-    public int findLengthOfLCIS(int[] nums) {
+	public int findLengthOfLCIS(int[] nums) {
 		int maxLen = 0;
 		int cnt = 0;
+
 		for (int i = 0; i < nums.length; i++) {
 			if (i == 0 || nums[i - 1] < nums[i]) {
 				maxLen = Math.max(maxLen, ++cnt);
@@ -50,6 +30,7 @@ class LongestContinuousIncreasingSubsequence {
 				cnt = 1;
 			}
 		}
+
 		return maxLen;
 	}
 }

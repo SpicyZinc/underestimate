@@ -24,28 +24,32 @@ note, LinkedList<String> queue
 */
 
 class LetterCasePermutation {
+	// 02/07/2019
 	public List<String> letterCasePermutation(String S) {
-        LinkedList<String> queue = new LinkedList<>();
-        queue.add(S);
-        
-        if (S.length() == 0 || S == null) {
-            return queue;    
-        }
+		LinkedList<String> result = new LinkedList<>();
+		result.add(S);
 
-        for (int i = 0; i < S.length(); i++) {
-            char c = S.charAt(i);
-            if (Character.isLetter(c)) {
-                int size = queue.size();
-                for (int j = 0; j < size; j++) {
-                    String str = queue.poll();
-                    String upperCaseStr = str.substring(0, i) + Character.toUpperCase(c) + str.substring(i + 1);
-                    String lowerCaseStr = str.substring(0, i) + Character.toLowerCase(c) + str.substring(i + 1);
-                    queue.add(upperCaseStr);
-                    queue.add(lowerCaseStr);
-                }
-            }
-        }
+		if (S.length() == 0 || S == null) {
+			return result;
+		}
 
-        return queue;
-    }
+		for (int i = 0; i < S.length(); i++) {
+			char c = S.charAt(i);
+			
+			if (Character.isLetter(c)) {
+				int size = result.size();
+				for (int j = 0; j < size; j++) {
+					String str = result.poll();
+
+					String lowerCaseStr = str.substring(0, i) + Character.toLowerCase(c) + str.substring(i + 1);
+					String upperCaseStr = str.substring(0, i) + Character.toUpperCase(c) + str.substring(i + 1);
+
+					result.add(lowerCaseStr);
+					result.add(upperCaseStr);
+				}
+			}
+		}
+
+		return result;
+	}
 }

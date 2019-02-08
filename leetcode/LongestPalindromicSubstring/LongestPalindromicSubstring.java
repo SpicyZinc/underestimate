@@ -99,31 +99,55 @@ class LongestPalindromicSubstring {
         return s.substring(left + 1, right);
     }
 
-    // 3rd method dynamic programming
-    // 01/23/2019
+	// 3rd method dp
+	// 01/23/2019
     public String longestPalindrome(String s) {
-		String result = "";
-		if (s == null || s.length() == 0) {
-			return result;
-		}
+        String result = "";
 
-		int maxLength = 0;
-		int size = s.length();
-		boolean[][] palindromic = new boolean[size][size];
+        if (s == null || s.length() == 0) {
+            return result;
+        }
 
-		for (int j = 0; j < size; j++) {
-			for (int i = 0; i <= j; i++) {
-				// 前一层里的两边的 char 相等
-				if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i + 1][j - 1]) ) {
-					palindromic[i][j] = true;
-					if (maxLength < j - i + 1) {
-						maxLength = j - i + 1;
-						result = s.substring(i, j + 1);
-					}
-				}
-			}
-		}
+        int maxLength = 0;
+        int size = s.length();
+        boolean[][] palindromic = new boolean[size][size];
 
-		return result;
-	}
+        for (int j = 0; j < size; j++) {
+            for (int i = 0; i <= j; i++) {
+                // 前一层里的两边的 char 相等
+                if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i + 1][j - 1]) ) {
+                    palindromic[i][j] = true;
+                    if (maxLength < j - i + 1) {
+                        maxLength = j - i + 1;
+                        result = s.substring(i, j + 1);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+	// 02/03/2019
+    // note, equal
+    public String longestPalindrome(String s) {
+        String result = "";
+        
+        int n = s.length();
+        boolean[][] palindromic = new boolean[n][n];
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (s.charAt(i) == s.charAt(j) && (i - j <= 2 || palindromic[j + 1][i - 1])) {
+                    palindromic[j][i] = true;
+                    String str = s.substring(j, i + 1);
+                    if (str.length() > result.length()) {
+                        result = str;
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
 }

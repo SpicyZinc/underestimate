@@ -14,6 +14,36 @@ or hold more meetings
 at the end, the size of priority queue (end time) will be the number of meeting rooms needed
 */
 public class MeetingRooms {
+    // 01/31/2019
+    public int minMeetingRooms(List<Interval> intervals) {
+        if (intervals.size() == 0 || intervals ==  null) {
+            return 0;
+        }
+        
+        Collections.sort(intervals, new Comparator<Interval>() {
+            @Override
+            public int compare(Interval a, Interval b) {
+                return a.start - b.start;
+            }
+        });
+    
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.add(intervals.get(0).end);    
+        
+        for (int i = 1; i < intervals.size(); i++) {
+            Interval interval = intervals.get(i);
+            
+            if (interval.start >= pq.peek()) {
+                pq.poll();
+            }
+            
+            pq.offer(interval.end);
+        }
+        
+        return pq.size();
+    }
+
     public int minMeetingRooms(Interval[] intervals) {
         if (intervals == null || intervals.length == 0) {
             return 0;

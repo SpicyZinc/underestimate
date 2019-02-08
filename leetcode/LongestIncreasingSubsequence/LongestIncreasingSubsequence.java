@@ -28,51 +28,30 @@ public class LongestIncreasingSubsequence {
 		int result = lis.lengthOfLIS(nums);
 		System.out.println(result);
 	}
-    // 20 / 24 test cases passed
-    // failed [10,9,2,5,3,4]
-    public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        if (n == 0) {
+    // 02/03/2019
+    public int longestIncreasingSubsequence(int[] nums) {
+        if (nums.length == 0 || nums == null) {
             return 0;
         }
-        int max = 1;
+
+        int n = nums.length;
+        int[] dp = new int[n];
+        int maxLen = 1;
+        
         for (int i = 0; i < n; i++) {
-            int curr = nums[i];
-            int cnt = 1;
-            for (int j = i + 1; j < n; j++) {
-                if (nums[j] > curr) {
-                    curr = nums[j];
-                    cnt++;
+            dp[i] = 1;
+            for (int j = 0; j <= i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
                 }
-                max = Math.max(max, cnt);
             }
+            maxLen = Math.max(maxLen, dp[i]);
         }
-
-        return max;
+        
+        return maxLen;
     }
-	// recursion timeout
-	public int lengthOfLIS(int[] nums) {
-		if (nums == null || nums.length == 0) {
-    		return 0;
-    	}
-    	int[] max = new int[1];
-    	LIS(nums, nums.length, max);
-    	return max[0];
-	}
-
-	public int LIS(int arr[], int n, int[] max) {
-	    if (n == 1) return 1;
-	    int res = 1, max_ending_here = 1;
-	    for (int i = 1; i < n; i++) {
-	        res = LIS(arr, i, max);
-	        if (arr[i-1] < arr[n-1] && res + 1 > max_ending_here) {
-	            max_ending_here = res + 1;
-	        }
-	    }
-        max[0] = Math.max(max[0], max_ending_here);
-	    return max_ending_here;
-	}
-    // dp[i] represents array[0, i] inclusive, the length of longest increasing substring until i inclusively
+    // dp[i] represents array[0, i] inclusive
+    // the length of longest increasing substring until i inclusively
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
         if (n == 0) {
@@ -113,7 +92,9 @@ public class LongestIncreasingSubsequence {
                     path[i] = path[j] + nums[i] + " ";
                 }               
             }       
-            if (max < size[i]) max = size[i];
+            if (max < size[i]) {
+                max = size[i];
+            }
         }
         
         for (int i = 1; i < nums.length; i++) {
@@ -124,7 +105,56 @@ public class LongestIncreasingSubsequence {
 
         return max;
     }
+    // 20 / 24 test cases passed
+    // failed [10,9,2,5,3,4]
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+        int max = 1;
+        for (int i = 0; i < n; i++) {
+            int curr = nums[i];
+            int cnt = 1;
+            for (int j = i + 1; j < n; j++) {
+                if (nums[j] > curr) {
+                    curr = nums[j];
+                    cnt++;
+                }
+                max = Math.max(max, cnt);
+            }
+        }
 
+        return max;
+    }
+	// recursion timeout
+	public int lengthOfLIS(int[] nums) {
+		if (nums == null || nums.length == 0) {
+    		return 0;
+    	}
+    	int[] max = new int[1];
+    	LIS(nums, nums.length, max);
+    	return max[0];
+	}
+
+	public int LIS(int arr[], int n, int[] max) {
+	    if (n == 1) {
+            return 1;
+        }
+
+	    int res = 1;
+        int maxEndingHere = 1;
+
+	    for (int i = 1; i < n; i++) {
+	        res = LIS(arr, i, max);
+	        if (arr[i-1] < arr[n-1] && res + 1 > maxEndingHere) {
+	            maxEndingHere = res + 1;
+	        }
+	    }
+        max[0] = Math.max(max[0], maxEndingHere);
+
+	    return maxEndingHere;
+	}
 	// binary search
     public int lengthOfLIS(int[] nums) {
         if (nums.length == 0) return 0;

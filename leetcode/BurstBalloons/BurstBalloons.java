@@ -33,6 +33,35 @@ dp[l][r], the maximum coins got to burst balloon from l + 1 to r - 1; l, r exclu
 */
 
 public class BurstBalloons {
+	// 02/04/2019
+	public int maxCoins(int[] nums) {
+        int n = nums.length;
+        
+        int[] copy = new int[n + 2];
+        
+        copy[0] = 1;
+        for (int i = 0; i < n; i++) {
+            copy[i + 1] = nums[i];
+        }
+        copy[n + 1] = 1;
+        
+        int m = n + 2;
+        int[][] dp = new int[m][m];
+        
+        for (int span = 2; span < m; span++) {
+            for (int left = 0; left + span < m; left++) {
+                int right = left + span;
+                
+                for (int mid = left + 1; mid <= right - 1; mid++) {
+                    int value = dp[left][mid] + copy[left] * copy[mid] * copy[right] + dp[mid][right];
+                    dp[left][right] = Math.max(dp[left][right], value);
+                }
+            }
+        }
+        
+        return dp[0][m - 1];
+    }
+
     public int maxCoins(int[] nums) {
         int[] copy = new int[nums.length + 2];        
         for (int i = 0; i < copy.length; i++) {
@@ -47,15 +76,16 @@ public class BurstBalloons {
         int[][] dp = new int[n][n];
 
         for (int span = 2; span < n; span++) {
-            for (int left = 0; left < n - span; left++) {
+            for (int left = 0; left + span < n; left++) {
                 int right = left + span;
                 // left, right are exclusive
                 for (int mid = left + 1; mid <= right - 1; mid++) {
                     // left, left + 1, ..., mid - 1, mid, mid + 1, ..., right - 1, right
                     // burst [left + 1, mid - 1] and [mid + 1, right - 1]
                     // the rest is left, mid, right, then burst mid
-                    int max = dp[left][mid] + copy[left] * copy[mid] * copy[right] + dp[mid][right];
-                    dp[left][right] = Math.max(dp[left][right], max);
+                    int value = dp[left][mid] + copy[left] * copy[mid] * copy[right] + dp[mid][right];
+
+                    dp[left][right] = Math.max(dp[left][right], value);
                 }
             }
         }

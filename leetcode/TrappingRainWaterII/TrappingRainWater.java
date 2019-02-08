@@ -35,20 +35,19 @@ of course, directions = {{1,0}, {0,1}, {-1,0}, {0,-1}}
 */
 
 class Solution {
+	class Cell {
+		int x;
+		int y;
+		int h;
 
-    class Cell {
-        int x;
-        int y;
-        int h;
+		public Cell(int x, int y, int h) {
+			this.x = x;
+			this.y = y;
+			this.h = h;
+		}
+	}
 
-        public Cell(int x, int y, int h) {
-            this.x = x;
-            this.y = y;
-            this.h = h;
-        }
-    }
-
-    public int trapRainWater(int[][] heightMap) {
+	public int trapRainWater(int[][] heightMap) {
 		if (heightMap.length == 0 || heightMap[0].length == 0 || heightMap == null) {
 			return 0;
 		}
@@ -59,6 +58,7 @@ class Solution {
 				return a.h - b.h;
 			}
 		});
+
 		int m = heightMap.length;
 		int n = heightMap[0].length;
 		boolean[][] visited = new boolean[m][n];
@@ -80,14 +80,16 @@ class Solution {
 		// start bfs
 		int result = 0;
 		int[][] directions = new int[][] {{1,0}, {0,1}, {-1,0}, {0,-1}};
+
 		while (!queue.isEmpty()) {
 			Cell cell = queue.poll();
 			for (int[] direction : directions) {
 				int nextX = cell.x + direction[0];
 				int nextY = cell.y + direction[1];
 				if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && !visited[nextX][nextY]) {
-					if (cell.h > heightMap[nextX][nextY]) {
-						result += (cell.h - heightMap[nextX][nextY]);
+					int amount = cell.h - heightMap[nextX][nextY];
+					if (amount > 0) {
+						result += amount;
 					}
 					visited[nextX][nextY] = true;
 					queue.offer(new Cell(nextX, nextY, Math.max(heightMap[nextX][nextY], cell.h)));
@@ -96,5 +98,5 @@ class Solution {
 		}
 
 		return result;
-    }
+	}
 }

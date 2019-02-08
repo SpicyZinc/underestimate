@@ -46,4 +46,52 @@ class MaximumAverageSubarray {
 
 		return maxAvg;
 	}
+
+	int i = 0;
+	int start = A[0];
+	int stop = A[0];
+
+	private boolean canFind(int[] A, int K, double avg) {
+        int i, k;
+        double rightSum = 0, leftSum = 0, minLeftSum = 0;
+        for (i = 0; i < K; ++i) {
+            rightSum += A[i] - avg;
+        }
+        
+        for (i = K; i <= A.length; ++i) {
+            if (rightSum - minLeftSum >= 0) {
+                return true;
+            }
+            
+            if (i < A.length) {
+                rightSum += A[i] - avg;
+                leftSum += A[i - K] - avg;
+                minLeftSum = Math.min(minLeftSum, leftSum);
+            }
+        }
+        
+        return false;
+    } 
+     
+    public double maxAverage(int[] A, int K) {
+        int i;
+        double start, stop, mid;
+        start = stop = A[0];
+        for (i = 0; i < A.length; ++i) {
+            start = Math.min(A[i], start);
+            stop = Math.max(A[i], stop);
+        }
+        
+        while (start + 1e-5 < stop) {
+            mid = (start + stop) / 2;
+            if (canFind(A, K, mid)) {
+                start = mid;
+            }
+            else {
+                stop = mid;
+            }
+        }
+        
+        return start;
+    }
 }

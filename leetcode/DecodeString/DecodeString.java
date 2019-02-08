@@ -20,6 +20,50 @@ note: when getting the repeat times, need to s.charAt(i++), if assign to a varia
 2. recursion
 */
 public class DecodeString {
+    // 01/30/2019
+    public String expressionExpand(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+
+        Stack<Integer> count = new Stack<>();
+        Stack<String> stack = new Stack<>();
+        stack.push("");
+
+        int val = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            
+            if (Character.isDigit(c)) {
+                val = val * 10 + (c - '0');
+            } else if (c == '[') {
+                count.push(val);
+                val = 0;
+
+                stack.push("");
+            } else if (c == ']') {
+                String str = stack.pop();
+                int times = count.pop();
+                
+                stack.push(stack.pop() + getString(str, times));
+            } else {
+                stack.push(stack.pop() + c);
+            }
+        }
+        
+        return stack.pop();
+    }
+    
+    public String getString(String s, int times) {
+        String result = "";
+        for (int i = 0; i < times; i++) {
+            result += s;
+        }
+        
+        return result;
+    }
+
+
     public String decodeString(String s) {
         if (s.length() == 0 || s == null) {
             return s;
@@ -33,6 +77,7 @@ public class DecodeString {
 
         while (i < s.length()) {
             char c = s.charAt(i);
+
             if (Character.isDigit(c)) {
                 int start = i;
                 while (Character.isDigit(s.charAt(i + 1))) {
@@ -62,12 +107,9 @@ public class DecodeString {
 
         return result;
     }
-}
 
-// Note: define index as class field variable
-// in recursion, no need to increase it
-class DecodeString {
-	// note, this index is global
+
+    // note, this index is global
 	private int index = 0;
 
 	public String decodeString(String s) {

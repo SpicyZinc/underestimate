@@ -16,15 +16,14 @@ Method 1: direct
 take any matrix[i][j] = 1 (i, j) as starting point to calculate the maxArea using helper
    
 Method 2:
-Use the "max area under a histogram" algorithm as a building block.
+Use the "max area under a histogram" algorithm as a base.
 call largestRectangleArea() on each row, and int[] heights will be accumulated 1's
 
 Method 3: preprocess the matrix by recording each row until (i, j) the number of consecutive 1s
 
 Method 4:
-1. build a 2D sum table
-   DP common idea: and record cumulative sum to current position(i, j)
-2. to position i,j, area(i, j) == area(i-1, j) + area(i, j-1) two neighbors, 
+1. build a 2D sum table and record cumulative sum to current position(i, j)
+2. area(i, j) == area(i-1, j) + area(i, j-1) two neighbors, 
    because add one more diagonal common part which is area(i-1, j-1), minus it
    and plus current (i, j)
    
@@ -68,6 +67,63 @@ public class MaximalRectangle {
 		System.out.println("\nMAX area is " + aTest.maximalRectangle(matrix));
 		System.out.println("\nMAX area is " + aTest.maximalRectangle_improved(matrix));
 	}
+	// 01/31/2019
+	// lintcode version
+	public int maximalRectangle(boolean[][] matrix) {
+        if (matrix.length == 0 || matrix == null) {
+            return 0;
+        }
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        int[] heights = new int[n];
+        
+        int max = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                // 1个为0 都为0
+                if (matrix[i][j]) {
+                    heights[j] += 1;
+                } else {
+                    heights[j] = 0;
+                }
+            }
+            
+            max = Math.max(max, largestRectangleArea(heights));
+        }
+        
+        return max;
+    }
+    // helper to get largest area in historgram
+    public int largestRectangleArea(int[] heights) {
+        int maxArea = 0;
+        
+        // store the index
+        // increasing Stack
+        Stack<Integer> stack = new Stack<>();
+        int n = heights.length;
+
+        for (int i = 0; i <= n; i++) {
+            int currVal = i == n ? 0 : heights[i];
+            
+            int right = i - 1;
+
+            while (!stack.isEmpty() && currVal <= heights[stack.peek()]) {
+                int h = heights[stack.pop()];
+                // 就是当前位置
+                int left = stack.isEmpty() ? 0 : stack.peek() + 1;
+                
+                int area = h * (right - left + 1);
+                
+                maxArea = Math.max(maxArea, area);
+            }
+            
+            stack.push(i);
+        }
+        
+        return maxArea;
+    }
 	// method 1, passed
 	public int maximalRectangle(char[][] matrix) {
 		int m = matrix.length;
@@ -117,17 +173,19 @@ public class MaximalRectangle {
         int n = matrix[0].length;
         int max = 0;
         int[] heights = new int[n];
+
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (matrix[i][j] == '1') {
                     heights[j] += 1;
-                }
-                else {
+                } else {
                     heights[j] = 0;
                 }
             }
+
             max = Math.max(max, largestRectangleArea(heights));
         }
+
         return max;
     }
     
@@ -156,9 +214,11 @@ public class MaximalRectangle {
         if (matrix.length == 0) {
             return 0;
         }
+
         int m = matrix.length;
 		int n = matrix[0].length;
 		int[][] dp = new int[m][n];
+
 		for (int i = 0; i < m; i++) {
 		    // how come I miss this
 		    dp[i][0] = matrix[i][0] - '0';
@@ -166,6 +226,7 @@ public class MaximalRectangle {
 				dp[i][j] = (matrix[i][j] == '1') ? (dp[i][j - 1] + 1) : 0;
 			}
 		}
+
 		int maxRectangle = 0;
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -182,21 +243,19 @@ public class MaximalRectangle {
     	int minWidth = dp[row][col]; // the number of consecutive 1s
     	// go up which means row number decreases
     	for (int i = row - 1; i >= 0; i--) {
-    	   // should not 0, should break
-    	   if (dp[i][col] >= minWidth) {
-    	       height += 1;
-    	   }
-    	   else {
-    	       break;
-    	   }
+			// should not 0, should break
+			if (dp[i][col] >= minWidth) {
+				height += 1;
+			} else {
+				break;
+			}
     	}
     	// go down which means row number increases
     	for (int i = row; i < dp.length; i++) {
     	    // should not 0, should break
     		if (dp[i][col] >= minWidth) {
                 height += 1;
-            }
-            else {
+            } else {
                 break;
             }
     	}
@@ -236,10 +295,10 @@ public class MaximalRectangle {
                 for (int x = i; x < m; x++) {
                     for (int y = j; y < n; y++) {
                         int s = sum[x][y]
-                            - (i>=1 ? sum[i-1][y] : 0)
-                            - (j>=1 ? sum[x][j - 1] : 0)
-                            + (i>=1 && j >=1 ? sum[i - 1][j - 1] : 0);
-                        if ((s == (y-j+1) * (x-i+1)) && max < s) {
+                            - (i >= 1 ? sum[i - 1][y] : 0)
+                            - (j >= 1 ? sum[x][j - 1] : 0)
+                            + (i >= 1 && j >= 1 ? sum[i - 1][j - 1] : 0);
+                        if ((s == (y - j + 1) * (x - i + 1)) && max < s) {
 							max = s;
                         }
                     }

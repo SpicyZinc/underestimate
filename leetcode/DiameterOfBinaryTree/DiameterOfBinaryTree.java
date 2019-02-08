@@ -51,6 +51,7 @@ public class DiameterOfBinaryTree {
        
         return Math.max(left, right) + 1;
     }
+
     // method 2
     public int diameterOfBinaryTree(TreeNode root) {
         int[] maxDiameter = new int[] {0};
