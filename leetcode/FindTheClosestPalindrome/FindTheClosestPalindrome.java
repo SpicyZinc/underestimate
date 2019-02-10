@@ -22,12 +22,52 @@ if not sufficient, then add 1 to the middle digit
 */
 
 public class FindTheClosestPalindrome {
+	public static void main(String[] args) {
+		FindTheClosestPalindrome eg = new FindTheClosestPalindrome();
+		String nearest = eg.nearestPalindromic("1000");
+		System.out.println(nearest);
+	}
+	// 02/07/2019
+	public String nearestPalindromic(String n) {
+		String nearest = n;
+
+		int size = n.length();
+		if (size >= 2 && areAll9(n)) {
+			return generatePalindromForAll9(size);
+		}
+
+		boolean isOdd = size % 2 == 1;
+		int leftEnd = (size + 1) / 2;
+		String left = n.substring(0, leftEnd);
+
+		long minDiff = Long.MAX_VALUE;
+		long[] increments = {-1, 0, 1};
+
+		for (long increment : increments) {
+			String possible = Long.toString(Long.parseLong(left) + increment); 
+			String closestPalindrome = getPalindrome(possible, isOdd);
+			// note size >= 2 not closestPalindrome.length()
+			if (size >= 2 && (closestPalindrome.length() < size || Long.valueOf(closestPalindrome) == 0)) {
+				closestPalindrome = generateAll9Palindrome(size);
+			}
+
+			long diff = closestPalindrome.equals(n) ? Long.MAX_VALUE : Math.abs(Long.parseLong(closestPalindrome) - Long.parseLong(n));
+			if (minDiff > diff) {
+				minDiff = diff;
+				nearest = closestPalindrome;
+			}
+		}
+
+		return nearest;
+	}
+
     public String nearestPalindromic(String n) {
         String nearest = n;
         int size = n.length();
         if (size >= 2 && areAll9(n)) {
             return generatePalindromForAll9(size);
         }
+
         boolean isOdd = size % 2 == 1;
         // whether even or odd, left is (size + 1) / 2
         String left = n.substring(0, (size + 1) / 2);
@@ -36,8 +76,9 @@ public class FindTheClosestPalindrome {
         long[] increments = {-1, 0, 1};
         for (long increment : increments) {
             String possible = Long.toString(Long.valueOf(left) + increment);
-            // 1000
-            // if possible is 10, it is even
+            // 1000, it is even
+            // possible left parts are 9, 10, 11
+            // corresponding palindrome are 99, 1001, 1111 because it is even
             // 99 is answer, but 999 is nearest palindrome
             String closestPalindrome = getPalindrome(possible, isOdd);
             // note, need to check

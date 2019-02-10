@@ -27,16 +27,22 @@ dp[m+1][n+1] is based on 1.
 */
 
 public class InterleavingString {  
+	public boolean isInterleave(String s1, String s2, String s3) {
+
+	}
+
     // DFS with memo
     // hashset 里存着所有匹配不成功的 直接 return false
     public boolean isInterleave(String s1, String s2, String s3) {
         if (s1.length() + s2.length() != s3.length()) {
             return false;
         }
+
         return isInterleaveHelper(s1, 0, s2, 0, s3, 0, new HashSet<String>());  
     }  
     public boolean isInterleaveHelper(String s1, int p1, String s2, int p2, String s3, int p3, Set<String> hs) {  
         String key = p1 + "-" + p2;
+
         if (hs.contains(key)) {
             return false;
         }

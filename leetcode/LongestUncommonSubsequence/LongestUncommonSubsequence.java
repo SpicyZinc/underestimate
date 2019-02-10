@@ -30,8 +30,7 @@ public class LongestUncommonSubsequence {
         int B = b.length();
         if (a.equals(b)) {
             return -1;
-        }
-        else {
+        } else {
             return Math.max(A, B);
         }
     }

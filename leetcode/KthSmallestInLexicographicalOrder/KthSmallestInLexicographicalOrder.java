@@ -27,8 +27,7 @@ public class KthSmallestInLexicographicalOrder {
         	int stepsCanMove = (steps <= k) ? steps : 1;
         	if (steps <= k) {
         		current += 1;
-        	}
-        	else {
+        	} else {
         		current *= 10;
         	}
         	k -= stepsCanMove;

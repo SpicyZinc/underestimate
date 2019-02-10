@@ -41,7 +41,7 @@ public class HappyNumber {
         if ( n == 1 ) {
             return true;
         }
-            
+
         Set<Integer> hs = new HashSet<Integer>();
         int happyCalculation = sumOfDigitSquare(n);
         while ( hs.add(happyCalculation) ) {
@@ -69,10 +69,11 @@ public class HappyNumber {
     }
 
 	public boolean isHappy(int n) {
-        if ( n == 1 ) {
+        if (n == 1) {
         	return true;
         }
-        Set<Integer> hs = new HashSet<Integer>();
+
+        Set<Integer> hs = new HashSet<>();
         int happyCalculation = sumOfDigitSquare(n);
         while ( !hs.contains(happyCalculation) ) {
         	if ( happyCalculation == 1 ) {
@@ -81,20 +82,7 @@ public class HappyNumber {
         	hs.add(happyCalculation);
         	happyCalculation = sumOfDigitSquare(happyCalculation);
         }
+
     	return false;
-    }
-
-    public int sumOfDigitSquare(int n) {
-    	int sum = 0;
-    	if ( n == 0 ) {
-    		return sum;
-    	}
-
-    	while ( n > 0 ) {
-    		sum += (n % 10) * (n % 10);
-    		n = n / 10;
-    	}
-
-    	return sum;
     }
 }

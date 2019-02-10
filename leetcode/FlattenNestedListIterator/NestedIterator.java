@@ -10,7 +10,6 @@ Example 2:
 Given the list [1,[4,[6]]],
 By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,4,6].
 
-
 idea:
 http://www.cnblogs.com/grandyang/p/5358793.html
 http://blog.csdn.net/l294265421/article/details/51203616, looks complicated

@@ -22,9 +22,44 @@ time cost O(mn)
 public class EditDistance {
 	public static void main(String[] args) {
 		EditDistance eg = new EditDistance();
-        String word1 = "sea";
-        String word2 = "eat";
+		String word1 = "sea";
+		String word2 = "eat";
 		System.out.println("Min edits of from " + word1 + " to " + word2 + " == " + eg.minDistance(word1, word2));
+	}
+	// 02/092019
+	public int minDistance(String word1, String word2) {
+		int m = word1.length();
+		int n = word2.length();
+
+		int[][] dp = new int[m + 1][n + 1];
+		// initialization
+		dp[0][0] = 0;
+		// first i chars in word1 to empty string needs i steps
+		for (int i = 1; i <= m; i++) {
+			dp[i][0] = i;
+		}
+		// first i chars in word2 to empty string needs i steps
+		for (int i = 1; i <= n; i++) {
+			dp[0][i] = i;
+		}
+		// rest
+		for (int i = 1; i <= m; i++) {
+			for (int j = 1; j <= n; j++) {
+				char c1 = word1.charAt(i - 1);
+				char c2 = word2.charAt(j - 1);
+				if (c1 == c2) {
+					dp[i][j] = dp[i - 1][j - 1];
+				} else {
+					int insert = dp[i][j - 1] + 1;
+					int remove = dp[i - 1][j] + 1;
+					int replace = dp[i - 1][j - 1] + 1;
+
+					dp[i][j] = Math.min(insert, Math.min(remove, replace));
+				}
+			}
+		}
+
+		return dp[m][n];
 	}
     // 08/25/2018
     public int minDistance(String word1, String word2) {

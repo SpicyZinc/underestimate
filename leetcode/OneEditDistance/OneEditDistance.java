@@ -29,14 +29,16 @@ public class OneEditDistance {
         while (i < m && j < n) {
             char a = s.charAt(i);
             char b = t.charAt(j);
+
             if (a != b) {
                 editCnt++;
                 if (editCnt > 1) {
                     return false;
                 }
+
                 if (m > n) {
                     i++;
-                } else if (m < n) {
+                } else if (n > m) {
                     j++;
                 } else {
                     i++;

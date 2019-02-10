@@ -39,17 +39,119 @@ The length of formula will be in the range [1, 1000].
 formula will only consist of letters, digits, and round parentheses, and is a valid formula as defined in the problem.
 
 idea:
-HashMap + recursion
-((H20)) will be the where the recursion is on (H20)
-find it
+recursion is not good,
+stack is better to understand
 */
 
+import java.util.*;
+
 class NumberOfAtoms {
+	public static void main(String[] args) {
+		NumberOfAtoms eg = new NumberOfAtoms();
+		String formula = "Mg(OH)2";
+		String result = eg.countOfAtoms(formula);
+		System.out.println(result);
+
+		int x = eg.getWhat();
+		System.out.println(x);
+	}
+
+	public int getWhat() {
+		int i = 100;
+		increase(i);
+		return i;
+	}
+
+	public void increase(int i) {
+		i += 20;
+		System.out.println(i);
+	}
+
+	//02/08/2019
+	public String countOfAtoms(String formula) {
+		Stack<Map<String, Integer>> stack = new Stack<>();
+		Map<String, Integer> map = new HashMap<>();
+
+		int n = formula.length();
+		int i = 0;
+
+		while (i < n) {
+			char c = formula.charAt(i++);
+			// '(' means starts nested, starts to deal with a new round
+			// 先push进去 what we have, then re-initialize the map
+			if (c == '(') {
+				stack.push(map);
+
+				map = new HashMap<>();
+			} else if (c == ')') {
+				int[] cntAndPos = getCntAndPos(formula, i);
+				int cnt = cntAndPos[0];
+				int pos = cntAndPos[1];
+				i = pos;
+
+				if (!stack.isEmpty()) {
+					Map<String, Integer> current = map;
+					map = stack.pop();
+					// 兵和一处
+					for (String key : current.keySet()) {
+						map.put(key, map.getOrDefault(key, 0) + current.get(key) * cnt);
+					}
+				}
+			} else {
+				int start = i - 1;
+
+				while (i < n && Character.isLowerCase(formula.charAt(i))) {
+					i++;
+				}
+				// elements
+				String s = formula.substring(start, i);
+
+				int[] cntAndPos = getCntAndPos(formula, i);
+				int cnt = cntAndPos[0];
+				int pos = cntAndPos[1];
+				i = pos;
+
+				map.put(s, map.getOrDefault(s, 0) + cnt);
+            }
+        }
+
+		StringBuilder sb = new StringBuilder();
+		List<String> list = new ArrayList<>(map.keySet());
+		Collections.sort(list);
+
+        for (String atom : list) {
+			int cnt = map.get(atom);
+			sb.append(atom + (cnt > 1 ? cnt : ""));
+		}
+
+        return sb.toString();
+    }
+
+	// get the count of the element, default is 1
+	// get the next element starting position
+	public int[] getCntAndPos(String formula, int i) {
+		int n = formula.length();
+		int k = i;
+
+		int val = 0;
+
+		while (k < n && Character.isDigit(formula.charAt(k))) {
+			val = val * 10 + formula.charAt(k++) - '0';
+		}
+		if (val == 0) {
+			val = 1;
+		}
+
+		return new int[] {val, k};
+	}
+
+    
     public String countOfAtoms(String formula) {
         StringBuilder sb = new StringBuilder();
 
         Map<String, Integer> map = dfs(formula);
         List<String> atoms = new ArrayList<>(map.keySet());
+        
         Collections.sort(atoms);
         for (String atom : atoms) {
             int cnt = map.get(atom);
@@ -60,7 +162,7 @@ class NumberOfAtoms {
     }
 
     private Map<String, Integer> dfs(String formula) {
-        Map<String, Integer> hm = new HashMap<String, Integer>();
+        Map<String, Integer> hm = new HashMap<>();
         if (formula == null || formula.length() == 0) {
             return hm;
         }
@@ -72,12 +174,20 @@ class NumberOfAtoms {
         // 2. != '('
         while (i < len) {
             if (formula.charAt(i) == '(') {
-                int j = i, parenthesisCnt = 0;
+                int j = i;
+                int parenthesisCnt = 0;
                 for (j = i; j < len; j++) {
-                    if (formula.charAt(j) == '(') parenthesisCnt++;
-                    else if (formula.charAt(j) == ')') parenthesisCnt--;
-                    if (parenthesisCnt == 0) break;
+                    if (formula.charAt(j) == '(') {
+                        parenthesisCnt++;
+                    } else if (formula.charAt(j) == ')') {
+                        parenthesisCnt--;
+                    }
+
+                    if (parenthesisCnt == 0) {
+                        break;
+                    }
                 }
+
                 posAndCnt = positionAndCount(formula, j + 1);
                 Map<String, Integer> subMap = dfs(formula.substring(i + 1, j));
                 for (String atom : subMap.keySet()) {
@@ -93,16 +203,18 @@ class NumberOfAtoms {
                 String atom = formula.substring(i, j);
                 hm.put(atom, posAndCnt[1] + hm.getOrDefault(atom, 0)); 
             }
+
             i = posAndCnt[0];
         }
         
         return hm;
     }
 
-    // get the next element starting position
-    // get the count of the element, default is 1
+
     private int[] positionAndCount(String formula, int cntStart) {
-        int cnt = 1, k = cntStart;
+        int cnt = 1;
+        int k = cntStart;
+
         while (k < formula.length() && Character.isDigit(formula.charAt(k))) {
             k++;
         }

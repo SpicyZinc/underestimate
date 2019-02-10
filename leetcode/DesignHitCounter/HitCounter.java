@@ -83,7 +83,7 @@ public class HitCounter {
     public void hit(int timestamp) {
     	int idx = timestamp % 300;
     	// no hit at this timestamp before or over 5 min
-    	// 因为每秒很多hits 这样保证了只记住300 5min 之内的
+    	// 因为每秒很多hits 这样保证了只记住300s(5min) 之内的
     	if (times[idx] != timestamp) {
     		times[idx] = timestamp;
     		hits[idx] = 1;

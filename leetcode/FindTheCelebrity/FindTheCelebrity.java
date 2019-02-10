@@ -16,30 +16,54 @@ idea:
 https://www.cnblogs.com/grandyang/p/5310649.html
 
 1. extra boolean candidates array, at first, all should be celebrity candidates, set them to be true
-2. 
+2. 02/07/2019, without extra array
 */
 
 public class FindTheCelebrity extends Relation {
-    public int findCelebrity(int n) {
-    	boolean[] candidates = new boolean[n];
-    	Arrays.fill(candidates, true);
-    	for (int i = 0; i < n; i++) {
-    		for (int j = 0; j < n; j++) {
-	    		if (candidates[i] && i != j) {
-	    			// if i knows j or j not know i, i is not celebrity
-	    			// because all the other (j) know celebrity (i) and celebrity (i) not know any of them (j)
-	    			if ( knows(i, j) || !knows(j, i) ) {
-	    				candidates[i] = false;
-	    				break;
-	    			}
-	    			else {
-	    				candidates[j] = false;
-	    			}
-	    		}
-    		}
-    		if (candidates[i]) return i;
-    	}
+	// 02/07/2019
+	public int findCelebrity(int n) {
+		for (int i = 0; i < n; i++) {
+			// test i each person can be celebrity
+			int j = 0;
+			for (; j < n; j++) {
+				// not the same person
+				if (i != j && (knows(i, j) || !knows(j, i))) {
+					// break, i cannot be celebrity
+					break;
+				}
+			}
+			// if reach here
+			if (j == n) {
+				// i must be celebrity
+				return i;
+			}
+		}
 
-    	return -1;
-    }
+		return -1;
+	}
+
+	public int findCelebrity(int n) {
+		boolean[] candidates = new boolean[n];
+		Arrays.fill(candidates, true);
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (candidates[i] && i != j) {
+					// if i knows j or j not know i, i is not celebrity
+					// because all the other (j) know celebrity (i) and celebrity (i) not know any of them (j)
+					if ( knows(i, j) || !knows(j, i) ) {
+						candidates[i] = false;
+						break;
+					} else {
+						candidates[j] = false;
+					}
+				}
+			}
+			if (candidates[i]) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
 }

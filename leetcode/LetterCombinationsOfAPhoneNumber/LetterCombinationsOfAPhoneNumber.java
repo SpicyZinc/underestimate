@@ -51,6 +51,7 @@ public class LetterCombinationsOfAPhoneNumber {
             return result;
         }
         dfs(digits, 0, hm, "", result);
+
         return result;
     }
     
@@ -59,6 +60,7 @@ public class LetterCombinationsOfAPhoneNumber {
             result.add(path);
             return;
         }
+
         char digit = digits.charAt(index);
         String letters = hm.get(digit);
         for (int j = 0; j < letters.length(); j++) {

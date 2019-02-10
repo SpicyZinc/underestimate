@@ -90,7 +90,6 @@ public class LongestCommonPrefix {
             char c = strs[0].charAt(i);
             for (int j = 1; j < n; j++) {
             	String current = strs[j];
-            	System.out.println(current);
                 if (i >= current.length() || current.charAt(i) != c) {
                 	return strs[0].substring(0, i);
                 }

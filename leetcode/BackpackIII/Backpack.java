@@ -33,4 +33,26 @@ public class Backpack {
 
 		return dp[m];
 	}
+
+	//02/09/2019
+	public int backPackIII(int[] A, int[] V, int m) {
+		if (A == null || A.length == 0 || V == null || V.length == 0 || m <= 0) {
+			return 0;
+		}
+
+		int[] dp = new int[m + 1];
+		dp[0] = 0;
+		for (int i = 1; i <= A.length; i++) {
+			dp[i] = -1;
+		}
+		for (int i = 1; i <= A.length; i++) {
+			for (int size = 0; size <= m; size++) {
+					if (dp[size - A[i- 1] != - 1]) {
+					dp[size] = Math.max(dp[size], dp[size - A[i - 1]] + V[i - 1]);
+				}
+			}
+		}
+
+		int result =  0;
+	}
 }

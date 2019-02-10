@@ -19,6 +19,21 @@ Initial state dp[0] == true
 */
 
 public class WordBreak {
+    // 02/07/2019 TLE, 29/36
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+
+        for (int i = 1; i <= s.length(); i++) {
+            String sub = s.substring(0, i);
+            if (wordDict.contains(sub) && wordBreak(s.substring(i), wordDict)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
     // 07/08/2018 TLE
     public boolean wordBreak(String s, List<String> wordDict) {
         return dfs(s, 0, wordDict);
@@ -50,6 +65,7 @@ public class WordBreak {
                 }
             }
         }
+
         return false;
     }
     // method 2, dp
@@ -69,6 +85,7 @@ public class WordBreak {
                 }
             }
         }
+
         return dp[size];
     }
 }

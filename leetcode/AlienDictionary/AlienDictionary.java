@@ -47,6 +47,90 @@ class AlienDictionary {
 		String order = eg.alienOrder(words); // "wertf"
 		System.out.println(order);
 	}
+	// 02/07/2019
+	public String alienOrder(String[] words) {
+		String order = "";
+		if (words.length == 0 || words == null) {
+			return order;
+		}
+
+		int n = words.length;
+		Map<Character, Integer> indegree = new HashMap<>();
+		Map<Character, Set<Character>> graph = new HashMap<>();
+
+		// initialization indegree
+		for (String word : words) {
+			for (int i = 0; i < word.length(); i++) {
+				char c = word.charAt(i);
+				indegree.put(c, 0);
+			}
+		}
+
+		// populate graph
+		for (int i = 0; i < n - 1; i++) {
+			String curr = words[i];
+			String next = words[i + 1];
+
+			int minLen = Math.min(curr.length(), next.length());
+
+			for (int j = 0; j < minLen; j++) {
+				char a = curr.charAt(j);
+				char b = next.charAt(j);
+
+				// find the first two chars not equal, then a->b
+				if (a != b) {
+					Set<Character> hs = graph.get(a);
+
+					if (hs == null) {
+						hs = new HashSet<>();
+					}
+                    // note, has to check first?
+                    if (!hs.contains(b)) {
+                        hs.add(b);
+                        graph.put(a, hs);
+
+                        indegree.put(b, indegree.getOrDefault(b, 0) + 1);
+                    }
+
+					break;
+				}
+			}
+		}
+
+		// find indegree 0 point (char)
+        // queue only store node (char) of indegree 0
+		Queue<Character> queue = new LinkedList<>();
+
+		for (Map.Entry<Character, Integer> entry : indegree.entrySet()) {
+			char c = entry.getKey();
+			int val = entry.getValue();
+			if (val == 0) {
+		        queue.add(c);
+			}
+		}
+
+		while (!queue.isEmpty()) {
+			char c = queue.poll();
+			order += c;
+
+			Set<Character> subsequentChars = graph.get(c);
+			// 最后等级的char 空的 set
+			if (subsequentChars != null) {
+				for (char neighbor : subsequentChars) {
+					indegree.put(neighbor, indegree.get(neighbor) - 1);
+					if (indegree.get(neighbor) == 0) {
+						queue.add(neighbor);
+					}
+				}
+			}
+		}
+        
+        if (order.length() != indegree.size()) {
+            return "";
+        }
+
+		return order;
+	}
 
 	public String alienOrder(String[] words) {
 		String order = "";

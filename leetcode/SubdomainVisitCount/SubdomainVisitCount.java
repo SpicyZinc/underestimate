@@ -63,8 +63,7 @@ class SubdomainVisitCount {
 		List<String> result = new ArrayList<>();
 		for (Map.Entry<String, Integer> entry : hm.entrySet()) {
 			String key = entry.getKey();
-						int value = entry.getValue();
-
+			int value = entry.getValue();
 
 			result.add(value + " " + key);
 		}

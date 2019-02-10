@@ -23,19 +23,60 @@ heap, by default, is min-heap which means the top of the heap is the smallest el
 Max-heap small has the smaller half of the numbers
 Min-heap large has the larger half of the numbers
 for small heap, multiply -1 to utilize min-heap feature
+保持数大的那半个部分 始终有一个多的元素
 
-note: large always has one more element then small or equal size
+note: large always has one more element than small or equal size
 */
 
 import java.util.*;
 
 class MedianFinder {
+	// 02/07/2019
+	PriorityQueue<Long> maxHeap;
+	PriorityQueue<Long> minHeap;
+
+	// initialize your data structure here.
+    public MedianFinder() {
+        maxHeap = new PriorityQueue<Long>();
+        minHeap = new PriorityQueue<Long>();
+    }
+
+	public void addNum(int num) {
+        // maxHeap store smaller number, so 有更小的要放进来
+		if (maxHeap.size() == 0 || num <= -1 * maxHeap.peek()) {
+            maxHeap.offer(-1 * (long) num);
+        } else {
+            minHeap.offer((long) num);
+        }
+
+        balance();
+    }
+    
+    public double findMedian() {
+        if (maxHeap.size() > minHeap.size()) {
+            return -1 * maxHeap.peek();
+        } else {
+            return (minHeap.peek() - maxHeap.peek()) / 2.0;
+        }
+    }
+    
+    private void balance() {
+        while (maxHeap.size() < minHeap.size()) {
+            maxHeap.offer(-1 * minHeap.poll());
+        }
+        
+        while (minHeap.size() < maxHeap.size() - 1) {
+            minHeap.offer(-1 * maxHeap.poll());
+        }
+    }
+
+
     // 12/04/2018
     // small alway equal or 1 bigger than large
     Queue<Long> small = null;
     Queue<Long> large = null;
 
-    /** initialize your data structure here. */
+	// initialize your data structure here.
     public MedianFinder() {
         small = new PriorityQueue<Long>();
         large = new PriorityQueue<Long>();
@@ -60,7 +101,7 @@ class MedianFinder {
 	Queue<Long> small = null;
     Queue<Long> large = null;
 
-    /** initialize your data structure here. */
+    // initialize your data structure here.
     public MedianFinder() {
         small = new PriorityQueue<Long>();
         large = new PriorityQueue<Long>();

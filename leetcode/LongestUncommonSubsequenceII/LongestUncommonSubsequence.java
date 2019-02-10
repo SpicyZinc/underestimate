@@ -23,7 +23,7 @@ this solution is not optimal
 public class LongestUncommonSubsequence {
     public int findLUSlength(String[] strs) {
         Map<String, Integer> subseqFreq = new HashMap<String, Integer>();
-        for (String s: strs) {
+        for (String s : strs) {
             for (String subSeq : getSubseqs(s)) {
                 subseqFreq.put(subSeq, subseqFreq.getOrDefault(subSeq, 0) + 1);
             }
@@ -38,16 +38,16 @@ public class LongestUncommonSubsequence {
     }
     
     public Set<String> getSubseqs(String s) {
-        Set<String> res = new HashSet<>();
+        Set<String> result = new HashSet<>();
         if (s.length() == 0) {
-            res.add("");
-            return res;
+            result.add("");
+            return result;
         }
         Set<String> subRes = getSubseqs(s.substring(1));
         for (String seq : subRes) {
-            res.add(s.charAt(0) + seq);
+            result.add(s.charAt(0) + seq);
         }
-        res.addAll(subRes);
-        return res;
+        result.addAll(subRes);
+        return result;
     }
 }

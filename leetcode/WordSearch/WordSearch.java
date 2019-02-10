@@ -16,21 +16,85 @@ word = "SEE", -> returns true,
 word = "ABCB", -> returns false.
 
 idea:
+从word的第一个char 开始 如果有match 就dfs() 下去
+return true or return false
+
+注意与第二方法对区别 这个是在dfs()里判断相等
+
 DFS and use a boolean array to keep track if one cell was visited before or not.
 in this case, set board[i][j] = 0 as a flag
-
 */
 
 import java.util.*;
 
 public class WordSearch {
 	public static void main(String[] args) {
-		new WordSearch();
+		WordSearch eg = new WordSearch();
+		char[][] board = {
+            {'A', 'B', 'C', 'E'},
+            {'S', 'F', 'C', 'S'},
+            {'A', 'D', 'E', 'E'}
+        };
+		System.out.println("SEE is in board ? " + eg.exist(board, "SEE"));
 	}
-	public WordSearch() {
-		char[][] board = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
-		System.out.println("SEE is in board ? " + exist(board, "SEE"));
+
+	public boolean exist(char[][] board, String word) {
+		if (board == null || board.length == 0) {
+			return false;
+		}
+
+		int m = board.length;
+		int n = board[0].length;
+
+		boolean visited[][] = new boolean[m][n];
+
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (search(word, 0, board, i, j, visited)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
+
+	public boolean search(String word, int pos, char[][] board, int i, int j, boolean[][] visited) {
+		int[][] directions = new int[][] {
+			{1,0},
+			{-1,0},
+			{0,1},
+			{0,-1}
+		};
+		int m = board.length;
+		int n = board[0].length;
+
+		if (i < 0 || j < 0 || i >= m || j >= n || visited[i][j]) {
+			return false;
+		}
+
+		visited[i][j] = true;
+
+		if (board[i][j] == word.charAt(pos)) {
+			if (pos == word.length() - 1) {
+				return true;
+			}
+
+			for (int[] dir : directions) {
+				int newX = i + dir[0];
+				int newY = j + dir[1];
+
+				if (search(word, pos + 1, board, newX, newY, visited)) {
+					return true;
+				}
+			}
+		}
+
+		visited[i][j] = false;
+
+		return false;
+	}
+
 
     public boolean exist(char[][] board, String word) {
         if (board.length == 0 || word.length() == 0) {
@@ -39,6 +103,7 @@ public class WordSearch {
 
         int m = board.length;
         int n = board[0].length;
+
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 char c = board[i][j];
@@ -61,9 +126,10 @@ public class WordSearch {
             return true;
         }
 
+        int[][] directions = new int[][] {{1,0}, {-1,0}, {0,1}, {0,-1}};
+
         int m = board.length;
         int n = board[0].length;
-        int[][] directions = new int[][] {{1,0}, {-1,0}, {0,1}, {0,-1}};
 
         for (int[] dir : directions) {
             int newX = i + dir[0];

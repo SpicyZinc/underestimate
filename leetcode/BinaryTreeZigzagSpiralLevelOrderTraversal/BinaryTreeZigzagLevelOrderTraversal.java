@@ -3,7 +3,6 @@ Given a binary tree, return the zigzag level order traversal of its nodes' value
 (from left to right, then right to left for the next level and alternate between).
 
 Given binary tree {3,9,20,#,#,15,7},
-
     3
    / \
   9  20
@@ -24,7 +23,6 @@ return its zigzag level order traversal as:
 left<---right
 
 idea:
-
 use two stacks: one for currentLevel, one for nextLevel
 a boolean a variable to keep track of the current level's order (whether it is left->right or right->left). 
 
@@ -34,6 +32,8 @@ Whenever the current level's order is from left->right,
 push the node's left child, then its right child to stack nextLevel
 
 next time when nodes are popped off nextLevel, reverse the order by simply changing boolean value to !flag
+
+巧妙应用add(0, node.val)
 
 */
 
@@ -64,6 +64,46 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 			}
 			System.out.print("\n");
 		}
+	}
+	// 02/09/2019
+	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+		List<List<Integer>> result = new ArrayList<>();
+
+		if (root == null) {
+			return result;
+		}
+
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.add(root);
+
+		boolean fromLeftToRight = true;
+
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			List<Integer> path = new ArrayList<>();
+
+			for (int i = 0; i < size; i++) {
+				TreeNode node = queue.poll();
+				if (fromLeftToRight) {
+					path.add(node.val);
+				} else {
+					path.add(0, node.val);
+				}
+
+				if (node.left != null) {
+					queue.offer(node.left);
+				}
+
+				if (node.right != null) {
+					queue.offer(node.right);
+				}
+			}
+
+			fromLeftToRight = !fromLeftToRight;
+			result.add(path);
+		}
+
+		return result;
 	}
 
 	// one queue plus a flag leftToRight to do the zigzag

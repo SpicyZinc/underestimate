@@ -32,15 +32,16 @@ public class WordBreak {
 			System.out.println(sentence);
 		}
 	}
-
+	// 02/07/2019 
 	public List<String> wordBreak(String s, List<String> wordDict) {
-		Map<String, List<String>> cache = new HashMap<String, List<String>>();
-		return dfs(s, wordDict, cache);
+		Map<String, List<String>> memo = new HashMap<String, List<String>>();
+
+		return dfs(s, wordDict, memo);
 	}
 
-	public List<String> dfs(String s, List<String> wordDict, Map<String, List<String>> cache) {
-		if (cache.containsKey(s)) {
-			return cache.get(s);
+	public List<String> dfs(String s, List<String> wordDict, Map<String, List<String>> memo) {
+		if (memo.containsKey(s)) {
+			return memo.get(s);
 		}
 
 		List<String> result = new ArrayList<String>();
@@ -55,16 +56,16 @@ public class WordBreak {
 					result.add(left);
 				} else {
 					String right = s.substring(i);
-					List<String> rightBreakdown = dfs(right, wordDict, cache);
-					for (String word : rightBreakdown) {
-						String sentence = left + " " + word;
-						result.add(sentence);
+					List<String> rightBreakdown = dfs(right, wordDict, memo);
+					for (String sentence : rightBreakdown) {
+						String subResult = left + " " + sentence;
+						result.add(subResult);
 					}
 				}
 			}
 		}
 		// memoization to save time
-		cache.put(s, result);
+		memo.put(s, result);
 
 		return result;
 	}
@@ -79,9 +80,9 @@ public class WordBreak {
         return ret;
     }
     
-    public void dfs(String s, List<String> dict, List<String> ret, List<String> sentence) {
+    public void dfs(String s, List<String> dict, List<String> result, List<String> sentence) {
         if (s.length() == 0) {
-            ret.add(convertToString(sentence));
+            result.add(convertToString(sentence));
             return;
         }
         
@@ -89,7 +90,7 @@ public class WordBreak {
             String left = s.substring(0, i);
             if (dict.contains(left)) {
                 sentence.add(left);
-                dfs(s.substring(i), dict, ret, sentence);
+                dfs(s.substring(i), dict, result, sentence);
                 sentence.remove(sentence.size() - 1);
             }
         }

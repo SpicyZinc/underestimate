@@ -49,8 +49,8 @@ idea:
 use hashset to store ever appearing elements in row, column, small block
 which are all 9 elements
 
-if contains(), return false;
-if not contains, add this to set
+if unique9 contains(), return false;
+if unique9 not contains, add this to set
 
 another version see link as below:
 http://blog.csdn.net/u010500263/article/details/18905027
@@ -58,11 +58,11 @@ http://blog.csdn.net/u010500263/article/details/18905027
 public class ValidSudoku {
     // 07/28/2018
     public boolean isValidSudoku(char[][] board) {
-        Set<Character> unique9 = new HashSet<Character>();
+        Set<Character> unique9 = new HashSet<>();
         
         // check rows
         for (int i = 0; i < board.length; i++) {
-            unique9 = new HashSet<Character>();
+            unique9 = new HashSet<>();
             for (int j = 0; j < board[0].length; j++) {
                 if (board[i][j] != '.' && !unique9.add(board[i][j])) {
                     return false;
@@ -72,7 +72,7 @@ public class ValidSudoku {
         
         // check columns
         for (int j = 0; j < board[0].length; j++) {
-            unique9 = new HashSet<Character>();
+            unique9 = new HashSet<>();
             for (int i = 0; i < board.length; i++) {
                 if (board[i][j] != '.' && !unique9.add(board[i][j])) {
                     return false;
@@ -83,7 +83,7 @@ public class ValidSudoku {
         // check 3 * 3 sub-box
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                unique9 = new HashSet<Character>();
+                unique9 = new HashSet<>();
                 for (int m = i * 3; m < i * 3 + 3; m++) {
                     for (int n = j * 3; n < j * 3 + 3; n++) {
                         if (board[m][n] != '.' && !unique9.add(board[m][n])) {
