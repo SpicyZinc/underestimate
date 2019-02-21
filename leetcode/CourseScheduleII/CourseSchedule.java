@@ -20,29 +20,115 @@ Another correct ordering is[0,2,1,3].
 Note:
 The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
 
-click to show more hints.
-
 Hints:
-This problem is equivalent to finding the topological order in a directed graph. If a cycle exists, no topological ordering exists and therefore it will be impossible to take all courses.
+This problem is equivalent to finding the topological order in a directed graph.
+If a cycle exists, no topological ordering exists and therefore it will be impossible to take all courses.
 Topological Sort via DFS - A great video tutorial (21 minutes) on Coursera explaining the basic concepts of Topological Sort.
 Topological sort could also be done via BFS.
 
 idea:
 1. BFS
 use queue, first in first out
-first in's are in degree small courses
-gradually their in degree getting bigger
+first in's are indegree small courses
+gradually their indegree getting bigger
 
+loop self-built graph 
 2. DFS
 */
 
-
 public class CourseSchedule {
+	public int[] findOrder(int numCourses, int[][] prerequisites) {
+		int[] degree = new int[numCourses];
+
+        List<Integer>[] edges = new List[numCourses];        
+        for (int i = 0; i < numCourses; i++) {
+            edges[i] = new ArrayList<Integer>();
+        }
+            
+        for (int[] prerequisite : prerequisites) {
+            degree[prerequisite[0]]++ ;
+            edges[prerequisite[1]].add(prerequisite[0]);
+        }
+
+        Queue<Integer> queue = new LinkedList();
+        for (int i = 0; i < degree.length; i++) {
+            if (degree[i] == 0) {
+                queue.add(i);
+            }
+        }
+        
+        int count = 0;
+        int[] order = new int[numCourses];
+
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            order[count] = course;
+            count++;
+            int n = edges[course].size();
+            for (int i = n - 1; i >= 0; i--) {
+                int pointer = edges[course].get(i);
+                degree[pointer]--;
+                if (degree[pointer] == 0) {
+                    queue.add(pointer);
+                }
+            }
+        }
+        
+        return count == numCourses ? order : new int[0];
+    }
+
+	// 02/09/2019
+	public int[] findOrder(int numCourses, int[][] prerequisites) {
+		int n = numCourses;
+		int[] dependencyCnt = new int[n];
+
+		for (int[] prerequisite : prerequisites) {
+			int successive = prerequisite[0];
+			dependencyCnt[successive]++;
+		}
+
+		Queue<Integer> queue = new LinkedList<>();
+		for (int i = 0; i < n; i++) {
+			// course i, no dependency
+			if (dependencyCnt[i] == 0) {
+				queue.add(i);
+			}
+		}
+
+		int[] order = new int[n];
+		int idx = 0;
+		int finishedCnt = 0;
+
+		while (!queue.isEmpty()) {
+			int courseWithoutDependency = queue.poll();
+			order[idx++] = courseWithoutDependency;
+			finishedCnt++;
+
+			for (int[] prerequisite : prerequisites) {
+				int base = prerequisite[1];
+				int successive = prerequisite[0];
+				// 如果 successive 依赖的课base 没有依赖性了 那 successive的课也okay了
+				if (base == courseWithoutDependency) {
+					dependencyCnt[successive]--;
+					
+					if (dependencyCnt[successive] == 0) {
+						queue.add(successive);
+					}
+				}
+			}
+		}
+
+		return n == finishedCnt ? order : new int[0];
+	}
+
+
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        int[] res = new int[numCourses];
+        int[] order = new int[numCourses];
+
         int[] preCourses = new int[numCourses];
         for (int[] pre : prerequisites) {
             int courseAfter = pre[0];
+            // take courseAfter, the number of other courses
             preCourses[courseAfter]++;
         }
 
@@ -52,24 +138,31 @@ public class CourseSchedule {
                 queue.add(i);
             }
         }
+
         int index = 0;
         int numOfPrecourses = 0;
+
         while (!queue.isEmpty()) {
             int top = queue.poll();
-            res[index++] = top;
+            // put it in Topological order
+            order[index++] = top;
+            // mark finished one course
             numOfPrecourses++;
+
             for (int[] pre : prerequisites) {
-                int courseAfter = pre[0];
+                int successive = pre[0];
                 int base = pre[1];
+                // 如果恰巧base 依赖的课程 已经 没有出度
                 if (base == top) {
-                    preCourses[courseAfter]--;
-                    if (preCourses[courseAfter] == 0) {
-                        queue.add(courseAfter);
+                    preCourses[successive]--;
+                    // 变成了0 就放入queue
+                    if (preCourses[successive] == 0) {
+                        queue.add(successive);
                     }
                 }
             }
         }
 
-        return numOfPrecourses == numCourses ? res : (new int[0]);
+        return numOfPrecourses == numCourses ? order : (new int[0]);
     }
 }

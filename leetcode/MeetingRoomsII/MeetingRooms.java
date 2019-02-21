@@ -12,8 +12,32 @@ which one is the earlier, then this one will be the one to
 either as a standard to open a new room
 or hold more meetings
 at the end, the size of priority queue (end time) will be the number of meeting rooms needed
+
+2. sweep line can work too
 */
 public class MeetingRooms {
+    // 02/14/2019
+    public int minMeetingRooms(Interval[] intervals) {
+		List<Point> list = new ArrayList<>(intervals.length*2);
+		for (Interval i : intervals) {
+			list.add(new Point(i.start, 1));
+			list.add(new Point(i.end, 0));
+		}
+
+		Collections.sort(list, Point.PointComparator);
+		int count = 0, ans = 0;
+		for(Point p : list) {
+			if (p.flag == 1) {
+				count++;
+			} else {
+				count--;
+			}
+
+			ans = Math.max(ans, count);
+		}
+
+		return ans;
+    }
     // 01/31/2019
     public int minMeetingRooms(List<Interval> intervals) {
         if (intervals.size() == 0 || intervals ==  null) {

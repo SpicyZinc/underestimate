@@ -6,7 +6,7 @@ Note:
 The read function will only be called once for each test case.
 
 idea:
-note: use read4 to read n characters不止一次, buf can contain more than n or less than n character
+note: use read4 to read n characters 不止一次, buf can contain more than n or less than n character
 read4 is read 4 characters from source file to a temporary holder
 
 if read4 returns zero meaning reading is finished
@@ -16,6 +16,54 @@ read4 returns the number of characters actually left in the file
 /** The read4 API is defined in the parent class Reader4. int read4(char[] buf); */
 
 public class ReadNCharactersGivenRead4 extends Reader4 {
+    // 02/13/2019
+    // Pinterest nextLine()
+    List<Character> leftOver = new ArrayList<>();
+    
+    public String nextLine(char[] buf, int n) {
+        int size = 0;
+        StringBuilder sb = new StringBuilder();
+        for (char c : leftOver) {
+            sb.append(c);
+        }
+        leftOver = new ArrayList<>();
+
+        while (true) {
+            char[] temp = S3Key.next();
+            int len = temp.length;
+            // if no characters left, return whatever size is
+            if (len == 0) {
+                break;
+            }
+            int pos = -1;
+            for (int i = 0; i < len; i++) {
+                if (temp[i] != '\n' || temp[i] != '\r') {
+                    pos = i;
+                    break;
+                }
+            }
+            // if no line break
+            if (pos == -1) {
+                for (int i = 0; i < len; i++) {
+                    sb.append(temp[i]);
+                }
+            } else {
+                for (int i = 0; i < pos; i++) {
+                    sb.append(temp[i]);
+                }
+            }
+
+            if (pos < len - 1) {
+                for (int i = pos + 1; i < len; i++) {
+                    leftOver.add(temp[i]);
+                }
+                break;
+            }
+        }
+        // till here, buf has been populated
+        return sb.toString();
+    }
+
 	public int read(char[] buf, int n) {
         int size = 0;
         

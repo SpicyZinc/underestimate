@@ -1,33 +1,33 @@
 /*
-Given [5, 7, 7, 8, 8, 10] and target value 8,
-return [3, 4]
+Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value.
+Your algorithm's runtime complexity must be in the order of O(log n).
+If the target is not found in the array, return [-1, -1].
+
+Example 1: 
+Input: nums = [5,7,7,8,8,10], target = 8
+Output: [3,4]
+
+Example 2: 
+Input: nums = [5,7,7,8,8,10], target = 6
+Output: [-1,-1]
 
 idea:
-1. typical binary search to find leftmost index, then while() to find the rightmost
-2. binary search variation, search for the leftmost index and rightmost index
-3. LinkedList peekFirst() and peekLast()
-
 1. direct method
 go through the array, find all target values and save index into a LinkedList,
 then peekFirst() and peekLast() to get the positions 
-I did not use binary search which is wrong
 
-2. binary search
-searchLeftMost r = m - 1;
-searchRightMost l = m + 1;
+2. use binary search twice:
+binarySearchForRightMost() get right most position of target
 
-Sorted array, binary search, O(logN)
-
-this version of binary search is to return index of biggest number less than target
-
-use binary search twice:
-one for find position of target-1, position plus 1 is necessary
+one for find position of target - 1, position plus 1 is necessary
 one for find position of target
 
-note:
-not typical binary search
-it looks like to find the right most boundary
+或者 用一般的 binary search 先找到一个target的 position
+然后再向两边延伸while 找
 
+3. two binary search methods
+searchForLeftMost r = m - 1;
+searchForRightMost l = m + 1;
 */
 
 import java.util.*;
@@ -71,14 +71,17 @@ public class SearchForARange {
         if (pos == -1) {
             return result;
         }
+
         int leftMost = pos;
         int rightMost = pos;
+
         while (leftMost >= 0 && nums[leftMost] == target) {
             leftMost--;
         }
         while (rightMost < nums.length && nums[rightMost] == target) {
             rightMost++;
         }
+
         result[0] = leftMost + 1;
         result[1] = rightMost - 1;
 
@@ -91,6 +94,7 @@ public class SearchForARange {
 
         while (left <= right) {
             int mid = left + (right - left) / 2;
+
             if (nums[mid] < target) {
                 left = mid + 1;
             } else if (nums[mid] > target) {
@@ -124,6 +128,7 @@ public class SearchForARange {
 
         while (l <= r) {
 			int m = l + (r - l) / 2;
+
             if (A[m] > target) {
                 r = m - 1;
             } else {
@@ -137,61 +142,65 @@ public class SearchForARange {
 
     // method 3
     public int[] searchRange(int[] nums, int target) {
-        int[] ret = new int[2];
-        ret[0] = searchForLeftMost(nums, target);
-        ret[1] = searchForRightMost(nums, target);
-
-        return ret;
+        int left = searchForLeftMost(nums, target);
+        int right = searchForRightMost(nums, target);
+        
+        return new int[] {left, right};
     }
-
+    
     private int searchForLeftMost(int[] A, int target) {
-        int l = 0;
-        int r = A.length - 1;
+        int left = 0;
+        int right = A.length - 1;
+        
         int idx = -1;
-
-        while (l <= r) {
-            int m = l + (r - l) / 2;
-            if (A[m] == target) {
-                if (m == 0) return m;
-                if (A[m - 1] == target) {
-                    r = m - 1; 
-                } else {
-                    return m;
-                }
-            } else if (A[m] > target) {
-                r = m - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (A[mid] < target) {
+                left = mid + 1;
+            } else if (A[mid] > target) {
+                right = mid - 1;
             } else {
-                l = m + 1;  
+                if (mid == 0) {
+                    return mid;
+                }
+                if (A[mid - 1] == target) {
+                    right = mid - 1;
+                } else {
+                    return mid;
+                }
             }
         }
-
+        
         return idx;
     }
-
+    
     private int searchForRightMost(int[] A, int target) {
-        int l = 0;
-        int r = A.length - 1;
+        int left = 0;
+        int right = A.length - 1;
+        
         int idx = -1;
-
-        while (l <= r) {
-            int m = l + (r - l) / 2;
-            if (A[m] == target) {
-                if (m == A.length - 1) {
-                    return m;
-                }
-
-                if (A[m + 1] == target) {
-                    l = m + 1; 
-                } else {
-                    return m;
-                }
-            } else if (A[m] > target) {
-                r = m - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (A[mid] < target) {
+                left = mid + 1;
+            } else if (A[mid] > target) {
+                right = mid - 1;
             } else {
-                l = m + 1;  
+                if (mid == A.length - 1) {
+                    return mid;
+                }
+                if (A[mid + 1] == target) {
+                    left = mid + 1;
+                } else {
+                    return mid;
+                }
             }
         }
-
+        
         return idx;
     }
 }

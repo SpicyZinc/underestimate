@@ -18,6 +18,9 @@ Related Problems
 Medium Kth Smallest Number in Sorted Matrix Medium Search a 2D Matrix II
 
 idea:
+lintcode version
+corresponds to FindKPairsWithSmallestSums in leetcode
+
 1. same as find Kth smallest element in a sorted matrix
 the two arrays will form a sorted matrix
 the element will be sum of two elements from each array
@@ -49,13 +52,6 @@ class Node {
 	}
 }
 
-class NodeComparator implements Comparator<Node> {
-	@Override
-	public int compare(Node a, Node b) {
-		return a.sum - b.sum;
-	}
-}
-
 public class KthSmallestSumInTwoSortedArrays {
 	public static void main(String[] args) {
 		KthSmallestSumInTwoSortedArrays eg = new KthSmallestSumInTwoSortedArrays();
@@ -65,7 +61,10 @@ public class KthSmallestSumInTwoSortedArrays {
 		int kthSmallestSum = eg.kthSmallestSum(A, B, k);
 		System.out.println(kthSmallestSum);
 	}
+
 	// 要往外poll()
+	// 02/14/2019
+	// 还是最小堆 用i 标记 多少次了
 	public int kthSmallestSum(int[] A, int[] B, int k) {
         int[][] directions = {
             {0, 1},
@@ -78,10 +77,10 @@ public class KthSmallestSumInTwoSortedArrays {
         boolean[][] visited = new boolean[m][n];
         
         PriorityQueue<Node> pq = new PriorityQueue<Node>(new Comparator<Node>() {
-            @Override
-            public int compare(Node a, Node b) {
-                return a.v - b.v;
-            }
+			@Override
+			public int compare(Node a, Node b) {
+				return a.sum - b.sum;
+			}
         });
         
         pq.offer(new Node(0, 0, A[0] + B[0]));
@@ -91,8 +90,8 @@ public class KthSmallestSumInTwoSortedArrays {
         while (i < k) {
             Node node = pq.poll();
             for (int[] dir : directions) {
-                int nextX = node.i + dir[0];
-                int nextY = node.j + dir[1];
+                int nextX = node.x + dir[0];
+                int nextY = node.y + dir[1];
                 
                 if (nextX < m && nextY < n && !visited[nextX][nextY]) {
                     visited[nextX][nextY] = true;
@@ -102,8 +101,7 @@ public class KthSmallestSumInTwoSortedArrays {
             i++;
         }
 
-        
-        return pq.peek().v;
+        return pq.peek().sum;
     }
 
     // method 2

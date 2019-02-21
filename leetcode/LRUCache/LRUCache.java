@@ -25,19 +25,14 @@ cache.get(4);       // returns 4
 
 idea:
 doubly linkedlist
-首位就是recently used, 末位就是least recently used
+head就是recently used
+tail就是least recently used
 
 https://www.programcreek.com/wp-content/uploads/2013/03/LRU-Cache-650x296.png
-
 http://www.cnblogs.com/feiling/p/3426967.html
 
-use LinkedHashMap
-http://www.codewalk.com/2012/04/least-recently-used-lru-cache-implementation-java.html
-http://blog.csdn.net/whuwangyi/article/details/15495845
 
-get == visit 
-set == insert
-either visit or insert will hoist the value to list head
+每次 set get 都是 use, so will hoist the value to head of list
 
 lookup (get):
 from hashmap根据key查询, 若命中, 则返回节点, 否则返回null
@@ -50,7 +45,98 @@ insert (set): first delete then insert
 
 delete:
 从双向链表和Hashmap中同时删除对应的记录
+
+use LinkedHashMap
+http://www.codewalk.com/2012/04/least-recently-used-lru-cache-implementation-java.html
+http://blog.csdn.net/whuwangyi/article/details/15495845
 */
+
+// 02/13/2019
+class LRUCache {
+    int capacity;
+    int size;
+    
+    DLLNode head;
+    DLLNode tail;
+    
+    Map<Integer, DLLNode> hm;
+    
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.size = 0;
+        
+        this.head = null;
+        this.tail = null;
+        
+        hm = new HashMap<>();
+    }
+    
+    public int get(int key) {
+        if (!hm.containsKey(key)) {
+            return -1;
+        } else {
+            DLLNode node = hm.get(key);
+            // 每次的get() 都会改变 used 的状态
+            remove(node);
+            addBeforeHead(node);
+            
+            return node.value;
+        }
+    }
+    
+    public void put(int key, int value) {
+        // newly inserted an element
+        if (!hm.containsKey(key)) {
+            DLLNode newNode = new DLLNode(key, value);
+            if (size >= capacity) {
+                hm.remove(tail.key);
+                remove(tail);
+            } else {
+                // update size
+                size++;
+            }
+            addBeforeHead(newNode);
+            // update hashmap
+            hm.put(key, newNode);
+        } else {
+            DLLNode node = hm.get(key);
+            node.value = value;
+            remove(node);
+            addBeforeHead(node);
+        }
+    }
+    
+    // helper methods
+    public void remove(DLLNode node) {
+        DLLNode prev = node.prev;
+        DLLNode next = node.next;
+        
+        if (prev != null) {
+            prev.next = next;
+        } else {
+            head = next;
+        }
+        
+        if (next != null) {
+            next.prev = prev;
+        } else {
+            tail = prev;
+        }
+    }
+    
+    public void addBeforeHead(DLLNode node) {
+        node.next = head;
+        node.prev = null;
+        if (head != null) {
+            head.prev = node;
+        }
+        head = node;
+        if (tail == null) {
+            tail = head;
+        }
+    }
+}
+
 
 class LRUCache {
     Map<Integer, DLLNode> hm;
@@ -58,7 +144,7 @@ class LRUCache {
     DLLNode head;
     DLLNode tail;
     
-    int currentSize;
+    int size;
     int capacity;
     
     public LRUCache(int capacity) {
@@ -67,7 +153,7 @@ class LRUCache {
         this.head = null;
         this.tail = null;
         
-        this.currentSize = 0;
+        this.size = 0;
         this.capacity = capacity;
     }
     
@@ -77,6 +163,7 @@ class LRUCache {
             // update DLL
             remove(node);
             insertAtHead(node);
+
             return node.val;
         } else {
             return -1;
@@ -94,7 +181,7 @@ class LRUCache {
             // only pointers pointing to it changed or its contents (prev, next) get updated
         } else {
             DLLNode newNode = new DLLNode(key, value);
-            if (currentSize >= capacity) {
+            if (size >= capacity) {
                 // delete tail node 腾出空间
                 // 1. remove from hashmap
                 hm.remove(tail.key);
@@ -103,7 +190,7 @@ class LRUCache {
                 // why not increase counter
                 // because offset remove() and add()
             } else {
-                currentSize++;
+                size++;
             }
             
             // insert at head;
@@ -163,7 +250,7 @@ class DLLNode {
 // use linked hashmap
 public class LRUCache extends LinkedHashMap<Integer, Integer> {
     private int capacity;
-    
+
     public LRUCache(int capacity) {
         super(capacity + 1, 1.0f, true);  // "true" for access order
         this.capacity = capacity;

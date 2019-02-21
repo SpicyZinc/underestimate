@@ -21,55 +21,55 @@ need to go back
 
 
 class BasicCalculator {
+	// 02/12/2019
 	public int calculate(String s) {
-		int l1 = 0;
-		int o1 = 1;
-
-		int l2 = 1;
-		int o2 = 1;
-
 		int n = s.length();
+		int result = 0;
+		int currResult = 0;
+
+		int num = 0;
+		char prevOperator = '+';
 
 		for (int i = 0; i < n; i++) {
 			char c = s.charAt(i);
 
 			if (Character.isDigit(c)) {
-				int num = c - '0';
-				// get number with more then 1 digit
-				while (i + 1 < n && Character.isDigit(s.charAt(i + 1))) {
-					num = num * 10 + (s.charAt(i + 1) - '0');
-					i++;
-				}
-
-				l2 = (o2 == 1 ? l2 * num : l2 / num);
+				num = num * 10 + c - '0';
 			} else if (c == '(') {
 				int j = i;
-				// count balanced parentheses
-				for (int cnt = 0; i < n; i++) {
+				int parenthesesCnt = 0; // find balanced () and retrieve the inside part, recurse on it
+				for (; i < n; i++) {
 					if (s.charAt(i) == '(') {
-						cnt++;
+						parenthesesCnt++;
 					}
 					if (s.charAt(i) == ')') {
-						cnt--;
+						parenthesesCnt--;
 					}
-					if (cnt == 0) {
+					if (parenthesesCnt == 0) {
 						break;
 					}
 				}
-				int num = calculate(s.substring(j + 1, i));
+				num = calculate(s.substring(j + 1, i));
+			}
 
-				l2 = (o2 == 1 ? l2 * num : l2 / num);
-			} else if (c == '*' || c == '/') {
-				o2 = (c == '*' ? 1 : -1);
-			} else if (c == '+' || c == '-') {
-				l1 = l1 + o1 * l2;
-				o1 = (c == '+' ? 1 : -1);
+			if (c == '+' || c == '-' || c == '*' || c == '/' || i == n - 1) {
+				switch (prevOperator) {
+					case '+': currResult += num; break;
+					case '-': currResult -= num; break;
+					case '*': currResult *= num; break;
+					case '/': currResult /= num; break;
+				}
 
-				l2 = 1;
-				o2 = 1;
+				if (c == '+' || c == '-' || i == n - 1) {
+					result += currResult;
+					currResult = 0;
+				}
+
+				prevOperator = c;
+				num = 0;
 			}
 		}
-		
-		return (l1 + o1 * l2);
+
+		return result;
 	}
 }

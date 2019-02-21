@@ -25,79 +25,46 @@ for * /, pop to calculate and push back
 */
 
 public class BasicCalculator {
-    public int calculate(String s) {
-        int res = 0;
-        Stack<Integer> stack = new Stack<Integer>();
-        int number = 0;
-        int preOperator = '+';
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (Character.isDigit(c)) {
-                number = number * 10 + c - '0';
-            }
-            // current char is operator or last digit, need to calculate previous
-            if (isOperator(c) || i == s.length() - 1) {
-                if (preOperator == '+') {
-                    stack.push(number);
-                }
-                if (preOperator == '-') {
-                    stack.push(-number);
-                }
-                if (preOperator == '*' || preOperator == '/') {
-                    int tmp = preOperator == '*' ? stack.pop() * number : stack.pop() / number;
-                    stack.push(tmp);
-                }
-                preOperator = c;
-                number = 0;
-            }
-        }
-        while (!stack.empty()) {
-            res += stack.pop();
-        }
+	public int calculate(String s) {
+		int result = 0;
 
-        return res;
-    }
+		int n = s.length();
+		int number = 0;
+		int prevOperator = '+';
+		Stack<Integer> stack = new Stack<Integer>();
 
-    public boolean isOperator(char operator) {
-    	String s = "+-*/";
-    	return s.indexOf(operator) != -1;
-    }
+		for (int i = 0; i < n; i++) {
+			char c = s.charAt(i);
+			if (Character.isDigit(c)) {
+			    number = number * 10 + c - '0';
+			}
+			// current char is operator or last digit, need to calculate previous
+			if (isOperator(c) || i == n - 1) {
+				if (prevOperator == '+') {
+					stack.push(number);
+				}
+				if (prevOperator == '-') {
+					stack.push(-number);
+				}
+				if (prevOperator == '*' || prevOperator == '/') {
+					int tmp = prevOperator == '*' ? stack.pop() * number : stack.pop() / number;
+					stack.push(tmp);
+				}
 
-    // fails "1-1+1"
-    // 86 / 109 test cases passed
-    public int calculate(String s) {
-        Stack<Integer> nums = new Stack<Integer>();
-        Stack<Character> operators = new Stack<Character>();
+				prevOperator = c;
+				number = 0;
+			}
+		}
 
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (Character.isDigit(c)) {
-                int val = 0;
-                while (i < s.length() && Character.isDigit(s.charAt(i))) {
-                    val = val * 10 + s.charAt(i) - '0';
-                    i++;
-                }
-                nums.push(val);
-                if (!operators.isEmpty() && (operators.peek() == '*' || operators.peek() == '/')) {
-                    char operator = operators.pop();
-                    int first = nums.pop();
-                    int second = nums.pop();
-                    int temp = operator == '*' ? second * first : second / first;
-                    nums.push(temp);
-                }
-                i--;
-            } else if (isOperator(c)) {
-                operators.push(c);
-            }
-        }
-        while (!operators.isEmpty()) {
-            char operator = operators.pop();
-            int first = nums.pop();
-            int second = nums.pop();
-            int temp = operator == '+' ? second + first : second - first;
-            nums.push(temp);
-        }
+		while (!stack.empty()) {
+			result += stack.pop();
+		}
 
-        return nums.peek();
-    }
+		return result;
+	}
+
+	public boolean isOperator(char operator) {
+		String s = "+-*/";
+		return s.indexOf(operator) != -1;
+	}
 }

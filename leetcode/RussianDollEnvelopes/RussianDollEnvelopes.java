@@ -9,6 +9,7 @@ Given envelopes = [[5,4],[6,4],[6,7],[2,3]], the maximum number of envelopes you
 
 idea:
 extension of longest increase subsequence LIS
+必须先sort
 LIS input is 1D, Russian Doll input is 2D
 nothing to say, just remember it, so simple
 inclusive i
@@ -17,10 +18,53 @@ Comparator<Type> don't forget
 */
 
 public class RussianDollEnvelopes {
+    // 02/13/2019
+    public int maxEnvelopes(int[][] envelopes) {
+        if (envelopes.length == 0 || envelopes == null) {
+            return 0;
+        }
+
+        Arrays.sort(envelopes, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                if (a[0] != b[0]) {
+                    return a[0] - b[0];
+                } else {
+                    return a[1] - b[1];
+                }
+            }
+        });
+        
+        int n = envelopes.length;
+        int[] dp = new int[n];
+        int max = 1;
+        
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+            int length = envelopes[i][0];
+            int width = envelopes[i][1];
+
+            for (int j = 0; j < i; j++) {
+                int currLength = envelopes[j][0];
+                int currWidth = envelopes[j][1];
+                
+                if (length > currLength && width > currWidth) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            
+            max = Math.max(max, dp[i]);
+        }
+
+        return max;
+    }
+
+
 	public int maxEnvelopes(int[][] envelopes) {
         if (envelopes.length == 0 || envelopes == null) {
             return 0;
         }
+
         Arrays.sort(envelopes, new Comparator<int[]>() {
             @Override
             public int compare(int[] a, int[] b) {

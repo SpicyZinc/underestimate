@@ -34,7 +34,10 @@ public class MissingRanges {
 
         for (int i = 0; i < nums.length; i++) {
             // 1. We don't need to add [Integer.MAX_VALUE, ...] to result
-            if (lower == Integer.MAX_VALUE) return ranges;
+            if (lower == Integer.MAX_VALUE) {
+                return ranges;
+            }
+
             int num = nums[i];
             // not within [lower, upper]
             if (num < next) {
@@ -49,7 +52,10 @@ public class MissingRanges {
             String missing = getRange(next, num - 1);
             ranges.add(missing);
             // 2. We don't need to proceed after we have process Integer.MAX_VALUE in array
-            if (num == Integer.MAX_VALUE) return ranges;
+            if (num == Integer.MAX_VALUE) {
+                return ranges;
+            }
+
             next = num + 1;
         }
 
@@ -60,28 +66,27 @@ public class MissingRanges {
         return ranges;
     }
 
-    // should use long, overflow
+    // 02/10/2019
     public List<String> findMissingRanges(int[] nums, int lower, int upper) {
-        List<String> ranges = new ArrayList<>();
+        long newLower = lower;
+        long newUpper = upper;
 
-        int prev = lower - 1;
+        List<String> result = new ArrayList<>();
         
+        long prev = newLower - 1;
+
         for (int i = 0; i <= nums.length; i++) {
-            int curr = i == nums.length ? upper + 1 : nums[i];
+            long curr = i == nums.length ? newUpper + 1 : nums[i];
             if (curr > prev + 1) {
-                String range = getRange(prev + 1, curr - 1);
-                ranges.add(range);
+                result.add(getMissingRange(prev + 1, curr - 1));
             }
             prev = curr;
         }
         
-        return ranges;
+        return result;
     }
     
-    public String getRange(int start, int end) {
-        if (start == end) {
-            return "" + start;
-        }
-        return start + "->" + end;
+    public String getMissingRange(long s, long e) {
+        return s == e ? "" + s : s + "->" + e;
     }
 }

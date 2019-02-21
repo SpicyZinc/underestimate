@@ -92,13 +92,15 @@ public class FindKPairsWithSmallestSums {
         // queue 的每个element是一个array whose 第三个element是num1中 当前到达的num2中的index
         while (k > 0 && !queue.isEmpty()) {
             int[] minPair = queue.poll();
-            pairs.add(new int[] {minPair[0], minPair[1]});
-            k--;
+
             int nextIdxInNum2 = minPair[2] + 1;
             if (nextIdxInNum2 == n) {
                 continue;
             }
             queue.offer(new int[] {minPair[0], nums2[nextIdxInNum2], nextIdxInNum2});
+
+            pairs.add(new int[] {minPair[0], minPair[1]});
+            k--;
         }
         
         return pairs;

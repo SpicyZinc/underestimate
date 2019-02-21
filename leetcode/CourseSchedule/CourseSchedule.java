@@ -8,7 +8,8 @@ For example:
 There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.
 
 2, [[1,0],[0,1]]
-There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
+There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1.
+So it is impossible.
 
 Note:
 The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
@@ -25,7 +26,7 @@ http://www.programcreek.com/2014/05/leetcode-course-schedule-java/
 http://blog.csdn.net/menglinaoxiang/article/details/45623713
 
 1. DFS
-note, dfs() visited[] needs 3 status, 0表示还未访问过, 1表示已经访问了, -1表示有冲突
+note, dfs() visited[] needs 3 status, 0表示还未访问过, 1表示已经访问了, -1表示无冲突
 build graph by edge notation
 construct a visit array to know which node has been visited
 loop through courses
@@ -116,7 +117,9 @@ public class CourseSchedule {
     }
     
     public boolean canFinishDFS(int[][] graph, boolean[] visited, int courseTaken) {
-        if (visited[courseTaken]) return false;
+        if (visited[courseTaken]) {
+        	return false;
+        }
 
         visited[courseTaken] = true;
         for (int j = 0; j < graph[courseTaken].length; j++) {
@@ -128,6 +131,7 @@ public class CourseSchedule {
             }
         }
         visited[courseTaken] = false;
+
         return true;
     }
 

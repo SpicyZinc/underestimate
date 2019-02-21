@@ -24,7 +24,7 @@ The longest increasing path is [3, 4, 5, 6]. Moving diagonally is not allowed.
 
 idea:
 recursion on every point in the matrix, then DP to memorization
-dp[i][j] staring at (i,j) == the length of the longest increasing path
+dp[i][j] refers to the length of the longest increasing path staring at (i,j)
 
 recursion return as long as dp[x][y] != 0
 */
@@ -36,6 +36,47 @@ public class LongestIncreasingPathInAMatrix {
 		{0, -1},
 		{-1, 0}
 	};
+	// 02/10/2019
+	public int longestIncreasingPath(int[][] matrix) {
+		if (matrix.length == 0 || matrix == null) {
+			return 0;
+		}
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] memo = new int[m][n];
+        int max = 1;
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                max = Math.max(max, dfs(matrix, i, j, memo));        
+            }
+        }
+        
+        return max;
+	}
+    
+    public int dfs(int[][] matrix, int x, int y, int[][] memo) {
+        if (memo[x][y] != 0) {
+            return memo[x][y];
+        }
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        for (int[] dir : directions) {
+            int nextX = x + dir[0];
+            int nextY = y + dir[1];
+            
+            if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && matrix[nextX][nextY] > matrix[x][y]) {
+                memo[x][y] = Math.max(memo[x][y], dfs(matrix, nextX, nextY, memo));
+            }
+        }
+        
+        memo[x][y] += 1;
+        
+        return memo[x][y];
+    }
 
 	public int longestIncreasingPath(int[][] matrix) {
 		if (matrix.length == 0 || matrix == null) {
@@ -75,6 +116,7 @@ public class LongestIncreasingPathInAMatrix {
 		}
 		// 增加了1步
 		memo[x][y] += 1;
+
 		return memo[x][y];
 	}
 }

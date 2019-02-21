@@ -36,7 +36,6 @@ j > i
 class ShortestSubarrayWithSumAtLeastK {
 	// direct method, TLE, 84 / 93 test cases passed
 	public int shortestSubarray(int[] A, int K) {
-
 		int n = A.length;
 		int[] sum = new int[n + 1];
 

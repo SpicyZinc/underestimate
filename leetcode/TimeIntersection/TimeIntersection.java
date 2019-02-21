@@ -29,12 +29,12 @@ import java.util.*;
 
 class Interval {
 	int start, end;
+
 	Interval(int start, int end) {
 		this.start = start;
 		this.end = end;
 	}
 }
-
 
 public class TimeIntersection {
 	public static void main(String[] args) {
@@ -85,6 +85,108 @@ public class TimeIntersection {
 				} else {
 					i++;
 				}
+			}
+		}
+
+		return result;
+	}
+
+	// 02/11/2019
+	// leetcode version
+	public Interval[] intervalIntersection(Interval[] A, Interval[] B) {
+        List<Interval> result = new ArrayList<>();
+
+		if (A.length == 0 || B.length == 0 || A == null || B == null) {
+			return new Interval[0];
+		}
+
+		int i = 0;
+		int j = 0;
+
+		while (i < A.length && j < B.length) {
+			Interval a = A[i];
+			Interval b = B[j];
+
+			if (a.end < b.start) {
+				i++;
+			} else if (b.end < a.start) {
+				j++;
+			} else {
+				int low = Math.max(a.start, b.start);
+				int high = Math.min(a.end, b.end);
+				result.add(new Interval(low, high));
+
+				if (a.end == b.end) {
+					i++;
+					j++;
+				} else if (a.end > b.end) {
+					j++;
+				} else {
+					i++;
+				}
+			}
+		}
+        
+        Interval[] list = new Interval[result.size()];
+        for (int idx = 0; idx < result.size(); idx++) {
+            list[idx] = result.get(idx);
+        }
+
+		return list;
+    }
+
+    // 02/13/2019
+	// 每当检测到用户上线, count++
+	// 如果count == 2, 记录下这个时间, 作为两个用户都在线的起点
+	// 每当检测到用户下线: count--
+	// 如果count == 1, 记录下这个时间, 作为两个用户都在线的终点
+	// 如果start和end都有了值,
+	// 用start和end生成一个Interval
+	// 把start和end重置
+
+	class Point {
+		int x;
+		boolean ifStart;
+
+		public Point(int x, boolean ifStart) {
+			this.x = x;
+			this.ifStart = ifStart;
+		}
+	}
+
+	public List<Interval> timeIntersection(List<Interval> seqA, List<Interval> seqB) {
+		List<Point> points = new ArrayList<>();
+
+		for (Interval interval : seqA) {
+			points.add(new Point(interval.start, true));
+			points.add(new Point(interval.end, false));
+		}
+		for (Interval interval : seqB) {
+			points.add(new Point(interval.start, true));
+			points.add(new Point(interval.end, false));
+		}
+		
+		Collections.sort(points, (p1, p2) -> p1.x - p2.x);
+
+		int count = 0;
+		int start = -1;
+
+		List<Interval> result = new ArrayList<>();
+		for (Point p : points) {
+			if (p.ifStart) {
+				count++;
+			} else {
+				count--;
+			}
+
+			if (count == 2) {
+				// record this start, this is a start time of a intersection
+				start = p.x;
+			}
+			if (count == 1 && start != -1) {
+				result.add(new Interval(start, p.x));
+				// reset start
+				start = -1;
 			}
 		}
 
