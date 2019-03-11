@@ -34,10 +34,8 @@ public class MinimumSizeSubarraySum {
             sum += nums[right];
             
             while (sum >= s) {
-                
                 min = Math.min(min, right - left + 1);
                 sum -= nums[left++];
-                
             }
         }
         
@@ -54,12 +52,12 @@ public class MinimumSizeSubarraySum {
         int right = 0;
         int min = nums.length + 1;
         int sum = 0;
+
         while (right < nums.length) {
             sum += nums[right];
             while (sum >= s) {
                 min = Math.min(min, right - left + 1);
-                sum -= nums[left];
-                left++;
+                sum -= nums[left++];
             }
             right++;
         }
@@ -71,11 +69,13 @@ public class MinimumSizeSubarraySum {
         if (s == 0 || nums.length == 0 || nums == null) {
             return 0;
         }
+
         int n = nums.length;
         int[] sum = new int[n + 1];
         for (int i = 1; i <= n; i++) {
             sum[i] = nums[i - 1] + sum[i - 1];
         }
+
         int min = n + 1;
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j <= n; j++) {
@@ -84,6 +84,7 @@ public class MinimumSizeSubarraySum {
                 }
             }
         }
+
         return min == n + 1 ? 0 : min;
     }
 
@@ -92,6 +93,7 @@ public class MinimumSizeSubarraySum {
 	    if (null == nums || nums.length == 0) {
 	        return 0;
 	    }
+
 	    int min = nums.length + 1;
 	    int[] sum = new int[nums.length + 1];
 	    for (int i = 0; i < nums.length; i++) {
@@ -101,6 +103,7 @@ public class MinimumSizeSubarraySum {
 	            min = Math.min(min, i + 1 - left);
 	        }
 	    }
+
 	    return min == nums.length + 1 ? 0 : min;
 	}
 	 

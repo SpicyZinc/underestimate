@@ -1,5 +1,4 @@
 /*
-
 Given a list of airline tickets represented by pairs of departure and arrival airports [from, to], reconstruct the itinerary in order. 
 All of the tickets belong to a man who departs from JFK. Thus, the itinerary must begin with JFK.
 
@@ -34,7 +33,7 @@ public class ReconstructItinerary {
 	public static void main(String[] args) {
 		ReconstructItinerary eg = new ReconstructItinerary();
 		String[][] ticketsOne = {{"MUC", "LHR"}, {"JFK", "MUC"}, {"SFO", "SJC"}, {"LHR", "SFO"}};
-		String[][] ticketsTwo = {{"JFK","SFO"},{"JFK","ATL"},{"SFO","ATL"},{"ATL","JFK"},{"ATL","SFO"}};
+		String[][] ticketsTwo = {{"JFK", "SFO"}, {"JFK","ATL"}, {"SFO","ATL"}, {"ATL","JFK"}, {"ATL","SFO"}};
 
 		List<String> resultOne = eg.findItinerary(ticketsOne);
 		List<String> resultTwo = eg.findItinerary(ticketsTwo);
@@ -42,32 +41,40 @@ public class ReconstructItinerary {
 		for (String s : resultOne) {
 			System.out.println(s);
 		}
+
+        for (String s : resultTwo) {
+            System.out.println(s);
+        }
 	}
 
     public List<String> findItinerary(String[][] tickets) {
-    	LinkedList<String> res = new LinkedList<String>();
+    	LinkedList<String> result = new LinkedList<String>();
     	Map<String, PriorityQueue<String>> map = new HashMap<String, PriorityQueue<String>>();
 
     	if (tickets == null || tickets.length == 0) {
-    		return res;
+    		return result;
     	}
-    	for (String[] ticket : tickets) {
-    		if (!map.containsKey(ticket[0])) {
-    			map.put(ticket[0], new PriorityQueue<String>());
-    		}
-    		map.get(ticket[0]).offer(ticket[1]);
-    	}
-    	System.out.println(map.toString());
-    	dfs(START, res, map);
 
-    	return res;
+    	for (String[] ticket : tickets) {
+            String from = ticket[0];
+            String to = ticket[1];
+
+    		if (!map.containsKey(from)) {
+    			map.put(from, new PriorityQueue<String>());
+    		}
+    		map.get(from).offer(to);
+    	}
+
+    	dfs(START, map, result);
+
+    	return result;
     }
 
-    public void dfs(String start, LinkedList<String> res, Map<String, PriorityQueue<String>> map) {
-    	while ( map.containsKey(start) && !map.get(start).isEmpty()) {
-    		dfs(map.get(start).poll(), res, map);
+    public void dfs(String start, Map<String, PriorityQueue<String>> map, LinkedList<String> result) {
+    	while (map.containsKey(start) && !map.get(start).isEmpty()) {
+    		dfs(map.get(start).poll(), map, result);
     	}
-    	res.addFirst(start);
+    	result.addFirst(start);
 
         // can use stack as well, but not very understand this
         // String now = "JFK";

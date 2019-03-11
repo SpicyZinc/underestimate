@@ -24,9 +24,9 @@ NOTE: delimiter MUST be appended after TreeNode value or empty value #
 用 StringBuilder, linkedlist remove()
 
 当你看到这段代码时可能觉得没啥问题啊
-不就是返回了一个ArrayList对象吗？问题就出在这里. 这个ArrayList不是java.util包下的
+不就是返回了一个ArrayList对象吗? 问题就出在这里. 这个ArrayList不是java.util包下的
 而是java.util.Arrays.ArrayList
-显然它是Arrays类自己定义的一个内部类！这个内部类没有实现add(), remove()方法
+显然它是Arrays类自己定义的一个内部类! 这个内部类没有实现add(), remove()方法
 而是直接使用它的父类AbstractList的相应方法.
 而AbstractList中的add()和remove()是直接抛出java.lang.UnsupportedOperationException异常的
 */
@@ -76,6 +76,54 @@ public class SerializeAndDeserializeBinaryTree {
 		t.print();
 		System.out.println();
 	}
+	// 03/06/2019
+	// ant service
+	String empty = "#";
+    String delimiter = ",";
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        
+        return sb.toString();
+    }
+    
+    public void serialize(TreeNode node, StringBuilder sb) {
+        if (node == null) {
+            sb.append(empty);
+            sb.append(delimiter);
+            return;
+        } else {
+            sb.append(node.val);
+            sb.append(delimiter);
+            serialize(node.left, sb);
+            serialize(node.right, sb);
+        }
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        List<String> nodes = new LinkedList<>();
+        String[] matches = data.split(delimiter);
+        nodes.addAll(Arrays.asList(matches));
+        
+        return deserialize(nodes);
+    }
+    
+    public TreeNode deserialize(List<String> nodes) {
+        String val = nodes.remove(0);
+        if (val.equals(empty)) {
+            return null;
+        } else {
+            TreeNode root = new TreeNode(Integer.parseInt(val));
+            root.left = deserialize(nodes);
+            root.right = deserialize(nodes);
+            
+            return root;
+        }
+    }
+
     // 12/04/2018
     public static final String emptyValue = "#";
     public static final String delimiter = ",";
@@ -110,13 +158,14 @@ public class SerializeAndDeserializeBinaryTree {
     
     public TreeNode deserialize(List<String> list) {
         String val = list.remove(0);
+
         if (val.equals(emptyValue)) {
             return null;
         } else {
             TreeNode root = new TreeNode(Integer.parseInt(val));
             root.left = deserialize(list);
             root.right = deserialize(list);
-            
+
             return root;
         }
     }
@@ -125,7 +174,7 @@ public class SerializeAndDeserializeBinaryTree {
     public static final String delimiter = ",";
     public static final String emptyValue = "#";
 
-    // 07/19/018
+    // 07/19/2018
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
         StringBuilder sb = new StringBuilder();

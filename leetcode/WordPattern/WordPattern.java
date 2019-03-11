@@ -33,16 +33,24 @@ public class WordPattern {
     // str to char map
     public boolean wordPattern(String pattern, String str) {
         String[] words = str.split("\\s");
-        if (pattern.length() != words.length) return false;
+        if (pattern.length() != words.length) {
+        	return false;
+        }
 
-        Map<String, Character> hm = new HashMap<String, Character>();
+        Map<String, Character> hm = new HashMap<>();
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
             char c = pattern.charAt(i);
+
             if (hm.containsKey(word)) {
-                if (hm.get(word) != c) return false;
+                if (hm.get(word) != c) {
+                	return false;
+                }
             } else {
-                if (hm.containsValue(c)) return false;
+                if (hm.containsValue(c)) {
+                	return false;
+                }
+
                 hm.put(word, c);
             }
         }
@@ -52,7 +60,9 @@ public class WordPattern {
     // char to str map
     public boolean wordPattern(String pattern, String str) {
         String[] words = str.split("\\s");
-        if (pattern.length() != words.length) return false;
+        if (pattern.length() != words.length) {
+        	return false;
+        }
 
         Map<Character, String> hm = new HashMap<Character, String>();
         for (int i = 0; i < words.length; i++) {
@@ -60,9 +70,14 @@ public class WordPattern {
             String word = words[i];
 
             if (hm.containsKey(c)) {
-                if (!hm.get(c).equals(word)) return false;
+                if (!hm.get(c).equals(word)) {
+                    return false;
+                }
             } else {
-                if (hm.containsValue(word)) return false;
+                if (hm.containsValue(word)) {
+                    return false;
+                }
+
                 hm.put(c, word);
             }
         }

@@ -48,6 +48,7 @@ public class WordPattern {
 		// note, substring(), k <= str.length()
 		for (int k = j + 1; k <= str.length(); k++) {
 			String word = str.substring(j, k);
+
 			if (!hm.containsKey(c) && !hm.containsValue(word)) {
 				hm.put(c, word);
 				if (dfs(pattern, str, i + 1, k, hm)) {

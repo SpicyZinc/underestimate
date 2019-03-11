@@ -9,6 +9,8 @@ Find the minimum element.
 The array may contain duplicates.
 
 idea:
+我是没有看懂啊
+
 1. {2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 1, 2} and {2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2}
 worse case 时间复杂度升到O(n)
 mid vs right
@@ -17,18 +19,21 @@ mid vs right
 https://segmentfault.com/a/1190000003488815
 */
 
-public class FindMinimumInRotatedSortedArrayII {
+public class FindMinimumInRotatedSortedArray {
     public int findMin(int[] nums) {
         if (nums == null || nums.length == 0) {
             return -1;
         }
+
         int left = 0;
         int right = nums.length - 1;
+
         while (left < right) {
             // already sorted
             if (nums[left] < nums[right]) {
                 return nums[left];
             }
+
             int mid = left + (right - left) / 2;
             if (nums[mid] > nums[right]) {
                 left = mid + 1;
@@ -45,19 +50,23 @@ public class FindMinimumInRotatedSortedArrayII {
     public int findMin(int[] nums) {
         return findMin(nums, 0, nums.length - 1);
     }
+
     public int findMin(int[] nums, int start, int end) {
         if (start == end) {
             return nums[start];
         }
+
         int right = Integer.MAX_VALUE;
         int left = Integer.MAX_VALUE;
         int mid = start + (end - start) / 2;
+
         if (nums[mid] >= nums[end]) {
             right = findMin(nums, mid + 1, end);
         }
         if (nums[mid] <= nums[end]) {
             left = findMin(nums, start, mid); 
         }
+
         return Math.min(left, right);
     }
 }

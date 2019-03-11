@@ -54,10 +54,18 @@ class BasicCalculator {
 
 			if (c == '+' || c == '-' || c == '*' || c == '/' || i == n - 1) {
 				switch (prevOperator) {
-					case '+': currResult += num; break;
-					case '-': currResult -= num; break;
-					case '*': currResult *= num; break;
-					case '/': currResult /= num; break;
+					case '+':
+						currResult += num;
+						break;
+					case '-':
+						currResult -= num;
+						break;
+					case '*':
+						currResult *= num;
+						break;
+					case '/':
+						currResult /= num;
+						break;
 				}
 
 				if (c == '+' || c == '-' || i == n - 1) {

@@ -24,7 +24,22 @@ weird answer always,
 http://www.jiuzhang.com/solutions/kth-smallest-number-in-sorted-matrix/
 */
 
+import java.util.*;
+
 public class KthSmallestElementInSortedMatrix {
+	public static void main(String[] args) {
+		KthSmallestElementInSortedMatrix eg = new KthSmallestElementInSortedMatrix();
+		
+		int[][] matrix = {
+			{ 1,  5,  9},
+   			{10, 11, 13},
+			{12, 13, 15}
+		};
+		int eighth = eg.kthSmallest(matrix, 8);
+		System.out.println("======");
+		System.out.println(eighth);
+	}
+
     // why fail
     public int kthSmallest(int[][] matrix, int k) {
         int m = matrix.length;
@@ -121,6 +136,10 @@ public class KthSmallestElementInSortedMatrix {
                 }
             }
         }
+
+       	for (int num : pq) {
+       		System.out.println(num);
+       	}
         
         return pq.poll();
     }

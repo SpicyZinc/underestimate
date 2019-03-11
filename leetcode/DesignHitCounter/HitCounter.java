@@ -64,6 +64,7 @@ public class HitCounter {
 		while (!queue.isEmpty() && queue.peek() <= timestamp - 60 * 5) {
 			queue.poll();
 		}
+
 		return queue.size();
 	}
 
