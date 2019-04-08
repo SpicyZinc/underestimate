@@ -51,24 +51,29 @@ public class GenerateParentheses {
 	}
 
     public List<String> generateParenthesis(int n) {
-        List<String> result = new ArrayList<String>();
-        if (n <= 0) {
+        List<String> result = new ArrayList<>();
+
+        if (n == 0) {
             return result;
         }
-        brackets(n, 0, "", result);
+        
+        dfs(n, 0, "", result);
+        
         return result;
     }
 
-    public void brackets(int left, int right, String s, List<String> result) {
+    public void dfs(int left, int right, String parenthesisAcc, List<String> result) {
         if (left == 0 && right == 0) {
-            result.add(s);
+            result.add(parenthesisAcc);
             return;
         }
+        
         if (left > 0) {
-            brackets(left - 1, right + 1, s + '(', result);
+            dfs(left - 1, right + 1, parenthesisAcc + "(", result);
         }
+        
         if (right > 0) {
-            brackets(left, right - 1, s + ')', result);
+            dfs(left, right - 1, parenthesisAcc + ")", result);
         }
     }
 }

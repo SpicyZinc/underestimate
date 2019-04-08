@@ -38,7 +38,7 @@ public class RussianDollEnvelopes {
         int n = envelopes.length;
         int[] dp = new int[n];
         int max = 1;
-        
+
         for (int i = 0; i < n; i++) {
             dp[i] = 1;
             int length = envelopes[i][0];
@@ -58,7 +58,6 @@ public class RussianDollEnvelopes {
 
         return max;
     }
-
 
 	public int maxEnvelopes(int[][] envelopes) {
         if (envelopes.length == 0 || envelopes == null) {

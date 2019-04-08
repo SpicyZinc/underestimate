@@ -16,20 +16,18 @@ import java.util.*;
 
 public class JumpGame {
 	public static void main(String[] args) {
-		new JumpGame();
-	}
-	// constructor
-	public JumpGame() {
+		JumpGame eg = new JumpGame();
 		int[] a = {2, 3, 1, 1, 4};
 		int[] b = {3,2,1,0,4};
 
-		boolean aCanJump = canJump(a);
-		boolean bCanJump = canJump(b);
+		boolean aCanJump = eg.canJump(a);
+		boolean bCanJump = eg.canJump(b);
 
 		System.out.println(aCanJump);
 		System.out.println(bCanJump);
-	}
-    // self written, best version
+        
+    }
+    // best version
     public boolean canJump(int[] nums) {
         int maxReach = 0;
         for (int i = 0; i < nums.length; i++) {
@@ -38,9 +36,7 @@ public class JumpGame {
             if (i > maxReach) {
                 return false;
             }
-            if (i + nums[i] > maxReach) {
-                maxReach = i + nums[i];
-            }
+            maxReach = Math.max(maxReach, i + nums[i]);
         }
 
         return true;
@@ -63,6 +59,7 @@ public class JumpGame {
                 return false;
             }
         }
+
         return true;
     }
 }

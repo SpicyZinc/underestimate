@@ -1,13 +1,17 @@
 /*
 Invert a binary tree.
 
+Example:
+Input:
+
      4
    /   \
   2     7
  / \   / \
 1   3 6   9
 
-to
+Output:
+
      4
    /   \
   7     2
@@ -16,10 +20,10 @@ to
 
 
 idea:
+本质还是 level traversal
 1. iterative (queue)
 2. recursive
 */
-
 
 class TreeNode {
     int val;
@@ -29,75 +33,70 @@ class TreeNode {
 }
 
 public class InvertBinaryTree {
-	// 1. iterative 
-    public TreeNode invertTree(TreeNode root) {
-        if ( root == null ) {
-        	return root;
-        }
-        if ( root.left == null && root.right == null ) {
-        	return root;
-        }
+	// 1, iterative 
+	public TreeNode invertTree(TreeNode root) {
+		if (root == null || root.left == null && root.right == null) {
+			return root;
+		}
 
-        Queue<TreeNode> q = new LinkedList<TreeNode>();
-        q.offer(root);
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		queue.offer(root);
 
-        while ( !q.isEmpty() ) {
-        	TreeNode current = q.poll();
-        	if ( current.left != null ) {
-        		q.offer(current.left);
-        	}
-        	if ( current.right != null ) {
-        		q.offer(current.right);
-        	}
+		while (!queue.isEmpty()) {
+			TreeNode current = queue.poll();
 
-        	TreeNode temp = current.left;
-        	current.left = current.right;
-        	current.right = temp;
-        }
-        
-        return root;
-    }
+			if (current.left != null) {
+				queue.offer(current.left);
+			}
+			if (current.right != null) {
+				queue.offer(current.right);
+			}
+			// 开始invert
+			TreeNode temp = current.left;
+			current.left = current.right;
+			current.right = temp;
+		}
 
-    // 2. recursive
-    public TreeNode invertTree(TreeNode root) {
-        if ( root == null ) {
-        	return root;
-        }
-        helper(root);
-        
-        return root;
-    }
+		return root;
+	}
 
-    private void helper(TreeNode root) {
-    	TreeNode temp = root.left;
-    	root.left = root.right;
-    	root.right = temp;
+	// 2, recursive
+	public TreeNode invertTree(TreeNode root) {
+		if (root == null || root.left == null && root.right == null) {
+			return root;
+		}
 
-    	if ( root.left != null ) {
-    		helper(root.left);
-    	}
+		TreeNode left = invertTree(root.left);
+		TreeNode right = invertTree(root.right);
+		
+		root.left = right;
+		root.right = left;
+		
+		return root;
+	}
 
-    	if ( root.right != null ) {
-    		helper(root.right);
-    	}
-    }
+	// 2', recursive
+	public TreeNode invertTree(TreeNode root) {
+		if (root == null) {
+			return root;
+		}
 
-    // self
-    public TreeNode invertTree(TreeNode root) {
-        if (root == null) {
-            return null;
-        }
-        
-        if (root.left == null && root.right == null) {
-            return root;
-        }
-        
-        TreeNode left = invertTree(root.left);
-        TreeNode right = invertTree(root.right);
-        
-        root.left = right;
-        root.right = left;
-        
-        return root;
-    }
+		helper(root);
+		
+		return root;
+	}
+
+	private void helper(TreeNode root) {
+		TreeNode temp = root.left;
+		root.left = root.right;
+		root.right = temp;
+
+		if (root.left != null) {
+			helper(root.left);
+		}
+
+		if (root.right != null) {
+			helper(root.right);
+		}
+	}
 }

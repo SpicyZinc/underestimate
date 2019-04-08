@@ -18,33 +18,37 @@ public class SortColors {
 			System.out.print(i + " ");
 		}
 		System.out.println();
-		SortColors aTest = new SortColors();
-		aTest.sortColors(a);
+		SortColors eg = new SortColors();
+		eg.sortColors(a);
 		for (int i : a) {
 			System.out.print(i + " ");
-		}		
+		}
         System.out.print("\n");
 	}
+
 	// sort method, in-place, time complexity O(n)
-    public void sortColors(int[] A) {
-        int l = 0; // left pointer		
-		int r = A.length - 1; // right pointer
-		int i = 0;
-        while (i <= r) {
-			// if belongs to the top group, swap it with the element just below the top
-            if (A[i] == 0) {
-                swap(A, i, l);                
+	public void sortColors(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        
+        int i = 0;
+        
+        while (i <= right) {
+            int color = nums[i];
+            // if belongs to the top group, swap it with the element just below the top
+            if (color == 0) {
+                swap(nums, i, left);
                 i++;
-				l++;
-            } else if (A[i] == 2) { // if belongs in the bottom, swap it with the element just above the bottom
-                swap(A, i, r);
-                r--;
+                left++;
+            } else if (color == 2) { // if belongs in the bottom, swap it with the element just above the bottom
+                swap(nums, i, right);
+                right--;
             } else { // if in the middle, leave it
                 i++;
             }
         }
     }
- 
+    
     private void swap(int[] A, int i, int j) {
         int temp = A[i];
         A[i] = A[j];

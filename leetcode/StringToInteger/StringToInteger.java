@@ -60,6 +60,45 @@ for (int i = str.length() - 1; i >= 0; i--) {
 */
 
 public class StringToInteger {
+	// Mon Apr  1 23:58:22 2019
+	public int myAtoi(String str) {
+        if (str == null || str.trim().length() == 0) {
+            return 0;
+        }
+        
+        str = str.trim();
+        char sign = '+';
+        int i = 0;
+        
+        if (str.charAt(0) == '+') {
+            i++;
+        } else if (str.charAt(0) == '-') {
+            i++;
+            sign = '-';
+        }
+        
+        double result = 0;
+        
+        while (i < str.length() && Character.isDigit(str.charAt(i))) {
+            result = result * 10 + (str.charAt(i) - '0');
+            i++;
+        }
+        
+        if (sign == '-') {
+            result *= -1;
+        }
+        
+        if (result > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        
+        if (result < Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        }
+        
+        return (int) result;
+    }
+
     public int myAtoi(String str) {
         if (str == null || str.trim().length() == 0) {
             return 0;
@@ -75,9 +114,9 @@ public class StringToInteger {
             i++;
             sign = '-';
         }
-        
-        double result = 0;
+
         int len = str.length();
+        double result = 0;
         while (i < len && Character.isDigit(str.charAt(i))) {
             result = result * 10 + (str.charAt(i) - '0');
             i++;
@@ -86,15 +125,15 @@ public class StringToInteger {
         if (sign == '-') {
             result = -1 * result;
         }
-        
+
         if (result > Integer.MAX_VALUE) {
             return Integer.MAX_VALUE;
         }
-        
+
         if (result < Integer.MIN_VALUE) {
             return Integer.MIN_VALUE;
         }
-        
+
         return (int) result;
     }
 }

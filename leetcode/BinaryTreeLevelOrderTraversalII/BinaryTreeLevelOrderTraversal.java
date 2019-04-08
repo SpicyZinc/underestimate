@@ -15,7 +15,6 @@ return its bottom-up level order traversal as:
   [3]
 ]
 
-
 idea:
 the difference from 1st one is to Collections.sort();
 */

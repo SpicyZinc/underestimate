@@ -24,8 +24,8 @@ public class LongestLineOfConsecutiveOneInMatrix {
 		LongestLineOfConsecutiveOneInMatrix eg = new LongestLineOfConsecutiveOneInMatrix();
 		int[][] matrix = new int[][] {
 			{0,1,1,0},
- 			{0,1,1,0},
- 			{0,0,0,1}
+			{0,1,1,0},
+			{0,0,0,1}
 		};
 
 		int cnt = eg.longestLine(matrix);
@@ -53,10 +53,10 @@ public class LongestLineOfConsecutiveOneInMatrix {
 	}
 
 	public int getMax(int[][] M, int x, int y) {
-		int res = 1;
+		int maxLen = 1;
 
 		int [][] directions = new int[][] {
-			{1,0},{0,1},{1,1},{1,-1}
+			{1,0}, {0,1}, {1,1}, {1,-1}
 		};
 
 		int m = M.length;
@@ -69,15 +69,18 @@ public class LongestLineOfConsecutiveOneInMatrix {
 			int newY = y + dir[1];
 
 			while (newX >= 0 && newX < m && newY >= 0 && newY < n && M[newX][newY] == 1) {
+				// different from regular dfs, newX = newX + dir[0], not newX = x + dir[0]
+				// also not continue dfs(), it is while
 				newX += dir[0];
 				newY += dir[1];
+				
 				cnt++;
 			}
 
-			res = Math.max(res, cnt);
+			maxLen = Math.max(maxLen, cnt);
 		}
 
-		return res;
+		return maxLen;
 	}
 
 	// iteration
@@ -85,6 +88,7 @@ public class LongestLineOfConsecutiveOneInMatrix {
 		if (M == null || M.length == 0 || M[0].length == 0) {
 			return 0;
 		}
+
 		int max = 0;
 		int m = M.length;
 		int n = M[0].length;
@@ -121,8 +125,7 @@ public class LongestLineOfConsecutiveOneInMatrix {
 				if (i - j < m && j < n) {
 					if (M[i - j][j] == 1) {
 						max = Math.max(max, ++cnt1);
-					}
-					else {
+					} else {
 						cnt1 = 0;
 					} 
 				}
@@ -130,8 +133,7 @@ public class LongestLineOfConsecutiveOneInMatrix {
 				if (m - 1 - i + j >= 0 && m - 1 - i + j < m && j < n ) {
 					if (M[m - 1 - i + j][j] == 1) {
 						max = Math.max(max, ++cnt2);
-					}
-					else {
+					} else {
 						cnt2 = 0;
 					} 
 				}

@@ -52,12 +52,13 @@ public class FindMinimumInSortedArray {
         
         while (left < right) {
             int mid = left + (right - left) / 2;
+            // 恰巧pivot 在 mid - 1, mid, mid + 1 的特殊情况
             // mid at least == left + 1
             // mid - 1 == left, so return is valid in the range    
             if (mid > left && nums[mid - 1] > nums[mid]) {
                 return nums[mid];
             }
-            // save thing for right
+            // the same thing for right
             if (mid < right && nums[mid] > nums[mid + 1]) {
                 return nums[mid + 1];
             }

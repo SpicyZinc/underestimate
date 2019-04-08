@@ -21,32 +21,35 @@ A = [1, 2, 3, 4]
 return: 3, for 3 arithmetic slices in A: [1, 2, 3], [2, 3, 4] and [1, 2, 3, 4] itself.
 
 idea:
-a DP simple application problem
-dp[i] represents the length of arithmetic sequence ends with A[i]
+quintessential dp, dp[i] represents the length of arithmetic sequence ends with A[i]
 or observe the rule
 https://discuss.leetcode.com/topic/62162/3ms-question-maker-solution-in-cpp-o-n-time-and-in-space/2
+
+一个数组中有多少连续等差数列
 */
 public class ArithmeticSlices {
-    public int numberOfArithmeticSlices(int[] A) {
-        if (A.length <= 2 || A == null) {
-        	return 0;
-        }
-        int n = A.length;
-        int[] dp = new int[n];
-        if (A[2] - A[1] == A[1] - A[0]) {
-        	dp[2] = 1;
-        }
+	public int numberOfArithmeticSlices(int[] A) {
+		if (A.length <= 2 || A == null) {
+			return 0;
+		}
 
-        for (int i = 3; i < A.length; i++) {
-        	if (A[i] - A[i-1] == A[i-1] - A[i-2]) {
-        		dp[i] = dp[i-1] + 1;
-        	}
-        }
-        int res = 0;
-        for (int i = 0; i < A.length; i++) {
-        	res += dp[i];
-        }
+		int n = A.length;
+		int[] dp = new int[n];
+		if (A[2] - A[1] == A[1] - A[0]) {
+			dp[2] = 1;
+		}
 
-        return res;
-    }
+		for (int i = 3; i < n; i++) {
+			if (A[i] - A[i - 1] == A[i - 1] - A[i - 2]) {
+				dp[i] = dp[i - 1] + 1;
+			}
+		}
+		// 把所有的加起来最后
+		int result = 0;
+		for (int i = 0; i < n; i++) {
+			result += dp[i];
+		}
+
+		return result;
+	}
 }

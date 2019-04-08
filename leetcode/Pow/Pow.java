@@ -43,7 +43,8 @@ public class Pow {
 		System.out.println("power(0, 1) == " + myPow(0, 1));
 	}
 
-	// good to use
+	// good to use, binary cut
+	// passed
 	public double myPow(double x, int n) {
 		if (n == 0) {
 			return 1.0;
@@ -65,12 +66,14 @@ public class Pow {
 		if (n % 2 == 0) {
 			return tmp * tmp;
 		} else {
-			return x * tmp * tmp;
+			return tmp * tmp * x;
 		}
 	}
-
+	// passed
 	public double myPow(double x, int n) {
-        if (n == 0) return 1.0;
+        if (n == 0) {
+        	return 1.0;
+        }
         if (x > 1 && n <= Integer.MIN_VALUE) {
             return 0.0;
         }
@@ -100,28 +103,43 @@ public class Pow {
 	}
 
 	// direct and easy method
+	// 03/14/2019 passed
 	public double myPow(double x, int n) {
-		if (x == 0) return 0;
-		if (n == 0) return 1;
-		if (n < 0) {
-			x = 1.0 / x;
-			n = -n;
+        if (x == 1) {
+            return 1;
+        }
+        if (x == -1) {
+            return n % 2 == 0 ? 1 : -1;
+        }
+        
+        if (x < 1 && n >= Integer.MAX_VALUE) {
+			return 0.0;
 		}
 
-		double result = 1.0;
-		for (int i = 1; i <= n; i++) {
-			result *= x;
+        if (x > 1 && n <= Integer.MIN_VALUE) {
+			return 0.0;
 		}
+        
+        if (n < 0) {
+            x = 1.0 / x;
+            n = -n;
+        }
 
-		return result;
-	}
+        double result = 1;
+        for (int i = 0; i < n; i++) {
+            result = result * x;
+        }
+
+        return result;
+    }
 
 	// binary cut version 1
 	public double pow(double x, int n) {
-		if (n < 0)  
+		if (n < 0) {
 			return 1.0 / power(x, -n);  
-		else  
+		} else  {
 			return power(x, n);      
+		}
 	}
 	private double power(double x, int n) {  
 		if (n == 0) {
@@ -133,22 +151,6 @@ public class Pow {
 			return v * v;  
 		} else  {
 			return v * v * x;
-		}
-	}
-	
-	// binary cut version 2
-	public double pow(double x, int n) {
-		if (n == 0)  
-			return 1;
-		if (n < 0) {
-            n =- n;
-            x = 1.0 / x;
-        }		
-		double tmp = pow(x, n / 2);  
-		if (n % 2 == 0) {
-			return tmp * tmp;  
-		} else {
-			return tmp * tmp * x;     
 		}
 	}
 
@@ -165,15 +167,16 @@ public class Pow {
             x = 1.0 / x;
         }
         
-        double res = 1.0;
+        double result = 1.0;
         while(n > 0) {
-            // if((n & 1) == 1) 
+            // if ((n & 1) == 1) 
             if (n % 2 == 1) {
-                res *= x;
+                result *= x;
             }
             x *= x;
             n >>= 1;
         }
-        return res;
+
+        return result;
     }
 }

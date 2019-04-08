@@ -28,14 +28,16 @@ note, k == 0 is very tricky situation, fuck
 1. use two hashsets
 2. use one hashmap
 */
+
 public class KDiffPairsInAnArray {
     // method 1
     public int findPairs(int[] nums, int k) {
         if (nums.length == 0 || nums == null || k < 0) {
             return 0;
         }
-        HashSet<Integer> hs = new HashSet<Integer>();
-        HashSet<Integer> starters = new HashSet<Integer>();
+
+        Set<Integer> hs = new HashSet<>();
+        Set<Integer> starters = new HashSet<>();
 
         for (int num : nums) {
             // two possibilities
@@ -57,11 +59,13 @@ public class KDiffPairsInAnArray {
         if (nums.length == 0 || nums == null || k < 0) {
             return 0;
         }
+
         int count = 0;
-        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
         for (int num : nums) {
             hm.put(num, hm.getOrDefault(num, 0) + 1);
         }
+
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             int key = entry.getKey();
             int value = entry.getValue();
@@ -69,8 +73,7 @@ public class KDiffPairsInAnArray {
                 if (value >= 2) {
                     count++;
                 }
-            }
-            else {
+            } else {
                 // both working
                 // if (hm.containsKey(key - k)) {
                 if (hm.containsKey(key + k)) {
@@ -86,15 +89,18 @@ public class KDiffPairsInAnArray {
         if (nums.length == 0 || nums == null || k < 0) {
             return 0;
         }
+
         int count = 0;
-        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> hm = new HashMap<>();
         for (int num : nums) {
             hm.put(num, hm.getOrDefault(num, 0) + 1);
         }
+
         for (Map.Entry<Integer, Integer> entry : hm.entrySet()) {
             int key = entry.getKey();
             int value = entry.getValue();
-            if (k == 0 && value >= 2 || k != 0 && hm.containsKey(key + k))  {
+
+            if (k == 0 && value >= 2 || k != 0 && hm.containsKey(key + k)) {
                 count++;
             }
         }

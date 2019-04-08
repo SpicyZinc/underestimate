@@ -51,32 +51,29 @@ public class IntegerToRoman {
     }
     
     public String digitSymbolConverter(int num, char ten, char five, char one) {
-        String ret = "";
-        if (num == 9) {
-            ret += one;
-            ret += ten;
-        }
-        else if (num >= 5) {
-            ret += five;
-            while (num > 5) {
-                ret += one;
-                num--;
-            }
-        }
-        else if (num == 4) {
-            ret += one;
-            ret += five;
-        }
-        else if (num <= 3 && num > 0) {
-            while (num > 0) {
-                ret += one;
-                num--;
-            }
-        }
-        
-        return ret;
-    }
+        String result = "";
 
+        if (num == 9) {
+            result += one;
+            result += ten;
+        } else if (num >= 5) {
+            result += five;
+            while (num > 5) {
+                result += one;
+                num--;
+            }
+        } else if (num == 4) {
+            result += one;
+            result += five;
+        } else if (num <= 3 && num > 0) {
+            while (num > 0) {
+                result += one;
+                num--;
+            }
+        }
+
+        return result;
+    }
 
 	public StringBuilder intToRoman(int num) {
 		StringBuilder roman = new StringBuilder();
@@ -139,7 +136,7 @@ public class IntegerToRoman {
             int tmp = nums[i];
             int times = num / tmp;
             num -= tmp * times;
-            for (; times>0; times--) {
+            for (; times > 0; times--) {
                 sb.append(arabic.get(tmp));
             }
 

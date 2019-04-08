@@ -33,7 +33,7 @@ i .
   .
   .
 
-solution[row] can be any one of 0 to n-1
+solution[row], row can be any one of 0 to n-1
 when check valid, also from 0 through n - 1
 if one is chosen, then recursively call dfs()
 3 conditions are not valid
@@ -69,6 +69,7 @@ public class N_Queens {
     
     public void dfs(int pos, int[] path, List<List<String>> result) {
         int n = path.length;
+
         if (pos == n) {
             result.add(buildSolution(path));
         } else {

@@ -29,8 +29,30 @@ For example, given the above Scores table, your query should generate the follow
 
 */
 
-SELECT s.Score, count(distinct t.score) Rank
-FROM Scores s
-JOIN Scores t ON s.Score <= t.score
-GROUP BY s.Id
-ORDER BY s.Score desc
+select a.Score, count(distinct b.Score) as Rank
+from Scores a
+left join Scores b
+    on a.Score <= b.Score
+    group by a.Id
+    order by a.Score DESC
+
+SELECT Scores.Score, COUNT(Ranking.Score) AS RANK
+  FROM Scores, (
+       SELECT DISTINCT Score
+         FROM Scores
+       ) Ranking
+ WHERE Scores.Score <= Ranking.Score
+ GROUP BY Scores.Id, Scores.Score
+ ORDER BY Scores.Score DESC;
+
+-- employee and department
+-- join
+-- department name and 每个department的人数
+
+SELECT department_name AS 'Department Name',
+	COUNT(*) AS 'No of Employees'
+		FROM departments
+			INNER JOIN employees
+			ON employees.department_id = departments.department_id
+		GROUP BY departments.department_id, department_name
+		ORDER BY department_name;

@@ -1,5 +1,4 @@
 /*
-Intersection of Two Linked Lists
 Write a program to find the node at which the intersection of two singly linked lists begins.
 
 For example, the following two linked lists:
@@ -60,6 +59,7 @@ public class Solution {
         return null;
     }
 
+    // (a + c) + b = (b + c) + a 换head 相等处 就是 intersection point
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) {
             return null;
@@ -67,7 +67,7 @@ public class Solution {
         
         ListNode currA = headA;
         ListNode currB = headB;
-        // prerequisite is there must be intersectioin
+        // prerequisite is there must be intersection
         while (currA != currB) {
             currA = currA == null ? headB : currA.next;
             currB = currB == null ? headA : currB.next;

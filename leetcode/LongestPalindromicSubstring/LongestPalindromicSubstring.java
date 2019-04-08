@@ -43,7 +43,7 @@ class LongestPalindromicSubstring {
             for (int j = i + 1; j <= s.length(); j++) {
                 String temp = s.substring(i, j);
                 int len = j - i + 1;
-                if ( isPalindromic(temp) ) {
+                if (isPalindromic(temp)) {
                     if (len > maxSubPalindromeLength) {
                         palindrome = temp;
                         maxSubPalindromeLength = len;

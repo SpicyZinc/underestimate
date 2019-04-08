@@ -79,8 +79,11 @@ public class LongestCommonPrefix {
     }
 
     // this method the best, neat
+    // 以 1st str 作为基础 比较其他的strs
+    // 一旦有不相等的c 就 return
     public String lcp(String[] strs) {
         int n = strs.length;
+
         if (n == 0) {
         	return "";
         }
@@ -88,8 +91,10 @@ public class LongestCommonPrefix {
         int i = 0;
         for (i = 0; i < strs[0].length(); i++) {
             char c = strs[0].charAt(i);
+
             for (int j = 1; j < n; j++) {
             	String current = strs[j];
+
                 if (i >= current.length() || current.charAt(i) != c) {
                 	return strs[0].substring(0, i);
                 }

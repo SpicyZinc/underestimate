@@ -17,14 +17,14 @@ public class LargestNumber {
         for (int num : nums) {
             numStrs[i++] = String.valueOf(num);
         }
-        
+
         Arrays.sort(numStrs, new Comparator<String>() {
             @Override
             public int compare(String a, String b) {
                 return (b + a).compareTo(a + b);
             }
         });
-        
+
         // concatenate the sorted str array
         String largestNumber = "";
         for (String str : numStrs) {

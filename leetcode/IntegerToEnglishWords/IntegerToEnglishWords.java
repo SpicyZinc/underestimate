@@ -103,6 +103,7 @@ public class IntegerToEnglishWords {
         return sb.toString();
     }
     // helper to convert number < 1000 to English words
+    // 1000 is unit
     public String lessThan1000Number(int num, Map<Integer, String> hm) {
         // take 156 as an example
         StringBuilder sb = new StringBuilder();

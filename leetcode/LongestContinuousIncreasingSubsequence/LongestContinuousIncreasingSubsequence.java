@@ -15,19 +15,21 @@ Explanation: The longest continuous increasing subsequence is [2], its length is
 Note: Length of the array will not exceed 10,000.
 
 idea:
-发现比前面大的就update maxLen 
+发现比前面大的就update maxLen
+否则就 reset len = 1
 */
 
 class LongestContinuousIncreasingSubsequence {
 	public int findLengthOfLCIS(int[] nums) {
+		int n = nums.length;
 		int maxLen = 0;
-		int cnt = 0;
+		int len = 0;
 
-		for (int i = 0; i < nums.length; i++) {
+		for (int i = 0; i < n; i++) {
 			if (i == 0 || nums[i - 1] < nums[i]) {
-				maxLen = Math.max(maxLen, ++cnt);
+				maxLen = Math.max(maxLen, ++len);
 			} else {
-				cnt = 1;
+				len = 1;
 			}
 		}
 

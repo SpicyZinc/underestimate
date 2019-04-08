@@ -26,9 +26,45 @@ Each element nums[i] is an integer in the range [1, 10000].
 
 idea:
 the same as house rob
+小偷不能偷相邻的房子,
+这道题相邻的数字不能累加积分 而是delete
+一个道理
 */
 
 class DeleteAndEarn {
+	// 03/10/2019
+	public int deleteAndEarn(int[] nums) {
+		if (nums == null || nums.length == 0) {
+			return 0;
+		}
+        
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+		int min = Integer.MAX_VALUE;
+		int max = Integer.MIN_VALUE;
+
+		for (int num : nums) {
+			min = Math.min(min, num);
+			max = Math.max(max, num);
+		}
+
+		int n = max - min + 1;
+		int[] sums = new int[n];
+		for (int num : nums) {
+			int idx = num - min;
+			sums[idx] += num;
+		}
+        // reuse sums array as dp[]
+		sums[1] = Math.max(sums[0], sums[1]);
+		for (int i = 2; i < n; i++) {
+			sums[i] = Math.max(sums[i - 1], sums[i - 2] + sums[i]);
+		}
+
+		return sums[n - 1];
+	}
+
 	public int deleteAndEarn(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -37,6 +73,7 @@ class DeleteAndEarn {
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         Map<Integer, Integer> map = new HashMap<>();
+
         for (int num : nums) {
             min = Math.min(min, num);
             max = Math.max(max, num);
@@ -44,16 +81,22 @@ class DeleteAndEarn {
         }
 
         int n = max - min + 1;
-        int[] sums = new int[n];        
+        // sums实际上相当于建立了数字和其总积分的映射
+        int[] sums = new int[n];
         for (int i = 0; i < n; i++) {
-            sums[i] = (i + min) * (map.getOrDefault(i + min, 0));
+        	int num = i + min;
+            sums[i] = (num) * (map.getOrDefault(num, 0));
         }
         // till i, the max score obtained, it is accumulative value
         int[] dp = new int[n];
         dp[0] = sums[0];
+
         for (int i = 1; i < n; i++) {
-            if (i == 1) dp[i] = Math.max(sums[0], sums[1]);
-            else dp[i] = Math.max(sums[i] + dp[i - 2], dp[i - 1]);
+            if (i == 1) {
+            	dp[i] = Math.max(sums[0], sums[1]);
+            } else {
+            	dp[i] = Math.max(sums[i] + dp[i - 2], dp[i - 1]);
+            }
         }
 
         return dp[n - 1];

@@ -17,13 +17,12 @@ idea:
 1. 	need to create another matrix of same size as old matrix
 	populate it in a way as below:
 	1st row - last column 
-	copy_matrix[j][n-i-1] = matrix[i][j]; 
+	copyMatrix[j][n-i-1] = matrix[i][j]; 
 
 2.  to realize clockwise 90 degrees rotate
 	first, flip along with Anti-diagonal
 	main diagonal - the diagonal of a square matrix running from the upper left entry to the lower right entry
 	second, flip along with x axis
-
 */
 
 public class RotateImage {
@@ -52,19 +51,19 @@ public class RotateImage {
 		}
 	}
 
-	// method 1, use extra space copy_matrix[][]
+	// method 1, use extra space copyMatrix[][]
 	public void rotate(int[][] matrix) {
 		int n = matrix.length;
-		int[][] copy_matrix = new int[n][n];
+		int[][] copyMatrix = new int[n][n];
 		
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
-				copy_matrix[j][n-i-1] = matrix[i][j];
+				copyMatrix[j][n - i - 1] = matrix[i][j];
 			}
 		}
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
-				matrix[i][j] = copy_matrix[i][j] ;
+				matrix[i][j] = copyMatrix[i][j] ;
 			}
 		}
     }

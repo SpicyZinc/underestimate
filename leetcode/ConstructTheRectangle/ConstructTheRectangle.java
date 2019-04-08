@@ -26,11 +26,12 @@ public class ConstructTheRectangle {
         if (area == 0) {
         	return new int[] {0, 0};
         }
-        int w = (int)Math.sqrt(area);
+
+        int w = (int) Math.sqrt(area);
         while (area % w != 0) {
         	w--;
         }
-        int l = area / w;
-        return new int[] {l, w};
+
+        return new int[] {area / w, w};
     }
 }

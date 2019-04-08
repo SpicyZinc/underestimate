@@ -2,6 +2,7 @@
 Divide and Conquer C program and Recursion
 Better than pure recursion, saving running time.
 */
+
 #include <stdio.h>
 int main(int argc, char*argv[]) {
 	printf("\n%s == [%d]\n", " pow(5, 4)",  ipow(5, 4));

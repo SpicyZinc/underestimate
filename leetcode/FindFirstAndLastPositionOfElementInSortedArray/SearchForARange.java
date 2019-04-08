@@ -144,7 +144,7 @@ public class SearchForARange {
     public int[] searchRange(int[] nums, int target) {
         int left = searchForLeftMost(nums, target);
         int right = searchForRightMost(nums, target);
-        
+
         return new int[] {left, right};
     }
     
@@ -203,4 +203,89 @@ public class SearchForARange {
         
         return idx;
     }
+
+    // Thu Mar 28 01:15:21 2019
+	public int[] searchRange(int[] nums, int target) {
+		int left = searchForLeftBoundary(nums, target);
+        // target not in the nums, either less than the min or greater than the max of the nums
+        if (left == nums.length || nums[left] != target) {
+            return new int[] {-1, -1};
+        }
+        
+		int right = searchForRightBoundary(nums, target);
+
+		return new int[] { left, right };
+	}
+
+	public int searchForLeftBoundary(int[] nums, int target) {
+		int left = 0;
+		int right = nums.length - 1;
+
+		while (left < right) {
+            // 取mid的计算方法保障 已经尽量左了
+			int mid = left + (right - left) / 2;
+			// so +1 okay in mid
+			if (nums[mid] < target) {
+				left = mid + 1;
+			} else {
+				right = mid;
+			}
+		}
+
+		return left;
+	}
+
+	public int searchForRightBoundary(int[] nums, int target) {
+		int left = 0;
+		int right = nums.length - 1;
+
+		while (left < right) {
+			// Make mid biased to the right
+			int mid = left + (right - left) / 2 + 1;
+
+			if (nums[mid] > target) {
+				right = mid - 1;
+			} else {
+				left = mid;
+			}
+		}
+
+		return left;
+	}
+
+	// returns leftmost (or rightmost) index at which `target` should be
+	// inserted in sorted array `nums` via binary search.
+	private int extremeInsertionIndex(int[] nums, int target, boolean left) {
+	    int left = 0;
+	    int right = nums.length;
+
+	    while (left < right) {
+	        int mid = (left + right) / 2;
+	        // 不断向right的相反方向left逼近
+	        if (nums[mid] > target || (left && nums[mid] == target)) {
+	            right = mid;
+	        } else {
+	            left = mid + 1;
+	        }
+	    }
+
+	    return left;
+	}
+
+	public int[] searchRange(int[] nums, int target) {
+	    int[] targetRange = {-1, -1};
+
+	    int leftIdx = extremeInsertionIndex(nums, target, true);
+
+	    // assert that `leftIdx` is within the array bounds and that `target`
+	    // is actually in `nums`.
+	    if (leftIdx == nums.length || nums[leftIdx] != target) {
+	        return targetRange;
+	    }
+
+	    targetRange[0] = leftIdx;
+	    targetRange[1] = extremeInsertionIndex(nums, target, false) - 1;
+
+	    return targetRange;
+	}
 }

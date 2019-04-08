@@ -11,25 +11,28 @@ not much to mention, just do it
 */
 
 public class ReverseWordsInAString {
-    public String reverseWords(String s) {
-    	if (s.length() == 0 || s == null) {
-    		return s;
-    	}
-    	String[] words = s.split("\\s+");
-    	String res = "";
-    	for (String word : words) {
-    		res += reverse(word) + " ";
-    	}
-    	return res.substring(0, res.length() - 1);
-    }
+	public String reverseWords(String s) {
+		if (s.length() == 0 || s == null) {
+			return s;
+		}
 
-    private String reverse(String s) {
-    	char[] ch = s.toCharArray();
-    	for (int i = 0; i < ch.length / 2; i++) {
-    		char temp = ch[i];
-    		ch[i] = ch[ch.length - 1 - i];
-    		ch[ch.length - 1 - i] = temp;
-    	}
-    	return new String(ch);
-    }
+		String[] words = s.split("\\s+");
+		String result = "";
+		for (String word : words) {
+			result += reverse(word) + " ";
+		}
+
+		return result.substring(0, result.length() - 1);
+	}
+
+	private String reverse(String s) {
+		char[] chars = s.toCharArray();
+		for (int i = 0; i < chars.length / 2; i++) {
+			char temp = chars[i];
+			chars[i] = chars[chars.length - 1 - i];
+			chars[chars.length - 1 - i] = temp;
+		}
+
+		return new String(chars);
+	}
 }

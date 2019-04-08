@@ -49,6 +49,7 @@ class BasicCalculator {
 						break;
 					}
 				}
+
 				num = calculate(s.substring(j + 1, i));
 			}
 

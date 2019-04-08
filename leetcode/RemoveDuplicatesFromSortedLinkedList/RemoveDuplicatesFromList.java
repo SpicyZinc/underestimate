@@ -40,7 +40,7 @@ class ListNode {
 	}
 }
 
-public class RemoveDuplicatesFromListI {
+public class RemoveDuplicatesFromList {
 	public static void main(String[] args) {
 		// 1->1->2->3->3
 		ListNode aListNode = new ListNode(1);
@@ -57,40 +57,10 @@ public class RemoveDuplicatesFromListI {
 		
 		aListNode.print();
 		System.out.print("\n");
-		RemoveDuplicatesFromListI aTest = new RemoveDuplicatesFromListI();
-		ListNode result = aTest.delete2(aListNode);
+		RemoveDuplicatesFromList eg = new RemoveDuplicatesFromList();
+		ListNode result = eg.delete2(aListNode);
 		result.print();
-		
 	}
-	// delete 1
-    public ListNode deleteDuplicates(ListNode head) {
-		ListNode res = new ListNode(head.val);
-		ListNode current = head;
-		int value = head.val;
-		// System.out.println("value == " + value);
-		
-		// walk through the original list
-		while (current != null) {			
-			while (value == current.next.val) {				
-				current = current.next;
-				System.out.println("while 1 == " + current.val);	
-				// System.exit(-1);
-			}
-			// update value
-			value = current.val;
-			// walk through return list to append from the behind
-			ListNode current_res = res;
-			while (current_res.next != null) {
-				current_res = current_res.next;
-				System.out.println("while 2");
-			}
-			current_res.next = current;			
-			current = current.next;
-			System.out.println("while whole");
-		}
-		
-		return res;
-    }
 	// delete 2
 	public ListNode delete2(ListNode head) {
 		ListNode cur = head;
@@ -121,8 +91,7 @@ public class RemoveDuplicatesFromListI {
         while (n1.next != null) {
             if (n1.next.val == n1.val) {
                 n1.next = n1.next.next;
-            }
-			else {
+            } else {
                 n1 = n1.next;   
             }
         }

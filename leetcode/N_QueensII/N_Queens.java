@@ -11,13 +11,13 @@ two key parts:
 1. recursion
 solution[row] choose from 0 to n-1
 solution[row] can be any one of 0 to n-1
-if one is chosn, then recursively call placeNQueens(),
+if one is chosen, then recursively call placeNQueens(),
 of course there are conditions
-(1) not the same row, which is guaranteed already by sloution[] array
+(1) not the same row, which is guaranteed already by solution[] array
 (2) not the same column, which is checked by attack()
-(3) not on the diagnal, which is checked by attack()
+(3) not on the diagonal, which is checked by attack()
 
-2. check diagnal
+2. check diagonal
 (i, j) (i+k, j+k)
 i+k-i == j+k-j
 
@@ -67,7 +67,7 @@ public class N_Queens {
 			for (int i=0; i<n; i++) {
 				if (!attack(solution, row, i)) {
 					solution[row] = i;
-					placeNQueens(count, solution, row+1);
+					placeNQueens(count, solution, row + 1);
 				}				
 			}
 		}		
@@ -85,6 +85,7 @@ public class N_Queens {
 				return true;
 			}
 		}
+
 		return false;
 	}
 

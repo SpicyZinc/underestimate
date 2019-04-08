@@ -43,6 +43,7 @@ class ValidParenthesisString {
 
         for (int i = start; i < s.length(); i++) {
             char c = s.charAt(i);
+
             if (c == '(') {
                 count++;
             } else if (c == ')') {
@@ -51,6 +52,7 @@ class ValidParenthesisString {
                     return false;
                 }
             } else if (c == '*') {
+            	// empty string, '(' or ')'
                 return check(s, i + 1, count) || check(s, i + 1, count + 1) || check(s, i + 1, count - 1);
             }
         }

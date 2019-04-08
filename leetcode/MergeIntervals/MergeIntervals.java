@@ -46,10 +46,10 @@ public class MergeIntervals {
 		intervals.add(new Interval(15,18));
 		
 		MergeIntervals mi = new MergeIntervals();
-		List<Interval> newList = mi.merge(intervals);
+		List<Interval> mergedList = mi.merge(intervals);
 
-		for (int i = 0; i < newList.size(); i++) {	
-			System.out.println(newList.get(i).toString());
+		for (int i = 0; i < mergedList.size(); i++) {	
+			System.out.println(mergedList.get(i).toString());
 		}
 	}
     // 02/10/2019

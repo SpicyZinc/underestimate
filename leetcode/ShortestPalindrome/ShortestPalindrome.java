@@ -33,26 +33,29 @@ Method 3
 public class ShortestPalindrome {
 	// Time Limit Exceeded, 119 / 120 test cases passed.
     public String shortestPalindrome(String s) {
-        if ( s.length() <= 1 ) {
+        if (s.length() <= 1) {
             return s;
         }
-        String res = "";
-        for ( int i = s.length(); i >= 1; i-- ) {
-            if ( isPalindrome(s.substring(0, i)) ) {
+
+        for (int i = s.length(); i >= 1; i--) {
+            if (isPalindrome(s.substring(0, i))) {
                 return new StringBuilder(s.substring(i)).reverse().toString() + s;
             }
         }
+
         return "";
     }
+
     public boolean isPalindrome(String s) {
         int len = s.length();
         int i = 0;
         while ( i < len / 2 ) {
-            if ( s.charAt(i) != s.charAt(len - i - 1) ) {
+            if (s.charAt(i) != s.charAt(len - i - 1)) {
                 return false;
             }
             i++;
         }
+
         return true;
     }
     // Time Limit Exceeded, 119 / 120 test cases passed
@@ -66,7 +69,7 @@ public class ShortestPalindrome {
             // after reverse, still equal, meaning before reverse, it is palindrome
             // abbae when i = 4 substring(0, 4) === abba
             // eabba when i = 4 substring(1) === abba
-            if ( s.substring(0, i).equals(reversedS.substring(n - i)) ) {
+            if (s.substring(0, i).equals(reversedS.substring(n - i))) {
                 break;
             }
         }
@@ -83,6 +86,7 @@ public class ShortestPalindrome {
             }
             j--;
         }
+
         if (i == s.length()) {
             return s;
         }
@@ -110,6 +114,7 @@ public class ShortestPalindrome {
 
         return new StringBuilder(s.substring(index)).reverse() + s;
     }
+
     private boolean helper(String s, int left, int right) {
         while ( left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right) ) {
             left--;

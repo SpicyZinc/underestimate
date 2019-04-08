@@ -22,7 +22,6 @@ after call prev = reverse(prev, next)
 0->3->2->1->4->5->6
          |  |
          prev next
-e.g. not same as run case
 */
 
 class ListNode {
@@ -35,6 +34,7 @@ class ListNode {
 }
 
 public class ReverseNodesInKGroup {
+    // Thu Mar 28 00:48:27 2019
     public ListNode reverseKGroup(ListNode head, int k) {
         if (head == null || k == 1) {
             return head;
@@ -42,29 +42,74 @@ public class ReverseNodesInKGroup {
         
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        
-        int i = 0;
         ListNode prev = dummy;
-        while (head != null) {
-            head = head.next;
+        ListNode curr = head;
+        int i = 0;
+
+        while (curr != null) {
+            curr = curr.next;
             i++;
+            
             if (i % k == 0) {
-                prev = reverseInBetween(prev, head);
-                head = prev.next;
+                prev = reverse(prev, curr);
+                curr = prev.next;
             }
         }
         
         return dummy.next;
     }
+    
+    public ListNode reverse(ListNode a, ListNode b) {
+        ListNode lastNodeOfReversed = a.next;
+        ListNode prev = a;
+        ListNode curr = a.next;
+        
+        while (curr != b) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        a.next = prev;
+        lastNodeOfReversed.next = curr;
+        
+        return lastNodeOfReversed;
+    }
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k == 1) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        
+        ListNode prev = dummy;
+        ListNode curr = head;
+        int i = 0;
+
+        while (curr != null) {
+            curr = curr.next;
+            i++;
+            if (i % k == 0) {
+                prev = reverseInBetween(prev, curr);
+                curr = prev.next;
+            }
+        }
+        
+        return dummy.next;
+    }
+
     // return the reversed list's last node, which is the preceding node before parameter end
     // reverse a->b->c, reverseInBetween(dummy, d)
     // a->b->c->d->e
-    // c->b->a->d->3
+    // c->b->a->d->e
     // return a
     public ListNode reverseInBetween(ListNode start, ListNode end) {
-        ListNode last = start.next;
+        ListNode lastOfReversed = start.next;
         ListNode prev = start;
-        ListNode curr = prev.next;
+        ListNode curr = start.next;
         
         while (curr != end) {
             ListNode next = curr.next;
@@ -74,9 +119,10 @@ public class ReverseNodesInKGroup {
         }
 
         // prev is now the reversed list head
+        // 把start指向prev
         start.next = prev;
-        last.next = curr;
-        
-        return last;
+        lastOfReversed.next = curr;
+
+        return lastOfReversed;
     }
 }

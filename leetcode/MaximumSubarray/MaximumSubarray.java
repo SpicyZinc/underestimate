@@ -6,7 +6,6 @@ the contiguous subarray [4,−1,2,1] has the largest sum = 6.
 
 idea:
 maxSum need to be Integer.MIN_VALUE
-
 */
 
 public class MaximumSubarray  {
@@ -26,17 +25,19 @@ public class MaximumSubarray  {
 	}
 
 	public int maxSubArray(int[] nums) {
-		int max = Integer.MIN_VALUE;
+		int maxSum = Integer.MIN_VALUE;
 		int sum = 0;
+
 		for (int i = 0; i < nums.length; i++) {
 			if (sum >= 0) {
 				sum += nums[i];
 			} else {
 				sum = nums[i];
 			}
-			max = Math.max(max, sum);
+
+			maxSum = Math.max(maxSum, sum);
 		}
 
-		return max;
+		return maxSum;
 	}
 }

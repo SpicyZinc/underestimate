@@ -41,35 +41,13 @@ public class CountAndSay {
 		System.out.print(aTest.countAndSay(input));
 		System.out.println();
 	}
-	
-    public String countAndSay(int n) {
-        String temp = String.valueOf(1);
-        // attention: i < n, because temp initialization is index 0
-        for (int i = 1; i < n; i++) {
-            temp = cas(temp);
-        }
 
-        return temp;
-    }
- 
-    public String cas(String n) {
-        char[] chars = n.toCharArray();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < chars.length; i++) {
-            int count = 1;
-            while (i < chars.length - 1 && chars[i] == chars[i + 1]) {
-                count++;
-				i++;
-            }
-            sb.append(String.valueOf(count) + String.valueOf(chars[i]));
-        }  
-        return sb.toString();
-    }
-
-    // self written version passed test
+    // 03/14/2019
     public String countAndSay(int n) {
         String start = "1";
+		// noet, i < n, because temp initialization is index 0
         for (int i = 1; i < n; i++) {
+        	// generate a new ith start, overwrite the last one
             start = cas(start);
         }
         
@@ -80,9 +58,9 @@ public class CountAndSay {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             int count = 1;
-            while (i + 1 < s.length() && s.charAt(i + 1) == s.charAt(i)) {
-                count++;
+            while (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
                 i++;
+                count++;
             }
             sb.append(count + "" + s.charAt(i));
         }

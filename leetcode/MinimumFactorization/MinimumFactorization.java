@@ -21,6 +21,8 @@ https://www.cnblogs.com/grandyang/p/7076026.html
 rethink, based on the description, the smallest,
 so the biggest factor should be in the last position
 start from 9 through 2, divides input a
+
+考虑成数字的 concatenation 从小到大
 */
 
 import java.util.*;
@@ -37,6 +39,35 @@ public class MinimumFactorization {
 		System.out.println(smallest1 + " " + smallest2);
 	}
 
+	// 03/04/2019
+	public int smallestFactorization(int a) {
+        if (a < 10) {
+        	return a;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 9; i >= 2; i--) {
+        	while (a % i == 0) {
+        		a /= i;
+        		sb.append(i);
+        	}
+        }
+
+        // a != 1, no one in [2 - 9] can divide a, no answer
+        if (a != 1) {
+        	return 0;
+        }
+        
+        long result = Long.parseLong(sb.reverse().toString());
+        
+        if (result > Integer.MAX_VALUE) {
+            return 0;
+        }
+
+        return (int) result;
+    }
+
     public int smallestFactorization(int a) {
         if (a < 10) {
         	return a;
@@ -50,7 +81,9 @@ public class MinimumFactorization {
         	}
         }
         // can divide exactly, should be 1; if not, return 0
-        if (a != 1) return 0;
+        if (a != 1) {
+        	return 0;
+        }
 
         long smallest = 0;
         for (int i = result.size() - 1; i >= 0; i--) {

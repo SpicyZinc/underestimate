@@ -16,7 +16,7 @@ A subsequence slice (P0, P1, ..., Pk) of array A is called arithmetic if the seq
 In particular, this means that k ≥ 2.
 The function should return the number of arithmetic subsequence slices in the array A.
 The input contains N integers.
-Every integer is in the range of -231 and 2^31-1 and 0 ≤ N ≤ 1000.
+Every integer is in the range of -2^31 and 2^31-1 and 0 ≤ N ≤ 1000.
 The output is guaranteed to be less than 2^31-1.
 
 Example:
@@ -46,10 +46,15 @@ i 4 -- j 1
 i 4 -- j 2
 i 4 -- j 3
 
-
 dp + hashmap
 https://leetcode.com/problems/arithmetic-slices-ii-subsequence/discuss/92822/Detailed-explanation-for-Java-O(n2)-solution
 https://discuss.leetcode.com/topic/69540/dynamic-programming-java-solution-with-detailed-explanation
+
+不同之处是不必是连续的序列
+dp[i] until i [0, ..., i] the number of arithmetic slices subsequences
+map[key] = value
+key is 等差中的 diff
+value is the number of arithmetic slices subsequences for this diff
 */
 
 public class ArithmeticSlicesSubsequence {
@@ -64,6 +69,7 @@ public class ArithmeticSlicesSubsequence {
         
         for (int i = 0; i < n; i++) {
             dp[i] = new HashMap<>();
+
             for (int j = 0; j < i; j++) {
                 long diff = (long) A[i] - (long) A[j];
                 if (diff <= Integer.MIN_VALUE || diff >= Integer.MAX_VALUE) {

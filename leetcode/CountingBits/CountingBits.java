@@ -43,11 +43,11 @@ return result array
 */
 
 public class CountingBits {
-
 	public static void main(String[] args) {
 		CountingBits eg = new CountingBits();
 		int[] results = eg.countBits(15);
 	}
+
 // 	// method 1
 //     public int[] countBits(int num) {
 // 		int[] result = new int[num + 1];
@@ -59,8 +59,8 @@ public class CountingBits {
 
 //     private int cntOneBit(int n) {
 //     	int count = 0;
-//         while ( n != 0 ) {
-//             n &= (n-1);
+//         while (n != 0) {
+//             n &= (n - 1);
 //             count++;
 //         }
 
@@ -75,8 +75,7 @@ public class CountingBits {
             if (i == pow2) {
                 before = res[i] = 1;
                 pow2 <<= 1;
-            }
-            else {
+            } else {
                 res[i] = res[before++] + 1;
             }
         }

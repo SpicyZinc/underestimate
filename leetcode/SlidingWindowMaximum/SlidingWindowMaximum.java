@@ -39,8 +39,7 @@ https://segmentfault.com/a/1190000003903509
 [5, 3]
 [6]
 [7]
-
-
+ 
 Each element in the queue is being inserted and then removed at most once. 
 The total number of insert and delete operations is 2n; therefore, it is an O(n) solution.
 
@@ -77,7 +76,6 @@ public class SlidingWindowMaximum {
             if (i + 1 >= k) {
                 maxs[i + 1 - k] = nums[deque.peek()];
             }
-            // System.out.println(deque);
             System.out.println(convert(nums, deque));
         }
         
@@ -140,6 +138,7 @@ public class SlidingWindowMaximum {
             max[i] = getMax(nums, i, i + k - 1);
             i++;
         }
+
         return max;
     }
     

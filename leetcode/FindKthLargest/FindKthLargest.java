@@ -23,13 +23,54 @@ public class FindKthLargest {
 		// 3rd largest
 		System.out.println(eg.findKthLargest(nums, 3));
 	}
+	// Sun Mar 31 14:24:07 2019
+	public int findKthLargest(int[] nums, int k) {
+		if (k <= 0 || nums.length == 0 || nums == null) {
+			return 0;
+		}
+
+		int n = nums.length;
+
+		return findKthSmallest(nums, n - k + 1, 0, n - 1);
+	}
+
+	public int findKthSmallest(int[] nums, int k, int start, int end) {
+		int pivot = start;
+		int pivotVal = nums[start];
+
+		int i = start;
+		int j = end;
+		
+		while (i <= j) {
+			while (i <= j && nums[i] <= pivotVal) {
+				i++;
+			}
+			while (i <= j && nums[j] >= pivotVal) {
+				j--;
+			}
+
+			if (i <= j) {
+				swap(nums, i, j);
+			}
+		}
+
+		swap(nums, pivot, j);
+
+		if (k > j + 1) {
+			return findKthSmallest(nums, k, j + 1, end);
+		} else if (k < j + 1) {
+			return findKthSmallest(nums, k, start, j - 1);
+		} else {
+			return nums[j];
+		}
+	}
 
 	// 1. best quick sort
 	public int findKthLargest(int[] nums, int k) {
         if (k <= 0 || nums.length == 0 || nums == null) {
             return 0;
         }
-        // Kth largest == (n - K + 1)th smallest
+        // Kth largest == (n - K + 1) th smallest
         return findKthSmallest(nums, nums.length - k + 1, 0, nums.length - 1);
         // return getKth(nums, nums.length - k + 1, 0, nums.length - 1);
     }
@@ -41,14 +82,18 @@ public class FindKthLargest {
         
         int i = start;
         int j = end;
+
         while (i <= j) {
             while (i <= j && nums[i] <= pivotVal) i++;
             while (i <= j && nums[j] >= pivotVal) j--;
             // i j stop moving, but there are still values bigger than pivotVal on the left
             // or values smaller than pivotVal on the right
-            if (i <= j) swap(nums, i, j);
+            if (i <= j) {
+                swap(nums, i, j);
+            }
         }
         // put the real pivotVal into the position
+        // 后来想可能是如果不移动 下次还是作为pivotVal, 影响时间 或是 压根就不会sort 
         swap(nums, pivotIdx, j);
         // where recursion applies
         // j is index, j + 1 is comparable with k
@@ -65,6 +110,7 @@ public class FindKthLargest {
 		int pivot = nums[end];
 		int left = start;
 		int right = end;
+
 		while (true) {
 			while (left < right && nums[left] < pivot) {
 				left++;
@@ -103,6 +149,7 @@ public class FindKthLargest {
                 pq.poll();
             }
         }
+
         return pq.peek();
 	}
     // 3. sort the array first

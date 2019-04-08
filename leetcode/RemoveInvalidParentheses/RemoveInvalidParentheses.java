@@ -11,8 +11,9 @@ idea:
 try different combination, remove any '(' or ')' from s, and build a new string without it,
 see if the new string is valid parentheses, hashset to maintain uniqueness
 
-note: if the first s in the queue is valid, any rest actions of removing one
-'(' or ')' would NOT generate valid parentheses, so it is redundant, so better return first.
+note: if the first s in the queue is valid,
+any other actions of removing '(' or ')' would NOT generate valid parentheses,
+so it is redundant, so better return first.
 */
 
 import java.util.*;
@@ -32,26 +33,31 @@ public class RemoveInvalidParentheses {
             return result;
         }
         
-        Queue<String> queue = new LinkedList<String>();
-        Set<String> hs = new HashSet<String>();
+        Queue<String> queue = new LinkedList<>();
+        Set<String> hs = new HashSet<>();
         queue.offer(s);
         hs.add(s);
         
         boolean found = false;
         while (!queue.isEmpty()) {
             String p = queue.poll();
+
             if (isValidP(p)) {
                 found = true;
                 result.add(p);
                 // if last potential parenthesis in queue is valid, no need to remove any ( or ) from it
                 // because all new strings cannot be valid, return to save time
-                if (queue.size() == 0) return result; 
+                if (queue.size() == 0) {
+                	return result; 
+                }
             }
+
             if (found) {
                 continue;
             }
             for (int i = 0; i < p.length(); i++) {
                 char c = p.charAt(i);
+
                 if (c == ')' || c == '(') {
                     String newStr = p.substring(0, i) + p.substring(i + 1);
                     if (hs.add(newStr)) {
@@ -60,7 +66,7 @@ public class RemoveInvalidParentheses {
                 }
             }
         }
-        
+
         return result;
     }
     // helper to determine if a string is a valid parenthesis
@@ -78,6 +84,7 @@ public class RemoveInvalidParentheses {
                 cnt--;
             }
         }
+
         return cnt == 0;
     }
 }

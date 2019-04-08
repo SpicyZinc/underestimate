@@ -49,9 +49,9 @@ public class AddTwoNumbers {
             carry = val / 10;
             curr.val = val % 10;
             // insert at front
-            ListNode newHead = new ListNode(carry);
-            newHead.next = curr;
-            curr = newHead;
+            ListNode node = new ListNode(carry);
+            node.next = curr;
+            curr = node;
         }
         // curr.val == 0 means carry = 0, no need to have the extra curr, so curr.next
         return curr.val == 0 ? curr.next : curr;

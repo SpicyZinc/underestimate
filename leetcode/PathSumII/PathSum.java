@@ -10,7 +10,7 @@ find ALL root-to-leaf paths where each path's sum equals the given sum.
          /  \    / \
         7    2  5   1
 idea:
-typical DFS, 
+typical DFS
 
 add one to list
 recursion
@@ -58,6 +58,7 @@ public class PathSum {
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
         List<List<Integer>> result = new ArrayList<>();
         dfs(root, sum, new ArrayList<Integer>(), result);
+
         return result;
     }
     
@@ -71,6 +72,7 @@ public class PathSum {
         if (node.left == null && node.right == null && remaining == node.value) {
             result.add(new ArrayList<Integer>(path));
         }
+
         dfs(node.left, remaining - node.value, path, result);
         dfs(node.right, remaining - node.value, path, result);
 

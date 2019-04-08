@@ -119,15 +119,16 @@ class AutocompleteSystem {
         System.out.println(eg.data);
     }
 
-
-    Map<String, Integer> freq = null;
-    String data = "";
+    
+    Map<String, Integer> freq;
+    String data;
 
     public AutocompleteSystem(String[] sentences, int[] times) {
-        freq = new HashMap<>();
+        this.freq = new HashMap<>();
         for (int i = 0; i < sentences.length; i++) {
-            freq.put(sentences[i], times[i]);
+            this.freq.put(sentences[i], times[i]);
         }
+
         this.data = "";
     }
 
@@ -144,11 +145,7 @@ class AutocompleteSystem {
         PriorityQueue<Pair> pq = new PriorityQueue<Pair>(new Comparator<Pair>() {
             @Override
             public int compare(Pair a, Pair b) {
-                if (a.times != b.times) {
-                    return a.times - b.times;
-                } else {
-                    return b.str.compareTo(a.str);
-                }
+            	return a.times != b.times ? a.times - b.times : b.str.compareTo(a.str);
             }
         });
 
@@ -170,8 +167,8 @@ class AutocompleteSystem {
             }
         }
 
-        List<String> result = new ArrayList<>();
-        for (int i = pq.size() - 1; i >= 0; i--) {
+        List<String> result = new ArrayList<>();   
+        while (!pq.isEmpty()) {
             result.add(0, pq.poll().str);
         }
 

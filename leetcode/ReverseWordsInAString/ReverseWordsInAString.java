@@ -14,17 +14,12 @@ trim() first
 */
 
 public class ReverseWordsInAString  {
-
     public static void main(String[] args) {
-        new ReverseWordsInAString();
-    }
-
-    // constructor
-    public ReverseWordsInAString() {
+        ReverseWordsInAString eg = new ReverseWordsInAString();
         String s = " 1";
-        String ret = reverseWords(s);
+        String result = eg.reverseWords(s);
 
-        System.out.println("|" + ret + "|");
+        System.out.println("|" + result + "|");
     }
 
     public String reverseWords(String s) {

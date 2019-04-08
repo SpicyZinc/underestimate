@@ -132,20 +132,20 @@ public class MinimumWindowSubstring {
 				while (cntCharsInT == tLen) {
 					if (minLen > right - left + 1) {
 						minLen = right - left + 1;
-                        if (right >= left) {
-                            minWindowStr = s.substring(left, right + 1);    
-                        }
+						if (right >= left) {
+							minWindowStr = s.substring(left, right + 1);
+						}
 					}
 
 					// 开始移动左窗口
 					char charAtLeft = s.charAt(left);
 					left++;
-                    if (tLetters.containsKey(charAtLeft)) {
-                        tLetters.put(charAtLeft, tLetters.get(charAtLeft) + 1);
-                        if (tLetters.get(charAtLeft) > 0) {
-                            cntCharsInT--;
-                        }
-                    }
+					if (tLetters.containsKey(charAtLeft)) {
+						tLetters.put(charAtLeft, tLetters.get(charAtLeft) + 1);
+						if (tLetters.get(charAtLeft) > 0) {
+							cntCharsInT--;
+						}
+					}
 				}
 			}
 		}

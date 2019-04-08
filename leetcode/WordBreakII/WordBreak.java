@@ -32,7 +32,46 @@ public class WordBreak {
 			System.out.println(sentence);
 		}
 	}
-	// 02/07/2019 
+	// 03/19/2019
+	public List<String> wordBreak(String s, List<String> wordDict) {
+        Map<String, List<String>> hm = new HashMap<>();
+        
+        return dfs(s, wordDict, hm);
+    }
+    
+    public List<String> dfs(String s, List<String> wordDict, Map<String, List<String>> hm) {
+        if (hm.containsKey(s)) {
+            return hm.get(s);
+        }
+        
+        List<String> result = new ArrayList<>();
+        if (s.length() == 0) {
+            return result;
+        }
+        
+        for (int i = 0; i <= s.length(); i++) {
+            String left = s.substring(0, i);
+            
+            if (wordDict.contains(left)) {
+                if (i == s.length()) {
+                    result.add(left);
+                } else {
+                    String right = s.substring(i);
+                    List<String> rightWordBreak = dfs(right, wordDict, hm);
+                    for (String path : rightWordBreak) {
+                        String newPath = left + " " + path;
+                        result.add(newPath);
+                    }
+                }
+            }
+        }
+        
+        hm.put(s, result);
+        
+        return result;
+    }
+
+	// 02/07/2019
 	public List<String> wordBreak(String s, List<String> wordDict) {
 		Map<String, List<String>> memo = new HashMap<String, List<String>>();
 
@@ -44,7 +83,7 @@ public class WordBreak {
 			return memo.get(s);
 		}
 
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		if (s.length() == 0) {
 			return result;
 		}
@@ -70,17 +109,19 @@ public class WordBreak {
 		return result;
 	}
 
-	// self written version, TLE, 29 / 37 passed
+	// self written version, TLE, 31 / 39 test cases passed
 	public List<String> wordBreak(String s, List<String> wordDict) {
-        List<String> ret = new ArrayList<String>();
+        List<String> result = new ArrayList<String>();
         if (s == null || s.length() == 0) {
-            return ret;
-        }        
-        dfs(s, wordDict, ret, new ArrayList<String>());
-        return ret;
+            return result;
+        }
+
+        dfs(s, wordDict, new ArrayList<String>(), result);
+
+        return result;
     }
     
-    public void dfs(String s, List<String> dict, List<String> result, List<String> sentence) {
+    public void dfs(String s, List<String> dict, List<String> sentence, List<String> result) {
         if (s.length() == 0) {
             result.add(convertToString(sentence));
             return;
@@ -88,24 +129,22 @@ public class WordBreak {
         
         for (int i = 0; i <= s.length(); i++) {
             String left = s.substring(0, i);
+
             if (dict.contains(left)) {
                 sentence.add(left);
-                dfs(s.substring(i), dict, result, sentence);
+                dfs(s.substring(i), dict, sentence, result);
                 sentence.remove(sentence.size() - 1);
             }
         }
     }
     
-    public String convertToString(List<String> list) {
-        String s = "";
-        for (int i = 0; i < list.size(); i++) {
-            if (i != list.size() - 1) {
-                s += list.get(i) + " ";
-            } else {
-                s += list.get(i);
-            }
-        }
-        
-        return s;
+	public String convertToString(List<String> list) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < list.size(); i++) {
+			String str = list.get(i) + (i == list.size() - 1 ? "" : " ");
+			sb.append(str);
+		}
+
+		return sb.toString();	
     }
 }

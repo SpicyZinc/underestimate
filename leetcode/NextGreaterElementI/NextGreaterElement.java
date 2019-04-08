@@ -60,6 +60,7 @@ public class NextGreaterElement {
             int nextPosition = nextPos(target, nums);
             result[i] = nextGreater(nextPosition, target, nums);
         }
+
         return result;
     }
 

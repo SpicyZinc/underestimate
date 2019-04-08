@@ -29,7 +29,7 @@ public class LongestPalindrome {
             char c = s.charAt(i);
             letters[c]++;
         }
-        
+
         int maxLen = 0;
         for (int cnt : letters) {
             maxLen += cnt / 2 * 2;

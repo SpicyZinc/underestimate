@@ -35,10 +35,13 @@ keep subtracting tx from ty by mod tx, special case tx == sx
 class ReachingPoints {
 	public boolean reachingPoints(int sx, int sy, int tx, int ty) {
 		while (tx >= sx && ty >= sy) {
+			// 谁大先缩小谁
 			if (tx > ty) {
+				// sy == ty, 因为sx + (sy + sy + sy + ...) = tx => sx + (ty + ty + ty + ...) = tx
 				if (sy == ty) {
 					return (tx - sx) % ty == 0;
 				}
+				// how to decrease tx
 				tx %= ty;
 			} else {
 				if (sx == tx) {
@@ -47,6 +50,7 @@ class ReachingPoints {
 				ty %= tx;
 			}
 		}
+
 		return false;
 	}
 }

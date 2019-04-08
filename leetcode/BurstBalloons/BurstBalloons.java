@@ -29,7 +29,7 @@ k = 2, left = 0, right = 2
 left + k = right
 start from left + 1, < right
 
-dp[l][r], the maximum coins got to burst balloon from l + 1 to r - 1; l, r exclusive, l - r = k
+dp[l][r], the maximum coins obtained to burst balloon from l + 1 to r - 1; l, r exclusive, l - r = k
 */
 
 public class BurstBalloons {

@@ -74,6 +74,42 @@ public class RemoveDuplicatesFromListII {
 		result.print();
 		
 	}
+
+	// 03/13/2019
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy = new ListNode(0);
+
+        dummy.next = head;
+
+        head = dummy;
+
+        ListNode current = head;
+        while (current.next != null) {
+            ListNode next = current.next;
+            // != indicates next pointer moves
+            // address changes, it is address that is changed
+            // it must be a span
+            // so connect to next.next
+            // next stops at exactly where the repetitive span last element
+            // notice order matters, next.next != null must be pre
+            while (next.next != null && next.val == next.next.val) {
+                next = next.next;
+            }
+            // now detect if span is there by checking next moves or not
+            // how to check if next moves, comparing with current
+
+            // move pointer, since it is while loop
+            if (current.next != next) {
+                current.next = next.next;
+            } else { // no span of repetitive elements
+                current = current.next;
+            }
+        }
+        
+        return head.next;
+    }
+
+
 	// delete
     public ListNode deleteDuplicates(ListNode head) {
 		// Sentinel to guard against the changed head node
@@ -94,46 +130,12 @@ public class RemoveDuplicatesFromListII {
             if (dup) {
                 prev.next = cur.next;
                 cur = cur.next;
-            }
-            else {
+            } else {
                 prev = cur; // guarantee that it is to append
                 cur = cur.next;
             }
         }
  
         return sent.next;
-    }
-
-    // rewrite with clear explanation
-    public ListNode deleteDuplicates(ListNode head) {
-        ListNode prev = new ListNode(0);
-        prev.next = head;
-        head = prev;
-        
-        ListNode n1 = head;
-        while (n1.next != null) {
-            ListNode n2 = n1.next;
-            // != indicates n2 pointer moves
-            // address changes, it is address that is changed
-            // it must be a span
-            // so connect to n2.next
-            // n2 stops at exactly where the repetitive span last element
-            // notice order matters, n2.next != null must be pre
-            while (n2.next != null && n2.val == n2.next.val) {
-                n2 = n2.next;
-            }
-            // now detect if span is there by checking n2 moves or not
-            // how to check if n2 moves, comparing with n1
-
-            // move pointer, since it is while loop
-            if (n1.next != n2) {
-                n1.next = n2.next;
-            }
-            else { // no span of repetitive elements
-                n1 = n1.next;
-            }
-        }
-        
-        return head.next;
     }
 }

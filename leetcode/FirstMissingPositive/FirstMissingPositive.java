@@ -77,8 +77,6 @@ public class FirstMissingPositive {
                 if (A[i] <= 0 || A[i] > A.length || A[i] == A[A[i] - 1]) {
                     break;
                 }
-				// swap(), can be replaced by a swap() function
-				// now (A[i] - 1) != i, a different number j
                 swap(A, A[i] - 1, i);
             }
         }
@@ -130,20 +128,20 @@ public class FirstMissingPositive {
             i++;                        
         }
         // missing positive, starting from 1
-        int res = 0;
+        int result = 0;
         for (; i < A.length; i++) {
             // skip repetitive elements
             if (i > 0 && A[i] == A[i - 1]) {
                 continue;
             }
             // first positive number should be 1
-            if (A[i] != res + 1) {
-                return res + 1;
+            if (A[i] != result + 1) {
+                return result + 1;
             } else {
-                res = A[i];
+                result = A[i];
             }
         }
 
-        return res + 1;
+        return result + 1;
     }
 }

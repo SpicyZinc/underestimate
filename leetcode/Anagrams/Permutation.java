@@ -7,7 +7,6 @@ The base case is when the input is an empty string the only permutation is the e
 import java.util.Scanner;
 
 class Permutation {
-
 	private static int count = 0;
 
 	public static void main(String[] args) {

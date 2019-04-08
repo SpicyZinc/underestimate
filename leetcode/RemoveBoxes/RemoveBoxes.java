@@ -10,7 +10,7 @@ Input:
 Output:
 23
 Explanation:
-[1, 3, 2, 2, 2, 3, 4, 3, 1] 
+[1, 3, 2, 2, 2, 3, 4, 3, 1]
 ----> [1, 3, 3, 4, 3, 1] (3*3=9 points) 
 ----> [1, 3, 3, 3, 1] (1*1=1 points) 
 ----> [1, 1] (3*3=9 points) 
@@ -19,7 +19,6 @@ Explanation:
 Note: The number of boxes n would not exceed 100.
 
 idea:
-http://www.lydxlx.net/2017/03/26/first-post/
 3D dp
 Divider and Conquer, memorization
 
@@ -34,8 +33,13 @@ public class RemoveBoxes {
     }
     
     public int dfs(int[] boxes, int[][][] mem, int l, int r, int k) {
-        if (l > r) return 0;
-        if (mem[l][r][k] > 0) return mem[l][r][k]; 
+        if (l > r) {
+            return 0;
+        }
+
+        if (mem[l][r][k] > 0) {
+        	return mem[l][r][k];
+        }
         // 2 3 ... 1 3 3 3
         // first case, find how many after r is equal to value at r
         while (l < r && boxes[r] == boxes[r - 1]) {
@@ -50,9 +54,11 @@ public class RemoveBoxes {
                 int midPart = dfs(boxes, mem, i + 1, r - 1, 0);
                 // merge the rest
                 int merged = dfs(boxes, mem, l, i, k + 1); // r, k => i = r - 1, so k + 1
+
                 mem[l][r][k] = Math.max(mem[l][r][k], midPart + merged);
             }
         }
+
         return mem[l][r][k];
     }
 }

@@ -46,53 +46,58 @@ public class BinaryTreeRightSideView {
 		System.out.println();
 	}
 
-    public List<Integer> rightSideViewRecursion(TreeNode root) {
-        List<Integer> res = new ArrayList<Integer>();
-       	if ( root == null ) {
-			return res;
+	public List<Integer> rightSideViewRecursion(TreeNode root) {
+		List<Integer> result = new ArrayList<Integer>();
+		if (root == null) {
+			return result;
 		}
-		DFS(root, res, 0);
-		return res;
-    }
 
-    public void DFS(TreeNode root, List<Integer> res, int level) {
-    	if ( res.size() <= level ) {
-    		res.add(root.val);
-    	}	
-    	if ( root.right != null ) {
-    		DFS(root.right, res, level + 1);
-    	}
-    	if ( root.left != null ) {
-    		DFS(root.left, res, level + 1);
-    	}
-    	return;
-    }
+		dfs(root, 0, result);
 
-    public List<Integer> rightSideViewIteration(TreeNode root) {
-		List<Integer> res = new ArrayList<Integer>();
-		if ( root == null ) {
-			return res;
+		return result;
+	}
+
+	public void dfs(TreeNode node, int level, List<Integer> result) {
+		if (result.size() <= level) {
+			result.add(node.val);
 		}
+		// first, right
+		if (node.right != null) {
+			dfs(node.right, level + 1, result);
+		}
+		// then, left
+		if (node.left != null) {
+			dfs(node.left, level + 1, result);
+		}
+	}
+
+	public List<Integer> rightSideViewIteration(TreeNode root) {
+		List<Integer> result = new ArrayList<Integer>();
+		if (root == null) {
+			return result;
+		}
+
 		Queue<TreeNode> queue = new LinkedList<TreeNode>();
 		queue.offer(root);
 
-		while ( !queue.isEmpty() ) {
+		while (!queue.isEmpty()) {
 			int size = queue.size();
-			for ( int i = 0; i < size; i++ ) {
-				TreeNode queueHead = queue.poll();
-				if ( i == 0 ) {
-					res.add(queueHead.val);
+			for (int i = 0; i < size; i++) {
+				TreeNode node = queue.poll();
+				// always save first element to result, because that is the rightmost
+				if (i == 0) {
+					result.add(node.val);
 				}
-				if ( queueHead.right != null ) {
-					queue.offer( queueHead.right );
+				if (node.right != null) {
+					queue.offer(node.right);
 				}
-				if ( queueHead.left != null ) {
-					queue.offer( queueHead.left );
+				if (node.left != null) {
+					queue.offer(node.left);
 				}
 			}
 		}
 
-		return res;
-    }
+		return result;
+	}
 }
 

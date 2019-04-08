@@ -26,6 +26,46 @@ https://www.cnblogs.com/grandyang/p/4539768.html
 */
 
 public class WordLadder {
+    // 03/11/2019
+	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+		// use set to save time when looking up
+		Set<String> hs = new HashSet<>();
+		for (String word : wordList) {
+			hs.add(word);
+		}
+
+		Set<String> wordsReached = new HashSet<>();
+		wordsReached.add(beginWord);
+		int distance = 1;
+
+		while (!wordsReached.contains(endWord)) {
+			Set<String> wordsToReach = new HashSet<>();
+
+			for (String wordReached : wordsReached) {
+				for (int i = 0; i < wordReached.length(); i++) {
+					char ch = wordReached.charAt(i);
+					for (char c = 'a'; c <= 'z'; c++) {
+						String possibleWord = wordReached.substring(0, i) + c + wordReached.substring(i + 1);
+
+						if (hs.contains(possibleWord)) {
+							wordsToReach.add(possibleWord);
+							hs.remove(possibleWord);
+						}
+					}
+				}
+			}
+			// if no wordsToReach generated, meaning no word ladder path found
+			if (wordsToReach.size() == 0) {
+				return 0;
+			}
+
+			wordsReached = wordsToReach;
+			distance += 1;
+		}
+
+		return distance;
+	}
+    // 03/10/2019
     // 01/10/2019
 	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 		Set<String> hs = new HashSet<>();

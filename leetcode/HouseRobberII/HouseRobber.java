@@ -55,6 +55,7 @@ public class HouseRobber {
         int[] dp = new int[n + 1];
         dp[0] = 0;
         dp[1] = nums[i];
+
         for (int k = 2; k <= n; k++) {
             // rob current or not rob current
             dp[k] = Math.max(dp[k - 2] + nums[i + k - 1], dp[k - 1]);
