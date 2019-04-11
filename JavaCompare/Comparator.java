@@ -60,11 +60,9 @@ class HDTV implements Comparable<HDTV> {
 	public int compareTo(HDTV other) {
 		if (this.getSize() > other.getSize()) {
 			return 1;
-		}
-		else if (this.getSize() < other.getSize()) {
+		} else if (this.getSize() < other.getSize()) {
 			return -1;
-		}
-		else {
+		} else {
 			return 0;
 		}
 	}
@@ -77,8 +75,7 @@ public class Main {
 
 		if (tv1.compareTo(tv2) > 0) {
 			System.out.println(tv1.getBrand() + " greater " + tv2.getBrand());
-		}
-		else {
+		} else {
 			System.out.println(tv1.getBrand() + " NOT greater " + tv2.getBrand());	
 		}
 	}

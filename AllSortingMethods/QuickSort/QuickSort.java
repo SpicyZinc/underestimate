@@ -32,7 +32,6 @@ when i becomes greater than j, algorithm stops
 
 After partition, all values before i-th element are less or equal than the pivot
 and all values after j-th element are greater or equal to the pivot.
-
 */
 
 public class QuickSort {
@@ -44,7 +43,6 @@ public class QuickSort {
         for (int num : a) {
             System.out.printf("%d  ", num);
         }
-
         System.out.println();
     }
 

@@ -10,9 +10,8 @@ public class MergeSort {
         System.out.println(Arrays.toString(a));
     }
 
-
     public void mergeSort(int[] a, int[] tmp, int left, int right) {
-        if ( left < right ) {
+        if (left < right) {
             int center = (left + right) / 2;
             mergeSort(a, tmp, left, center);
             mergeSort(a, tmp, center + 1, right);
@@ -25,13 +24,12 @@ public class MergeSort {
         int rightStart = mid + 1;
         // note k = leftStart
         int k = leftStart;
-        int num = rightEnd - leftStart + 1;
+        int len = rightEnd - leftStart + 1;
 
         while (leftStart <= leftEnd && rightStart <= rightEnd) {
             if (a[leftStart] <= a[rightStart]) {
                 tmp[k++] = a[leftStart++];
-            }
-            else {
+            } else {
                 tmp[k++] = a[rightStart++];
             }
         }
@@ -43,8 +41,9 @@ public class MergeSort {
         while (rightStart <= rightEnd) {
             tmp[k++] = a[rightStart++];         
         }
+        // note
         // Copy tmp back
-        for (int i = 0; i < num; i++, rightEnd--) {
+        for (int i = 0; i < len; i++, rightEnd--) {
             a[rightEnd] = tmp[rightEnd];
         }
     }
@@ -58,6 +57,7 @@ public class MergeSort {
             merge(a, tmp, left, middle, right);
         }
     }
+
     public void merge(int[] a, int[] tmp, int leftStart, int mid, int rightEnd) {
         int leftEnd = mid;
         int rightStart = mid + 1;
@@ -67,8 +67,7 @@ public class MergeSort {
         while (leftStart <= leftEnd && rightStart <= rightEnd) {
             if (a[leftStart] < a[rightStart]) {
                 tmp[k++] = a[leftStart++];
-            }
-            else {
+            } else {
                 tmp[k++] = a[rightStart++];
             }
         }
