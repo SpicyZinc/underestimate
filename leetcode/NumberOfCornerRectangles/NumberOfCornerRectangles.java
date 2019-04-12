@@ -34,10 +34,39 @@ The number of 1s in the grid will be at most 6000.
 
 idea:
 https://www.cnblogs.com/grandyang/p/8433813.html
-1. 最直接的方法就是找四个顶点
+1. 最直接的方法就是找四个顶点 每个顶点都可以作为 rectangle 的顶点
+2. 原理是两行同时遍历
+如果两行中相同列位置的值都为1
+则计数器cnt自增1
+那么最后就相当于有了(cnt - 1)个相邻的格子
+问题就转化为了求cnt-1个相邻的格子能组成多少个矩形
+就变成了初中数学问题了
+共有cnt*(cnt-1)/2个
 */
 
 class NumberOfCornerRectangles {
+	// Thu Apr 11 22:18:07 2019
+	public int countCornerRectangles(int[][] grid) {
+		int result = 0;
+		int m = grid.length;
+		int n = grid[0].length;
+
+		for (int i = 0; i < m; i++) {
+			for (int j = i + 1; j < m; j++) {
+				int cnt = 0;
+				for (int k = 0; k < n; k++) {
+					if (grid[i][k] == grid[j][k] && grid[i][k] == 1) {
+						cnt++;
+					}
+				}
+				// 有 cnt 列 上下两行相等, 可以组成多少矩形
+				result += ((1 + (cnt - 1)) * (cnt - 1) / 2);
+			}
+		}
+
+		return result;
+	}
+
 	public int countCornerRectangles(int[][] grid) {
 		int cnt = 0;
 		int m = grid.length;
