@@ -22,6 +22,7 @@ class TrieNode {
         this.children = new TrieNode[26];
         this.isLeaf = false;
     }
+
     public TrieNode(char c) {
         this.c = c;
         this.children = new TrieNode[26];
