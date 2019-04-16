@@ -24,7 +24,7 @@ class Node {
         bottomLeft = _bottomLeft;
         bottomRight = _bottomRight;
     }
-};
+}
 
 public class ConstructQuadTree {
     public Node construct(int[][] grid) {
