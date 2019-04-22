@@ -81,7 +81,6 @@ public class AddBoldTagInString {
         sb.append(s.substring(last));
 
         return sb.toString();
-        
     }
     
     public List<Interval> merge(List<Interval> intervals) {
@@ -89,7 +88,7 @@ public class AddBoldTagInString {
         if (intervals.size() == 0) {
             return merged;
         }
-        
+
         // sort intervals based on the start
         Collections.sort(intervals, new Comparator<Interval>() {
             @Override
@@ -110,7 +109,7 @@ public class AddBoldTagInString {
                 prev.end = Math.max(prev.end, curr.end);
             }
         }
-        
+
         return merged;
     }
 }
