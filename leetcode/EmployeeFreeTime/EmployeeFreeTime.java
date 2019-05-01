@@ -28,27 +28,45 @@ Note:
 schedule and schedule[i] are lists with lengths in range [1, 50].
 0 <= schedule[i].start < schedule[i].end <= 10^8.
 
+NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
+
 idea:
 it does not matter how many employees here
 dump all intervals by addAll() to get all intervals,
 set first as prev, update prev, then find all gaps between intervals
 */
 
+class Interval {
+	int start;
+	int end;
+
+	public Interval(int start, int end) {
+		this.start = start;
+		this.end = end;
+	}
+}
+
 class EmployeeFreeTime {
-	public List<Interval> employeeFreeTime(List<List<Interval>> avails) {
-		List<Interval> result = new ArrayList<>();
-		List<Interval> timeLine = new ArrayList<>();
+	// Sun Apr 28 23:23:01 2019
+	public int[][] employeeFreeTime(int[][][] schedule) {
+		List<Interval> schedules = new ArrayList<>();
 
-		for (List<Interval> avail : avails) {
-			timeLine.addAll(avail);
+		for (int[][] employee : schedule) {
+			for (int[] span : employee) {
+				int start = span[0];
+				int end = span[1];
+
+				schedules.add(new Interval(start, end));
+			}
 		}
-		Collections.sort(timeLine, (a, b) -> a.start - b.start);
+		Collections.sort(schedules, (a, b) -> a.start - b.start);
 
-		Interval prev = timeLine.get(0);
-		for (Interval interval : timeLine) {
+		List<int[]> result = new ArrayList<>();
+		Interval prev = schedules.get(0);
+
+		for (Interval interval : schedules) {
 			if (prev.end < interval.start) {
-				Interval gap = new Interval(prev.end, interval.start);
-				result.add(gap);
+				result.add(new int[] {prev.end, interval.start});
 				// update prev as current
 				prev = interval;
 			} else {
@@ -56,6 +74,11 @@ class EmployeeFreeTime {
 			}
 		}
 
-		return result;
+		int[][] freeTimes = new int[result.size()][2];
+		for (int i = 0; i < freeTimes.length; i++) {
+			freeTimes[i] = result.get(i);
+		}
+
+		return freeTimes;
 	}
 }

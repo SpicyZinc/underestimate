@@ -23,38 +23,41 @@ Therefore, you need to return above trees' root in the form of a list.
 idea:
 无非就是 traversal plus hashmap
 hashmap needs key, so serialize the tree as key
-不能用object reference 就是 像 而不是 address same
+不能用 object reference 就是 像 而不是 address same
 */
 
 class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
+	int val;
+	TreeNode left;
+	TreeNode right;
+	TreeNode(int x) { val = x; }
 }
 
 class FindDuplicateSubtrees {
+	// Sun Apr 28 18:59:12 2019
 	public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-		List<TreeNode> result = new ArrayList<TreeNode>();
-		Map<String, Integer> hm = new HashMap<String, Integer>();
-		preorderSerial(root, hm, result);
+		List<TreeNode> result = new ArrayList<>();
+		// key is serialized from root to current node
+		// value is the count
+		Map<String, Integer> hm = new HashMap<>();
+		serialize(root, hm, result);
 
 		return result;
 	}
-
-	private String preorderSerial(TreeNode cur, Map<String, Integer> hm, List<TreeNode> result) {
-		if (cur == null) {
+	// preorder traversal
+	public String serialize(TreeNode node, Map<String, Integer> hm, List<TreeNode> result) {
+		if (node == null) {
 			return "#";
 		}
 
-		String serial = cur.val + "," + preorderSerial(cur.left, hm, result) + "," + preorderSerial(cur.right, hm, result);
+		String key = node.val + "," + serialize(node.left, hm, result) + "" + serialize(node.right, hm, result);
+		hm.put(key, hm.getOrDefault(key, 0) + 1);
 
-		hm.put(serial, hm.getOrDefault(serial, 0) + 1);
-		if (hm.get(serial) == 2) {
-			result.add(cur);
+		if (hm.get(key) == 2) {
+			result.add(node);
 		}
 
-		return serial;
+		return key;
 	}
 }
 

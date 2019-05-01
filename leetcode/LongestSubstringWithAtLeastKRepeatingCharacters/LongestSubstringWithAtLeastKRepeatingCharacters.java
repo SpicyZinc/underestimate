@@ -28,29 +28,38 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
 		int max = eg.longestSubstring("ababacb", 3);
 		System.out.println("max == " + max);
 	}
-	// self written recent
+
+	// Sun Apr 28 00:45:02 2019
     public int longestSubstring(String s, int k) {
-        if (s.length() == 0 || s == null) return 0;
-        if (k == 0) return s.length();
+        if (s.length() == 0 || s == null) {
+            return 0;
+        }
+
+        if (k == 0) {
+        	return s.length();
+        }
+
         // record each character appearing times, can also use letters[26] as hash
-        Map<Character, Integer> hm = new HashMap<Character, Integer>();
+        Map<Character, Integer> hm = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             hm.put(c, hm.getOrDefault(c, 0) + 1);
         }
-        // there is no letter appearing < k times
+        // there is no one letter appearing < k times
         boolean noCharLessThanKTime = true;
         for (int frequency : hm.values()) {
             if (frequency < k) {
                 noCharLessThanKTime = false;
             }
         }
-        if (noCharLessThanKTime) return s.length();
+        if (noCharLessThanKTime) {
+        	return s.length();
+        }
         
         int maxLen = 0;
         int left = 0;
         // because loop from i = 0, first char less than k times,
-        // substring before this char guarantees that no char in this substring less than k times
+        // substring before this char guarantees that no one char in this substring less than k times
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             int frequency = hm.get(c);
