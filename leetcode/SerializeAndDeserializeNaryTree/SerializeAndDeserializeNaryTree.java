@@ -20,7 +20,8 @@ Do not use class member/global/static variables to store states. Your serialize 
 
 idea:
 dfs
-encode size of children into the string
+first, encode value
+then, encode size of children into the string
 use , as a separator
 */
 
@@ -37,12 +38,62 @@ class Node {
 };
 
 class SerializeAndDeserializeNaryTree {
+	// Wed May  1 00:16:07 2019
+	String delimiter = ",";
+    // Encodes a tree to a single string.
+    public String serialize(Node root) {
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        
+        return sb.toString();
+    }
+    
+    public void serialize(Node node, StringBuilder sb) {
+        if (node == null) {
+            return;
+        }
+        
+        sb.append(node.val);
+        sb.append(delimiter);
+        sb.append(node.children.size());
+        sb.append(delimiter);
+
+        for (Node child : node.children) {
+            serialize(child, sb);
+        }
+    }
+
+    // Decodes your encoded data to tree.
+    public Node deserialize(String data) {
+		if (data.isEmpty()) {
+			return null;
+		}
+
+        String[] matches = data.split(delimiter);
+        List<String> nodes = new ArrayList<>(Arrays.asList(matches));
+        
+        return deserialize(nodes);
+    }
+    
+    public Node deserialize(List<String> nodes) {
+        int val = Integer.parseInt(nodes.remove(0));
+        int size = Integer.parseInt(nodes.remove(0));
+
+        Node root = new Node(val, new ArrayList<Node>());
+        for (int i = 0; i < size; i++) {
+            root.children.add(deserialize(nodes));   
+        }
+        
+        return root;
+    }
+
 	// 12/04/2018
 	private static final String delimiter = ",";
 	// Encodes a tree to a single string.
     public String serialize(Node root) {
         StringBuilder sb = new StringBuilder();
         serialize(root, sb);
+
         return sb.toString();
     }
     
@@ -51,8 +102,11 @@ class SerializeAndDeserializeNaryTree {
             return;
         }
 
-        sb.append(node.val).append(delimiter);
-        sb.append(node.children.size()).append(delimiter);
+        sb.append(node.val)
+        sb.append(delimiter);
+
+        sb.append(node.children.size());
+        sb.append(delimiter);
         
         for (Node child : node.children) {
             serialize(child, sb);

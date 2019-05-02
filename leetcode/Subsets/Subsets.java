@@ -60,19 +60,26 @@ public class Subsets {
     }
     // a more decent method
     public List<List<Integer>> subsets(int[] nums) {
+        int n = nums.length;
+        int size = (int) Math.pow(2, n);
+        
         List<List<Integer>> result = new ArrayList<>();
-        int size = (int) Math.pow(2, nums.length);
+
         for (int i = 0; i < size; i++) {
+            // save i as combination, convert it to 32-bit
             int combination = i;
-            List<Integer> path = new ArrayList<Integer>();
+
+            List<Integer> path = new ArrayList<>();            
             for (int num : nums) {
                 if ((combination & 1) == 1) {
                     path.add(num);
                 }
                 combination >>= 1;
             }
+            
             result.add(path);
         }
+        
         return result;
     }
 }

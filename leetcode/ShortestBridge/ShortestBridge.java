@@ -23,14 +23,17 @@ Note:
 A[i][j] == 0 or A[i][j] == 1
 
 idea:
-dfs to find an island, visited array used
-then dfs to find the another island, smallest number of flip from 0 to 1
+只有两个 island
+dfs to find 1st island, visited array used
+then bfs 从这island的点出发 找到0 flip 记录step
+then bfs to find the another island, smallest number of flip from 0 to 1
 */
 
 class ShortestBridge {
 	public int shortestBridge(int[][] A) {
 		int m = A.length;
 		int n = A[0].length;
+
 		boolean[][] visited = new boolean[m][n];
 
 		int[][] directions =  {

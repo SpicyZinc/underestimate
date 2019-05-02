@@ -48,17 +48,17 @@ public class WallsAndGates {
             }
         }
     }
-    
-    public void dfsFill(int[][] rooms, int i, int j, int distance) {
-        int m = rooms.length;
-		int n = rooms[0].length;
 
+    public void dfsFill(int[][] rooms, int i, int j, int distance) {
 		int[][] directions = new int[][] {
 			{0, 1},
 			{0, -1},
 			{1, 0},
 			{-1, 0}
 		};
+
+		int m = rooms.length;
+		int n = rooms[0].length;
         
         for (int[] dir : directions) {
             int newX = i + dir[0];
@@ -67,7 +67,7 @@ public class WallsAndGates {
             if (newX >= 0 && newX < m && newY >= 0 && newY < n && rooms[newX][newY] > distance + 1) {
                 rooms[newX][newY] = distance + 1;
                 dfsFill(rooms, newX, newY, distance + 1);
-            }           
+            }
         }
     }
 

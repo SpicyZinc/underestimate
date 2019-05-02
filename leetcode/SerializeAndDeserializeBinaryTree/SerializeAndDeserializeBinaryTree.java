@@ -92,6 +92,7 @@ public class SerializeAndDeserializeBinaryTree {
         if (node == null) {
             sb.append(empty);
             sb.append(delimiter);
+
             return;
         }
 
