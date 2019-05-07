@@ -19,40 +19,39 @@ idea:
 dfs, if can be partitioned, sum must be an even number
 subtract one by one from the sum, if final zero, return true
 otherwise, cannot be partitioned
-
 */
 
 public class PartitionEqualSubsetSum {
-    public boolean canPartition(int[] nums) {
-        if (nums.length == 0 || nums == null) {
-        	return false;
-        }
+	public boolean canPartition(int[] nums) {
+		if (nums.length == 0 || nums == null) {
+			return false;
+		}
 
-        int sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-        	sum += nums[i];
-        }
+		int sum = 0;
+		for (int i = 0; i < nums.length; i++) {
+			sum += nums[i];
+		}
 
-        if (sum % 2 == 1) {
-        	return false;
-        }
-        
-        return dfs(nums, 0, sum / 2);
-    }
+		if (sum % 2 == 1) {
+			return false;
+		}
+		
+		return dfs(nums, 0, sum / 2);
+	}
 
-    public boolean dfs(int[] nums, int start, int sum) {
-    	if (sum == 0) {
-    		return true;
-    	} else if (sum < 0) {
-    		return false;
-    	}
+	public boolean dfs(int[] nums, int pos, int sum) {
+		if (sum == 0) {
+			return true;
+		} else if (sum < 0) {
+			return false;
+		}
 
-    	for (int i = start; i < nums.length; i++) {
-    		if (dfs(nums, i + 1, sum - nums[i])) {
-    		    return true;
-    		}
-    	}
+		for (int i = pos; i < nums.length; i++) {
+			if (dfs(nums, i + 1, sum - nums[i])) {
+				return true;
+			}
+		}
 
-    	return false;
-    }
+		return false;
+	}
 }

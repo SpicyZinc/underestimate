@@ -21,8 +21,9 @@ We guarantee that the length of online time series meet 1 <= len <= 1e6.
 For a user's online time series, any two of its sections do not intersect.
 
 idea:
-sweep line did not figure out
-use different method
+deepmap by Ming Cui
+找到两个人的共有时间段 或是 两件飞机在天上的时间
+淘汰不在 intersection 内的 by i++ or j++
 */
 
 import java.util.*;
@@ -39,8 +40,10 @@ class Interval {
 public class TimeIntersection {
 	public static void main(String[] args) {
 		TimeIntersection eg = new TimeIntersection();
+
 		List<Interval> a = new ArrayList<>();
 		List<Interval> b = new ArrayList<>();
+
 		a.add(new Interval(1, 2));
 		a.add(new Interval(5, 100));
 
@@ -169,6 +172,7 @@ public class TimeIntersection {
 		Collections.sort(points, (p1, p2) -> p1.x - p2.x);
 
 		int count = 0;
+		// a time for the start of some intersection
 		int start = -1;
 
 		List<Interval> result = new ArrayList<>();

@@ -24,17 +24,54 @@ The input is two lists: the subroutines called and their arguments. Solution's c
 
 idea:
 https://www.cnblogs.com/grandyang/p/9784690.html
-the rest is
-search insert index
+the rest is search insert index
 */
 
 class RandomPickWithWeight {
+	// Mon May  6 00:14:30 2019
+	int[] sum;
+    Random random;
+    
+    public Solution(int[] w) {
+        this.sum = new int[w.length];
+        this.sum[0] = w[0];
+        for (int i = 1; i < w.length; i++) {
+            this.sum[i] = this.sum[i - 1] + w[i];
+        }
+        
+        this.random = new Random();
+    }
+    
+    public int pickIndex() {
+        int sumWeights = sum[sum.length - 1];
+        int r = random.nextInt(sumWeights) + 1;
+        
+        // search for inserted position for r
+        int left = 0;
+        int right = sum.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (sum[mid] < r) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return left;
+    }
+
+
+
 	Random random;
 	int[] sum;
 
 	public Solution(int[] w) {
 		this.random = new Random();
 		this.sum = w;
+
 		for (int i = 1; i < w.length; i++) {
 			this.sum[i] = this.sum[i - 1] + w[i];
 		}
@@ -42,8 +79,9 @@ class RandomPickWithWeight {
 
 	public int pickIndex() {
 		int len = sum.length;
-		int limit = sum[len - 1];
-		int r = random.nextInt(limit) + 1;
+		int sumWeights = sum[len - 1];
+
+		int r = random.nextInt(sumWeights) + 1;
 
 		// search insert position
 		int left = 0;
@@ -51,6 +89,7 @@ class RandomPickWithWeight {
 
 		while (left <= right) {
 			int mid = left + (right - left) / 2;
+
 			if (sum[mid] < r) {
 				left = mid + 1;
 			} else {

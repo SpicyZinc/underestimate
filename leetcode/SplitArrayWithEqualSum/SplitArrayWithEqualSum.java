@@ -20,43 +20,59 @@ Note:
 Elements in the given array will be in range [-1,000,000, 1,000,000].
 
 idea:
-note, 三个位置上的数字不属于任何一段
 https://www.cnblogs.com/grandyang/p/6854492.html
+换一个角度
+先搜索j的位置
+那么i和k的位置就可以固定在一个小的范围内了
+而且可以在j的循环里面同时进行
+这样就少嵌套了一个循环
+所以时间复杂度会降一维度
+
+
+note, 三个位置上的数字不属于任何一段
 */
 
 public class SplitArrayWithEqualSum {
-    public boolean splitArray(int[] nums) {
-        int n = nums.length;
-        if (n < 7) {
-            return false;
-        }
+	public boolean splitArray(int[] nums) {
+		int n = nums.length;
 
-        // accumulative sum
-        int[] sum = new int[n];
-        sum[0] = nums[0];
-        for (int i = 1; i < n; i++) {
-            sum[i] = sum[i - 1] + nums[i];
-        }
-        // i, j, k 以 j 为准
-        // 左右各留三个
-        for (int j = 3; j < n - 3; j++) {
-            Set<Integer> set = new HashSet<>();
+		if (n < 7) {
+			return false;
+		}
 
-            for (int i = 1; i < j - 1; i++) {
-                if (sum[i - 1] == sum[j - 1] - sum[i]) {
-                    set.add(sum[i - 1]);
-                }
-            }
+		// accumulative sum
+		int[] sum = new int[n];
+		sum[0] = nums[0];
 
-            for (int k = j + 2; k < n - 1; k++) {
-                int s3 = sum[k - 1] - sum[j];
-                int s4 = sum[n - 1] - sum[k];
-                if (s3 == s4 && set.contains(sum[k - 1] - sum[j])) {
-                    return true;
-                }
-            }
-        }
+		for (int i = 1; i < n; i++) {
+			sum[i] = sum[i - 1] + nums[i];
+		}
 
-        return false;
-    }
+		// i, j, k 以 j 为准
+		// 左右各留三个
+		for (int j = 3; j < n - 3; j++) {
+			Set<Integer> set = new HashSet<>();
+
+			// 以j为界 分别loop i and k
+			for (int i = 1; i < j - 1; i++) {
+				int s1 = sum[i - 1];
+				int s2 = sum[j - 1] - sum[i];
+
+				if (s1 == s2) {
+					set.add(s1);
+				}
+			}
+			// 以j为界 分别loop i and k
+			for (int k = j + 2; k < n - 1; k++) {
+				int s3 = sum[k - 1] - sum[j];
+				int s4 = sum[n - 1] - sum[k];
+
+				if (s3 == s4 && set.contains(s3)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 }

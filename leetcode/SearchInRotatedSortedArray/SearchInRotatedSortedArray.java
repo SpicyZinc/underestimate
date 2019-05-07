@@ -46,21 +46,19 @@ public class SearchInRotatedSortedArray {
             if (A[mid] == target) {
                 return mid;
             }
+
             // right part is sorted
             if (A[start] > A[mid]) {
                 // find where the target is
                 if (A[mid + 1] <= target && target <= A[end]) { // in sorted right part
                     start = mid + 1;
-                }
-                else { // in unsorted left part
+                } else { // in unsorted left part
                     end = mid - 1;
                 }
-            }
-            else { // left part is sorted
+            } else { // left part is sorted
                 if (A[start] <= target && target <= A[mid]) {
                     end = mid - 1;
-                }
-                else {
+                } else {
                     start = mid + 1;
                 }
             }
@@ -75,6 +73,7 @@ public class SearchInRotatedSortedArray {
         
         while (left <= right) {
             int mid = left + (right - left) / 2;
+
             if (A[mid] == target) {
                 return mid;                
             }
@@ -136,10 +135,10 @@ public class SearchInRotatedSortedArray {
         if (nums[pivot] == target) {
             return pivot;
         }
+
         if (nums[0] > target) {
             return binarySearch(nums, target, pivot + 1, n - 1);
-        }
-        else {
+        } else {
             return binarySearch(nums, target, 0, pivot - 1);
         }
     }
@@ -154,8 +153,7 @@ public class SearchInRotatedSortedArray {
         }
         if (a[mid] > target) {
             return binarySearch(a, target, start, mid - 1);
-        }
-        else {
+        } else {
             return binarySearch(a, target, mid + 1, end);
         }
     }
@@ -177,8 +175,7 @@ public class SearchInRotatedSortedArray {
         }
         if (a[start] >= a[mid]) {
             return findPivot(a, start, mid - 1);
-        }
-        else {
+        } else {
             return findPivot(a, mid + 1, end);   
         }
     }
@@ -194,11 +191,9 @@ public class SearchInRotatedSortedArray {
 
             if (a[mid] == x) {
                 return mid;
-            }
-            else if (a[mid] > x) {
+            } else if (a[mid] > x) {
                 end = mid - 1;
-            }
-            else {
+            } else {
                 start = mid + 1;
             }
         }

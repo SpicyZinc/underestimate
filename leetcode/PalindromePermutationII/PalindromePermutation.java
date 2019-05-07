@@ -28,6 +28,7 @@ class PalindromePermutation {
 		List<String> result = eg.generatePalindromes(s);
 		System.out.println(result);
 	}
+
 	// 27 / 29 test cases passed.
 	// Memory Limit Exceeded
 	public List<String> generatePalindromes(String s) {
@@ -63,8 +64,8 @@ class PalindromePermutation {
 
 		Set<String> hs = new HashSet<>();
 		for (StringBuilder permutation : permutations) {
-			String possibleAnswer = permutation.toString() + mid + permutation.reverse().toString();
-			hs.add(possibleAnswer);
+			String palindrome = permutation.toString() + mid + permutation.reverse().toString();
+			hs.add(palindrome);
 		}
 
 		return new ArrayList<String>(hs);

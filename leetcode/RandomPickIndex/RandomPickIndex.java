@@ -23,49 +23,48 @@ idea:
 
 // method 1
 public class RandomPickIndex {
-	HashMap<Integer, List<Integer>> hm;
-	Random random = new Random();
+	// Sun May  5 23:35:25 2019
+	Map<Integer, List<Integer>> hm;
+	Random random;
 
-    public Solution(int[] nums) {
-    	hm = new HashMap<Integer, ArrayList<Integer>>();
-    	for (int i = 0; i < nums.length; i++ {
-    		if (hm.containsKey(nums[i])) {
-    			List<Integer> temp = hm.get(nums[i]);
-    			temp.add(i);
-    		} else {
-	    		List<Integer> temp = new ArrayList<Integer>();
-	    		temp.add(i);
-	    		hm.put(nums[i], temp);
-    		}
-    	}
-        
-    }
-    
-    public int pick(int target) {
-		List<Integer> result = hm.get(target);
-		int randomIndex = random.nextInt(result.size());
-		return result.get(randomIndex);
-    }
+	public Solution(int[] nums) {
+		this.hm = new HashMap<>();
+		this.random = new Random();
+
+		for (int i = 0; i < nums.length; i++) {
+			hm.computeIfAbsent(nums[i], x -> new ArrayList<>()).add(i);
+		}
+		
+	}
+
+	public int pick(int target) {
+		List<Integer> list = hm.get(target);
+		int randomIndex = random.nextInt(list.size());
+
+		return list.get(randomIndex);
+	}
 }
 
 // method 2
 public class RandomPickIndex {
 	int[] nums;
 	Random random;
+
 	public Solution(int[] nums) {
-        this.nums = nums;
-        random = new Random();
-    }
-    
-    public int pick(int target) {
-    	List<Integer> targets = new ArrayList<Integer>();
-    	for (int i = 0; i < this.nums.length; i++) {
-    		if (nums[i] == target) {
-    			targets.add(i);
-    		}
-    	}
-    	return targets.get(random.nextInt(targets.size()));
-    }
+		this.nums = nums;
+		this.random = new Random();
+	}
+	
+	public int pick(int target) {
+		List<Integer> targets = new ArrayList<>();
+		for (int i = 0; i < this.nums.length; i++) {
+			if (nums[i] == target) {
+				targets.add(i);
+			}
+		}
+
+		return targets.get(random.nextInt(targets.size()));
+	}
 }
 
 // method 3
@@ -78,10 +77,11 @@ public class Solution {
         this.nums = nums;        
         this.random = new Random();
     }
-    
+
     public int pick(int target) {
         int index = -1;
         int count = 0;
+
         for (int i = 0; i < this.nums.length; i++) {
             if (this.nums[i] != target) {
                 continue;
@@ -90,6 +90,7 @@ public class Solution {
                 index = i;
             }
         }
+
         return index;
     }
 }

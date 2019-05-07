@@ -31,7 +31,7 @@ idea:
 key structure is hash table
 key is message
 value is timestamp
-
+simple enough
 */
 
 public class Logger {
@@ -39,7 +39,7 @@ public class Logger {
 
     /** Initialize your data structure here. */
     public Logger() {
-        hm = new HashMap<String, Integer>();
+        hm = new HashMap<>();
     }
 
     public boolean shouldPrintMessage(Integer timestamp, String message) {

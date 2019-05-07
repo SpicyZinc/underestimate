@@ -25,6 +25,57 @@ bfs
 build each stop where a list of buses could stop
 */
 class BusRoutes {
+	// Sun May  5 18:24:00 2019
+	public int numBusesToDestination(int[][] routes, int S, int T) {
+        if (S == T) {
+            return 0;
+        }
+        
+        Map<Integer, List<Integer>> hm = new HashMap<>();
+        // stop <-> a list of buses could stop at this stop
+        for (int i = 0; i < routes.length; i++) {
+            int bus = i;
+            int[] stops = routes[i];
+
+            for (int stop : stops) {
+                hm.computeIfAbsent(stop, x -> new ArrayList<>()).add(bus);
+            }
+        }
+        
+        Set<Integer> visited = new HashSet<>();
+        int cntBuses = 0;
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(S);
+        
+        while (!queue.isEmpty()) {
+            cntBuses++;
+            
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int currStop = queue.poll();
+                List<Integer> buses = hm.get(currStop);
+
+                for (int bus : buses) {
+                    if (!visited.contains(bus)) {
+                        visited.add(bus);
+
+                        for (int stop : routes[bus]) {
+                            if (stop == T) {
+                                return cntBuses;
+                            }
+                            queue.add(stop);
+                        }
+                    }
+                }
+            }
+
+        }
+        
+        return -1;
+    }
+
+
 	public int numBusesToDestination(int[][] routes, int S, int T) {
 		Set<Integer> visited = new HashSet<>();
 		Queue<Integer> queue = new LinkedList<>();

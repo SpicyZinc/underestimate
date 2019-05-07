@@ -15,24 +15,24 @@ count the occurrence of each character, only at most one character appearing odd
 or use hash table
 */
 public class PalindromePermutation {
-    public boolean canPermutePalindrome(String s) {
-    	int[] cnts = new int[256];
-        for (int i = 0; i < s.length(); i++) {
-        	char c = s.charAt(i);
-        	cnts[c] += 1;
-        }
+	public boolean canPermutePalindrome(String s) {
+		int[] cnts = new int[256];
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			cnts[c] += 1;
+		}
 
-        boolean hasOneOddChar = false;
-        for (int i = 0; i < cnts.length; i++) {
-        	if (cnts[i] % 2 == 1) {
-	        	if (!hasOneOddChar) {
-	        		hasOneOddChar = true;
-	        	} else {
-	        		return false;
-	        	}
-        	}
-        }
+		boolean hasOneOddChar = false;
+		for (int i = 0; i < cnts.length; i++) {
+			if (cnts[i] % 2 == 1) {
+				if (!hasOneOddChar) {
+					hasOneOddChar = true;
+				} else {
+					return false;
+				}
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

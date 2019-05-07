@@ -153,9 +153,9 @@ public class SlidingWindowMaximum {
     // priority queue version
     public int[] maxSlidingWindow(int[] nums, int k) {
         if (nums.length == 0 || nums == null) {
-            return new int[] {};    
+            return new int[] {};
         }
-        
+
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
             @Override
             public int compare(Integer a, Integer b) {

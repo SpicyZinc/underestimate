@@ -12,11 +12,55 @@ Note:
 0 < nums[i] < 10000.
 
 idea:
-罪暴力最原始的 dfs 应该会
-k==1 partition to 1 subset, 就是不 partition
+最暴力最原始的 dfs 应该会
+k == 1 partition to 1 subset, 就是不 partition
+
+就是 挑着 加成 target (sum / k) 的一些数 marked as visited
+剩下的就是 partition to (k - 1) parts
 */
 
 class PartitionToKEqualSumSubsets {
+	// Sat May  4 23:50:58 2019
+	public boolean canPartitionKSubsets(int[] nums, int k) {
+        int n = nums.length;
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum % k != 0) {
+            return false;
+        }
+        
+        boolean[] visited = new boolean[n];
+        
+        return dfs(nums, k, sum / k, 0, 0, visited);
+    }
+
+    public boolean dfs(int[] nums, int k, int target, int pos, int sum, boolean[] visited) {
+        if (k == 1) {
+            return true;
+        }
+        
+        if (sum == target) {
+            return dfs(nums, k - 1, target, 0, 0, visited);
+        }
+        
+        for (int i = pos; i < nums.length; i++) {
+            if (visited[i]) {
+                continue;
+            }
+            
+            visited[i] = true;
+            if (dfs(nums, k, target, i + 1, sum + nums[i], visited)) {
+                return true;
+            }
+            visited[i] = false;
+        }
+        
+        return false;
+    }
+
+
 	public boolean canPartitionKSubsets(int[] nums, int k) {
 		int sum = 0;
 		for (int num : nums) {
@@ -32,7 +76,7 @@ class PartitionToKEqualSumSubsets {
 		return dfs(nums, k, sum / k, 0, 0, visited);
 	}
 
-	public boolean dfs(int[] nums, int k, int target, int start, int sum, boolean[] visited) {
+	public boolean dfs(int[] nums, int k, int target, int pos, int sum, boolean[] visited) {
 		if (k == 1) {
 			return true;
 		}
@@ -41,7 +85,7 @@ class PartitionToKEqualSumSubsets {
 			return dfs(nums, k - 1, target, 0, 0, visited);
 		}
 
-		for (int i = start; i < nums.length; i++) {
+		for (int i = pos; i < nums.length; i++) {
 			if (visited[i]) {
 				continue;
 			}

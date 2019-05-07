@@ -23,13 +23,88 @@ In 4 cards representing 4 numbers, choose 2 numbers (with order) in 12 ways and 
 Then, with 3 remaining numbers, choose 2 of them and perform one of 4 operations (6 * 4)
 finally 2 numbers left and make a final choice of 2 * 4 possibilities.
 
-12 * 4
-6 * 4
-2 * 4
-possibilities
+12 * 4 + 
+6 * 4 +
+2 * 4 +
 
+possibilities
 */
+
 class 24Game {
+    // Sun May  5 20:12:10 2019
+    public boolean judgePoint24(int[] nums) {
+        List<Double> numbers = new ArrayList<Double>();
+        for (int num : nums) {
+            numbers.add((double) num);
+        }
+
+        return dfs(numbers);
+    }
+    
+    public boolean dfs(List<Double> nums) {
+        int n = nums.size();
+        
+        if (n == 0) {
+            return false;
+        }
+        
+        if (n == 1) {
+            return Math.abs(nums.get(0) - 24) < 0.000006;
+        }
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i != j) {
+                    List<Double> remaining = new ArrayList<>();
+                    for (int k = 0; k < n; k++) {
+                        if (i != k && j != k) {
+                            remaining.add(nums.get(k));
+                        }
+                    }
+                    
+                    // + * - / operations
+                    for (int k = 0; k < 4; k++) {
+                        if (k < 2 && i < j) {
+                            continue;
+                        }
+                        
+                        double a = nums.get(i);
+                        double b = nums.get(j);
+
+                        if (k == 0) {
+                            remaining.add(a + b);                            
+                        }
+                        
+                        if (k == 1) {
+                            remaining.add(a * b);                            
+                        }
+                        
+                        if (k == 2) {
+                            remaining.add(a - b);
+                        }
+                        
+                        if (k == 3) {
+                            if (b != 0) {
+                                remaining.add(a / b);
+                            } else {
+                                continue;
+                            }
+                        }
+                        
+                        if (dfs(remaining)) {
+                            return true;
+                        }
+                        
+                        remaining.remove(remaining.size() - 1);
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+
+
     public boolean judgePoint24(int[] nums) {
         List<Double> numbers = new ArrayList<Double>();
         for (int num : nums) {
@@ -39,14 +114,16 @@ class 24Game {
     }
     
     public boolean dfs(List<Double> nums) {
-        if (nums.size() == 0) {
+        int n = nums.size();
+
+        if (n == 0) {
             return false;
         }
-        if (nums.size() == 1) {
+
+        if (n == 1) {
             return Math.abs(nums.get(0) - 24) < 0.000006;
         }
         
-        int n = nums.size();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 // make sure it's different two cards

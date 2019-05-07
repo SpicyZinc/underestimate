@@ -13,7 +13,6 @@ simply move the left pointer to the its next element
 note: two equal signs
 if (target > nums[mid] && target <= nums[right]) {
 if (target >= nums[left] && target < nums[mid]) {
-
 */
 
 public class SearchInRotatedSortedArray  {
@@ -23,7 +22,7 @@ public class SearchInRotatedSortedArray  {
         }
           
         int left = 0;  
-        int right = A.length-1;
+        int right = A.length - 1;
           
         while (left <= right) {  
             int middle = left + (right - left) / 2;  
@@ -66,9 +65,10 @@ public class SearchInRotatedSortedArray  {
             if (nums[mid] == target) {
                 return true;
             }
+
             // left part is sorted
             if (nums[mid] > nums[end]) {
-                // case of A[middle] is a duplicate of left most element
+                // case of A[mid] is a duplicate of left most element
                 if (nums[mid] == nums[end] && mid != end) {  
                     mid++;  
                     continue;  

@@ -23,18 +23,22 @@ Your output answer is guaranteed to be fitted in a 32-bit integer.
 
 idea:
 DFS Solution is the only way I think of at first thought
-
 */
+
 public class TargetSum {
     public int findTargetSumWays(int[] nums, int S) {
         int[] cnt = new int[1];
         dfs(nums, 0, 0, cnt, S);
+
         return cnt[0];
     }
     
     public void dfs(int[] nums, int pos, int sum, int[] cnt, int S) {
         if (pos == nums.length) {
-            if (sum == S) cnt[0]++;
+            if (sum == S) {
+                cnt[0]++;
+            }
+
             return;    
         }
         

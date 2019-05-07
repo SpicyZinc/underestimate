@@ -26,7 +26,9 @@ public class MeetingRooms {
 
 		int count = 0;
 		int ans = 0;
+
 		Collections.sort(list, Point.PointComparator);
+
 		for (Point p : list) {
 			if (p.flag == 1) {
 				count++;

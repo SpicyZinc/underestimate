@@ -7,7 +7,7 @@ You may assume no duplicate exists in the array.
 idea:
 binary search
 made 栽在 michelle shi 的手中 赖自己居然不会 找最小 在 rotated sorted array
-记住 最小的一定在 rotated part 
+记住 最小的一定在 rotated part
 note, use mid to update left or right
 note, the minimum element's previous one is bigger than the minimum, which breaks the fact that the array is sorted
 */
@@ -22,6 +22,7 @@ public class FindMinimumInSortedArray {
         }
         
         while (left < right) {
+            // 恰巧 right 必是min, 最小的一定在 rotated part
             if (left + 1 == right) {
                 return nums[right];
             }
@@ -52,7 +53,8 @@ public class FindMinimumInSortedArray {
         
         while (left < right) {
             int mid = left + (right - left) / 2;
-            // 恰巧pivot 在 mid - 1, mid, mid + 1 的特殊情况
+            // 恰巧 pivot (rotated point) 在 mid - 1, mid, mid + 1 的特殊情况
+
             // mid at least == left + 1
             // mid - 1 == left, so return is valid in the range    
             if (mid > left && nums[mid - 1] > nums[mid]) {

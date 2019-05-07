@@ -30,7 +30,7 @@ Output: "Neither"
 Explanation: This is neither a IPv4 address nor a IPv6 address.
 
 idea:
-1. direct parse
+1. direct parse, split by . or :, parse each token to see if ipv4 or ipv6
 2. regex
 */
 
@@ -50,106 +50,111 @@ public class ValidateIPAddress {
 		System.out.println(e);
 		System.out.println(f);
 	}
-
+	// Sun May  5 02:21:58 2019
 	public String validIPAddress(String IP) {
-    	if (isValidIPv4(IP)) {
-    		return "IPv4";
-    	}
-    	else if (isValidIPv6(IP)) {
-    		return "IPv6";
-    	}
-    	else {
-        	return "Neither";
-    	}
+        if (isValidIPv4(IP)) {
+            return "IPv4";
+        } else if (isValidIPv6(IP)) {
+            return "IPv6";
+        } else {
+            return "Neither";
+        }
     }
-    // final working version with regex in Java
-    public String validIPAddress(String IP) {
+    
+    public boolean isValidIPv4(String ip) {
+        if (ip.length() < 7 || ip.charAt(0) == '.' || ip.charAt(ip.length() - 1) == '.') {
+            return false;
+        }
+        
+        String[] matches = ip.split("\\.");
+        if (matches.length != 4) {
+            return false;
+        }
+        
+        for (String match : matches) {
+            if (!isValidIPv4Token(match)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+	private boolean isValidIPv4Token(String token) {
+		if (token.startsWith("0") && token.length() > 1) {
+			return false;
+		}
+
+		try {
+			int intValue = Integer.parseInt(token);
+			if (intValue < 0 || intValue > 255) {
+				return false;
+			}
+			if (intValue == 0 && token.charAt(0) != '0') {
+				return false;
+			}
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean isValidIPv6(String ip) {
+		// 15 == 0:0:0:0:0:0:0:0
+		// // first or last character is :, not valid ip
+		if (ip.length() < 15 || ip.charAt(0) == ':' || ip.charAt(ip.length() - 1) == ':') {
+			return false;
+		}
+
+		String[] matches = ip.split(":");
+		if (matches.length != 8) {
+			return false;
+		}
+
+		for (String match : matches) {
+			if (!isValidIPv6Token(match)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private boolean isValidIPv6Token(String token) {
+		if (token.length() > 4 || token.length() == 0) {
+			return false;
+		}
+
+		for (int i = 0; i < token.length(); i++) {
+			char c = token.charAt(i);
+
+			boolean isUppercaseAF = c >= 'A' && c <= 'F';
+			boolean isLowercaseAF = c >= 'a' && c <= 'f';
+
+			if (!(Character.isDigit(c) || isUppercaseAF || isLowercaseAF)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+
+	// working version with regex in Java
+	public String validIPAddress(String IP) {
 		Pattern ip4 = Pattern.compile("^([1-9]\\d{0,2}|0)(?:\\.([1-9]\\d{0,2}|0)){3}$", Pattern.CASE_INSENSITIVE);
 		Pattern ip6 = Pattern.compile("^([0-9a-fA-F]{1,4})(:[0-9a-fA-F]{1,4}){7}$", Pattern.CASE_INSENSITIVE);
 
-        Matcher ip4Matcher = ip4.matcher(IP);
-        Matcher ip6Matcher = ip6.matcher(IP);
+		Matcher ip4Matcher = ip4.matcher(IP);
+		Matcher ip6Matcher = ip6.matcher(IP);
 
 		if ( ip4Matcher.find() && Integer.parseInt(ip4Matcher.group(1)) < 256 && Integer.parseInt(ip4Matcher.group(2)) < 256 ) {
 			return "IPv4";
-		}
-		else if (ip6Matcher.find()) {
+		} else if (ip6Matcher.find()) {
 			return "IPv6";
-		}
-		else {
+		} else {
 			return "Neither";
 		}
-    }
-
-    private boolean isValidIPv4(String ip) {
-        // 7 == 1.1.1.1
-    	if (ip.length() < 7 || ip.charAt(0) == '.' || ip.charAt(ip.length() - 1) == '.') {
-    		return false;
-    	}
-    	String[] matches = ip.split("\\.");
-    	if (matches.length != 4) {
-    		return false;
-    	}
-    	for (String match : matches) {
-    		if (!isValidIPv4Token(match)) {
-    			return false;
-    		}
-    	}
-
-    	return true;
-    }
-
-    private boolean isValidIPv4Token(String token) {
-    	if (token.startsWith("0") && token.length() > 1) {
-    		return false;
-    	}
-    	try {
-    		int intValue = Integer.parseInt(token);
-	     	if (intValue < 0 || intValue > 255) {
-	     		return false;
-	     	}
-	     	if (intValue == 0 && token.charAt(0) != '0') {
-	     		return false;
-	     	}
-    	}
-    	catch (NumberFormatException nfe) {
-    		return false;
-    	}
-    	return true;
-    }
-
-    private boolean isValidIPv6(String ip) {
-    	// 15 == 0:0:0:0:0:0:0:0
-    	if (ip.length() < 15 || ip.charAt(0) == ':' || ip.charAt(ip.length() - 1) == ':') {
-    		return false;
-    	}
-    	String[] matches = ip.split(":");
-    	if (matches.length != 8) {
-    		return false;
-    	}
-    	for (String match : matches) {
-    		if (!isValidIPv6Token(match)) {
-    			return false;
-    		}
-    	}
-
-    	return true;
-    }
-
-    private boolean isValidIPv6Token(String token) {
-    	if (token.length() > 4 || token.length() == 0) {
-    		return false;
-    	}
-    	for (int i = 0; i < token.length(); i++) {
-    		char c = token.charAt(i);
-    		boolean isDigit = c >= 48 && c <= 57;
-    		boolean isUppercaseAF = c >= 65 && c <= 70;
-    		boolean isLowercaseAF = c >= 97 && c <= 102;
-    		if ( !(isDigit || isUppercaseAF || isLowercaseAF) ) {
-    			return false;
-    		}
-    	}
-
-    	return true;
-    }
+	}
 }

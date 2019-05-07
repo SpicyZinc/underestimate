@@ -124,7 +124,6 @@ public class SerializeAndDeserializeBinaryTree {
         }
     }
 
-
 	// 03/06/2019
 	// ant service
 	String empty = "#";
