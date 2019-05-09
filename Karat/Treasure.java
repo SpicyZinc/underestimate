@@ -1,8 +1,30 @@
+/*
+Now we also have treasures, denoted by 1.
+Given a board and start and end positions for the player, write a function to return the shortest simple path from start to end that includes all the treasures, if one exists.
+
+A simple path is one that does not revisit any location.
+
+board3 = [
+    [  1,  0,  0, 0, 0 ],
+    [  0, -1, -1, 0, 0 ],
+    [  0, -1,  0, 1, 0 ],
+    [ -1,  0,  0, 0, 0 ],
+    [  0,  1, -1, 0, 0 ],
+    [  0,  0,  0, 0, 0 ],
+]
+
+
+treasure(board3, (5, 0), (0, 4)) -> None
+
+treasure(board3, (5, 1), (2, 0)) -> 
+[(5, 1), (4, 1), (3, 1), (3, 2), (2, 2), (2, 3), (1, 3), (0, 3), (0, 2),
+(0, 1), (0, 0), (1, 0), (2, 0)]
+*/
+
 import java.io.*; 
 import java.util.*; 
-import com.google.common.collect.ImmutableMap; 
 
-public class GFG { 
+public class Treasure { 
     
     static List<int[]> treasure(int[][] matrix, int starti, int startj, int endi, int endj) {
         int row = matrix.length, col = matrix[0].length, totalTreasure = 0;
@@ -56,72 +78,61 @@ public class GFG {
             }
         }
     }
-    
-    static void printArray(String s, int[] array) {
-        System.out.println(s);
-        for(int i: array){
-            System.out.print(i + " ");
-        }
-        System.out.println();
-    }
-    
-    static void printSet(String s, Set<String> set) {
-        System.out.println(s);
-        for(String i: set){
-            System.out.println(i + " ");
-        }
-        System.out.println();
-    }
-    
-    static void printList(String s, List<String> list) {
-        System.out.println(s);
-        for(String i: list){
-            System.out.println(i + " --> ");
-        }
-        System.out.println();
-    }
-    
-    static void printListArray(String s, List<int[]> list) {
-        System.out.println(s);
-        for(int[] i: list){
-            printArray("",i);
-        }
-        System.out.println();
-    }
-    
-    static void printListInt(String s, List<Integer> list) {
-        System.out.println(s);
-        for(Integer i: list){
-            System.out.println(i + " --> ");
-        }
-        System.out.println();
-    }
-    
-    static void printMap(String s, Map<String, List<Integer>> map) {
-        System.out.println(s);
-        for(String ss: map.keySet()){
-            printListInt(ss, map.get(ss));
-        }
-        System.out.println();
-    }
-    
-    static void printIntMap(String s, Map<Integer, Integer> map) {
-        System.out.println(s);
-        for(Integer i: map.keySet()){
-            System.out.println("key: " + i + " value: " + map.get(i));
-        }
-        System.out.println();
-    }
+
     
     // Driver Code 
-    public static void main(String args[]) 
-    { 
+    public static void main(String args[]) { 
         int[][] matrix = new int[][] {
           {0,-1,-1,0},
           {0,1,0,0},
           {0,1,0,0}
         };
         treasure(matrix, 0,0, 2,3);
-    }
 
+
+
+
+        int[][] board = new int[][] {
+          { 0,  0,  0, 0, -1 },
+          { 0, -1, -1, 0,  0 },
+          { 0,  0,  0, 0,  0 },
+          { 0, -1,  0, 0,  0 },
+          { 0,  0,  0, 0,  0 },
+          { 0,  0,  0, 0,  0 },
+        };
+        int[][] board2 = new int[][] {
+          {  0,  0,  0, 0, -1 },
+          {  0, -1, -1, 0,  0 },
+          {  0,  0,  0, 0,  0 },
+          {  0, -1,  0, 0,  0 },
+          { -1,  0,  0, 0,  0 },
+          {  0, -1,  0, 0,  0 },
+        };
+        int[][] board3 = new int[][] {
+          {  1,  0,  0, 0,  0 },
+          {  0, -1, -1, 0, 0 },
+          {  0, -1,  0, 1, 0 },
+          {  -1,  0,  0, 0, 0 },
+          { 0,  1, -1, 0, 0 },
+          {  0,  0,  0, 0, 0 },
+        };
+
+
+        int[] start = new int[] { 5, 0 };
+        int[] end = new int[] { 0, 4 };
+
+        
+        List<int[]> res1 = position(board, start[0], start[1]);
+        
+        List<int[]> res2 = position(board, 5, 4);
+        
+        //printList(res2);
+        
+        // System.out.println(connected(board2, 0, 0)); 
+        // System.out.println(connected(board, 0, 0)); 
+        
+        List<int[]> res3 = treasure(board3, start[0], start[1], end[0], end[1]);
+        
+        printList(res3);
+    }
 } 
