@@ -22,8 +22,8 @@ There may be multiple valid order of letters, return any one of them is fine.
 
 idea:
 two maps,
-hm char <-> Set<Character> parent char -> children chars
-inDegree char <-> frequency
+hm char <-> Set<Character> == parent char <-> subsequent following chars
+inDegree char <-> cnt of points pointing to char
 in essence, this is topological sorting of DAG
 
 有多少个letter 就是多少个vertex 在 graph 中

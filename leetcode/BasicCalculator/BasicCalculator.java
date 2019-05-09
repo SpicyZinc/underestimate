@@ -31,6 +31,74 @@ public class BasicCalculator {
         System.out.println(result);
     }
 
+    // Wed May  8 22:27:03 2019
+    public int calculate(String s) {
+        int n = s.length();
+        char prevOperator = '+';
+        int prevResult = 0;
+        int result = 0;
+
+        int num = 0;
+
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+
+            if (Character.isDigit(c)) {
+                num = num * 10 + c - '0';
+            } else if (c == '(') {
+                int j = i;
+				int parenthesesCnt = 0; // find balanced () and retrieve the inside part, recurse on it
+				for (; i < n; i++) {
+					if (s.charAt(i) == '(') {
+						parenthesesCnt++;
+					}
+					if (s.charAt(i) == ')') {
+						parenthesesCnt--;
+					}
+					if (parenthesesCnt == 0) {
+						break;
+					}
+				}
+
+				num = calculate(s.substring(j + 1, i));
+            }
+
+            if (isOperator(c) || i == n - 1) {
+                switch (prevOperator) {
+                    case '+':
+                        prevResult += num;
+                        break;
+
+                    case '-':
+                        prevResult -= num;
+                        break;
+
+                    case '*':
+                        prevResult *= num;
+                        break;
+
+                    case '/':
+                        prevResult /= num;
+                        break;
+                }
+
+                if (c == '+' || c == '-' || i == n - 1) {
+                    result += prevResult;
+                    prevResult = 0;
+                }
+
+                prevOperator = c;
+                num = 0;
+            }
+        }
+
+        return result;
+    }
+    
+    public boolean isOperator(char c) {
+        return "+-*/".indexOf(c) != -1;
+    }
+
     // method 1
     public int calculate(String s) {
         Stack<Integer> stack = new Stack<Integer>();

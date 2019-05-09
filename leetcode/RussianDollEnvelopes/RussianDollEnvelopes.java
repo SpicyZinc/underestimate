@@ -9,9 +9,9 @@ Given envelopes = [[5,4],[6,4],[6,7],[2,3]], the maximum number of envelopes you
 
 idea:
 extension of longest increase subsequence LIS
-必须先sort
+必须先sort 才能得到 最多 装的 envelops common sense
 LIS input is 1D, Russian Doll input is 2D
-nothing to say, just remember it, so simple
+nothing to say, just remember it
 inclusive i
 
 Comparator<Type> don't forget

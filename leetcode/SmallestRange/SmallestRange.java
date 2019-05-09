@@ -19,7 +19,7 @@ For Java users, please note that the input type has been changed to List<List<In
 
 idea:
 首先把所有list中最小的取出来构建成Element
-然后放入pq
+然后放入PriorityQueue
 同时记入max
 
 这个max和pq.poll() 的val 就是 range

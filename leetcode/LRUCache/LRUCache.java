@@ -25,8 +25,8 @@ cache.get(4);       // returns 4
 
 idea:
 doubly linkedlist
-head就是recently used
-tail就是least recently used
+head就是 recently used
+tail就是 least recently used
 
 https://www.programcreek.com/wp-content/uploads/2013/03/LRU-Cache-650x296.png
 http://www.cnblogs.com/feiling/p/3426967.html
@@ -242,8 +242,8 @@ class DLLNode {
     public DLLNode(int key, int value) {
         this.key = key;
         this.val = value;
-        prev = null;
-        next = null;
+        this.prev = null;
+        this.next = null;
     }
 }
 

@@ -58,7 +58,7 @@ public class LongestSubstringWithoutRepeatingChars {
             max = Math.max(max, right - left + 1);
         }
         
-        return max == Integer.MIN_VALUE ? 1: max;
+        return max == Integer.MIN_VALUE ? 1 : max;
     }
     // 01/13/2019
     public int lengthOfLongestSubstring(String s) {
@@ -74,7 +74,7 @@ public class LongestSubstringWithoutRepeatingChars {
                 right++;    
             }
             maxLen = Math.max(maxLen, right - left);
-            // 开始移动left window
+            // 开始移动 left window
             letters[s.charAt(left)]--;
         }
         
