@@ -30,6 +30,43 @@ meanwhile all B and other chars to second A not inclusive will be set false, j s
 */
 
 public class LongestSubstringWithoutRepeatingChars {
+	// Thu May  9 23:28:27 2019
+	public int lengthOfLongestSubstring(String s) {
+        if (s.length() == 0 || s == null) {
+            return 0;
+        }
+
+		Set<Character> hs = new HashSet<>();
+		int maxLen = Integer.MIN_VALUE;
+
+		int left = 0;
+
+		for (int right = 0; right < s.length(); right++) {
+			char c = s.charAt(right);
+
+			if (hs.contains(c)) {
+				
+				for (int j = left; j < right; j++) {
+					if (s.charAt(j) == c) {
+						left = j + 1;
+						break;
+					}
+                    // don't forget remove
+                    hs.remove(s.charAt(j));
+				}
+			} else {
+				hs.add(c);
+			}
+            // where to compare is the key
+            int len = right - left + 1;
+            if (len > maxLen) {
+                maxLen = len;
+            }
+		}
+
+		return maxLen == Integer.MIN_VALUE ? s.length() : maxLen;
+	}
+
     // 01/26/2019
     // right moving, left conditionally increases
     public int lengthOfLongestSubstring(String s) {

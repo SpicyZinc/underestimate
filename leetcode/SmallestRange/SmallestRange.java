@@ -30,6 +30,65 @@ idea:
 */
 
 class SmallestRange {
+	// Thu May  9 22:36:43 2019
+	public int[] smallestRange(List<List<Integer>> nums) {
+		// 把所有的nums 都整合到一块 每个 element 包含 value 和 它原来所在的位置
+		int n = nums.size();
+		List<int[]> allNums = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			for (int num : nums.get(i)) {
+				allNums.add(new int[] {num, i});
+			}
+		}
+		// sort ascending
+		Collections.sort(allNums, (a, b) -> a[0] - b[0]);
+
+		int[] result = new int[2];
+		
+		int minRange = Integer.MAX_VALUE;
+		// key is position, value is frequency
+		Map<Integer, Integer> allPositions = new HashMap<>();
+
+		int cntPos = 0;
+		int left = 0;
+
+		for (int right = 0; right < allNums.size(); right++) {
+			int[] pair = allNums.get(right);
+			int val = pair[0];
+			// the position in original nums
+			int pos = pair[1];
+
+			allPositions.put(pos, allPositions.getOrDefault(pos, 0) + 1);
+			if (allPositions.get(pos) == 1) {
+				cntPos++;
+			}
+	
+			while (cntPos == n && left <= right) {
+				int[] leftPair = allNums.get(left);
+
+				int leftVal = leftPair[0];
+				int leftPos = leftPair[1];
+
+				if (minRange > val - leftVal) {
+					minRange = val - leftVal;
+
+					result = new int[] {leftVal, val};
+				}
+
+				// 开始移动 left side of window
+				left++;
+				if (allPositions.containsKey(leftPos)) {
+					allPositions.put(leftPos, allPositions.get(leftPos) - 1);
+					if (allPositions.get(leftPos) == 0) {
+						cntPos--;
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
 	// 01/22/2019
 	public int[] smallestRange(List<List<Integer>> nums) {
 		int len = nums.size();

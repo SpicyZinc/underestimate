@@ -28,6 +28,23 @@ class MaximumLengthOfRepeatedSubarray {
         int len = eg.findLength(A, B);
         System.out.println(len);
     }
+    // Fri May 10 00:25:18 2019
+    public int findLength(int[] A, int[] B) {
+        int m = A.length;
+        int n = B.length;
+        
+        int maxLen = 0;
+        int[][] dp = new int[m + 1][n + 1];
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                dp[i][j] = A[i - 1] == B[j - 1] ? dp[i - 1][j - 1] + 1 : 0;
+                maxLen = Math.max(maxLen, dp[i][j]);
+            }
+        }
+        
+        return maxLen;
+    }
 
     public int findLength(int[] A, int[] B) {
         int m = A.length;
@@ -38,7 +55,7 @@ class MaximumLengthOfRepeatedSubarray {
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 dp[i][j] = A[i - 1] == B[j - 1] ? dp[i - 1][j - 1] + 1 : 0;
-                maxLen = Math.max(maxLen, dp[i][j]); 
+                maxLen = Math.max(maxLen, dp[i][j]);
             }
         }
 
