@@ -14,10 +14,15 @@ i starting from 2, if n can be divided exactly, count the number
 if not, get the remaining number, recursively passing in the function again
 
 2. dynamic programming
-create an array of length n + 1, dp[i] the smallest number of square numbers added up to i
+create an array of length n + 1
+dp[i] the smallest number of square numbers added up to i
+
 dp[0] = 0, the rest is Integer.MAX_VALUE
-i[0, n], j[1, n] but i+j*j <= n,
-update dp[i+j*j], return dp[n]
+i[0, n], j[1, n] and i + j * j <= n
+dp[i] the smallest number of square numbers added up to i
+
+dp[i + j * j] = dp[i] + 1 因为 j * j 肯定是一个 square number 
+众所周知的原因 max = Math.max(max, candidate);
 */
 
 import java.util.*;
@@ -28,10 +33,28 @@ public class PerfectSquares {
 		System.out.println(eg.numSquares(3));
 		System.out.println(eg.numSquares(12));
 	}
+	// Fri May 10 22:45:35 2019
+	public int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        
+        dp[0] = 0;
+        
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; i + j * j <= n; j++) {
+                dp[i + j * j] = Math.min(dp[i + j * j], dp[i] + 1);
+            }
+        }
+        
+        return dp[n];
+    }
+
 	// method 1
 	public int numSquares(int n) {
         int minNum = n;
         int i = 2;
+
         while (i * i <= n) {
             int square = i * i;
             int num = n / square;
@@ -44,16 +67,18 @@ public class PerfectSquares {
     }
 
     // method 2
-    public int numSquares(int n) {
-    	int[] dp = new int[n + 1];
-    	Arrays.fill(dp, Integer.MAX_VALUE);
-    	dp[0] = 0;
-    	for (int i = 0; i <= n; i++) {
-    	    for (int j = 1; i + j * j <= n; j++) {
-    	    	dp[i + j * j] = Math.min(dp[i + j * j], dp[i] + 1);
-    	    }
-    	}
+	public int numSquares(int n) {
+		int[] dp = new int[n + 1];
+		Arrays.fill(dp, Integer.MAX_VALUE);
 
-       	return dp[n];
-    }
+		dp[0] = 0;
+
+		for (int i = 0; i <= n; i++) {
+			for (int j = 1; i + j * j <= n; j++) {
+				dp[i + j * j] = Math.min(dp[i + j * j], dp[i] + 1);
+			}
+		}
+
+		return dp[n];
+	}
 }

@@ -17,28 +17,41 @@ The number of tasks is in the range [1, 10000].
 idea:
 https://www.cnblogs.com/grandyang/p/7098764.html
 
-first understand the problem, n = 2 intervals, A -> B -> idle -> A -> B -> idle -> A -> B, first two A there are 2 intervals
+understand the problem, n = 2 intervals, A -> B -> idle -> A -> B -> idle -> A -> B, first two A there are 2 intervals
 use the letter appearing the most to schedule
 there will be the appearing times of this letter sections
 each section is n + 1 length, this way to guarantee that
 every two same tasks has n intervals (different task or idle are all treated as interval) in between
 
-note to last section
+need to come back
 */
 
 public class TaskScheduler {
-    public int leastInterval(char[] tasks, int n) {
-        if (tasks.length == 0) return 0;
-        if (n == 0) return tasks.length;
-        int size = tasks.length;
-        int[] letters = new int[26];
-        for (int i = 0; i < size; i++) {
-            letters[tasks[i] - 'A']++;
-        }
-        Arrays.sort(letters);
-        int last = letters.length - 1;
-        int i = last;
-        while (i >= 0 && letters[last] == letters[i]) i--;
-        return Math.max(size, (letters[last] - 1) * (n + 1) + (last - i));
-    }
+	public int leastInterval(char[] tasks, int n) {
+		if (tasks.length == 0) {
+			return 0;
+		}
+
+		if (n == 0) {
+			return tasks.length;
+		}
+
+		int size = tasks.length;
+		int[] letters = new int[26];
+
+		for (int i = 0; i < size; i++) {
+			letters[tasks[i] - 'A']++;
+		}
+
+		Arrays.sort(letters);
+		int mostTask = letters.length - 1;
+		int i = mostTask;
+
+		while (i >= 0 && letters[mostTask] == letters[i]) {
+			i--;
+		}
+
+		return Math.max(size, (letters[mostTask] - 1) * (n + 1) + (mostTask - i));
+	}
+
 }

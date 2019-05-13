@@ -39,37 +39,42 @@ note: last element is easy to deal with, so remove it
 */
 
 class RandomizedCollection {
-    List<Integer> list;
-    Map<Integer, HashSet<Integer>> hm;
-    Random random;
+	// Sat May 11 00:25:29 2019
+	List<Integer> list;
+	Map<Integer, Set<Integer>> hm;
+	Random random;
+
     /** Initialize your data structure here. */
     public RandomizedCollection() {
-        list = new ArrayList<Integer>();
-        hm = new HashMap<Integer, HashSet<Integer>>();
+        list = new ArrayList<>();
+        hm = new HashMap<>();
         random = new Random();
     }
     
     /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
     public boolean insert(int val) {
-        HashSet<Integer> positions = hm.get(val);
-        if (positions == null) {
-            positions = new HashSet<Integer>();
-            hm.put(val, positions);
-        }
         // update list
         list.add(val);
+
+        Set<Integer> positions = null;
+        if (!hm.containsKey(val)) {
+        	positions = new HashSet<>();
+        } else {
+        	positions = hm.get(val);
+        }
+
         // update hashmap
+        hm.put(val, positions);
         positions.add(list.size() - 1);
+
         return positions.size() == 1;
     }
     
     /** Removes a value from the collection. Returns true if the collection contained the specified element. */
     public boolean remove(int val) {
-        HashSet<Integer> positions = hm.get(val);
-        if (positions == null) {
-            return false;
-        } else {
-            int posToRemove = positions.iterator().next();
+    	if (hm.containsKey(val)) {
+            Set<Integer> positions = hm.get(val);
+    		int posToRemove = positions.iterator().next();
             // remove from HashSet
             positions.remove(posToRemove);
             if (posToRemove < list.size() - 1) {
@@ -78,7 +83,7 @@ class RandomizedCollection {
                 list.set(posToRemove, last);
                 // last leaves old position and goes to the new position
                 // update the last
-                HashSet<Integer> lastPositions = hm.get(last);
+                Set<Integer> lastPositions = hm.get(last);
                 lastPositions.add(posToRemove);
                 lastPositions.remove(list.size() - 1);
             }
@@ -90,14 +95,17 @@ class RandomizedCollection {
             } else {
                 hm.put(val, positions);
             }
+
             return true;
-        }
+    	} else {
+    		return false;
+    	}
     }
     
     /** Get a random element from the collection. */
     public int getRandom() {
         return list.get(random.nextInt(list.size()));
-    }
+    } 
 }
 
 /**

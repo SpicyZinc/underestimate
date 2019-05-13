@@ -18,6 +18,41 @@ Comparator<Type> don't forget
 */
 
 public class RussianDollEnvelopes {
+    // Fri May 10 23:33:12 2019
+    public int maxEnvelopes(int[][] envelopes) {
+        if (envelopes.length == 0 || envelopes[0].length == 0) {
+            return 0;
+        }
+        
+        Arrays.sort(envelopes, (a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
+        
+        int max = 1;
+        int n = envelopes.length;
+        int[] dp = new int[n];
+        for (int i = 0; i < n; i++) {
+            // self is 1 envelope already, so dp[i] = 1;
+            dp[i] = 1;
+            int[] envelope = envelopes[i];
+            int width = envelope[0];
+            int height = envelope[1];
+
+            for (int j = 0; j < i; j++) {
+                int[] current = envelopes[j];
+                int currWidth = current[0];
+                int currHeight = current[1];
+
+                if (currWidth < width && currHeight < height) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            
+            max = Math.max(max, dp[i]);
+        }
+        
+        return max;
+    }
+
+
     // 02/13/2019
     public int maxEnvelopes(int[][] envelopes) {
         if (envelopes.length == 0 || envelopes == null) {

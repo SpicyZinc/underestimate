@@ -79,9 +79,87 @@ public class TextJustification {
 		List<String> result = eg.fullJustify(words, L);
 
 		for (String line : result) {
-			System.out.println(line);
 		}
 	}
+	// Sun May 12 19:33:09 2019
+	public List<String> fullJustify(String[] words, int maxWidth) {
+		// 一行行地填
+		List<String> lines = new ArrayList<>();
+
+		int size = words.length;
+		int pos = 0;
+
+		while (pos < size) {
+			int currentLineLen = words[pos].length();
+			int currPos = pos + 1;
+
+			// 尽最大可能地 take up spaces
+			while (currPos < size) {
+				// 先不能加上
+				if (currentLineLen + 1 + words[currPos].length() > maxWidth) {
+					break;
+				}
+
+				currentLineLen += 1 + words[currPos++].length();
+			}
+
+			// two reasons to break the while
+			// 1. currPos >= size
+			// 2. currentLineLen > maxWidth
+			
+			// 2nd case
+			
+			// till (currPos - 1) should be in the line
+			
+			int gaps = currPos - 1 - pos;
+
+
+			// if last line or only one word in current line
+			// 先即左边 space 都填在右边
+			StringBuilder sb = new StringBuilder();
+
+			if (currPos == size || gaps == 0) {
+				for (int i = pos; i <= currPos - 1; i++) {
+					sb.append(i < currPos - 1 ? words[i] + " " : words[i]);
+				}
+				// a little difference here
+				appendSpaces(sb, maxWidth - currentLineLen);
+			} else {
+				// regular justified, last one must be a word
+				int spacesPerGap = (maxWidth - currentLineLen) / gaps;
+				// 这些 remainingSpaces 要平均分配到 即左边开始的gaps 一个gap 一个 space 只到用光
+				int remainingSpaces = (maxWidth - currentLineLen) % gaps;
+
+				for (int i = pos; i <= currPos - 1; i++) {
+					// append word
+					sb.append(words[i]);
+					// append space before currPos - 1
+					if (i < currPos - 1) {
+						// 首先要考虑上 本来就算到 currentLineLen 那一个 space
+						// 现在重新算 所以 要加上
+						// damn, note this (), not forget to add
+						int reCalculatedSpacesPerGap = (1 + spacesPerGap) + ((i - pos) < remainingSpaces ? 1 : 0);
+						appendSpaces(sb, reCalculatedSpacesPerGap);
+					}
+
+				}
+			}
+			
+
+			lines.add(sb.toString());
+
+			pos = currPos;
+		}
+
+		return lines;
+	}
+
+	public void appendSpaces(StringBuilder sb, int cnt) {
+		for (int i = 0; i < cnt; i++) {
+			sb.append(" ");
+		}
+	}
+
 	// 01/21/2019
 	public List<String> fullJustify(String[] words, int maxWidth) {
 		List<String> lines = new ArrayList<String>();

@@ -41,6 +41,36 @@ Dropbox question
 */
 
 public class HitCounter {
+	// Fri May 10 23:48:09 2019
+	List<Integer> list;
+    
+    /** Initialize your data structure here. */
+    public HitCounter() {
+        list = new ArrayList<>();    
+    }
+    
+    /** Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public void hit(int timestamp) {
+        list.add(timestamp);
+    }
+    
+    /** Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public int getHits(int timestamp) {
+        int hits = 0;
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (timestamp - list.get(i) < 300) {
+                hits++;
+            } else {
+                break;
+            }
+        }
+        
+        return hits;
+    }
+
+
 	Queue<Integer> queue;
 	/** Initialize your data structure here. */  
 	public HitCounter() {

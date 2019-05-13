@@ -30,6 +30,75 @@ public class BasicCalculator {
         int result = eg.calculate(s);
         System.out.println(result);
     }
+    // Sat May 11 15:05:22 2019
+    // note, the correct after counting parentheses
+    public int calculate(String s) {
+        int result = 0;
+        int prevResult = 0;
+        int prevOperator = '+';
+        
+        int num = 0;
+        int n = s.length();
+
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            
+            if (Character.isDigit(c)) {
+                num = num * 10 + c - '0';
+            } else if (c == '(') {
+                int cnt = 0;
+                int j = i;
+                for (; j < n; j++) {
+                    if (s.charAt(j) == '(') {
+                        cnt++;
+                    }
+                    if (s.charAt(j) == ')') {
+                        cnt--;
+                    }
+                    if (cnt == 0) {
+                        break;
+                    }
+                }
+                
+                num = calculate(s.substring(i + 1, j));
+                i = j;
+            }
+            
+            if (isOperator(c) || i == n - 1) {
+                switch (prevOperator) {
+                    case '+':
+                        prevResult += num;
+                        break;
+                        
+                    case '-':
+                        prevResult -= num;
+                        break;
+                        
+                    case '*':
+                        prevResult *= num;
+                        break;
+                    
+                    case '/':
+                        prevResult /= num;
+                        break;
+                }
+                
+                if (c == '+' || c == '-' || i == n - 1) {
+                    result += prevResult;
+                    prevResult = 0;
+                }
+                
+                prevOperator = c;
+                num = 0;
+            }
+        }
+
+        return result;
+    }
+    
+    public boolean isOperator(char c) {
+        return "+-*/".indexOf(c) != -1;
+    }
 
     // Wed May  8 22:27:03 2019
     public int calculate(String s) {

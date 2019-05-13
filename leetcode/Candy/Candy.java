@@ -1,10 +1,27 @@
 /*
+There are N children standing in a line. Each child is assigned a rating value.
+
+You are giving candies to these children subjected to the following requirements:
+Each child must have at least one candy.
+Children with a higher rating get more candies than their neighbors.
+What is the minimum candies you must give?
+
+Example 1: 
+Input: [1,0,2]
+Output: 5
+Explanation: You can allocate to the first, second and third child with 2, 1, 2 candies respectively.
+
+Example 2: 
+Input: [1,2,2]
+Output: 4
+Explanation: You can allocate to the first, second and third child with 1, 2, 1 candies respectively.
+The third child gets 1 candy because it satisfies the above two conditions.
+
 idea:
-http://rleetcode.blogspot.com/2014/01/candy-java.html
-similar to Trapping Rain Water: one-dimentional DP
+https://www.cnblogs.com/grandyang/p/4575026.html
 
 declare candies array represent how many candies each child should have
-then loop from left to right to make the candies number of each child meet the requirment, 
+then loop from left to right to make the candies number of each child meet the requirement, 
 then loop from right to left make the candies array meet the requirement
 finally, calculate the total candies number
 
@@ -13,40 +30,43 @@ space complexity: O(n)
 
 note:
 loop through array, each rating could be bigger or less than its right or left element
-note 2nd loop candies[i] <= candies[i+1]
+注意不是 += 1
 
+similar to Trapping Rain Water
 */
 public class Solution {
-    public int candy(int[] ratings) {
-        if (ratings == null || ratings.length == 0) {
-            return 0;
-        }
-        
-        int[] candies = new int[ratings.length];
-        // every child should has at least one candy
-        for (int i=0; i<candies.length; i++) {
-            candies[i]=1;
-        }
-        // if child i has rating higher than i-1, which should be 1 bigger than its left neighbour
-        for (int i=1; i<ratings.length; i++) {
-            if (ratings[i] > ratings[i-1]) {
-                candies[i] = candies[i-1] + 1;
-            }
-        }
-        // if child i has rating higher than its right neighbour, 
-        // but the candies array is not representing this situation correctly, then correct it.
-        for (int i=ratings.length-2; i>=0; i--) {
-            if (ratings[i] > ratings[i+1] && candies[i] <= candies[i+1]) {
-                candies[i] = candies[i+1] + 1;
-            }
-        }
-        
-        int total = 0;
-        // calculate the total candies needed
-        for (int i=0; i<candies.length; i++) {
-            total += candies[i];
-        }
-        
-        return total;
-    }
+	public int candy(int[] ratings) {
+		int n = ratings.length;
+
+		int[] candies = new int[n];
+		Arrays.fill(candies, 1);
+
+		// from left to right, loop once
+		for (int i = 0; i < n - 1; i++) {
+			int curr = ratings[i];
+			int next = ratings[i + 1];
+			// right neighbor
+			// if next rating > curr rating, next child get current child's candy num + 1
+			if (next > curr) {
+				candies[i + 1] = candies[i] + 1;
+			}
+		}
+
+		for (int i = n - 1; i >= 1; i--) {
+			int prev = ratings[i - 1];
+			int curr = ratings[i];
+			// left neighbor
+			// note 2nd loop candies[i - 1] <= candies[i], 否则没有必要 + 1
+			if (prev > curr && candies[i - 1] <= candies[i]) {
+				candies[i - 1] = candies[i] + 1;
+			}
+		}
+
+		int total = 0;
+		for (int num : candies) {
+			total += num;
+		}
+
+		return total;
+	}
 }

@@ -38,7 +38,7 @@ snake.move("U"); -> Returns -1 (Game over because snake collides with border)
 
 idea:
 https://www.cnblogs.com/grandyang/p/5558033.html
-use double end queue to store snake
+use double end queue to represent snake
 use 总的序数 x * width + y 来表示蛇的位置
 use foodIdx 来表明吃了多少了
 */
@@ -55,17 +55,109 @@ class SnakeGame {
 
 		int ret = snake.move("R");
 		System.out.println(ret);
+
 		ret = snake.move("D");
 		System.out.println(ret);
+
 		ret = snake.move("R");
 		System.out.println(ret);
+
 		ret = snake.move("U");
 		System.out.println(ret);
+
 		ret = snake.move("L");
 		System.out.println(ret);
+
 		ret = snake.move("U");
 		System.out.println(ret);
 	}
+	// Sat May 11 21:34:50 2019
+	int width;
+    int height;
+    int[][] food;
+    
+    int foodIdx;
+    boolean over;
+    Deque<Integer> snake;
+    
+    /** Initialize your data structure here.
+        @param width - screen width
+        @param height - screen height 
+        @param food - A list of food positions
+        E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0]. */
+    public SnakeGame(int width, int height, int[][] food) {
+        this.width = width;
+        this.height = height;
+        this.food = food;
+        
+        this.foodIdx = 0;
+        this.over = false;
+        this.snake = new LinkedList<>();
+        
+        // note, not forget add 0 posotion
+        this.snake.add(0);
+    }
+    
+    /** Moves the snake.
+        @param direction - 'U' = Up, 'L' = Left, 'R' = Right, 'D' = Down 
+        @return The game's score after the move. Return -1 if game over. 
+        Game over when snake crosses the screen boundary or bites its body. */
+    public int move(String direction) {
+        if (over) {
+            return -1;
+        }
+
+        int head = snake.getFirst();
+        int headX = head / width;
+        int headY = head % width;
+        // clearly understand four directions
+        switch (direction) {
+            case "U":
+                headX--;
+                break;
+            case "L":
+                headY--;
+                break;
+            case "R":
+                headY++;
+                break;
+            case "D":
+                headX++;
+                break;
+        }
+        // to simulate snake moving
+        // move one step, first tail shrink
+        int tail = snake.removeLast();
+        
+        // if snake can make a move
+        int newHead = headX * width + headY;
+
+        // if collide with the boundary, cannot move, game over
+        // run into snake itself
+        if (headX < 0 || headX >= height || headY < 0 || headY >= width || snake.contains(newHead)) {
+            over = true;
+            
+            return -1;
+        }
+
+        // then head increases,
+        snake.addFirst(newHead);
+        
+        // if eat the food, how to eat? it means newHead is equal to food position
+        if (foodIdx < food.length) {
+            int[] foodPos = food[foodIdx];
+            // if eat, 又长回去了
+            if (headX == foodPos[0] && headY == foodPos[1]) {
+                snake.addLast(tail);
+                foodIdx++;
+            }
+        }
+        // first position is default, so have to minus -1
+        return snake.size() - 1;
+    }
+
+
+
 
 	int width = 0;
 	int height = 0;

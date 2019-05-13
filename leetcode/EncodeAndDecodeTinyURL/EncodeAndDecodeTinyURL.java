@@ -16,9 +16,11 @@ combined with Design TinyURL problem
 public class EncodeAndDecodeTinyURL {
     String elements = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     static int COUNTER = 1;
-    Map<Integer, String> stol = new HashMap<>();
     int base = 62;
+
+    Map<Integer, String> stol = new HashMap<>();
     String prefix = "http://tinyurl.com/";
+
     // Encodes a URL to a shortened URL.
     public String encode(String longUrl) {
         String shortUrl = base10ToBase62(COUNTER);
@@ -65,6 +67,7 @@ public class EncodeAndDecodeTinyURL {
         if (c >= 'A' && c <= 'Z') {
             return c - 'A' + 36;
         }
+
         return -1;
     }
 }

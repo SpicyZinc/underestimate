@@ -104,6 +104,7 @@ public class URLService {
         if (c >= 'A' && c <= 'Z') {
             return c - 'A' + 36;
         }
+
         return -1;
     }
 
@@ -114,9 +115,10 @@ public class URLService {
             n /= 62;
         }
         // make sure tiny url at least 6-letter long
-        while (sb.length() != 6) {
+        while (sb.length() < 6) {
             sb.insert(0, '0');
         }
+
         return sb.toString();
     }
 }

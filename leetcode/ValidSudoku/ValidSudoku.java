@@ -56,6 +56,47 @@ another version see link as below:
 http://blog.csdn.net/u010500263/article/details/18905027
 */
 public class ValidSudoku {
+	// Sun May 12 21:07:38 2019
+	public boolean isValidSudoku(char[][] board) {
+        int m = board.length;
+        int n = board[0].length;
+        
+        Set<Character> hs = new HashSet<>();
+            
+        for (int i = 0; i < m; i++) {
+            hs = new HashSet<>();
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] != '.' && !hs.add(board[i][j])) {
+                    return false;
+                }
+            }
+        }
+        
+        for (int j = 0; j < n; j++) {
+            hs = new HashSet<>();
+            for (int i = 0; i < m; i++) {
+                if (board[i][j] != '.' && !hs.add(board[i][j])) {
+                    return false;
+                }
+            }
+        }
+        
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                hs = new HashSet<>();
+                for (int k = i * 3; k < (i + 1) * 3; k++) {
+                    for (int l = j * 3; l < (j + 1) * 3; l++) {
+                        if (board[k][l] != '.' && !hs.add(board[k][l])) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     // 07/28/2018
     public boolean isValidSudoku(char[][] board) {
         Set<Character> unique9 = new HashSet<>();
@@ -69,7 +110,7 @@ public class ValidSudoku {
                 } 
             }
         }
-        
+
         // check columns
         for (int j = 0; j < board[0].length; j++) {
             unique9 = new HashSet<>();
@@ -93,7 +134,7 @@ public class ValidSudoku {
                 }
             }
         }
-        
+
         return true;
     }
 }
