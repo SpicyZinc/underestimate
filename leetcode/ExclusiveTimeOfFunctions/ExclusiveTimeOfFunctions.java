@@ -37,33 +37,103 @@ use stack
 
 */
 
+import java.util.*;
+
 public class ExclusiveTimeOfFunctions {
-    public int[] exclusiveTime(int n, List<String> logs) {
-        int[] result = new int[n];
 
-        Stack<Integer> stack = new Stack<>();
-        int prevTime = 0;
+	public static void main(String[] args) {
+		List<String> logs = new ArrayList<>();
+		logs.add("0:start:0");
+		logs.add("1:start:2");
+		logs.add("1:end:5");
+		logs.add("0:end:6");
 
-        for (String log : logs) {
-            String[] parts = log.split(":");
+		ExclusiveTimeOfFunctions eg = new ExclusiveTimeOfFunctions();
+		eg.exclusiveTime(2, logs);
+	}
 
-            int fId = Integer.parseInt(parts[0]);
-            String startOrEnd = parts[1];
-            int ts = Integer.parseInt(parts[2]);
+	// Mon May 13 23:01:02 2019
+	public int[] exclusiveTime(int n, List<String> logs) {
+		int[] result = new int[n];
 
-            if (startOrEnd.equals("start")) {
-                if (!stack.isEmpty()) {
-                    result[stack.peek()] += ts - prevTime; 
-                }
+		Stack<Integer> stack = new Stack<>();
+		int prevTime = 0;
 
-                stack.push(fId);
-                prevTime = ts;
-            } else {
-                result[stack.pop()] += ts - prevTime + 1; 
-                prevTime = ts + 1;
-            }
-        }
+		for (String log : logs) {
+			String[] parts = log.split(":");
 
-        return result;
-    }
+			int fnId = Integer.parseInt(parts[0]);
+			String startOrEnd = parts[1];
+			int currTime = Integer.parseInt(parts[2]);
+
+			if (startOrEnd.equals("start")) {
+				if (!stack.isEmpty()) {
+				// record for 当前 fn stack 中 最上部的 fnId 的一段运行时间结束了
+				result[stack.peek()] += currTime - prevTime; 
+				}
+
+				stack.push(fnId);
+				prevTime = currTime;
+			} else if (startOrEnd.equals("end")) { // must be 前一个开始的 就是 stack 最上端的 pop 出来就可以了
+				int prevFnId = stack.pop();
+				result[prevFnId] += (currTime + 1) - prevTime; 
+				prevTime = currTime + 1;
+			}
+		}
+
+		return result;
+	}
+
+	// only 4/120 passed
+	public int[] exclusiveTime(int n, List<String> logs) {
+		Map<Integer, List<String>> hm = new HashMap<>();
+
+		int prevTime = 0;
+		for (int i = 0; i < logs.size(); i++) {
+			String log = logs.get(i);
+
+			String[] parts = log.split(":");
+
+			int fnId = Integer.parseInt(parts[0]);
+			String startOrEnd = parts[1];
+			int ts = Integer.parseInt(parts[2]);
+
+			if (hm.containsKey(fnId)) {
+				List<String> intervals = hm.get(fnId);
+				intervals.add(prevTime + "," + ts);
+				hm.put(fnId, intervals);
+			} else {
+				List<String> intervals = new ArrayList<>();
+				intervals.add(ts + "," + (ts + 1));
+
+				hm.put(fnId, intervals);
+			}
+
+			prevTime = ts + 1;
+		}
+
+		int[] result = new int[n];
+		int i = 0;
+		for (Map.Entry<Integer, List<String>> entry : hm.entrySet()) {
+			int key = entry.getKey();
+			List<String> list = entry.getValue();
+
+			result[key] = getTime(list);
+		}
+
+		return result;
+	}
+
+	public int getTime(List<String> list) {
+		int total = 0;
+		for (String s : list) {
+			String[] matches = s.split(",");
+			int start = Integer.parseInt(matches[0]);
+			int end = Integer.parseInt(matches[1]);
+
+			total += (end - start) == 0 ? 1 : (end - start);
+		}
+
+		return total + 1;
+	}
 }

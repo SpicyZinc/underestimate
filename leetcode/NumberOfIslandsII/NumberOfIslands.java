@@ -52,9 +52,91 @@ class NumberOfIslands {
 		int n = 3;
 		// int[][] positions = {{0,0}, {0,2}, {0,1}, {1,1}};
 		int[][] positions = {{0,0}, {0,1}, {1,2}, {2,1}};
-		List<Integer> result = eg.numIslands2(m,n,positions);
+
+		m = 1;
+		n = 2;
+		positions = new int[][] {{0,1}, {0,0}};
+
+		List<Integer> result = eg.numIslands2(m, n, positions);
+
 		System.out.println(result);
 	}
+	// Tue May 14 01:34:42 2019
+	public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        List<Integer> result = new ArrayList<>();
+
+        if (positions == null || positions.length == 0 ) {
+            return result;
+        }
+        
+        // initialization
+        int[] f = new int[m * n];
+        for (int i = 0; i < m * n; i++) {
+            f[i] = i;
+        }
+        
+        int[][] island = new int[m][n];
+        int islandsCnt = 0;
+        
+        int[][] directions = {
+            {0, 1},
+            {0, -1},
+            {1, 0},
+            {-1, 0},
+        };
+        
+        for (int[] position : positions) {
+            int x = position[0];
+            int y = position[1];
+            
+            if (island[x][y] != 1) {
+                islandsCnt++;
+                
+                island[x][y] = 1;
+                
+                int id = x * n + y;
+                
+                for (int[] dir : directions) {
+                    int nextX = x + dir[0];
+                    int nextY = y + dir[1];
+                    
+                    if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && island[nextX][nextY] == 1) {
+                        int nextId = nextX * n + nextY;
+                        
+                        int fId = find(id, f);
+                        int fNextId = find(nextId, f);
+                        // id四周的点 have to union()
+                        if (fId != fNextId) {
+                        	// note, who assign who
+                            f[fId] = fNextId;
+                            islandsCnt--;
+                        }
+                    }
+                }
+            }
+            
+            result.add(islandsCnt);
+        }
+        
+        return result;
+    }
+    
+    public int find(int i, int[] f) {
+        int j = i;
+        while (j != f[j]) {
+            j = f[j];
+        }
+        
+        while (i != j) {
+            int fi = f[i];
+            f[i] = j;
+            i = fi;
+        }
+        
+        return i;
+    }
+
+
 	// 01/28/2019
 	// lintcode version
 	public List<Integer> numIslands2(int n, int m, Point[] operators) {
@@ -182,59 +264,4 @@ class NumberOfIslands {
 
 		return i;
 	}
-
-	// 07/24/2018
-	public List<Integer> numIslands2(int m, int n, int[][] positions) {
-        List<Integer> result = new ArrayList<>();
-        
-        int[][] directions = new int[][] {
-            {0, 1},
-            {0, -1},
-            {-1, 0},
-            {1, 0}
-        };
-        
-        int[] roots = new int[m * n];
-        Arrays.fill(roots, -1);
-        int islandCnt = 0;
-        
-        
-        for (int[] position : positions) {
-            int x = position[0];
-            int y = position[1];
-            
-            int index = x * n + y;
-            roots[index] = index;
-            
-            islandCnt++;
-            for (int[] dir : directions) {
-                int nextX = x + dir[0];
-                int nextY = y + dir[1];
-                
-                int nextIndex = nextX * n + nextY;
-                
-                if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && roots[nextIndex] != -1) {
-                    int rootIdx = getRoot(roots, nextIndex);
-                    if (index != rootIdx) {
-                        // note, roots[index], not roots[nextIndex]
-                        roots[index] = rootIdx;
-                        index = rootIdx;
-
-                        islandCnt--;
-                    }
-                }
-            }
-            result.add(islandCnt);
-        }
-        
-        return result;
-    }
-    
-    private int getRoot(int[] roots, int i) {
-        while (roots[i] != i) {
-            i = roots[i];
-        }
-        
-        return i;
-    }
 }
