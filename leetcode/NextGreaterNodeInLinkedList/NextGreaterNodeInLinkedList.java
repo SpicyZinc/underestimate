@@ -25,22 +25,27 @@ Note:
 The given list has length in the range [0, 10000].
 
 idea:
-next great element 
+next great element
 */
 
 class NextGreaterNodeInLinkedList {
 	public int[] nextLargerNodes(ListNode head) {
-	    ArrayList<Integer> A = new ArrayList<>();
-	    for (ListNode node = head; node != null; node = node.next)
+	    List<Integer> A = new ArrayList<>();
+
+	    for (ListNode node = head; node != null; node = node.next) {
 	        A.add(node.val);
-	    int[] res = new int[A.size()];
+        }
+
+	    int[] result = new int[A.size()];
 	    Stack<Integer> stack = new Stack<>();
-	    for (int i = 0; i < A.size(); ++i) {
-	        while (!stack.isEmpty() && A.get(stack.peek()) < A.get(i))
-	            res[stack.pop()] = A.get(i);
+        
+	    for (int i = 0; i < A.size(); i++) {
+	        while (!stack.isEmpty() && A.get(stack.peek()) < A.get(i)) {
+	            result[stack.pop()] = A.get(i);
+            }
 	        stack.push(i);
 	    }
 
-	    return res;
+	    return result;
 	}
 }

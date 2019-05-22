@@ -66,10 +66,12 @@ public class AddTwoNums {
         int carry = 0;
         ListNode curr = null;
         ListNode result = curr;
+
         while (l1 != null || l2 != null) {
             int val = (l1 == null ? 0 : l1.val) + (l2 == null ? 0 : l2.val) + carry;
             carry = val / 10;
             ListNode node = new ListNode(val % 10);
+
             if (curr == null) {
                 curr = node;
                 // re-point again, otherwise point to null not working
@@ -77,11 +79,20 @@ public class AddTwoNums {
             } else {
                 curr.next = node;
                 curr = curr.next;
-            }            
-            if (l1 != null) l1 = l1.next;
-            if (l2 != null) l2 = l2.next;
+            }
+
+            if (l1 != null) {
+            	l1 = l1.next;
+            }
+
+            if (l2 != null) {
+            	l2 = l2.next;
+            }
         }
-        if (carry > 0) curr.next = new ListNode(carry);
+
+        if (carry > 0) {
+        	curr.next = new ListNode(carry);
+        }
 
         return result;
     }

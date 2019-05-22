@@ -23,7 +23,6 @@ public class SpiralZigZagPrintBinaryTrees {
 		System.out.print("Stack-based method 3rd Level is ");
 		printSpiral(myTree, 2);
 		System.out.println("\n======");
-
 	}
 	
 	public static void printSpiral(TreeNode root, int desireLevel) {	
@@ -44,22 +43,19 @@ public class SpiralZigZagPrintBinaryTrees {
 			
 			if (tmp == null) {
 				continue;
-			}
-			else if (currentLevel == desireLevel) {
+			} else if (currentLevel == desireLevel) {
 				System.out.print(tmp.value + " ");
-			}
-			else if (left2right) {
+			} else if (left2right) {
 				trees.push(tmp.left);
-				levels.add(currentLevel+1);
+				levels.add(currentLevel + 1);
 				trees.push(tmp.right);
-				levels.add(currentLevel+1);
+				levels.add(currentLevel + 1);
 				left2right = !left2right;
-			}
-			else {
+			} else {
 				trees.push(tmp.right);
-				levels.add(currentLevel+1);
+				levels.add(currentLevel + 1);
 				trees.push(tmp.left);
-				levels.add(currentLevel+1);
+				levels.add(currentLevel + 1);
 				left2right = !left2right;
 			}
 		}

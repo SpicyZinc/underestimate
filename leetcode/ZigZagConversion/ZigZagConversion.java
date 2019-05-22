@@ -63,6 +63,7 @@ public class ZigZagConversion {
         String result = "";
         int n = s.length();
         int base = 2 * nRows - 2;
+
         for (int i = 0; i < nRows; i++) {
             for (int j = i; j < n; j += base) {
                 result += s.charAt(j);

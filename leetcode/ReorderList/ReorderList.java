@@ -21,11 +21,8 @@ class ListNode {
 
 public class ReorderList {
 	public static void main(String[] args) {
-		new ReorderList();
-	}
+		ReorderList eg = new ReorderList();
 
-	// constructor
-	public ReorderList() {
 		ListNode n1 = new ListNode(1);
 		ListNode n2 = new ListNode(2);
 		ListNode n3 = new ListNode(3);
@@ -33,11 +30,12 @@ public class ReorderList {
 		n1.next = n2;
 		n2.next = n3;
 		n3.next = n4;
- 
-		printList(n1);
-		reorderList(n1);
-		printList(n1);
+
+		eg.printList(n1);
+		eg.reorderList(n1);
+		eg.printList(n1);
 	}
+
 	public void printList(ListNode head) {
 		ListNode curr = head;
 		while (curr != null) {

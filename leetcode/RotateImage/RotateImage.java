@@ -1,5 +1,4 @@
 /*
-Rotate Image
 Given an n x n 2D matrix representing an image,
 Rotate the image by 90 degrees (clockwise).
 1  2  3
@@ -27,10 +26,8 @@ idea:
 
 public class RotateImage {
 	public static void main(String[] args) {
-		new RotateImage();
-	}
-	// constructor
-	public RotateImage() {
+		RotateImage eg = new RotateImage();
+
 		int[][] matrix = {{1,2,3}, {4,5,6}, {7,8,9}};
 		// int[][] matrix = {{1,2,3}, {4,5,6}};
 		int n = matrix.length;
@@ -41,8 +38,9 @@ public class RotateImage {
 			}
 			System.out.print("\n");
 		}
+
 		System.out.println("After rotation");
-		rotate(matrix);				
+		eg.rotate(matrix);				
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				System.out.print(matrix[i][j] + "  ");
@@ -61,60 +59,43 @@ public class RotateImage {
 				copyMatrix[j][n - i - 1] = matrix[i][j];
 			}
 		}
+
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				matrix[i][j] = copyMatrix[i][j] ;
 			}
 		}
-    }
-	// method 2
-	public void rotate(int[][] matrix) {
-		int n = matrix.length;
-		// flip along with anti-diagonal
-		// do not flip twice, twice would not change the matrix
-		for (int i=0; i<n; i++) {
-			for (int j=0; j<n-1-i; j++) {
-				swap(matrix, i, j, n-1-j, n-1-i);
-			}
-		}
-		// flip along with x axis
-		for (int i=0; i<n/2; i++) {
-			for (int j=0; j<n; j++) {
-				swap(matrix, i, j, n-1-i, j);
-			}
-		}
 	}
-	// helper method swap()
-	private void swap(int[][] matrix, int i1, int j1, int i2, int j2) {
-		int temp = matrix[i1][j1];
-		matrix[i1][j1] = matrix[i2][j2];
-		matrix[i2][j2] = temp;
-	}
-	// self written passed test
+
 	public void rotate(int[][] matrix) {
         int n = matrix.length;
+		
+		// flip along with anti-diagonal
+		// do not flip twice, twice would not change the matrix
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n - 1 - i; j++) {
-                swap(matrix, new int[] {i,j}, new int[] {n-1-j, n-1-i});
+                swap(matrix, new int[] {i,j}, new int[] {n - 1 - j, n - 1 - i});
             }
         }
-        
+        // flip along with x axis
         for (int i = 0; i < n / 2; i++) {
             for (int j = 0; j < n; j++) {
                 swap(matrix, new int[] {i, j}, new int[] {n - 1 - i, j});
             }
         }
     }
+	// helper method swap()
     public void swap(int[][] matrix, int[] a, int[] b) {
         int temp = matrix[a[0]][a[1]];
         matrix[a[0]][a[1]] = matrix[b[0]][b[1]];
         matrix[b[0]][b[1]] = temp;
     }
+
 	// method 3
 	public void rotate(int[][] matrix) {
 		int n = matrix.length;
-		for (int i=0; i<n/2; i++) {
-			for (int j=i; j<n-1-i; j++) {
+		for (int i = 0; i < n / 2; i++) {
+			for (int j = i; j < n - 1 - i; j++) {
 				swap(matrix, i, j, j, n-1-i);
 				swap(matrix, n-1-j, i, n-1-i, n-1-j);
 				swap(matrix, i, j, n-1-i, n-1-j);

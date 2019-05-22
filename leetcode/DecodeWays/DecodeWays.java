@@ -62,6 +62,7 @@ public class DecodeWays {
         if (s == null || s.length() == 0 || s.charAt(0) == '0') {
             return 0;  
         }
+
         int[] ways = new int[s.length() + 1];
         ways[0] = 1;
         ways[1] = 1;

@@ -30,7 +30,7 @@ the rest is search insert index
 class RandomPickWithWeight {
 	// Mon May  6 00:14:30 2019
 	int[] sum;
-    Random random;
+	Random random;
     
     public Solution(int[] w) {
         this.sum = new int[w.length];
@@ -41,7 +41,7 @@ class RandomPickWithWeight {
         
         this.random = new Random();
     }
-    
+
     public int pickIndex() {
         int sumWeights = sum[sum.length - 1];
         int r = random.nextInt(sumWeights) + 1;
@@ -59,10 +59,9 @@ class RandomPickWithWeight {
                 right = mid - 1;
             }
         }
-        
+
         return left;
     }
-
 
 
 	Random random;

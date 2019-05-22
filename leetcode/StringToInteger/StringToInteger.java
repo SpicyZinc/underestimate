@@ -60,6 +60,48 @@ for (int i = str.length() - 1; i >= 0; i--) {
 */
 
 public class StringToInteger {
+	// Sun May 19 22:49:09 2019
+	public int myAtoi(String str) {
+        if (str == null || str.trim().length() == 0) {
+            return 0;
+        }
+        
+        str = str.trim();
+        
+        double val = 0;
+        char sign = '+';
+        
+        int i = 0;
+        if (str.charAt(0) == '+') {
+            i++;
+        } else if (str.charAt(0) == '-') {
+            i++;
+            sign = '-';
+        }
+        
+        int len = str.length();
+        
+        while (i < len && Character.isDigit(str.charAt(i))) {
+            val = val * 10 + str.charAt(i) - '0';
+            i++;
+        }
+        
+        if (sign == '-') {
+            val *= -1;
+        }
+        
+        if (val > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        
+        if (val < Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        }
+        
+        
+        return (int) val;
+    }
+
 	// Mon Apr  1 23:58:22 2019
 	public int myAtoi(String str) {
         if (str == null || str.trim().length() == 0) {

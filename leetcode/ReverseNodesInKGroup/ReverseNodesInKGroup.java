@@ -34,6 +34,50 @@ class ListNode {
 }
 
 public class ReverseNodesInKGroup {
+	// Sun May 19 21:39:22 2019
+	public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k == 1) {
+            return head;   
+        }
+        
+        int i = 0;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy;
+        ListNode curr = head;
+        
+        while (curr != null) {
+            curr = curr.next;
+            i++;
+            if (i % k == 0) {
+                prev = reverseInBetween(prev, curr);
+                curr = prev.next;
+            }
+        }
+        
+        return dummy.next;
+    }
+    
+    // exclusively
+    public ListNode reverseInBetween(ListNode head, ListNode tail) {
+        ListNode prev = head;
+        ListNode curr = head.next;
+        
+        ListNode reversedPartLastNode = head.next;
+        
+        while (curr != tail) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        head.next = prev;
+        reversedPartLastNode.next = tail;
+        
+        return reversedPartLastNode;
+    }
+
     // Thu Mar 28 00:48:27 2019
     public ListNode reverseKGroup(ListNode head, int k) {
         if (head == null || k == 1) {
@@ -77,6 +121,7 @@ public class ReverseNodesInKGroup {
         return lastNodeOfReversed;
     }
 
+    // long ago
     public ListNode reverseKGroup(ListNode head, int k) {
         if (head == null || k == 1) {
             return head;

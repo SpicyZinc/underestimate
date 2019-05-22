@@ -27,10 +27,45 @@ public class SanSum {
 		SanSum eg = new SanSum();
 		int[] nums = {-1, 0, 1, 2, -1, -4};
 		List<List<Integer>> result = eg.threeSum(nums);
-        for (List<Integer> path : result) {
-            System.out.println(path);
-        }
+		for (List<Integer> path : result) {
+			System.out.println(path);
+		}
 	}
+	// Sun May 19 23:43:30 2019
+	public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        
+        int n = nums.length;
+        
+        List<List<Integer>> result = new ArrayList<>();
+        
+        Set<List<Integer>> hs = new HashSet<>();
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1, k = n - 1; j < k;) {
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum < 0) {
+                    j++;
+                } else if (sum > 0) {
+                    k--;
+                } else {
+                    List<Integer> path = new ArrayList<>();
+                    path.add(nums[i]);
+                    path.add(nums[j]);
+                    path.add(nums[k]);
+                    
+                    if (hs.add(path)) {
+                        result.add(path);    
+                    }
+                    
+                    j++;
+                    k--;
+                }
+            }
+        }
+
+        return result;
+    }
 
 	// 10/12/2018
 	public List<List<Integer>> threeSum(int[] nums) {

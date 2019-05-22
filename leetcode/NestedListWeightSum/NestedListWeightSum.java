@@ -58,6 +58,7 @@ public class NestedListWeightSum {
 		if (nestedList == null || nestedList.size() == 0) {
 			return 0;
 		}
+
 		int sum = 0;
 		for (NestedInteger ni : nestedList) {
 			if (ni.isInteger()) {
@@ -69,6 +70,7 @@ public class NestedListWeightSum {
 
 		return sum;
 	}
+
 	// method 2
 	public int depthSum(List<NestedInteger> nestedList) {
 		int sum = 0;

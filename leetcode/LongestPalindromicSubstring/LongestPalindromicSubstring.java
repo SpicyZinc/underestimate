@@ -26,15 +26,43 @@ https://www.cnblogs.com/grandyang/p/4464476.html
 
 class LongestPalindromicSubstring {
 	public static void main(String[] args) {
-		new LongestPalindromicSubstring();		
-	}
-	// constructor
-	public LongestPalindromicSubstring() {
+		LongestPalindromicSubstring eg = new LongestPalindromicSubstring();
 		String s = "abracadabra";
-		System.out.println(s + " isPalindromicString == " + isPalindromic(s));
-		System.out.println(s + " getLongestPalindromicSubstring == " + longestPalindrome(s));
+		System.out.println(s + " isPalindromicString == " + eg.isPalindromic(s));
+		System.out.println(s + " getLongestPalindromicSubstring == " + eg.longestPalindrome(s));
 	}
-	// get LongestPalindromicSubstring
+
+	// dp
+	// Thu May 16 23:42:37 2019
+    public String longestPalindrome(String s) {
+        String result = "";
+
+        if (s == null || s.length() == 0) {
+            return result;
+        }
+
+        int maxLength = 0;
+        int size = s.length();
+        boolean[][] palindromic = new boolean[size][size];
+
+        for (int j = 0; j < size; j++) {
+        	// note, equal
+            for (int i = 0; i <= j; i++) {
+                // 前一层里的两边的 char 相等
+                if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i + 1][j - 1]) ) {
+                    palindromic[i][j] = true;
+                    if (maxLength < j - i + 1) {
+                        maxLength = j - i + 1;
+                        result = s.substring(i, j + 1);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+	// direct method
 	public String longestPalindrome(String s) {
         String palindrome = "";
         int maxSubPalindromeLength = 0;
@@ -62,8 +90,10 @@ class LongestPalindromicSubstring {
                 return false;
             }
         }
+
         return true;
     }
+
  	// 2nd method
  	public String longestPalindrome(String s) {
         if (s.length() == 0 || s == null) {
@@ -97,57 +127,5 @@ class LongestPalindromicSubstring {
         }
 
         return s.substring(left + 1, right);
-    }
-
-	// 3rd method dp
-	// 01/23/2019
-    public String longestPalindrome(String s) {
-        String result = "";
-
-        if (s == null || s.length() == 0) {
-            return result;
-        }
-
-        int maxLength = 0;
-        int size = s.length();
-        boolean[][] palindromic = new boolean[size][size];
-
-        for (int j = 0; j < size; j++) {
-            for (int i = 0; i <= j; i++) {
-                // 前一层里的两边的 char 相等
-                if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i + 1][j - 1]) ) {
-                    palindromic[i][j] = true;
-                    if (maxLength < j - i + 1) {
-                        maxLength = j - i + 1;
-                        result = s.substring(i, j + 1);
-                    }
-                }
-            }
-        }
-
-        return result;
-    }
-
-	// 02/03/2019
-    // note, equal
-    public String longestPalindrome(String s) {
-        String result = "";
-        
-        int n = s.length();
-        boolean[][] palindromic = new boolean[n][n];
-        
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= i; j++) {
-                if (s.charAt(i) == s.charAt(j) && (i - j <= 2 || palindromic[j + 1][i - 1])) {
-                    palindromic[j][i] = true;
-                    String str = s.substring(j, i + 1);
-                    if (str.length() > result.length()) {
-                        result = str;
-                    }
-                }
-            }
-        }
-        
-        return result;
     }
 }

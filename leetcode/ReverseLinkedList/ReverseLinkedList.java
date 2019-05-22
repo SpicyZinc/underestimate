@@ -54,6 +54,7 @@ public class ReverseLinkedList {
 
         ListNode second = head.next;
         head.next = null;
+
         ListNode remaining = reverseListRecursively(second);
         // join the two lists
         second.next = head;

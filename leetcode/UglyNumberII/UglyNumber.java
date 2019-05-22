@@ -36,14 +36,49 @@ method 2:
 */
 
 public class UglyNumber {
+	// Sun May 19 17:03:56 2019
+	public int nthUglyNumber(int n) {
+		List<Integer> result = new ArrayList<>();
+		result.add(1);
+
+		int i = 0;
+		int j = 0;
+		int k = 0;
+
+		for (int idx = 1; idx < n; idx++) {
+			int prev = result.get(result.size() - 1);
+
+			int a = result.get(i) * 2;
+			int b = result.get(j) * 3;
+			int c = result.get(k) * 5;
+
+			int min = Math.min(a, Math.min(b, c));
+
+			if (a == min) {
+				i++;
+			}
+			if (b == min) {
+				j++;
+			}
+			if (c == min) {
+				k++;
+			}
+
+			result.add(min);
+		}
+
+		return result.get(n - 1);
+	}
+
     // method 1
     public int nthUglyNumber(int n) {
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         result.add(1);
         
         int i2 = 0;
         int i3 = 0;
         int i5 = 0;
+
         while (result.size() < n) {
             int min2 = result.get(i2) * 2;
             int min3 = result.get(i3) * 3;
@@ -60,17 +95,21 @@ public class UglyNumber {
             if (min5 == min) {
                 i5++;
             }
+
             result.add(min);
         }
+
         return result.get(n - 1);
     }
 
     public int minOfThree(int a, int b, int c) {
         return Math.min(a, Math.min(b, c));
     }
+
     // method 2
     public int nthUglyNumber(int n) {
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+
         for (int i = -1; i * i <= n; i++) {
             for (int j = -1; j * j <= n; j++) {
                 for (int k = -1; k * k <= n; k++) {

@@ -41,8 +41,7 @@ public class TrappingRainWater {
             max = Math.max(max, heights[i - 1]);
             leftHighest[i] = max;
         }
-        
-        
+
         rightHighest[n - 1] = 0;
         max = 0;
         for (int i = n - 2; i >= 0; i--) {

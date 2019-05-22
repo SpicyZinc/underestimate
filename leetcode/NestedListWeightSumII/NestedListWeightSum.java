@@ -66,4 +66,29 @@ public class NestedListWeightSum {
 
 		return weightedSum;
 	}
+
+	// Sun May 19 18:50:09 2019
+	var depthSumInverse = function(nestedList) {
+		let sum = 0;
+		let levelSum = 0;
+
+		while (nestedList.length) {
+			const size = nestedList.length;
+			let next = [];	
+
+			for (let i = 0; i < size; i++) {
+				let item = nestedList[i];
+				if (Array.isArray(item)) {
+					next = [...next, ...item];
+				} else {
+					levelSum += item;
+				}
+			}
+			// 加过的再加一遍
+			sum += levelSum;
+			nestedList = next;
+		}
+
+		return sum;
+	};
 }

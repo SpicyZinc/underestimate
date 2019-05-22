@@ -68,9 +68,9 @@ class LRUCache {
         this.head = null;
         this.tail = null;
         
-        hm = new HashMap<>();
+        this.hm = new HashMap<>();
     }
-    
+
     public int get(int key) {
         if (!hm.containsKey(key)) {
             return -1;

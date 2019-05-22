@@ -34,22 +34,22 @@ NOTE: delimiter MUST be appended after TreeNode value or empty value #
 import java.util.*;
 
 class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
+	int val;
+	TreeNode left;
+	TreeNode right;
+	TreeNode(int x) { val = x; }
 
-    public void print() {
-    	if (this != null) {
-    		System.out.print(this.val + " ");
-    		if (this.left != null) {
-    			this.left.print();
-    		}
-    		if (this.right != null) {
-    			this.right.print();
-    		}
-    	}
-    }
+	public void print() {
+		if (this != null) {
+			System.out.print(this.val + " ");
+			if (this.left != null) {
+				this.left.print();
+			}
+			if (this.right != null) {
+				this.right.print();
+			}
+		}
+	}
 }
 
 public class SerializeAndDeserializeBinaryTree {

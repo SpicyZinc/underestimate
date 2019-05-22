@@ -9,17 +9,40 @@ https://www.programcreek.com/2012/12/leetcode-implement-strstr-java/
 */
 
 public class ImplementStrStr {
+	// Tue May 21 23:23:08 2019
+	public int strStr(String haystack, String needle) {
+        if (haystack.length() == 0 && needle.length() == 0) {
+            return 0;
+        }
+
+        for (int i = 0; i < haystack.length(); i++) {
+            String s = haystack.substring(i);
+            if (s.contains(needle)) {
+                return i + s.indexOf(needle);
+            }
+        }
+        
+        return -1;
+    }
+
     public int strStr(String haystack, String needle) {
-        if (needle.length() == 0) return 0; 
-        if (haystack.length() == 0) return -1;
-        if (needle.length() > haystack.length()) return -1;
+        if (needle.length() == 0) {
+        	return 0; 
+        }
+        if (haystack.length() == 0) {
+        	return -1;
+        }
+        if (needle.length() > haystack.length()) {
+        	return -1;
+        }
 
         for (int i = 0; i <= haystack.length() - needle.length(); i++) {
             int k = i + needle.length();
-            if ( haystack.substring(i, k).equals(needle) ) {
+            if (haystack.substring(i, k).equals(needle)) {
                 return i; 
             }
         }
+
         return -1;
     }
 
@@ -31,14 +54,19 @@ public class ImplementStrStr {
         if (needle.length() > haystack.length()) {
             return -1;
         }
+
         int h = haystack.length();
         int n = needle.length();
         for (int i = 0; i <= h - n; i++) {
             int j = 0;
             for (j = 0; j < n; j++) {
-                if (haystack.charAt(i + j) != needle.charAt(j)) break;
+                if (haystack.charAt(i + j) != needle.charAt(j)) {
+                	break;
+                }
             }
-            if (j == n) return i;
+            if (j == n) {
+            	return i;
+            }
         }
         
         return -1;
@@ -56,7 +84,7 @@ public class ImplementStrStr {
         int lenS = haystack.length();
         int lenT = needle.length();
 
-        for (int i=0; i<lenS; i++) {
+        for (int i = 0; i < lenS; i++) {
             if (i + lenT > lenS) {
                 return -1;
             }
@@ -64,7 +92,7 @@ public class ImplementStrStr {
             int start = i;
             for (int j = 0; j < lenT; j++) {
                 if (haystack.charAt(start) == needle.charAt(j)) {
-                    if (j == lenT-1) {
+                    if (j == lenT - 1) {
                         return i;
                     }
                     start++;

@@ -53,6 +53,7 @@ class PeekingIterator implements Iterator<Integer> {
     public Integer next() {
         Integer nextResult = next;
         next = iter.hasNext() ? iter.next() : null;
+
         return nextResult;
     }
 

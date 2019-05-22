@@ -69,6 +69,7 @@ public class ReconstructItinerary {
 
 	public void dfs(String start, Map<String, PriorityQueue<String>> hm, List<String> result) {
 		while (hm.containsKey(start) && !hm.get(start).isEmpty()) {
+			// note, have to poll()
 			dfs(hm.get(start).poll(), hm, result);
 		}
 

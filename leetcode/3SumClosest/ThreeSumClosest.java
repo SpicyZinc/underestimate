@@ -15,44 +15,28 @@ for (int i = 0; i < num.length; i++) {
 
 */
 public class ThreeSumClosest {
-    // OJ passed
+    // Sun May 19 23:51:19 2019
     public int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
+        int n = nums.length;
+
         int closestSum = nums[0] + nums[1] + nums[2];
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = i + 1, k = nums.length - 1; j < k; ) {
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1, k = n - 1; j < k; ) {
                 int sum = nums[i] + nums[j] + nums[k];
+
                 closestSum = Math.abs(sum - target) < Math.abs(closestSum - target) ? sum : closestSum;
                 if (sum < target) {
                     j++;
-                }
-                else if (sum > target) {
+                } else if (sum > target) {
                     k--;
-                }
-                else {
+                } else {
                     return target;
                 }
             }    
         }
 
         return closestSum;
-    }
-    // Time Limit Exceeded
-    public int threeSumClosest(int[] num, int target) {
-		int min = Integer.MAX_VALUE;
-		int res = 0;
-        for (int i=0; i<num.length-2; i++) {
-			for (int j=i+1; j<num.length-1; j++) {
-				for (int k=j+1; k<num.length; k++) {
-					int tmp = num[i] + num[j] + num[k];
-					if (min > Math.abs(tmp - target)) {
-						min = Math.abs(tmp - target);
-						res = tmp;
-					}
-				}
-			}
-		}
-
-		return res;
     }
 }

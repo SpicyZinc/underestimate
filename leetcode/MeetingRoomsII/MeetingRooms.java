@@ -16,31 +16,44 @@ at the end, the size of priority queue (end time) will be the number of meeting 
 2. sweep line can work too
 */
 public class MeetingRooms {
-    // 02/14/2019
-    public int minMeetingRooms(Interval[] intervals) {
-		List<Point> list = new ArrayList<>(intervals.length*2);
-		for (Interval i : intervals) {
-			list.add(new Point(i.start, 1));
-			list.add(new Point(i.end, 0));
+    // Tue May 14 23:38:37 2019
+    class Point {
+        int val;
+        int flag;
+
+        public Point(int val, int flag) {
+            this.val = val;
+            this.flag = flag;
+        }
+    }
+
+    public int minMeetingRooms(int[][] intervals) {
+		List<Point> list = new ArrayList<>(intervals.length * 2);
+		for (int[] interval : intervals) {
+			list.add(new Point(interval[0], 1));
+			list.add(new Point(interval[1], 0));
 		}
 
 		int count = 0;
-		int ans = 0;
+		int answer = 0;
 
-		Collections.sort(list, Point.PointComparator);
+		Collections.sort(list, (a, b) -> a.val == b.val ? a.flag - b.flag : a.val - b.val);
 
+        
 		for (Point p : list) {
+            System.out.println(p.val + "---" + (p.flag == 1 ? "start" : "end"));
 			if (p.flag == 1) {
 				count++;
 			} else {
 				count--;
 			}
 
-			ans = Math.max(ans, count);
+			answer = Math.max(answer, count);
 		}
 
-		return ans;
+		return answer;
     }
+
     // 01/31/2019
     public int minMeetingRooms(List<Interval> intervals) {
         if (intervals.size() == 0 || intervals ==  null) {
@@ -53,7 +66,6 @@ public class MeetingRooms {
                 return a.start - b.start;
             }
         });
-    
         
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         pq.add(intervals.get(0).end);    
@@ -75,6 +87,7 @@ public class MeetingRooms {
         if (intervals == null || intervals.length == 0) {
             return 0;
         }
+
         Arrays.sort(intervals, new Comparator<Interval>() {
             @Override
             public int compare(Interval i1, Interval i2) {
@@ -91,30 +104,6 @@ public class MeetingRooms {
                 endTimes.poll();
             }
             endTimes.offer(intervals[i].end);
-        }
-
-        return endTimes.size();
-    }
-    // self written
-    public int minMeetingRooms(Interval[] intervals) {
-        if (intervals == null || intervals.length == 0) {
-            return 0;
-        }
-        Arrays.sort(intervals, new Comparator<Interval>() {
-            @Override
-            public int compare(Interval a, Interval b) {
-                return a.start - b.start;
-            }
-        });
-
-        PriorityQueue<Integer> endTimes = new PriorityQueue<Integer>();
-        endTimes.offer(intervals[0].end);
-        for (int i = 1; i < intervals.length; i++) {
-            Interval current = intervals[i];
-            if ( current.start >= endTimes.peek() ) {
-                endTimes.poll();
-            }
-            endTimes.offer(current.end);
         }
 
         return endTimes.size();

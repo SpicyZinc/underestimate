@@ -18,16 +18,19 @@ words[i] and prefix, suffix queries consist of lowercase letters only.
 
 idea:
 since prefix, suffix are in [0, 10], for loop is 0-10
-没什么意思
+首先产生所有 10-char prefix and 10-char suffix key <-> value pair
+
 */
 
 class WordFilter {
-	Map<String, Integer> hm = new HashMap<String, Integer>();
+	Map<String, Integer> hm = new HashMap<>();
+
 	public WordFilter(String[] words) {
 		for (int w = 0; w < words.length; w++) {
 			String word = words[w];
-			// word with highest weight is recorded
+			// word with maximum weight is recorded
 			int len = word.length();
+
 			for (int i = 0; i <= 10 && i <= len; i++) {
 				for (int j = 0; j <= 10 && j <= len; j++) {
 					String key = word.substring(0, i) + "_" + word.substring(len - j);
@@ -39,11 +42,7 @@ class WordFilter {
 
 	public int f(String prefix, String suffix) {
 		String key = prefix + "_" + suffix;
-		if (hm.containsKey(key)) {
-			return hm.get(key);
-		} else {
-			return -1;
-		}
+		return hm.getOrDefault(key, -1);
 	}
 }
 

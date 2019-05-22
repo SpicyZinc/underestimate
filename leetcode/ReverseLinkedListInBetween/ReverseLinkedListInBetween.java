@@ -46,6 +46,7 @@ public class ReverseLinkedListInBetween {
         ListNode what = eg.reverseBetween(list, 3, 4);
         System.out.println(what.printString());
     }
+
     // self written version 
     public ListNode reverseBetween(ListNode head, int m, int n) {
         if (head == null || head.next == null) {
@@ -73,34 +74,19 @@ public class ReverseLinkedListInBetween {
         ListNode prev = null;
         ListNode curr = head;
         ListNode next = null;
+
         int i = 0;
         while (i < n) {
             next = curr.next;
             curr.next = prev;
             prev = curr;
             curr = next;
+
             i++;
         }
         // till here, head is already tail, tail.next must point to null, and curr is null now
         head.next = curr;
         // prev is head now
         return prev;
-    }
-    
-    // a typical iterative method to reverse list, has nothing to with this problem
-    private ListNode reverse(ListNode head) {
-        ListNode prev = null;
-        ListNode curr = head;
-
-        while (curr != null) {
-            ListNode next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-        }
-
-        head = prev;
-
-        return head;
     }
 }

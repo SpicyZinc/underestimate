@@ -109,7 +109,7 @@ class OptimalAccountBalancing {
 
 		return getMinTransactions(debts, 0, 0, new ArrayList<String>());
 	}
-	// 从第一开始 用 [pos + 1, size - 1] 的抹平 debt
+	// 从第一开始 用 [pos + 1, size - 1] 的来抹平 pos's debt
 	public int getMinTransactions(List<Debt> debts, int pos, int cnt, List<String> result) {
 		int size = debts.size();
 
@@ -142,51 +142,10 @@ class OptimalAccountBalancing {
 	}
 
 
-
-	// public int minTransfers(int[][] transactions) {
-	// 	Map<Integer, Long> balance = new HashMap<Integer, Long>();
-	// 	for (int[] transaction : transactions) {
-	// 		int lender = transaction[0];
-	// 		int borrower = transaction[1];
-	// 		int money = transaction[2];
-
-	// 		balance.put(lender, balance.getOrDefault(lender, 0L) - money);
-	// 		balance.put(borrower, balance.getOrDefault(borrower, 0L) + money);
-	// 	}
-	// 	// record all non-zero balance
-	// 	List<Long> list = new ArrayList<Long>();
-	// 	for (long val : balance.values()) {
-	// 		if (val != 0) {
-	// 			list.add(val);
-	// 		}
-	// 	}
-	// 	// convert list to array
-	// 	long[] debtAccounts = new long[list.size()];
-	// 	int i = 0;
-	// 	for (long val : list) {
-	// 		debtAccounts[i++] = val;
-	// 	}
-
-	// 	return dfs(debtAccounts, 0, 0);
-	// }
-
-	// public int dfs(long[] debts, int start, int cnt) {
-	// 	while (start < debts.length && debts[start] == 0) {
-	// 		start++;
-	// 	}
-
-	// 	int minTransactions = Integer.MAX_VALUE;
-	// 	for (int i = start + 1; i < debts.length; i++) {
-	// 		// skip same value or same sign debt
-	// 		if (debts[start] * debts[i] < 0) {
-	// 			// add debts[start]
-	// 			debts[i] += debts[start];
-	// 			minTransactions = Math.min(minTransactions, dfs(debts, start + 1, cnt + 1));
-	// 			// remove debts[start]
-	// 			debts[i] -= debts[start];
-	// 		}
-	// 	}
-
-	// 	return minTransactions == Integer.MAX_VALUE ? cnt : minTransactions;
-	// }
+	// Wed May 15 00:16:17 2019
+	// no output ways of paying
+	public int minTransfers(int[][] transactions) {
+		// record all non-zero balance
+		// skip same value or same sign debt
+	}
 }

@@ -22,27 +22,34 @@ all letters in between, find each one's last occurrence
 */
 
 class PartitionLabels {
+	// Wed May 22 12:17:22 2019
 	public List<Integer> partitionLabels(String S) {
-		int[] lastOccurrenceIndex = new int[26];
-		for (int i = 0; i < S.length(); i++) {
-			lastOccurrenceIndex[S.charAt(i) - 'a'] = i;
-		}
+		int[] lastPositions = new int[26];
 
-		int anchor = 0;
-		int right = 0;
-		List<Integer> answers = new ArrayList<Integer>();
 		for (int i = 0; i < S.length(); i++) {
 			char c = S.charAt(i);
-			right = Math.max(right, lastOccurrenceIndex[c - 'a']);
-			// once right pointer equals i
-			// right is the most right, i reaches right, meaning find a partition
-			if (i == right) {
-				answers.add(right - anchor + 1);
-				// update
-				anchor = right + 1;
+
+			lastPositions[c - 'a'] = i;
+		}
+
+		List<Integer> partitions = new ArrayList<>();
+
+		int left = 0;
+		int rightmost = 0;
+
+		for (int right = 0; right < S.length(); right++) {
+			char c = S.charAt(right);
+
+			int lastPostForC = lastPositions[c - 'a'];
+			// 目前能到达的最远 right 当然包括了其他最后一个 char 的 rightmost position
+			rightmost = Math.max(rightmost, lastPostForC);
+			// greedy, 最大的一个 partition
+			if (right == rightmost) {
+				partitions.add(rightmost - left + 1);
+				left = rightmost + 1;
 			}
 		}
 
-		return answers;
+		return partitions;
 	}
 }

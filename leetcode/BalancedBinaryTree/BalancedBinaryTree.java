@@ -3,6 +3,8 @@ a height-balanced binary tree is defined as a binary tree
 in which the depth of the two subtrees of every node never differ by more than 1
 
 idea:
+height-balanced binary tree  => 最多相差一
+
 Depth of a node: depth from root, count how many edges
 Height of a node: longest path to leaf
 
@@ -29,6 +31,7 @@ class TreeNode {
 		this.value = value; 
 	}
 }
+
 public class BalancedBinaryTree {
 	public static void main(String[] args) {
 		TreeNode root = new TreeNode(1);

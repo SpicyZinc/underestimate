@@ -65,46 +65,50 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 			System.out.print("\n");
 		}
 	}
-	// 02/09/2019
+	// Sun May 19 01:48:30 2019
 	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-		List<List<Integer>> result = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
 
 		if (root == null) {
 			return result;
 		}
 
-		Queue<TreeNode> queue = new LinkedList<>();
-		queue.add(root);
-
-		boolean fromLeftToRight = true;
-
-		while (!queue.isEmpty()) {
-			int size = queue.size();
-			List<Integer> path = new ArrayList<>();
-
-			for (int i = 0; i < size; i++) {
-				TreeNode node = queue.poll();
-				if (fromLeftToRight) {
-					path.add(node.val);
-				} else {
-					path.add(0, node.val);
-				}
-
-				if (node.left != null) {
-					queue.offer(node.left);
-				}
-
-				if (node.right != null) {
-					queue.offer(node.right);
-				}
-			}
-
-			fromLeftToRight = !fromLeftToRight;
-			result.add(path);
-		}
-
-		return result;
-	}
+        
+        Queue<TreeNode> queue = new LinkedList<>();
+        
+        boolean fromLeftToRight = true;
+        
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            
+            List<Integer> path = new ArrayList<>();
+            
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                
+                if (fromLeftToRight) {
+                    path.add(node.val);
+                } else {
+                    path.add(0, node.val);
+                }
+                
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            
+            fromLeftToRight = !fromLeftToRight;
+            result.add(path);
+        }
+        
+        return result;
+    }
 
 	// one queue plus a flag leftToRight to do the zigzag
 	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
@@ -139,6 +143,7 @@ public class BinaryTreeZigzagLevelOrderTraversal {
                 result.add(layer);    
             }
         }
+
         return result;
     }
 	
@@ -182,44 +187,4 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 
 		return result;
 	}
-
-    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (result == null) {
-            return result;
-        }
-        
-        Queue<TreeNode> currentLvl = new LinkedList<TreeNode>();
-        currentLvl.add(root);
-        int size = currentLvl.size();
-        
-        boolean left2Right = true;
-        
-        while (!currentLvl.isEmpty()) {
-            List<Integer> path = new ArrayList<Integer>();
-
-            for (int i = 0; i < size; i++) {
-            	TreeNode node = currentLvl.poll();
-
-	            if (node == null) {
-	                continue;
-	            }
-
-				if (left2Right) {
-					path.add(node.val);
-				} else {
-					path.add(0, node.val);
-				}
-                
-				currentLvl.add(node.left);
-				currentLvl.add(node.right);
-            }
-            
-            result.add(path);
-            size = currentLvl.size();
-            left2Right = !left2Right;
-        }
-        
-        return result;
-    }
 }

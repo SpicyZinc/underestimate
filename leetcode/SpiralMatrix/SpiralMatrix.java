@@ -40,28 +40,62 @@ import java.util.*;
 
 public class SpiralMatrix {
 	public static void main(String[] args) {
-		int m = 3;
-		int n = 4;
-		int[][] grid = new int[m][n];
-		for (int i = 0; i < m; i++) {
-			System.out.println();
-			for (int j = 0; j < n; j++){
-				grid[i][j] = 1 + (m*n)*i + j;
-				System.out.printf("%-3d  ", grid[i][j]);
-			}
-		}		
-		System.out.println("\n");
+		int[][] grid = {
+			{1, 2, 3},
+			{4, 5, 6},
+			{7, 8, 9},
+		};
 		
-		SpiralMatrix aTest = new SpiralMatrix();
-		ArrayList<Integer> spiral = aTest.spiral_print(grid);
-		
-		System.out.print("[  ");
-		for (int i=0; i<spiral.size(); i++) {
-			System.out.print(spiral.get(i) + "  ");
-		}	
-		System.out.print("]");
+		SpiralMatrix eg = new SpiralMatrix();
+		List<Integer> spiral = eg.spiralOrder(grid);
+		System.out.println(spiral);
 	}
-    // both are working
+	// Sun May 19 00:11:16 2019
+	public List<Integer> spiralOrder(int[][] matrix) {
+		List<Integer> list = new ArrayList<>();
+
+		if (matrix.length == 0 || matrix[0].length == 0) {
+			return list;
+		}
+
+		int m = matrix.length;
+		int n = matrix[0].length;
+
+		int top = 0;
+		int right = n - 1;
+		int bottom = m - 1;
+		int left = 0;
+
+		while (list.size() < m * n) {
+			// top
+			for (int i = left; i <= right; i++) {
+				list.add(matrix[top][i]);
+			}
+			top++;
+			// right
+			for (int i = top; i <= bottom; i++) {
+				list.add(matrix[i][right]);
+			}
+			right--;
+			// bottom
+			if (bottom >= top) {
+				for (int i = right; i >= left; i--) {
+					list.add(matrix[bottom][i]);
+				}
+				bottom--;
+			}
+			// left
+			if (left <= right) {
+				for (int i = bottom; i >= top; i--) {
+					list.add(matrix[i][left]);
+				}
+				left++;
+			}
+		}
+
+		return list;
+	}
+
 	public List<Integer> spiralOrder(int[][] matrix) {
         List<Integer> list = new ArrayList<>();
         
@@ -72,44 +106,12 @@ public class SpiralMatrix {
         int m = matrix.length;
         int n = matrix[0].length; 
         
-//         int top = 0;
-//         int left = 0;
-//         int bottom = m - 1;
-//         int right = n - 1;
-                
-//         while (top <= bottom && left <= right) {
-//             // top
-//             for (int i = left; i <= right; i++) {
-//                 list.add(matrix[top][i]);
-//             }
-//             top++;
-//             // right
-//             for (int i = top; i <= bottom; i++) {
-//                 list.add(matrix[i][right]);
-//             }
-//             right--;
-//             // bottom
-//             if (top <= bottom) {
-//                 for (int i = right; i >= left; i--) {
-//                     list.add(matrix[bottom][i]);
-//                 }
-//                 bottom--;
-//             }
-//             // left
-//             if (left <= right) {
-//                 for (int i = bottom; i >= top; i--) {
-//                     list.add(matrix[i][left]);
-//                 }
-//                 left++;
-//             }
-//         }
-
         int top = 0;
-        int right = n - 1;
-        int bottom = m - 1;
         int left = 0;
-        
-        while (list.size() < m * n) {
+        int bottom = m - 1;
+        int right = n - 1;
+                
+        while (top <= bottom && left <= right) {
             // top
             for (int i = left; i <= right; i++) {
                 list.add(matrix[top][i]);
@@ -121,7 +123,7 @@ public class SpiralMatrix {
             }
             right--;
             // bottom
-            if (bottom >= top) {
+            if (top <= bottom) {
                 for (int i = right; i >= left; i--) {
                     list.add(matrix[bottom][i]);
                 }
@@ -138,8 +140,9 @@ public class SpiralMatrix {
             
         return list;
     }
+
 	// recursion
-    public ArrayList<Integer> spiralPrint(int[][] matrix) {
+    public List<Integer> spiralPrint(int[][] matrix) {
         if (matrix.length == 0) {
             return new ArrayList<Integer>();
         }
@@ -148,8 +151,8 @@ public class SpiralMatrix {
     }
 	// m number of rows
 	// n number of columns
-    public ArrayList<Integer> spiralPrint(int[][] matrix, int x, int y, int m, int n)  {
-        ArrayList<Integer> seq = new ArrayList<Integer>();
+    public List<Integer> spiralPrint(int[][] matrix, int x, int y, int m, int n)  {
+        List<Integer> seq = new ArrayList<>();
         if (m <= 0 || n <= 0) {
             return seq;
         } 
@@ -157,28 +160,28 @@ public class SpiralMatrix {
 		
         // top side
 		// row starts and stops at x
-        for (int j = y; j < y+n; j++) {
+        for (int j = y; j < y + n; j++) {
             seq.add(matrix[x][j]);
         }
         // right side
 		// i starts at x+1 and stops at x+m-1-1
-        for (int i = x+1; i < x+m-1; i++) {
-            seq.add(matrix[i][y+n-1]);
+        for (int i = x + 1; i < x + m - 1; i++) {
+            seq.add(matrix[i][y + n - 1]);
         } 
         // bottom side
 		// check if only one row
 		// more than one row can go next
 		// row starts at x+m-1
         if (m > 1) {
-            for (int j = y+n-1; j >= y; j--) {
-                seq.add(matrix[x+m-1][j]);
+            for (int j = y + n - 1; j >= y; j--) {
+                seq.add(matrix[x + m - 1][j]);
             }
         } 
         // left side
 		// check if only one column
 		// more than one column can go next
         if (n > 1) {
-            for (int i = x+m-2; i > x; i--) {
+            for (int i = x + m - 2; i > x; i--) {
                 seq.add(matrix[i][y]);
             }
         }

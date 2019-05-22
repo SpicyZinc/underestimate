@@ -24,6 +24,32 @@ class TreeNode {
 }
 
 public class BinaryTreeMaximumPathSum {
+    // Sun May 19 02:14:02 2019
+    int maxSum = Integer.MIN_VALUE;
+    
+    public int maxPathSum(TreeNode root) {
+        getMaxSum(root);
+        
+        return maxSum;
+    }
+    
+    // strictly straight, no turn around
+    public int getMaxSum(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        
+        int leftMax = getMaxSum(node.left);
+        int rightMax = getMaxSum(node.right);
+        
+        int max = Math.max(node.val, node.val + Math.max(leftMax, rightMax));
+        
+        maxSum = Math.max(maxSum, Math.max(max, leftMax + node.val + rightMax));
+        
+        return max;
+    }
+
+
     int max = Integer.MIN_VALUE;
     
     public int maxPathSum(TreeNode root) {
@@ -43,6 +69,7 @@ public class BinaryTreeMaximumPathSum {
         // max value can be the current max, can be returnVal, can be the arcValue which means no need to go to parent
         // till here I have the biggest value since there could be negative values in the tree
         max = Math.max(max, Math.max(maxPathSum, leftPathSum + node.val + rightPathSum));
+
         return maxPathSum;
     }
 
@@ -54,7 +81,10 @@ public class BinaryTreeMaximumPathSum {
     }
 
     private int getMaxPathAcrossRootToParent(TreeNode root, int[] max) {
-    	if (root == null) return 0;
+    	if (root == null) {
+            return 0;
+        }
+
     	int maxLeftSubTree = getMaxPathAcrossRootToParent(root.left, max);
     	int maxRightSubTree = getMaxPathAcrossRootToParent(root.right, max);
     	int arch = maxLeftSubTree + root.val + maxRightSubTree;

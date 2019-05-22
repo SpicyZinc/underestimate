@@ -36,9 +36,9 @@ public class EvaluateDivision {
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
         Map<String, Map<String, Double>> numMap = new HashMap<>();
         int i = 0;
-        for(String[] str : equations) {
+        for (String[] str : equations) {
             insertPairs(numMap, str[0], str[1], values[i]);
-            insertPairs(numMap, str[1], str[0], 1.0/values[i]);
+            insertPairs(numMap, str[1], str[0], 1.0 / values[i]);
             i++;
         }
 
@@ -48,6 +48,7 @@ public class EvaluateDivision {
             Double resObj = handleQuery(q[0], q[1], numMap, new HashSet<>());
             res[i++] = (resObj != null) ? resObj : -1.0;
         }
+
         return res;
     }
 
@@ -82,6 +83,7 @@ public class EvaluateDivision {
             }
             visitedSet.remove(dupeKey);
         }
+
         return null;
     }
 }

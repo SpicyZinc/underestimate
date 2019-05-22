@@ -57,7 +57,7 @@ public class SumRootToLeafNumbers {
 
 	// method 1
 	public int sumNumbers(TreeNode root) {  
-    	int[] sum = new int[1];
+		int[] sum = new int[1];
 		int[] path = new int[1];
 		GenerateSum(root, path, sum);
 
@@ -74,12 +74,13 @@ public class SumRootToLeafNumbers {
 			sum[0] += path[0];
 			// restore to a state where not times 10
 			path[0] /= 10;
+
 			return;
 		}
 
 		GenerateSum(root.left, path, sum);
 		GenerateSum(root.right, path, sum);
 		// restore to a state where not times 10
-        path[0] /= 10;
+		path[0] /= 10;
 	}
 }

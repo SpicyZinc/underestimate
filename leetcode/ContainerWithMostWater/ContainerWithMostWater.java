@@ -26,6 +26,7 @@ Otherwise move j down by one, until the two pointers meet.
 两边搜索, 短板往里走. 因为往里走, 代表宽度减小, 那么宽度小的时候, 只有遇上更高的高度才能组成更加大的container.
 
 isn't this trapping water problem?
+不一样
 */
 
 import java.util.*;
@@ -33,9 +34,9 @@ import java.util.*;
 public class ContainerWithMostWater {
 	public static void main(String[] args) {
 		Random aRandom = new Random();
-		ArrayList<Integer> height = new ArrayList<Integer>();
+		List<Integer> height = new ArrayList<>();
 		
-		for (int i=0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) {
 			height.add(aRandom.nextInt(100));
 			System.out.println(height.get(i));
 		}
@@ -59,7 +60,7 @@ public class ContainerWithMostWater {
                 i++;
             }
         }
-		
+
         return maxArea;
     }
 }

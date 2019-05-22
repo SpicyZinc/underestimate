@@ -22,6 +22,21 @@ Note:
 top k, must create the length of nums.length + 1
 */
 public class TopKFrequentElements {
+    // Tue May 21 23:15:08 2019
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> hm = new HashMap<>();
+
+        for (int num : nums) {
+            hm.put(num, hm.getOrDefault(num, 0) + 1);
+        }
+
+        List<Integer> keys = new ArrayList<>(hm.keySet());
+        
+        Collections.sort(keys, (a, b) -> hm.get(b) - hm.get(a));
+
+        return keys.subList(0, k);
+    }
+
     // best
     public List<Integer> topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> hm = new HashMap<Integer, Integer>();

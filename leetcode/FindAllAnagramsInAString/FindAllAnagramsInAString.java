@@ -30,19 +30,21 @@ https://leetcode.com/problems/find-all-anagrams-in-a-string/discuss/
 */
 
 public class FindAllAnagramsInAString {
-	// method 1, recently rewrote
+	// Wed May 22 00:56:42 2019
 	public List<Integer> findAnagrams(String s, String p) {
-        List<Integer> list = new ArrayList<Integer>(); 
+        List<Integer> list = new ArrayList<>(); 
         int pLen = p.length();
         if (pLen > s.length()) {
         	return list;
         }
+
         for (int i = 0; i <= s.length() - pLen; i++) {
         	String subStr = s.substring(i, i + pLen);
         	if (isAnagram(subStr, p)) {
         		list.add(i);
         	}
         }
+
         return list;
     }
 
@@ -59,8 +61,10 @@ public class FindAllAnagramsInAString {
     			return false;
     		}
     	}
+
     	return true;
     }
+
     // method 2
 	public List<Integer> findAnagrams(String s, String p) {
 	    List<Integer> list = new ArrayList<>();
@@ -120,6 +124,7 @@ public class FindAllAnagramsInAString {
                 left++;
 	        }
         }
+
         return result;
     }
 }

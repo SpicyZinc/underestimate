@@ -68,8 +68,8 @@ public class ExclusiveTimeOfFunctions {
 
 			if (startOrEnd.equals("start")) {
 				if (!stack.isEmpty()) {
-				// record for 当前 fn stack 中 最上部的 fnId 的一段运行时间结束了
-				result[stack.peek()] += currTime - prevTime; 
+					// record for 当前 fn stack 中 最上部的 fnId 的一段运行时间结束了
+					result[stack.peek()] += currTime - prevTime;
 				}
 
 				stack.push(fnId);

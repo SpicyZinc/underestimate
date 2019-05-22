@@ -29,29 +29,46 @@ There are no hyphens or hyphenated words.
 Words only consist of letters, never apostrophes or other punctuation symbols.
 
 idea:
-how come on quick way to check if an array contains an element or not in Java
-hashmap used
+how to check if an array contains an element or not in Java, convert to List or Set
+note, toLowerCase()
 */
 
-class MostCommonWord {
-	public String mostCommonWord(String paragraph, String[] banned) {
-		// replace all punctuations with empty space
-		String[] matches = paragraph.replaceAll("\\pP", "").toLowerCase().split("\\s+");
-		Map<String, Integer> hm = new HashMap<String, Integer>();
-		int max = 0;
-		String mostCommon = "";
-		List<String> bannedWords = Arrays.asList(banned);
-		for (String match : matches) {
-			if (bannedWords.contains(match)) {
-				continue;
-			}
-			hm.put(match, hm.getOrDefault(match, 0) + 1);
-			if (max < hm.get(match)) {
-				max = hm.get(match);
-				mostCommon = match;
-			}
-		}
+import java.util.*;
 
-		return mostCommon;
+class MostCommonWord {
+	public static void main(String[] args) {
+		String s = "Bob hit a ball, the hit BALL flew far after it was hit.";
+		String[] banned = {"hit"};
+
+		MostCommonWord eg = new MostCommonWord();
+		String result = eg.mostCommonWord(s, banned);
+
+		System.out.println(result);
 	}
+	// Sun May 19 20:03:29 2019
+	public String mostCommonWord(String paragraph, String[] banned) {
+        int max = 0;
+        String mostCommonWord = "";
+        
+        Set<String> hs = new HashSet<>(Arrays.asList(banned));
+            
+        Map<String, Integer> hm = new HashMap<>();
+        
+        String[] matches = paragraph.replaceAll("\\pP", " ").toLowerCase().split("\\s+");
+        for (String match : matches) {
+            // for banned match, skip it
+            if (hs.contains(match)) {
+                continue;
+            }
+            
+            hm.put(match, hm.getOrDefault(match, 0) + 1);
+            
+            if (hm.get(match) > max) {
+                max = hm.get(match);
+                mostCommonWord = match;
+            }
+        }
+        
+        return mostCommonWord;
+    }
 }
