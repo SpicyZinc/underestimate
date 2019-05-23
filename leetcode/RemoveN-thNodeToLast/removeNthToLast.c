@@ -2,19 +2,15 @@
 #include <stdlib.h>
  
 /* structure of a linked list node */
-struct node
-{
+struct node {
     int data;
     struct node *next;
 };
  
-void deleteNode(struct node *head, struct node *n)
-{
+void deleteNode(struct node *head, struct node *n) {
     // When node to be deleted is head node
-    if(head == n)
-    {
-        if(head->next == NULL)
-        {
+    if (head == n) {
+        if (head->next == NULL) {
             printf("There is only one node. The list can't be made empty ");
             return;
         }
@@ -34,17 +30,16 @@ void deleteNode(struct node *head, struct node *n)
         return;
     }
  
- 
     // When not first node, follow the normal deletion process
  
     // find the previous node
     struct node *prev = head;
-    while(prev->next != NULL && prev->next != n)
+    while (prev->next != NULL && prev->next != n) {
         prev = prev->next;
+    }
  
     // Check if node really exists in Linked List
-    if(prev->next == NULL)
-    {
+    if (prev->next == NULL) {
         printf("\n Given node is not present in Linked List");
         return;
     }
@@ -58,34 +53,28 @@ void deleteNode(struct node *head, struct node *n)
     return;
 }
  
-/* Utility function to insert a node at the begining */
-void push(struct node **head_ref, int new_data)
-{
-    struct node *new_node =
-        (struct node *)malloc(sizeof(struct node));
+/* Utility function to insert a node at the beginning */
+void push(struct node **head_ref, int new_data) {
+    struct node *new_node = (struct node *) malloc(sizeof(struct node));
     new_node->data = new_data;
     new_node->next = *head_ref;
     *head_ref = new_node;
 }
  
 /* Utility function to print a linked list */
-void printList(struct node *head)
-{
-    while(head!=NULL)
-    {
+void printList(struct node *head) {
+    while (head != NULL) {
         printf("%d ",head->data);
-        head=head->next;
+        head = head->next;
     }
     printf("\n");
 }
  
 /* Driver program to test above functions */
-int main()
-{
+int main() {
     struct node *head = NULL;
  
-    /* Create following linked list
-      12->15->10->11->5->6->2->3 */
+    /* Create following linked list 12->15->10->11->5->6->2->3 */
     push(&head,3);
     push(&head,2);
     push(&head,6);
