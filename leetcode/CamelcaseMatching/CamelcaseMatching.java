@@ -65,6 +65,7 @@ class CamelcaseMatching {
 
 		for (int i = 0; i < query.length(); i++) {
 			char a = query.charAt(i);
+
 			if (j < pattern.length() && a == pattern.charAt(j)) {
 				j++;
 			} else if (a >= 'A' && a <= 'Z') {

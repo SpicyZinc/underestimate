@@ -35,13 +35,16 @@ idea:
 public class StringIterator {
 	int idx;
 	String s;
+
 	public StringIterator(String compressedString) {
-		idx = 0;
+		this.idx = 0;
+
 		StringBuilder sb = new StringBuilder();
 		char lastChar = ' ';
 		for (int i = 0; i < compressedString.length();) {
 			int val = 0;
 			char c = compressedString.charAt(i); 
+
 			if (Character.isLetter(c)) {
 				lastChar = c;
 				i++;
@@ -55,7 +58,7 @@ public class StringIterator {
 				}
 			}
 	    }
-	    s = sb.toString();
+	    this.s = sb.toString();
 	}
 	
 	public char next() {
@@ -88,6 +91,7 @@ public class StringIterator {
 	public char next() {
 		if (repetitions > 0) {
 			repetitions--;
+
 			return ch;
 		} else if (i < compressedString.length()) {
 			ch = compressedString.charAt(i);
@@ -97,6 +101,7 @@ public class StringIterator {
 			}
 			repetitions = Long.parseLong(compressedString.substring(i + 1, j)) - 1;
 			i = j;
+
 			return ch;
 		} else {
 			return ' ';

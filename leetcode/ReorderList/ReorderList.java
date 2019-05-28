@@ -44,7 +44,7 @@ public class ReorderList {
 		}
 		System.out.print("\n");
 	}
-	// recently rewrite version
+	// Thu May 23 15:40:24 2019
 	public void reorderList(ListNode head) {
         if (head == null || head.next == null) {
             return;
@@ -58,8 +58,10 @@ public class ReorderList {
         }
         ListNode firstHalf = head;
         ListNode secondHalf = slow.next;
+
         // note: not forget to cut off the list, detach two sub lists
         slow.next = null;
+
         // reverse a linked list, in this case, the second half
         ListNode prev = null;
         ListNode curr = secondHalf;
@@ -70,6 +72,7 @@ public class ReorderList {
             curr = next;
         }
         secondHalf = prev;
+
         // interweave two linked lists
         while (secondHalf != null) {
             ListNode next1 = firstHalf.next;

@@ -31,9 +31,11 @@ public class IsSameTree {
         Queue<TreeNode> two = new LinkedList<TreeNode>();
         one.add(p);
         two.add(q);
+
         while (!one.isEmpty() && !two.isEmpty()) {
             TreeNode tmp1 = one.poll();
             TreeNode tmp2 = two.poll();
+
             if (tmp1 == null) {
                 return tmp2 == null;
             }

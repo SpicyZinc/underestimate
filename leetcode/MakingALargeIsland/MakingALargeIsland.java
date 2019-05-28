@@ -25,7 +25,7 @@ idea:
 typical union find
 similar to ConnectingGraph II
 
-对每个 0 找 set as 1 之后 相连的 四个 方向的 带头大哥 的 size
+对每个 0 (找 set as 1 之后) 相连的 四个 方向的 带头大哥 的 size
 如果不是一个组 用 set 就 加上这个 带头大哥 所领导的 size
 
 */

@@ -51,7 +51,7 @@ class MyStack {
     
     // Push element x onto stack.
     public void push(int x) {
-        if ( !reverseQueue.isEmpty() ) {
+        if (!reverseQueue.isEmpty()) {
             normalQueue.offer(reverseQueue.poll());
         }
         normalQueue.offer(x);

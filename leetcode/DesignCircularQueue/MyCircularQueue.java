@@ -69,6 +69,7 @@ class MyCircularQueue {
         tail = (tail + 1) % len;
         queue[tail] = value;
         size++;
+
         return true;
     }
     
@@ -81,6 +82,7 @@ class MyCircularQueue {
         
         head = (head + 1) % len;
         size--;
+
         return true;
     }
     
@@ -89,6 +91,7 @@ class MyCircularQueue {
         if (size <= 0) {
             return -1;
         }
+
         return queue[head];
     }
     
@@ -97,6 +100,7 @@ class MyCircularQueue {
         if (size <= 0) {
             return -1;
         }
+
         return queue[tail];
     }
     

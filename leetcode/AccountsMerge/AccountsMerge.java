@@ -42,7 +42,25 @@ a separate class Node containing a neighbors property
 dfs()
 */
 
+import java.util.*;
+
 class AccountsMerge {
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+
+        list.add("a");
+        list.add("b");
+        list.add("c");
+
+        System.out.println(list);
+
+        list.add(1, "d");
+        System.out.println(list);
+
+        list.remove(2);
+        System.out.println(list);
+    }
+
 	class Node {
         String email;
         String username;

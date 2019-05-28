@@ -66,14 +66,17 @@ public class DecodeWays {
         int[] ways = new int[s.length() + 1];
         ways[0] = 1;
         ways[1] = 1;
+
         for (int i = 2; i <= s.length(); i++) {
             char first = s.charAt(i - 2);
             char second = s.charAt(i - 1);
-            // 12 1(A and 2(B) or 12 as L 两种
+
+            // 12 1(A) and 2(B) or 12 as L 两种
             // 但是一旦有0 就不行了
             if (second != '0') {
                 ways[i] += ways[i - 1];  
             }
+
             // 如果是1 second可以是[0-9] 没有限制
             // 如果是2 second只能是[0-6]
             if (first == '1' || first == '2' && second >= '0' && second <= '6') {

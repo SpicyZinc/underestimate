@@ -21,7 +21,7 @@ It is guaranteed that costs.length is even.
 1 <= costs[i][0], costs[i][1] <= 1000
 
 idea:
-dp[i][j] represents the cost i people assigned to city A and j people assigned to city B
+dp[i][j] represents the cost of i people assigned to city A and j people assigned to city B
 in first (i + j) people
 */
 

@@ -16,7 +16,6 @@ idea:
 2. recursion with memoization
 https://www.cnblogs.com/grandyang/p/5138186.html
 3. dp
-
 */
 
 public class CoinChange {
@@ -36,6 +35,7 @@ public class CoinChange {
 
 		if (remaining == 0) {
 			minCount = Math.min(minCount, currCnt);
+
 			return;
 		}
 
@@ -43,6 +43,7 @@ public class CoinChange {
 			coinChange(i, currCnt + 1, coins, remaining - coins[i]);
 		}
 	}
+
 
 	public int coinChange(int[] coins, int amount) {
 		if (amount < 1) {

@@ -22,7 +22,7 @@ Note:
 S only contains characters "I" or "D".
 
 idea:
-利用left right 两个pointer
+利用left right 两个 pointer
 left++
 right--
 */
@@ -31,6 +31,7 @@ class Solution {
 	public int[] diStringMatch(String S) {
 		int n = S.length();
 		int[] result = new int[n + 1];
+
 		int left = 0;
 		int right = n;
 

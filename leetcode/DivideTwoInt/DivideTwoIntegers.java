@@ -37,13 +37,13 @@ public class DivideTwoIntegers {
 		}
 
 		int result = 0;
-		int cur = divisors.size() - 1;
-		while (divd > 0 && cur >= 0) {
-			while (divd >= divisors.get(cur)) {
-				divd -= divisors.get(cur);
-				result += 1 << cur;
+		int curr = divisors.size() - 1;
+		while (divd > 0 && curr >= 0) {
+			while (divd >= divisors.get(curr)) {
+				divd -= divisors.get(curr);
+				result += 1 << curr;
 			}
-			cur--;
+			curr--;
 		}
 
 		return (dividend > 0) ^ (divisor > 0) ? (-result) : result; 

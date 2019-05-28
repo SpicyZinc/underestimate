@@ -100,7 +100,7 @@ class BoundaryOfBinaryTree {
 	}
 
 	public List<Integer> boundaryOfBinaryTree(TreeNode root) {
-		List<Integer> result = new ArrayList<Integer>();
+		List<Integer> result = new ArrayList<>();
 		if (root == null) {
 			return result;
 		}

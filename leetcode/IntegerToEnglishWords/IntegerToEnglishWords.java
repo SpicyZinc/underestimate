@@ -108,6 +108,7 @@ public class IntegerToEnglishWords {
         // take 156 as an example
         StringBuilder sb = new StringBuilder();
         String word = "";
+
         if (num >= 100) {
             word = hm.get(num / 100) + " Hundred";
             sb.append(word);

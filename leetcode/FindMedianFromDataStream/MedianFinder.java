@@ -23,7 +23,7 @@ heap, by default, is min-heap which means the top of the heap is the smallest el
 Max-heap small has the smaller half of the numbers
 Min-heap large has the larger half of the numbers
 for small heap, multiply -1 to utilize min-heap feature
-保持数大的那半个部分 始终有一个多的元素
+保有数大的半个部分的heap 始终有一个多的元素
 
 note: large always has one more element than small or equal size
 */

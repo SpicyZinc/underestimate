@@ -89,10 +89,11 @@ class LFUCache {
     public int get(int key) {
         if (valuesMap.containsKey(key)) {
             increaseFrequency(key);
+
             return valuesMap.get(key);
-        } else {
-            return -1;
         }
+
+        return -1;
     }
     
     public void put(int key, int value) {

@@ -89,7 +89,9 @@ public class Twitter {
             if (hs.add(tweetId) && allTweets.contains(tweetId)) {
                 recentFeed.add(tweetId);
             }
-            if (recentFeed.size() == 10) break; 
+            if (recentFeed.size() == 10) {
+                break; 
+            }
         }
         
         return recentFeed;

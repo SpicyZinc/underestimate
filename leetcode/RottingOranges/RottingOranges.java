@@ -54,7 +54,6 @@ class RottingOranges {
 		Queue<int[]> queue = new LinkedList<>();
 		int freshCnt = 0;
 
-		int days = 0;
 		// populate 1st day rotten oranges
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -70,6 +69,7 @@ class RottingOranges {
 			return 0;
 		}
 
+		int days = 0;
 		while (!queue.isEmpty()) {
 			days++;
 			// some day, all rotten oranges positions
@@ -85,6 +85,7 @@ class RottingOranges {
 					if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && grid[nextX][nextY] == 1) {
 						// got contagious to turn into rotten
 						grid[nextX][nextY] = 2;
+						// add to the rotten queue
 						queue.offer(new int[] {nextX, nextY});
 						freshCnt--;
 					}

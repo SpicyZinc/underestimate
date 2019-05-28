@@ -35,7 +35,7 @@ public class CircularLinkedList {
     }
 
     public void addNodeAtEnd(int data) {
-        if (size==0) {
+        if (size == 0) {
             addNodeAtStart(data);
         } else {
             Node node = new Node(data);

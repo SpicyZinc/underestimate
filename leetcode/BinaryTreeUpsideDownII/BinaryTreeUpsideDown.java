@@ -100,6 +100,7 @@ public class BinaryTreeUpsideDown {
         if ( root == null ) {
             return null;
         }
+
         TreeNode node = root;
         TreeNode parent = null;
         TreeNode parentRight = null;

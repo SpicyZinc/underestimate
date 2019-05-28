@@ -36,18 +36,18 @@ class MyHashSet {
     }
     
     public void add(int key) {
-        int pos = key % this.capacity;
+        int pos = key % capacity;
         list[pos] = true;
     }
     
     public void remove(int key) {
-    	int pos = key % this.capacity;
+    	int pos = key % capacity;
         list[pos] = false;
     }
     
     /** Returns true if this set contains the specified element */
     public boolean contains(int key) {
-    	int pos = key % this.capacity;
+    	int pos = key % capacity;
         return list[pos];
     }
 }

@@ -39,6 +39,18 @@ priority queue is used to get the most frequent Node,
 if node.value equal, pick up the most recent inserted value
 */
 
+class Node {
+	int idx;
+	int value;
+	int frequency;
+
+	public Node(int idx, int value, int frequency) {
+		this.idx = idx;
+		this.value = value;
+		this.frequency = frequency;
+	}
+}
+
 class FreqStack {
 	int cnt;
 	Map<Integer, Integer> hm = new HashMap<>();
@@ -64,18 +76,7 @@ class FreqStack {
 	public int pop() {
 		int val = pq.poll().value;
 		hm.put(val, hm.get(val) - 1);
+
 		return val;
-	}
-}
-
-class Node {
-	int idx;
-	int value;
-	int frequency;
-
-	public Node(int idx, int value, int frequency) {
-		this.idx = idx;
-		this.value = value;
-		this.frequency = frequency;
 	}
 }
