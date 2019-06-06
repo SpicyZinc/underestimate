@@ -44,6 +44,51 @@ public class ReorderList {
 		}
 		System.out.print("\n");
 	}
+
+    // Sun Jun  2 15:25:53 2019
+    public void reorderList(ListNode head) {
+        if (head == null) {
+            return;
+        }
+
+        ListNode fast = head;
+        ListNode slow = head;
+        
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        ListNode first = head;
+        ListNode second = slow.next;
+        slow.next = null;
+        
+        // reverse the second
+        ListNode prev = null;
+        ListNode curr = second;
+        
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        second = prev;
+        
+        // interweave two linked lists
+        while (second != null) {
+            ListNode next1 = first.next;
+            ListNode next2 = second.next;
+            
+            first.next = second;
+            second.next = next1;
+
+            first = next1;
+            second = next2;
+        }
+    }
+
 	// Thu May 23 15:40:24 2019
 	public void reorderList(ListNode head) {
         if (head == null || head.next == null) {

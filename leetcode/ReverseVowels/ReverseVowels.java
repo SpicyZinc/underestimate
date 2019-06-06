@@ -51,6 +51,7 @@ public class ReverseVowels {
     public boolean isVowel(char ch) {
         String vowels = "aeiouAEIOU";
         String c = String.valueOf(ch);
+
         return vowels.contains(c);
     }
 

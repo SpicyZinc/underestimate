@@ -63,10 +63,10 @@ public class URLService {
     String prefix = "http://tiny.url/";
 
     URLService() {
-        ltos = new HashMap<String, Integer>();
-        stol = new HashMap<Integer, String>();
-        COUNTER = 1;
-        elements = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        this.ltos = new HashMap<>();
+        this.stol = new HashMap<>();
+        this.COUNTER = 1;
+        this.elements = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     }
 
     public String longToShort(String url) {
@@ -74,12 +74,14 @@ public class URLService {
         ltos.put(url, COUNTER);
         stol.put(COUNTER, url);
         COUNTER++;
+
         return prefix + shorturl;
     }
 
     public String shortToLong(String url) {
         url = url.substring(prefix.length());
         int n = base62ToBase10(url);
+
         return stol.get(n);
     }
     
@@ -88,6 +90,7 @@ public class URLService {
         for (int i = 0; i < s.length(); i++) {
             n = n * 62 + convert(s.charAt(i));
         }
+
         return n;
     }
 

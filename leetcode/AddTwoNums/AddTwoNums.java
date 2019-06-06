@@ -51,7 +51,7 @@ public class AddTwoNums {
 	
 	private ListNode fromArray(int[] array) {
 		ListNode head = new ListNode(0);
-		ListNode current = head;		
+		ListNode current = head;
 		// insertion from the tail
 		for (int i = 0; i < array.length; i++) {
 			ListNode temp = new ListNode(array[i]);

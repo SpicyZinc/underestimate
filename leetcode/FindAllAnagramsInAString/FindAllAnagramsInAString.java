@@ -30,42 +30,69 @@ https://leetcode.com/problems/find-all-anagrams-in-a-string/discuss/
 */
 
 public class FindAllAnagramsInAString {
-	// Wed May 22 00:56:42 2019
+	// Sun Jun  2 20:13:16 2019
 	public List<Integer> findAnagrams(String s, String p) {
-        List<Integer> list = new ArrayList<>(); 
-        int pLen = p.length();
-        if (pLen > s.length()) {
-        	return list;
+        int len = p.length();
+        String normalized = normalize(p);
+        
+        List<Integer> list = new ArrayList<>();
+        
+        for (int i = 0; i <= s.length() - len; i++) {
+            String str = s.substring(i, i + len);
+            String normalizedStr = normalize(str);
+            
+            if (normalizedStr.equals(normalized)) {
+                list.add(i);
+            }
         }
-
-        for (int i = 0; i <= s.length() - pLen; i++) {
-        	String subStr = s.substring(i, i + pLen);
-        	if (isAnagram(subStr, p)) {
-        		list.add(i);
-        	}
-        }
-
+        
         return list;
     }
-
-    public boolean isAnagram(String s, String t) {
-    	int[] letters = new int[26];
-    	for (int i = 0; i < s.length(); i++) {
-    		char sc = s.charAt(i);
-    		char tc = t.charAt(i);
-    		letters[sc - 'a']++;
-    		letters[tc - 'a']--;
-    	}
-    	for (int letter : letters) {
-    		if (letter != 0) {
-    			return false;
-    		}
-    	}
-
-    	return true;
+    
+    public String normalize(String s) {
+        char[] chars = s.toCharArray();
+        Arrays.sort(chars);
+        
+        return new String(chars);
     }
 
-    // method 2
+	// Wed May 22 00:56:42 2019
+	public List<Integer> findAnagrams(String s, String p) {
+		List<Integer> list = new ArrayList<>(); 
+		int pLen = p.length();
+		if (pLen > s.length()) {
+			return list;
+		}
+
+		for (int i = 0; i <= s.length() - pLen; i++) {
+			String subStr = s.substring(i, i + pLen);
+			if (isAnagram(subStr, p)) {
+				list.add(i);
+			}
+		}
+
+		return list;
+	}
+
+	public boolean isAnagram(String s, String t) {
+		int[] letters = new int[26];
+
+		for (int i = 0; i < s.length(); i++) {
+			char sc = s.charAt(i);
+			char tc = t.charAt(i);
+			letters[sc - 'a']++;
+			letters[tc - 'a']--;
+		}
+		for (int letter : letters) {
+			if (letter != 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	// method 2
 	public List<Integer> findAnagrams(String s, String p) {
 	    List<Integer> list = new ArrayList<>();
 	    if (s == null || s.length() == 0 || p == null || p.length() == 0) {
@@ -95,6 +122,7 @@ public class FindAllAnagramsInAString {
 
 	    return list;
 	}
+
 	// this case, always maintain a window of size p length
 	public List<Integer> findAnagrams(String s, String p) {
         List<Integer> result = new ArrayList<Integer>();

@@ -23,8 +23,14 @@ SELECT
 from point a, point b
 where a.x <> b.x;
 
--- self join
-SELECT
-	MIN(ABS(a.x - b.x)) AS shortest
+-- or 
+
+SELECT p1.x, p2.x, ABS(p1.x - p2.x) AS distance
+FROM point p1 JOIN point p2
+ON p1.x <> p2.x;
+
+-- self join, real answer
+SELECT MIN(ABS(a.x - b.x)) AS shortest
 from point a, point b
 where a.x <> b.x
+

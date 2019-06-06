@@ -26,26 +26,64 @@ The given list has length in the range [0, 10000].
 
 idea:
 next great element
+保持一个单调递减 stack
+但是是存的 index
+所对应的value 是递减的
 */
 
+import java.util.*;
+
+class ListNode {
+	int val;
+	ListNode next;
+		
+	ListNode(int val) {
+		this.val = val;
+		this.next = null;
+	}
+}
+
 class NextGreaterNodeInLinkedList {
+	public static void main(String[] args) {
+		int[] arr = {1,7,5,1,9,2,5,1};
+		NextGreaterNodeInLinkedList eg = new NextGreaterNodeInLinkedList();
+		ListNode head = eg.fromArray(arr);
+
+		int[] nextGreater = eg.nextLargerNodes(head);
+
+		// System.out.println(Arrays.toString(nextGreater));
+	}
+
+	private ListNode fromArray(int[] array) {
+		ListNode head = new ListNode(0);
+		ListNode current = head;
+		// insertion from the tail
+		for (int i = 0; i < array.length; i++) {
+			ListNode temp = new ListNode(array[i]);
+			current.next = temp;
+			current = current.next;
+		}
+
+		return head.next;
+	}
+
 	public int[] nextLargerNodes(ListNode head) {
-	    List<Integer> A = new ArrayList<>();
+		List<Integer> A = new ArrayList<>();
 
-	    for (ListNode node = head; node != null; node = node.next) {
-	        A.add(node.val);
-        }
+		for (ListNode node = head; node != null; node = node.next) {
+			A.add(node.val);
+		}
 
-	    int[] result = new int[A.size()];
-	    Stack<Integer> stack = new Stack<>();
-        
-	    for (int i = 0; i < A.size(); i++) {
-	        while (!stack.isEmpty() && A.get(stack.peek()) < A.get(i)) {
-	            result[stack.pop()] = A.get(i);
-            }
-	        stack.push(i);
-	    }
+		int[] result = new int[A.size()];
+		Stack<Integer> stack = new Stack<>();
+		
+		for (int i = 0; i < A.size(); i++) {
+			while (!stack.isEmpty() && A.get(stack.peek()) < A.get(i)) {
+				result[stack.pop()] = A.get(i);
+			}
+			stack.push(i);
+		}
 
-	    return result;
+		return result;
 	}
 }

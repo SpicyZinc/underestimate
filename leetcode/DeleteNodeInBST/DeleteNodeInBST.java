@@ -49,9 +49,10 @@ class TreeNode {
 }
 
 public class DeleteNodeInBST {
+	// Mon Jun  3 00:46:24 2019
     public TreeNode deleteNode(TreeNode root, int key) {
         if (root == null) {
-            return root;
+            return null;
         }
 
         if (key < root.val) {
@@ -69,18 +70,20 @@ public class DeleteNodeInBST {
             // after deletion of root
             // the most left in right part will be the one smallest bigger than root value
             // find it and replace root value with it
-            TreeNode minNodeOfRight = findMinNode(root.right);
-            root.val = minNodeOfRight.val;
+            TreeNode minOfRightTree = findMinNode(root.right);
+            root.val = minOfRightTree.val;
             root.right = deleteNode(root.right, root.val);
         }
 
         return root;
     }
-    // BST, keep left will find minimum node
+
+    // find the most left (the minimum) node in BST, keep left will find the minimum node
     private TreeNode findMinNode(TreeNode node) {
         while (node.left != null) {
             node = node.left;
         }
+
         return node;
     }
 }
