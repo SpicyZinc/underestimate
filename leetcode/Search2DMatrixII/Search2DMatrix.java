@@ -64,7 +64,6 @@ public class Search2Dmatrix {
         return cnt;
     }
 
-    // recently written passed test
     // 07/15/2018
     public boolean searchMatrix(int[][] matrix, int target) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
@@ -98,20 +97,24 @@ public class Search2Dmatrix {
         int m = matrix.length;
         int n = matrix[0].length;
         int count = 0;
-        int row = m-1;
+        int row = m - 1;
         int col = 0;
+
         while (row >= 0 && row < m && col >= 0 && col < n) {
-            int cur = matrix[row][col];
-            if (cur == target) {
-                count++;
+            int curr = matrix[row][col];
+
+            if (curr > target) {
+                row--;
+            } else if (curr < target) {
                 col++;
-                row--;
-            } else if (cur > target) {
-                row--;
             } else {
                 col++;
+                row--;
+
+            	count++;
             }
         }
+
         return count;
     }
 }

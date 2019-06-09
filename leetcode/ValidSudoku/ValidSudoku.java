@@ -10,30 +10,30 @@ The Sudoku board could be partially filled, where empty cells are filled with th
 Example 1:
 Input:
 [
-  ["5","3",".",".","7",".",".",".","."],
-  ["6",".",".","1","9","5",".",".","."],
-  [".","9","8",".",".",".",".","6","."],
-  ["8",".",".",".","6",".",".",".","3"],
-  ["4",".",".","8",".","3",".",".","1"],
-  ["7",".",".",".","2",".",".",".","6"],
-  [".","6",".",".",".",".","2","8","."],
-  [".",".",".","4","1","9",".",".","5"],
-  [".",".",".",".","8",".",".","7","9"]
+	["5","3",".",".","7",".",".",".","."],
+	["6",".",".","1","9","5",".",".","."],
+	[".","9","8",".",".",".",".","6","."],
+	["8",".",".",".","6",".",".",".","3"],
+	["4",".",".","8",".","3",".",".","1"],
+	["7",".",".",".","2",".",".",".","6"],
+	[".","6",".",".",".",".","2","8","."],
+	[".",".",".","4","1","9",".",".","5"],
+	[".",".",".",".","8",".",".","7","9"]
 ]
 Output: true
 
 Example 2:
 Input:
 [
-  ["8","3",".",".","7",".",".",".","."],
-  ["6",".",".","1","9","5",".",".","."],
-  [".","9","8",".",".",".",".","6","."],
-  ["8",".",".",".","6",".",".",".","3"],
-  ["4",".",".","8",".","3",".",".","1"],
-  ["7",".",".",".","2",".",".",".","6"],
-  [".","6",".",".",".",".","2","8","."],
-  [".",".",".","4","1","9",".",".","5"],
-  [".",".",".",".","8",".",".","7","9"]
+	["8","3",".",".","7",".",".",".","."],
+	["6",".",".","1","9","5",".",".","."],
+	[".","9","8",".",".",".",".","6","."],
+	["8",".",".",".","6",".",".",".","3"],
+	["4",".",".","8",".","3",".",".","1"],
+	["7",".",".",".","2",".",".",".","6"],
+	[".","6",".",".",".",".","2","8","."],
+	[".",".",".","4","1","9",".",".","5"],
+	[".",".",".",".","8",".",".","7","9"]
 ]
 Output: false
 Explanation: Same as Example 1, except with the 5 in the top left corner being modified to 8.
@@ -55,86 +55,87 @@ if unique9 not contains, add this to set
 another version see link as below:
 http://blog.csdn.net/u010500263/article/details/18905027
 */
+
 public class ValidSudoku {
 	// Sun May 12 21:07:38 2019
 	public boolean isValidSudoku(char[][] board) {
-        int m = board.length;
-        int n = board[0].length;
-        
-        Set<Character> hs = new HashSet<>();
-            
-        for (int i = 0; i < m; i++) {
-            hs = new HashSet<>();
-            for (int j = 0; j < n; j++) {
-                if (board[i][j] != '.' && !hs.add(board[i][j])) {
-                    return false;
-                }
-            }
-        }
-        
-        for (int j = 0; j < n; j++) {
-            hs = new HashSet<>();
-            for (int i = 0; i < m; i++) {
-                if (board[i][j] != '.' && !hs.add(board[i][j])) {
-                    return false;
-                }
-            }
-        }
-        
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                hs = new HashSet<>();
-                for (int k = i * 3; k < (i + 1) * 3; k++) {
-                    for (int l = j * 3; l < (j + 1) * 3; l++) {
-                        if (board[k][l] != '.' && !hs.add(board[k][l])) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
+		int m = board.length;
+		int n = board[0].length;
+		
+		Set<Character> hs = new HashSet<>();
 
-        return true;
-    }
+		for (int i = 0; i < m; i++) {
+			hs = new HashSet<>();
+			for (int j = 0; j < n; j++) {
+				if (board[i][j] != '.' && !hs.add(board[i][j])) {
+					return false;
+				}
+			}
+		}
+		
+		for (int j = 0; j < n; j++) {
+			hs = new HashSet<>();
+			for (int i = 0; i < m; i++) {
+				if (board[i][j] != '.' && !hs.add(board[i][j])) {
+					return false;
+				}
+			}
+		}
+		
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				hs = new HashSet<>();
+				for (int k = i * 3; k < (i + 1) * 3; k++) {
+					for (int l = j * 3; l < (j + 1) * 3; l++) {
+						if (board[k][l] != '.' && !hs.add(board[k][l])) {
+							return false;
+						}
+					}
+				}
+			}
+		}
 
-    // 07/28/2018
-    public boolean isValidSudoku(char[][] board) {
-        Set<Character> unique9 = new HashSet<>();
-        
-        // check rows
-        for (int i = 0; i < board.length; i++) {
-            unique9 = new HashSet<>();
-            for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] != '.' && !unique9.add(board[i][j])) {
-                    return false;
-                } 
-            }
-        }
+		return true;
+	}
 
-        // check columns
-        for (int j = 0; j < board[0].length; j++) {
-            unique9 = new HashSet<>();
-            for (int i = 0; i < board.length; i++) {
-                if (board[i][j] != '.' && !unique9.add(board[i][j])) {
-                    return false;
-                } 
-            }
-        }
-        
-        // check 3 * 3 sub-box
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                unique9 = new HashSet<>();
-                for (int m = i * 3; m < i * 3 + 3; m++) {
-                    for (int n = j * 3; n < j * 3 + 3; n++) {
-                        if (board[m][n] != '.' && !unique9.add(board[m][n])) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
+	// 07/28/2018
+	public boolean isValidSudoku(char[][] board) {
+		Set<Character> unique9 = new HashSet<>();
+		
+		// check rows
+		for (int i = 0; i < board.length; i++) {
+			unique9 = new HashSet<>();
+			for (int j = 0; j < board[0].length; j++) {
+				if (board[i][j] != '.' && !unique9.add(board[i][j])) {
+					return false;
+				} 
+			}
+		}
 
-        return true;
-    }
+		// check columns
+		for (int j = 0; j < board[0].length; j++) {
+			unique9 = new HashSet<>();
+			for (int i = 0; i < board.length; i++) {
+				if (board[i][j] != '.' && !unique9.add(board[i][j])) {
+					return false;
+				} 
+			}
+		}
+		
+		// check 3 * 3 sub-box
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				unique9 = new HashSet<>();
+				for (int m = i * 3; m < i * 3 + 3; m++) {
+					for (int n = j * 3; n < j * 3 + 3; n++) {
+						if (board[m][n] != '.' && !unique9.add(board[m][n])) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
 }

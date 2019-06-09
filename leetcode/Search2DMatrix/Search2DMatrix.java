@@ -15,6 +15,8 @@ Consider the following matrix:
 Given target = 3, return true.
  
 idea:
+serpentine like 2d array can use i * n + j method
+
 How to apply binary search in 2D array
 binary search in rows first to locate which row,
 binary search in columns to locate cell based on the found row
@@ -38,10 +40,12 @@ public class Search2DMatrix {
         if (matrix.length == 0 || matrix[0].length == 0) {
             return false;
         }
+
         int m = matrix.length;
         int n = matrix[0].length;
         int left = 0;
         int right = m * n - 1;
+
         while (left <= right) {
             int mid = left + (right - left) / 2;
             int x = mid / n;
@@ -53,11 +57,11 @@ public class Search2DMatrix {
 
             if (matrix[x][y] > target) {
                 right = mid - 1; 
-            }
-            else {
+            } else {
                 left = mid + 1;
             }
         }
+
         return false;
     }
 
@@ -65,6 +69,7 @@ public class Search2DMatrix {
         if (matrix.length == 0 || matrix[0].length == 0) {
             return false;
         }
+
         int m = matrix.length;
         int n = matrix[0].length;
 		if (matrix[0][0] > target) return false;
@@ -86,13 +91,14 @@ public class Search2DMatrix {
 	}
 	// if all elements are >= target, return -1
 	// return the index of biggest number which is < target
-    private int binarySearch(int[] a, int target) {
+	private int binarySearch(int[] a, int target) {
 		int start = 0;
 		int end = a.length - 1;
 
-		int ret = -1;
+		int result = -1;
 		while (start <= end) {
 			int mid = start + (end - start) / 2;
+
 			if (a[mid] == target) {
 				return mid;
 			}
@@ -100,11 +106,12 @@ public class Search2DMatrix {
 			if (a[mid] > target) {
 				end = mid - 1;
 			} else {
-				ret = mid;
 				start = mid + 1;
+				
+				result = mid;
 			}
 		}
 
-		return ret;
+		return result;
 	}
 }

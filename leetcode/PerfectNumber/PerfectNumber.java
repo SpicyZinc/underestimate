@@ -19,12 +19,17 @@ class PerfectNumber {
 				sum += i;
 			}
 		}
+
 		return num == sum;
 	}
+
 	// till Math.sqrt(num)
 	// note corner case 0 and 1
 	public boolean checkPerfectNumber(int num) {
-        if (num == 0 || num == 1) return false; 
+        if (num == 0 || num == 1) {
+        	return false;
+        }
+
 		int sum = 0;
 		for (int i = 1; i <= Math.sqrt(num); i++) {
 			if (num % i == 0) {
@@ -35,6 +40,7 @@ class PerfectNumber {
                 }
 			}
 		}
+
 		return num == sum;	
 	}
 }

@@ -41,6 +41,10 @@ formula will only consist of letters, digits, and round parentheses, and is a va
 idea:
 recursion is not good,
 stack is better to understand
+
+stack of maps
+不断的merge 之前的 map 到现在的
+得到count 和 下个 开始的位置 
 */
 
 import java.util.*;
@@ -48,7 +52,8 @@ import java.util.*;
 class NumberOfAtoms {
 	public static void main(String[] args) {
 		NumberOfAtoms eg = new NumberOfAtoms();
-		String formula = "Mg(OH)2";
+		// String formula = "Mg(OH)2";
+		String formula = "K4(ON(SO3)2)2";
 		String result = eg.countOfAtoms(formula);
 		System.out.println(result);
 
@@ -67,7 +72,91 @@ class NumberOfAtoms {
 		System.out.println(i);
 	}
 
-	//02/08/2019
+	// Sat Jun  8 19:27:34 2019
+	public String countOfAtoms(String formula) {
+		Stack<Map<String, Integer>> stack = new Stack<>();
+		Map<String, Integer> current = new HashMap<>();
+
+		int size = formula.length();
+		int i = 0;
+
+		while (i < size) {
+			char c = formula.charAt(i);
+			i++;
+
+			if (c == '(') {
+				// at first push previous map to stack
+				// then make a new one for the following ()
+				stack.push(current);
+
+				current = new HashMap<>();
+			} else if (c == ')') {
+				// at first, get the repetition of current "()"
+				int[] cntAndNextPos = getCntAndNextPos(formula, i);
+
+				int cnt = cntAndNextPos[0];
+				int pos = cntAndNextPos[1];
+
+				if (!stack.isEmpty()) {
+					Map<String, Integer> map = current;
+					current = stack.pop();
+					// 兵和一处 合到 current
+					// 把 新的 加入 旧的, 旧的变 current
+					for (String key : map.keySet()) {
+						current.put(key, current.getOrDefault(key, 0) + map.get(key) * cnt);
+					}
+				}
+
+				i = pos;
+			} else {
+				int start = i - 1;
+				// get an element's rest letters
+				while (i < size && Character.isLowerCase(formula.charAt(i))) {
+					i++;
+				}
+
+				String element = formula.substring(start, i);
+
+				int[] cntAndNextPos = getCntAndNextPos(formula, i);
+
+				int cnt = cntAndNextPos[0];
+				int pos = cntAndNextPos[1];
+
+				current.put(element, current.getOrDefault(element, 0) + cnt);
+
+				i = pos;
+			}
+		}
+        
+        StringBuilder sb = new StringBuilder();
+		List<String> list = new ArrayList<>(current.keySet());
+		Collections.sort(list);
+
+		for (String atom : list) {
+			int cnt = current.get(atom);
+			sb.append(atom + (cnt > 1 ? cnt : ""));
+		}
+
+		return sb.toString();
+	}
+
+	public int[] getCntAndNextPos(String formula, int pos) {
+		int size = formula.length();
+		int val = 0;
+		while (pos < size && Character.isDigit(formula.charAt(pos))) {
+			val = val * 10 + (formula.charAt(pos) - '0');
+			pos++;
+		}
+
+		if (val == 0) {
+			val = 1;
+		}
+
+		return new int[] {val, pos};
+	}
+
+
+	// 02/08/2019
 	public String countOfAtoms(String formula) {
 		Stack<Map<String, Integer>> stack = new Stack<>();
 		Map<String, Integer> map = new HashMap<>();
@@ -77,7 +166,7 @@ class NumberOfAtoms {
 
 		while (i < n) {
 			char c = formula.charAt(i++);
-			// '(' means starts nested, starts to deal with a new round
+			// '(' means starting nested, start to deal with a new round
 			// 先push进去 what we have, then re-initialize the map
 			if (c == '(') {
 				stack.push(map);
@@ -99,7 +188,7 @@ class NumberOfAtoms {
 				}
 			} else {
 				int start = i - 1;
-
+				// get an element rest letters
 				while (i < n && Character.isLowerCase(formula.charAt(i))) {
 					i++;
 				}
@@ -113,19 +202,20 @@ class NumberOfAtoms {
 
 				map.put(s, map.getOrDefault(s, 0) + cnt);
             }
+
         }
 
 		StringBuilder sb = new StringBuilder();
 		List<String> list = new ArrayList<>(map.keySet());
 		Collections.sort(list);
 
-        for (String atom : list) {
+		for (String atom : list) {
 			int cnt = map.get(atom);
 			sb.append(atom + (cnt > 1 ? cnt : ""));
 		}
 
         return sb.toString();
-    }
+	}
 
 	// get the count of the element, default is 1
 	// get the next element starting position
@@ -145,83 +235,81 @@ class NumberOfAtoms {
 		return new int[] {val, k};
 	}
 
-    
-    public String countOfAtoms(String formula) {
-        StringBuilder sb = new StringBuilder();
+    // public String countOfAtoms(String formula) {
+    //     StringBuilder sb = new StringBuilder();
 
-        Map<String, Integer> map = dfs(formula);
-        List<String> atoms = new ArrayList<>(map.keySet());
+    //     Map<String, Integer> map = dfs(formula);
+    //     List<String> atoms = new ArrayList<>(map.keySet());
         
-        Collections.sort(atoms);
-        for (String atom : atoms) {
-            int cnt = map.get(atom);
-            sb.append(atom + (cnt > 1 ? cnt : ""));
-        }
+    //     Collections.sort(atoms);
+    //     for (String atom : atoms) {
+    //         int cnt = map.get(atom);
+    //         sb.append(atom + (cnt > 1 ? cnt : ""));
+    //     }
 
-        return sb.toString();
-    }
+    //     return sb.toString();
+    // }
 
-    private Map<String, Integer> dfs(String formula) {
-        Map<String, Integer> hm = new HashMap<>();
-        if (formula == null || formula.length() == 0) {
-            return hm;
-        }
+    // private Map<String, Integer> dfs(String formula) {
+    //     Map<String, Integer> hm = new HashMap<>();
+    //     if (formula == null || formula.length() == 0) {
+    //         return hm;
+    //     }
 
-        int i = 0;
-        int len = formula.length();
-        int[] posAndCnt;
-        // 1. == '('
-        // 2. != '('
-        while (i < len) {
-            if (formula.charAt(i) == '(') {
-                int j = i;
-                int parenthesisCnt = 0;
-                for (j = i; j < len; j++) {
-                    if (formula.charAt(j) == '(') {
-                        parenthesisCnt++;
-                    } else if (formula.charAt(j) == ')') {
-                        parenthesisCnt--;
-                    }
+    //     int i = 0;
+    //     int len = formula.length();
+    //     int[] posAndCnt;
+    //     // 1. == '('
+    //     // 2. != '('
+    //     while (i < len) {
+    //         if (formula.charAt(i) == '(') {
+    //             int j = i;
+    //             int parenthesisCnt = 0;
+    //             for (j = i; j < len; j++) {
+    //                 if (formula.charAt(j) == '(') {
+    //                     parenthesisCnt++;
+    //                 } else if (formula.charAt(j) == ')') {
+    //                     parenthesisCnt--;
+    //                 }
 
-                    if (parenthesisCnt == 0) {
-                        break;
-                    }
-                }
+    //                 if (parenthesisCnt == 0) {
+    //                     break;
+    //                 }
+    //             }
 
-                posAndCnt = positionAndCount(formula, j + 1);
-                Map<String, Integer> subMap = dfs(formula.substring(i + 1, j));
-                for (String atom : subMap.keySet()) {
-                    hm.put(atom, subMap.get(atom) * posAndCnt[1] + hm.getOrDefault(atom, 0));
-                } 
-            } else {
-                int j = i + 1;
-                // get an element rest letters
-                while (j < len && Character.isLowerCase(formula.charAt(j))) {
-                    j++; 
-                }
-                posAndCnt = positionAndCount(formula, j);
-                String atom = formula.substring(i, j);
-                hm.put(atom, posAndCnt[1] + hm.getOrDefault(atom, 0)); 
-            }
+    //             posAndCnt = positionAndCount(formula, j + 1);
+    //             Map<String, Integer> subMap = dfs(formula.substring(i + 1, j));
+    //             for (String atom : subMap.keySet()) {
+    //                 hm.put(atom, subMap.get(atom) * posAndCnt[1] + hm.getOrDefault(atom, 0));
+    //             } 
+    //         } else {
+    //             int j = i + 1;
+    //             // get an element rest letters
+    //             while (j < len && Character.isLowerCase(formula.charAt(j))) {
+    //                 j++; 
+    //             }
+    //             posAndCnt = positionAndCount(formula, j);
+    //             String atom = formula.substring(i, j);
+    //             hm.put(atom, posAndCnt[1] + hm.getOrDefault(atom, 0)); 
+    //         }
 
-            i = posAndCnt[0];
-        }
+    //         i = posAndCnt[0];
+    //     }
         
-        return hm;
-    }
+    //     return hm;
+    // }
 
+    // private int[] positionAndCount(String formula, int cntStart) {
+    //     int cnt = 1;
+    //     int k = cntStart;
 
-    private int[] positionAndCount(String formula, int cntStart) {
-        int cnt = 1;
-        int k = cntStart;
+    //     while (k < formula.length() && Character.isDigit(formula.charAt(k))) {
+    //         k++;
+    //     }
+    //     if (k > cntStart) {
+    //         cnt = Integer.parseInt(formula.substring(cntStart, k));
+    //     }
 
-        while (k < formula.length() && Character.isDigit(formula.charAt(k))) {
-            k++;
-        }
-        if (k > cntStart) {
-            cnt = Integer.parseInt(formula.substring(cntStart, k));
-        }
-
-        return new int[] {k, cnt};
-    }
+    //     return new int[] {k, cnt};
+    // }
 }

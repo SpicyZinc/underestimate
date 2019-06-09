@@ -18,10 +18,11 @@ read4 returns the number of characters actually left in the file
 public class ReadNCharactersGivenRead4 extends Reader4 {
     // 02/13/2019
     // Pinterest nextLine()
+    // 如何读取 nextLine()
     List<Character> leftOver = new ArrayList<>();
     
     public String nextLine(char[] buf, int n) {
-        int size = 0;
+
         StringBuilder sb = new StringBuilder();
         for (char c : leftOver) {
             sb.append(c);
@@ -35,6 +36,7 @@ public class ReadNCharactersGivenRead4 extends Reader4 {
             if (len == 0) {
                 break;
             }
+
             int pos = -1;
             for (int i = 0; i < len; i++) {
                 if (temp[i] != '\n' || temp[i] != '\r') {
@@ -52,7 +54,7 @@ public class ReadNCharactersGivenRead4 extends Reader4 {
                     sb.append(temp[i]);
                 }
             }
-
+            // 把剩余的存下来 nextLine() 用
             if (pos < len - 1) {
                 for (int i = pos + 1; i < len; i++) {
                     leftOver.add(temp[i]);
