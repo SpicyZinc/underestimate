@@ -22,29 +22,36 @@ https://leetcode.com/static/images/problemset/brick_wall.png
 
 Note:
 The width sum of bricks in different rows are the same and won't exceed INT_MAX.
-The number of bricks in each row is in range [1,10,000]. The height of wall is in range [1,10,000]. Total number of bricks of the wall won't exceed 20,000.
+The number of bricks in each row is in range [1,10,000]. The height of wall is in range [1,10,000].
+Total number of bricks of the wall won't exceed 20,000.
 
 idea:
 note this case
 each row, accumulative sum
 find the max different sum's appearance frequency
 which will cause the lease crossed number of bricks
+
+找出出现最多的 accumulated sum
+按照它们 draw line, 就会cut最小 number of bricks
+note, 不要加 最后 一块 那样 就是 each row 总和 无所谓 cut了
 */
 
 public class BrickWall {
 	public int leastBricks(List<List<Integer>> wall) {
-    	HashMap < Integer, Integer > map = new HashMap < > ();
-        for (List < Integer > row: wall) {
-            int sum = 0;
-            for (int i = 0; i < row.size() - 1; i++) {
-                sum += row.get(i);
-                map.put(sum, map.getOrDefault(sum, 0) + 1);
-            }
-        }
-        int max = 0;
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-        	max = Math.max(max, entry.getValue());
-        }
-        return wall.size() - max;
-    }
+		Map<Integer, Integer> map = new HashMap<>();
+		for (List <Integer> row : wall) {
+			int sum = 0;
+			for (int i = 0; i < row.size() - 1; i++) {
+				sum += row.get(i);
+				map.put(sum, map.getOrDefault(sum, 0) + 1);
+			}
+		}
+
+		int max = 0;
+		for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+			max = Math.max(max, entry.getValue());
+		}
+
+		return wall.size() - max;
+	}
 }

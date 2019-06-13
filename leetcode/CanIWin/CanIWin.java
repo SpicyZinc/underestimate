@@ -28,39 +28,45 @@ https://discuss.leetcode.com/topic/68896/java-solution-using-hashmap-with-detail
 
 public class CanIWin {
 	public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
-        if (desiredTotal <= 0) {
-            return true;
-        }
-        if ( (maxChoosableInteger * ( maxChoosableInteger + 1 ) / 2) < desiredTotal ) {
-            return false;
-        }
-        char[] state = new char[maxChoosableInteger];
-        for (int i = 0; i < state.length; i++) {
-            state[i] = '0';
-        }
-        HashMap<String, Boolean> hm = new HashMap<String, Boolean>();
-        return canWin(state, hm, desiredTotal);
-    }
-    
-    private boolean canWin(char[] state, HashMap<String, Boolean> hm, int remaining) {
-        String key = new String(state);
-        if (hm.containsKey(key)) {
-            return hm.get(key);
-        }
-        for (int i = 0; i < state.length; i++) {
-            if (state[i] == '0') {
-                state[i] = '1';
-                // i + 1 is the chooseable integer
-                if (remaining <= i + 1 || !canWin(state, hm, remaining - (i + 1))) {
-                    hm.put(key, true);
-                    state[i] = '0';
-                    return true;
-                }
-                state[i] = '0';
-            }
-        }
-        hm.put(key, false);
-        
-        return false;
-    }
+		if (desiredTotal <= 0) {
+			return true;
+		}
+		// 总和小于 desiredTotal never true
+		if ( (maxChoosableInteger * ( maxChoosableInteger + 1 ) / 2) < desiredTotal ) {
+			return false;
+		}
+
+		char[] state = new char[maxChoosableInteger];
+		for (int i = 0; i < state.length; i++) {
+			state[i] = '0';
+		}
+
+		Map<String, Boolean> hm = new HashMap<>();
+
+		return canWin(state, desiredTotal, hm);
+	}
+	
+	private boolean canWin(char[] state, int remaining, Map<String, Boolean> hm) {
+		String key = new String(state);
+		if (hm.containsKey(key)) {
+			return hm.get(key);
+		}
+
+		for (int i = 0; i < state.length; i++) {
+			if (state[i] == '0') {
+				state[i] = '1';
+				// i + 1 is the chooseable integer
+				if (remaining <= i + 1 || !canWin(state, remaining - (i + 1), hm)) {
+					hm.put(key, true);
+					state[i] = '0';
+
+					return true;
+				}
+				state[i] = '0';
+			}
+		}
+		hm.put(key, false);
+		
+		return false;
+	}
 }

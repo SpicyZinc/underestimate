@@ -9,10 +9,10 @@ The five points are show in the figure below. The red triangle is the largest.
 https://s3-lc-upload.s3.amazonaws.com/uploads/2018/04/04/1027.png
 
 Notes:
-	3 <= points.length <= 50.
-	No points will be duplicated.
-	-50 <= points[i][j] <= 50.
-	Answers within 10^-6 of the true value will be accepted as correct.
+3 <= points.length <= 50.
+No points will be duplicated.
+-50 <= points[i][j] <= 50.
+Answers within 10^-6 of the true value will be accepted as correct.
 
 idea:
 3 for loops, need to know a formula to calculate the area of triangle if only know the 3 points
@@ -25,9 +25,11 @@ class LargestTriangleArea {
 		for (int[] A : points) {
 			for (int[] B : points) {
 				for (int[] C : points) {
+
 					int[] A = points[i];
 					int[] B = points[j];
 					int[] C = points[k];
+
 					area = Math.max(area, getArea(A, B, C));
 				}
 			}

@@ -36,6 +36,7 @@ public class JumpGame {
             if (i > maxReach) {
                 return false;
             }
+
             maxReach = Math.max(maxReach, i + nums[i]);
         }
 

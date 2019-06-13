@@ -20,21 +20,24 @@ the previous house must use min of two other colors' cost
 */
 
 public class PaintHouse {
-    public int minCost(int[][] costs) {
-        if (costs != null && costs.length == 0) {
-        	return 0;
-        }
+	// Sun Jun  9 21:04:55 2019
+	public int minCost(int[][] costs) {
+		if (costs.length == 0 || costs == null) {
+			return 0;
+		}
 
-        for (int i = 1; i < costs.length; i++) {
-        	// loop through color array
-        	for (int j = 0; j < 3; j++) {
-        		costs[i][j] += Math.min(costs[i - 1][(j + 1) % 3], costs[i - 1][(j + 2) % 3]);
-        	}
-            // costs[i][0] += Math.min(costs[i - 1][1], costs[i - 1][2]);
-            // costs[i][1] += Math.min(costs[i - 1][0], costs[i - 1][2]);
-            // costs[i][2] += Math.min(costs[i - 1][0], costs[i - 1][1]);
-        }
+		int size = costs.length;
 
-        return Math.min(costs[costs.length - 1][0], Math.min(costs[costs.length - 1][1], costs[costs.length - 1][2]));
-    }
+		for (int i = 1; i < size; i++) {
+			// loop through color array
+			for (int j = 0; j < 3; j++) {
+				costs[i][j] += Math.min(costs[i - 1][(j + 1) % 3], costs[i - 1][(j + 2) % 3]);
+			}
+			// costs[i][0] += Math.min(costs[i - 1][1], costs[i - 1][2]);
+			// costs[i][1] += Math.min(costs[i - 1][0], costs[i - 1][2]);
+			// costs[i][2] += Math.min(costs[i - 1][0], costs[i - 1][1]);
+		}
+
+		return Math.min(costs[size - 1][0], Math.min(costs[size - 1][1], costs[size - 1][2]));
+	}
 }

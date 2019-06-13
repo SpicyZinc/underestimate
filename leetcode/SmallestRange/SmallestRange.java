@@ -27,6 +27,8 @@ idea:
 要更新max
 
 最后就是[min, max]
+
+minimum window that satisfies some criteria
 */
 
 class SmallestRange {
@@ -181,6 +183,7 @@ class SmallestRange {
 
         while (pq.size() == nums.size()) {
             Element smallest = pq.poll();
+
             if (max - smallest.val < range) {
                 range = max - smallest.val;
                 start = smallest.val;

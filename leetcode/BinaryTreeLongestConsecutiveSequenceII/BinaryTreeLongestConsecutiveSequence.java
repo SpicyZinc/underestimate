@@ -6,17 +6,17 @@ On the other hand, the path can be in the child-Parent-child order, where not ne
 
 Example 1:
 Input:
-        1
-       / \
-      2   3
+		1
+	   / \
+	  2   3
 Output: 2
 Explanation: The longest consecutive path is [1, 2] or [2, 1].
 
 Example 2:
 Input:
-        2
-       / \
-      1   3
+		2
+	   / \
+	  1   3
 Output: 3
 Explanation: The longest consecutive path is [1, 2, 3] or [3, 2, 1].
 
@@ -32,6 +32,9 @@ increment = left increment path length + 1 + right decrement path length
 decrement = right increment path length + 1 + left decrement path length
 
 recursion return 的不是结果 是帮助用的
+[0] 是增长路径长度
+[1] 是降低路径长度
+[increment, decrement]
 真正 return max
 */
 
@@ -60,21 +63,21 @@ public class BinaryTreeLongestConsecutiveSequence {
 		}
 
 		int[] max = new int[1];
-		helper(root, root, max);
+		dfs(root, root, max);
 
 		return max[0];
 	}
 
 	// 返回最长递增和递减路径
-	public int[] helper(TreeNode node, TreeNode parent, int[] max) {
+	public int[] dfs(TreeNode node, TreeNode parent, int[] max) {
 		int[] result = new int[2];
 		
 		if (node == null) {
 			return result;
 		}
 
-		int[] left = helper(node.left, node, max);
-		int[] right = helper(node.right, node, max);
+		int[] left = dfs(node.left, node, max);
+		int[] right = dfs(node.right, node, max);
 
 		// 最长递增路径长度
 		max[0] = Math.max(max[0], left[0] + 1 + right[1]);
@@ -92,7 +95,7 @@ public class BinaryTreeLongestConsecutiveSequence {
 
 		result[0] = increment;
 		result[1] = decrement;
-        
-        return result;
-    }
+		
+		return result;
+	}
 }

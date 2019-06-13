@@ -16,11 +16,80 @@ Some examples:
 Note: Do not use the eval built-in library function.
 
 idea:
-need to go back
+previous operator
 */
 
-
 class BasicCalculator {
+	// Sun Jun  9 14:58:12 2019
+	public int calculate(String s) {
+		int size = s.length();
+		int result = 0;
+		int currResult = 0;
+
+		int num = 0;
+		char prevOperator = '+';
+
+		for (int i = 0; i < size; i++) {
+			char c = s.charAt(i);
+
+			if (Character.isDigit(c)) {
+				num = num * 10 + c - '0';
+			} else if (c == '(') {
+				int j = i;
+				int parenthesesCnt = 0;
+
+				while (i < size) {
+					if (s.charAt(i) == '(') {
+						parenthesesCnt++;
+						
+					}
+					if (s.charAt(i) == ')') {
+						parenthesesCnt--;
+					}
+					if (parenthesesCnt == 0) {
+						break;
+					}
+					i++;
+
+				}
+				// find balanced () and retrieve the inside part, recurse on it
+				num = calculate(s.substring(j + 1, i)); 
+			}
+
+			if (isOperator(c) || i == size - 1) {
+				switch (prevOperator) {
+					case '+':
+						currResult += num;
+						break;
+					case '-':
+						currResult -= num;
+						break;
+					case '*':
+						currResult *= num;
+						break;
+					case '/':
+						currResult /= num;
+						break;
+				}
+
+				if (c == '+' || c == '-' || i == size - 1) {
+					result += currResult;
+					currResult = 0;
+				}
+
+				prevOperator = c;
+				num = 0;
+			}
+		}
+
+		return result;
+	}
+
+	public boolean isOperator(char c) {
+		String operators = "+-*/";
+		return operators.indexOf(c) != -1;
+	}
+
 	// 02/12/2019
 	public int calculate(String s) {
 		int n = s.length();

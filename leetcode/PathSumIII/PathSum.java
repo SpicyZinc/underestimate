@@ -9,9 +9,9 @@ The tree has no more than 1,000 nodes and the values are in the range -1,000,000
 Example:
 root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
 
-      10
-     /  \
-    5   -3
+	  10
+	 /  \
+	5   -3
    / \    \
   3   2   11
  / \   \
@@ -25,50 +25,67 @@ Return 3. The paths that sum to 8 are:
 idea:
 1. recursion
 note: dfs(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum)
+记住可以 root root.left root.right
+
 2. recursion + hashmap to memoization
+need to go back to 2
 */
 
 class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
+	int val;
+	TreeNode left;
+	TreeNode right;
+	TreeNode(int x) { val = x; }
 }
 
 public class PathSum {
-    // method 1
+	// method 1
     public int pathSum(TreeNode root, int sum) {
-        if (root == null) return 0;
-        return dfs(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
-    }
+		if (root == null) {
+			return 0;
+		}
 
-    public int dfs(TreeNode node, int remaining) {
-        int cntPath = 0;
-        if (node == null) return cntPath;
-        if (remaining == node.val) cntPath += 1;
+		return dfs(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
+	}
 
-        cntPath += dfs(node.left, remaining - node.val);       
-        cntPath += dfs(node.right, remaining - node.val);
+	public int dfs(TreeNode node, int remaining) {
+		int cnt = 0;
 
-        return cntPath;
-    }
-    // method 2
-    public int pathSum(TreeNode root, int sum) {
-        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
-        hm.put(0, 1);
-        return dfs(root, 0, sum, hm);
-    }
+		if (node == null) {
+			return cnt;
+		}
 
-    public int dfs(TreeNode node, int preSum, int target, Map<Integer, Integer> hm) {
-        if (node == null) return 0;
+		if (remaining == node.val) {
+			cnt = 1;
+		}
 
-        preSum += node.val;
-        
-        int cntPathToCurr = hm.getOrDefault(preSum - target, 0);
-        hm.put(preSum, hm.getOrDefault(preSum, 0) + 1);
-        int res = cntPathToCurr + dfs(node.left, preSum, target, hm) + dfs(node.right, preSum, target, hm);
-        hm.put(preSum, hm.get(preSum) - 1);
+		cnt += dfs(node.left, remaining - node.val);       
+		cnt += dfs(node.right, remaining - node.val);
 
-        return res;
-    }
+		return cnt;
+	}
+
+	// method 2
+	public int pathSum(TreeNode root, int sum) {
+		Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+		hm.put(0, 1);
+
+		return dfs(root, 0, sum, hm);
+	}
+
+	public int dfs(TreeNode node, int preSum, int target, Map<Integer, Integer> hm) {
+		if (node == null) {
+			return 0;
+		}
+
+		preSum += node.val;
+		
+		int cntPathToCurr = hm.getOrDefault(preSum - target, 0);
+
+		hm.put(preSum, hm.getOrDefault(preSum, 0) + 1);
+		int result = cntPathToCurr + dfs(node.left, preSum, target, hm) + dfs(node.right, preSum, target, hm);
+		hm.put(preSum, hm.get(preSum) - 1);
+
+		return result;
+	}
 }

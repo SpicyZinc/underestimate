@@ -27,6 +27,21 @@ idea:
 similar, ValidTriangleNumber
 */
 class LargestPerimeterTriangle {
+	// Mon Jun 10 23:55:32 2019
+	public int largestPerimeter(int[] A) {
+		Arrays.sort(A);
+		
+		int perimeter = 0;
+		
+		for (int i = 0; i < A.length - 2; i++) {
+			if (A[i] + A[i + 1] > A[i + 2]) {
+				perimeter = Math.max(perimeter, A[i] + A[i + 1] + A[i + 2]);
+			}
+		}
+		
+		return perimeter;
+	}
+
 	public int largestPerimeter(int[] A) {
 		Arrays.sort(A);
 

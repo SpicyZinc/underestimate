@@ -47,39 +47,35 @@ then return empty []
 总的说 这是一道容易想的题目
 */
 
-public class Find DuplicateFileInSystem {
-    public List<List<String>> findDuplicate(String[] paths) {
-        Map<String, List<String>> hm = new HashMap<String, List<String>>();
+public class FindDuplicateFileInSystem {
+	public List<List<String>> findDuplicate(String[] paths) {
+		Map<String, List<String>> hm = new HashMap<>();
 
-        for (String path : paths) {
-            String[] parts = path.split("\\s");
-            String directory = parts[0];
+		for (String path : paths) {
+			String[] parts = path.split("\\s");
+			String directory = parts[0];
 
-            for (int i = 1; i < parts.length; i++) {
-                String part = parts[i];
-                if (part.indexOf("(") != -1) {
-                    int start = part.indexOf("(");
-                    int end = part.indexOf(")");
-                    String content = part.substring(start, end + 1);
-                    List<String> locations = hm.get(content);
-                    if (locations == null) {
-                        locations = new ArrayList<String>();
-                    }
+			for (int i = 1; i < parts.length; i++) {
+				String part = parts[i];
+				if (part.indexOf("(") != -1) {
+					int start = part.indexOf("(");
+					int end = part.indexOf(")");
 
-                    String fullPath = directory + "/" + part.substring(0, start);
-                    locations.add(fullPath);
-                    hm.put(content, locations);
-                }
-            }
-        }
+					String content = part.substring(start, end + 1);
+					String fullPath = directory + "/" + part.substring(0, start);
 
-        List<List<String>> result = new ArrayList<>();
-        for (Map.Entry<String, List<String>> entry : hm.entrySet()) {
-            if (entry.getValue().size() > 1) {
-                result.add(entry.getValue());    
-            }
-        }
+					hm.computeIfAbsent(content, x -> new ArrayList<>()).add(fullPath);
+				}
+			}
+		}
 
-        return result;
-    }
+		List<List<String>> result = new ArrayList<>();
+		for (Map.Entry<String, List<String>> entry : hm.entrySet()) {
+			if (entry.getValue().size() > 1) {
+				result.add(entry.getValue());    
+			}
+		}
+
+		return result;
+	}
 }

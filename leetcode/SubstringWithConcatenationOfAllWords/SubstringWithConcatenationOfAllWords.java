@@ -10,6 +10,7 @@ You should return the indices: [0,9].
 (order does not matter).
 
 idea:
+不断的复制 hm, 然后看看最后空了么
 note: concatenation of each word, each word in the concatenation shows exactly once 
 
 take each char in s as start of a possible word
@@ -27,46 +28,53 @@ public class SubstringWithConcatenationOfAllWords {
 		String[] words = {"foo", "bar"};
 		// String s = "aaaa";
 		// String[] words = {"a", "a"};
-        SubstringWithConcatenationOfAllWords eg = new SubstringWithConcatenationOfAllWords();
-        System.out.println(eg.findSubstring(s, words));
+		SubstringWithConcatenationOfAllWords eg = new SubstringWithConcatenationOfAllWords();
+		System.out.println(eg.findSubstring(s, words));
 	}
 	
-    public List<Integer> findSubstring(String s, String[] words) {
-        List<Integer> result = new ArrayList<Integer>();
-        if (s.length() == 0 || s == null || words.length == 0) {
-            return result;
-        }
-        Map<String, Integer> hm = new HashMap<String, Integer>();
-        for (String word : words) {
-            hm.put(word, hm.getOrDefault(word, 0) + 1);
-        }
-        
-        int size = s.length();
-        int n = words.length;
-        int wordLen = words[0].length();
-        int i = 0;
-        
-        while (size - i >= wordLen * n) {
-            Map<String, Integer> copyMap = new HashMap<String, Integer>(hm);
-            // get the same count of possible words as the number of words
-            for (int j = 0; j < n; j++) {
-                String possibleWord = s.substring(i + j * wordLen, i + (j + 1) * wordLen);
-                // if possibleWord not even exists in map, break early, directly i++
-                // this saves a lot of time
-                if (!copyMap.containsKey(possibleWord)) break;
-                int frequency = copyMap.get(possibleWord);
-                if (frequency > 1) {
-                    copyMap.put(possibleWord, frequency - 1);
-                } else {
-                    copyMap.remove(possibleWord);
-                }
-            }
-            if (copyMap.size() == 0) {
-                result.add(i);
-            }
-            i++;
-        }
-        
-        return result;
-    }
+	public List<Integer> findSubstring(String s, String[] words) {
+		List<Integer> result = new ArrayList<Integer>();
+
+		if (s.length() == 0 || s == null || words.length == 0) {
+			return result;
+		}
+
+		Map<String, Integer> hm = new HashMap<String, Integer>();
+		for (String word : words) {
+			hm.put(word, hm.getOrDefault(word, 0) + 1);
+		}
+		
+		int size = s.length();
+		int n = words.length;
+		int wordLen = words[0].length();
+		int i = 0;
+		
+		while (size - i >= wordLen * n) {
+			Map<String, Integer> copyMap = new HashMap<String, Integer>(hm);
+			// get the same count of possible words as the number of words
+			for (int j = 0; j < n; j++) {
+				String possibleWord = s.substring(i + j * wordLen, i + (j + 1) * wordLen);
+				// if possibleWord not even exists in map, break early, directly i++
+				// this saves a lot of time
+				if (!copyMap.containsKey(possibleWord)) {
+					break;
+				}
+
+				int frequency = copyMap.get(possibleWord);
+				if (frequency > 1) {
+					copyMap.put(possibleWord, frequency - 1);
+				} else {
+					copyMap.remove(possibleWord);
+				}
+			}
+
+			if (copyMap.size() == 0) {
+				result.add(i);
+			}
+
+			i++;
+		}
+		
+		return result;
+	}
 }

@@ -54,6 +54,31 @@ public class LongestCommonPrefix {
 		String result = eg.lcp(strs);
 		System.out.println("LongestCommonPrefix == " + result);
 	}
+	// Sun Jun  9 19:50:26 2019
+	 public String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0 || strs == null) {
+            return "";
+        }
+        
+        String commonPrefix = strs[0];
+        
+        for (int i = 1; i < strs.length; i++) {
+            String word = strs[i];
+            
+            int len = Math.min(commonPrefix.length(), word.length());
+            
+            int j = 0;
+            for (; j < len; j++) {
+                if (commonPrefix.charAt(j) != word.charAt(j)) {
+                    break;
+                }
+            }
+            
+            commonPrefix = word.substring(0, j);
+        }
+        
+        return commonPrefix;
+    }
 
     public String longestCommonPrefix(String[] strs) {
         String prefix = "";
@@ -89,18 +114,18 @@ public class LongestCommonPrefix {
         }
 
         int i = 0;
-        for (i = 0; i < strs[0].length(); i++) {
+        for (; i < strs[0].length(); i++) {
             char c = strs[0].charAt(i);
 
             for (int j = 1; j < n; j++) {
-            	String current = strs[j];
+            	String str = strs[j];
 
-                if (i >= current.length() || current.charAt(i) != c) {
+                if (i >= str.length() || str.charAt(i) != c) {
                 	return strs[0].substring(0, i);
                 }
             }
         }
-        
+
         return strs[0].substring(0, i);
     }
 }

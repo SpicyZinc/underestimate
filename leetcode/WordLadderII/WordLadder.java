@@ -114,6 +114,7 @@ public class WordLadder {
         
         for (Rung rung : ladderPath) {
             List<String> list = new ArrayList<String>();
+
             while (rung != null) {
                 list.add(0, rung.word);
                 rung = rung.previous;

@@ -34,14 +34,12 @@ public class MeetingRooms {
 			list.add(new Point(interval[1], 0));
 		}
 
-		int count = 0;
-		int answer = 0;
-
 		Collections.sort(list, (a, b) -> a.val == b.val ? a.flag - b.flag : a.val - b.val);
 
-        
+		int answer = 0;
+		int count = 0;
+
 		for (Point p : list) {
-            System.out.println(p.val + "---" + (p.flag == 1 ? "start" : "end"));
 			if (p.flag == 1) {
 				count++;
 			} else {
@@ -54,56 +52,26 @@ public class MeetingRooms {
 		return answer;
     }
 
-    // 01/31/2019
-    public int minMeetingRooms(List<Interval> intervals) {
-        if (intervals.size() == 0 || intervals ==  null) {
+    // Sun Jun  9 18:25:52 2019
+    public int minMeetingRooms(int[][] intervals) {
+        if (intervals.length == 0 || intervals ==  null) {
             return 0;
         }
         
-        Collections.sort(intervals, new Comparator<Interval>() {
-            @Override
-            public int compare(Interval a, Interval b) {
-                return a.start - b.start;
-            }
-        });
-        
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        pq.add(intervals.get(0).end);    
-        
-        for (int i = 1; i < intervals.size(); i++) {
-            Interval interval = intervals.get(i);
-            
-            if (interval.start >= pq.peek()) {
-                pq.poll();
-            }
-            
-            pq.offer(interval.end);
-        }
-        
-        return pq.size();
-    }
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
 
-    public int minMeetingRooms(Interval[] intervals) {
-        if (intervals == null || intervals.length == 0) {
-            return 0;
-        }
-
-        Arrays.sort(intervals, new Comparator<Interval>() {
-            @Override
-            public int compare(Interval i1, Interval i2) {
-                return i1.start - i2.start;
-            }
-        });
-
-        PriorityQueue<Integer> endTimes = new PriorityQueue<Integer>();
-        endTimes.offer(intervals[0].end);
+        PriorityQueue<Integer> endTimes = new PriorityQueue<>();
+        endTimes.add(intervals[0][1]);    
+        
         for (int i = 1; i < intervals.length; i++) {
+            int[] interval = intervals[i];
             // 如果当前时间段的开始时间大于最早结束的时间, 则可以更新这个最早的结束时间为当前时间段的结束时间
             // 如果小于的话, 就加入一个新的结束时间, 表示新的房间
-            if (intervals[i].start >= endTimes.peek()) {
+            if (interval[0] >= endTimes.peek()) {
                 endTimes.poll();
             }
-            endTimes.offer(intervals[i].end);
+            
+            endTimes.offer(interval[1]);
         }
 
         return endTimes.size();

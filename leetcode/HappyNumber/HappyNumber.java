@@ -44,6 +44,8 @@ public class HappyNumber {
 
         Set<Integer> hs = new HashSet<Integer>();
         int happyCalculation = sumOfDigitSquare(n);
+
+        // 巧妙利用 hs.add()
         while ( hs.add(happyCalculation) ) {
             if ( happyCalculation == 1 ) {
                 return true;

@@ -19,87 +19,129 @@ http://blog.csdn.net/fightforyourdream/article/details/16879561
    A'	  B'     C'     D'     E'
 */
 
-class RandomListNode {
-    int label;
-    RandomListNode next, random;
-    RandomListNode(int x) { this.label = x; }
+class Node {
+	public int val;
+	public Node next;
+	public Node random;
+
+	public Node() {}
+
+	public Node(int _val,Node _next,Node _random) {
+		val = _val;
+		next = _next;
+		random = _random;
+	}
 }
 
-public class CopyListWithRandomPointer {
-	// method 1, hashmap passed test 
-    public RandomListNode copyRandomList(RandomListNode head) {
-        if (head == null) {
-            return head;
-        }
-        
-        Map<RandomListNode, RandomListNode> hm = new HashMap<RandomListNode, RandomListNode>();
-        RandomListNode curr = head;
-        RandomListNode copyDummy = new RandomListNode(0);
-        RandomListNode copyCurr = copyDummy;
+class CopyListWithRandomPointer {
+	public Node copyRandomList(Node head) {
+		Map<Node, Node> hm = new HashMap<>();
+		
+		Node curr = head;
+		Node dummyCopy = new Node();
+		Node currCopy = dummyCopy;
+		
+		while (curr != null) {
+			Node node = new Node();
+			node.val = curr.val;
+			currCopy.next = node;
+			
+			hm.put(curr, node);
+			
+			curr = curr.next;
+			currCopy = currCopy.next;
+		}
+		
+		curr = head;
+		
+		while (curr != null) {
+			// 这个是不用 currCopy step forward
+			Node copy = hm.get(curr);
+			copy.random = hm.get(curr.random);
+			
+			curr = curr.next;
+		}
+		
+		return dummyCopy.next;
+	}
 
-        while (curr != null) {
-            RandomListNode newNode = new RandomListNode(curr.label);
-            hm.put(curr, newNode);
-            copyCurr.next = newNode;
+	// hashmap
+	public Node copyRandomList(Node head) {
+		if (head == null) {
+			return head;
+		}
+		
+		Map<Node, Node> hm = new HashMap<Node, Node>();
+		Node curr = head;
+		Node dummy = new Node(0);
+		Node copyCurrr = dummy;
 
-            copyCurr = copyCurr.next;
-            curr = curr.next;
-        }
-        
-        curr = head;
-        copyCurr = copyDummy.next;
-        while (curr != null) {
-            RandomListNode copyRandom = hm.get(curr.random);
-            copyCurr.random = copyRandom;
-            
-            curr = curr.next;
-            copyCurr = copyCurr.next;
-        }
-        
-        return copyDummy.next;
-    }
-    // method 2
-    public RandomListNode copyRandomList(RandomListNode head) {
-    	if (head == null) {
-    		return null;
-    	}
-    	RandomListNode copyHead = null;  
-        RandomListNode copyCur = null;  
-        RandomListNode cur = head; 
-    	// insert copy
-    	while (cur != null) {  
-            copyCur = new RandomListNode(cur.label);  
-            if (copyHead == null) {  
-                copyHead = copyCur;  
-            }  
-            copyCur.next = cur.next;  
-            cur.next = copyCur;  
-            cur = cur.next.next;  
-        }  
-    	// copy random
-    	cur = head;  
-        copyCur = copyHead;  
-        while (cur != null) {  
-            if (cur.random != null) {  
-                copyCur.random = cur.random.next;  
-            }  
-            cur = cur.next.next;  
-            if (copyCur.next != null) {  
-                copyCur = copyCur.next.next;  
-            }  
-        }
+		while (curr != null) {
+			Node newNode = new Node();
+			newNode.val = curr.val;
+
+			hm.put(curr, newNode);
+			copyCurrr.next = newNode;
+
+			copyCurrr = copyCurrr.next;
+			curr = curr.next;
+		}
+		
+		curr = head;
+		copyCurr = dummy.next;
+		while (curr != null) {
+			Node copyRandom = hm.get(curr.random);
+			copyCurr.random = copyRandom;
+			
+			curr = curr.next;
+			copyCurr = copyCurr.next;
+		}
+		
+		return dummy.next;
+	}
+
+	public Node copyRandomList(Node head) {
+		if (head == null) {
+			return null;
+		}
+		Node copyHead = null;
+		Node copyCurr = null;
+		Node curr = head; 
+		// insert copy
+		while (curr != null) {
+			copyCurr = new Node();
+			copyCurr.val = curr.val;
+			if (copyHead == null) {
+				copyHead = copyCurr;
+			}
+			copyCurr.next = curr.next;
+			curr.next = copyCurr;
+			curr = curr.next.next;
+		}
+		// copy random
+		curr = head;
+		copyCurr = copyHead;
+		while (curr != null) {
+			if (curr.random != null) {
+				copyCurr.random = curr.random.next;
+			}
+			curr = curr.next.next;
+			if (copyCurr.next != null) {
+				copyCurr = copyCurr.next.next;
+			}
+		}
 		// recover the origin, and extract the copied
-		cur = head;  
-        copyCur = copyHead;  
-        while (cur != null) {  
-            cur.next = cur.next.next;  
-            if (copyCur.next != null) {  
-                copyCur.next = copyCur.next.next;  
-            }  
-            cur = cur.next;  
-            copyCur = copyCur.next;  
-        }
+		curr = head;
+		copyCurr = copyHead;
+		while (curr != null) {
+			curr.next = curr.next.next;
+			if (copyCurr.next != null) {
+				copyCurr.next = copyCurr.next.next;
+			}
+			curr = curr.next;
+			copyCurr = copyCurr.next;
+		}
 
-        return copyHead;
-    }
+		return copyHead;
+	}
 }

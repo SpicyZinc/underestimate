@@ -25,53 +25,48 @@ if occurrence greater than n/3, add the num to result
 import java.util.*;
 
 public class MajorityElement {
-    public static void main(String[] args) {
-        int[] nums = {1,1,1,2,2,2,3};
-        MajorityElement eg = new MajorityElement();
-        List<Integer> xx = eg.majorityElement(nums);
-        System.out.println( xx.toString() );
-    }
+	public static void main(String[] args) {
+		int[] nums = {1,1,1,2,2,2,3};
+		MajorityElement eg = new MajorityElement();
+		List<Integer> xx = eg.majorityElement(nums);
+		System.out.println( xx.toString() );
+	}
 
-    public List<Integer> majorityElement(int[] nums) {
-        List<Integer> res = new ArrayList<Integer>();
-        int m = 0, n = 0, cm = 0, cn = 0;
-        for (int a : nums) {
-            if (a == m) {
-                cm++;             
-            } 
-            else if (a == n) {
-                cn++;
-            } 
-            else if (cm == 0) {
-                m = a;
-                cm = 1;
-            } 
-            else if (cn == 0) {
-                n = a;
-                cn = 1;
-            } 
-            else {
-                cm--;
-                cn--;
-            }
-        }
+	public List<Integer> majorityElement(int[] nums) {
+		List<Integer> elements = new ArrayList<Integer>();
+		int m = 0, n = 0, cm = 0, cn = 0;
+		for (int num : nums) {
+			if (num == m) {
+				cm++;             
+			} else if (num == n) {
+				cn++;
+			} else if (cm == 0) {
+				m = num;
+				cm = 1;
+			} else if (cn == 0) {
+				n = num;
+				cn = 1;
+			} else {
+				cm--;
+				cn--;
+			}
+		}
 
-        cm = cn = 0;         
-        for (int a : nums) {
-            if (a == m) {
-                cm++;
-            } 
-            else if (a == n) {
-                cn++;
-            }
-        }
-        if (cm > nums.length / 3) {
-            res.add(m);
-        }
-        if (cn > nums.length / 3) {
-            res.add(n);
-        }
+		cm = cn = 0;
+		for (int num : nums) {
+			if (num == m) {
+				cm++;
+			} else if (num == n) {
+				cn++;
+			}
+		}
+		if (cm > nums.length / 3) {
+			elements.add(m);
+		}
+		if (cn > nums.length / 3) {
+			elements.add(n);
+		}
 
-        return res;
-    }
+		return elements;
+	}
 }

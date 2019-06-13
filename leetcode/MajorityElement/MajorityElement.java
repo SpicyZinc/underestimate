@@ -14,41 +14,45 @@ if an element appears more than n/2 times, it can only be one element, impossibl
 */
 
 public class MajorityElement  {
-    public int majorityElement(int[] nums) {
-        Arrays.sort(nums);
-        return nums[nums.length/2];
-    }
-    // hashmap
-    public int majorityElement(int[] nums) {
-        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
-        for ( int i = 0; i < nums.length; i++ ) {
-            hm.put(nums[i], hm.getOrDefault(nums[i], 0) + 1);
-        }
-        int ret = 0;
-        for ( Map.Entry<Integer, Integer> entry : hm.entrySet() ) {
-            if ( entry.getValue() > nums.length / 2 ) {
-                ret = entry.getKey();
-            }
-        }
-        
-        return ret;
-    }
-    // best method
-    public int majorityElement(int[] nums) {
-        int majorCnt = 0;
-        int cnt = 0;
-        for (int num : nums) {
-            if (cnt == 0) {
-                majorCnt = num;
-                cnt++;
-            }
-            else if (num == majorCnt) {
-                cnt++;
-            }
-            else {
-                cnt--;
-            }
-        }
-        return majorCnt;
-    }
+	public int majorityElement(int[] nums) {
+		Arrays.sort(nums);
+
+		return nums[nums.length / 2];
+	}
+
+	// hashmap
+	public int majorityElement(int[] nums) {
+		Map<Integer, Integer> hm = new HashMap<>();
+		for ( int i = 0; i < nums.length; i++ ) {
+			hm.put(nums[i], hm.getOrDefault(nums[i], 0) + 1);
+		}
+
+		int result = 0;
+		for ( Map.Entry<Integer, Integer> entry : hm.entrySet() ) {
+			if ( entry.getValue() > nums.length / 2 ) {
+				result = entry.getKey();
+			}
+		}
+		
+		return result;
+	}
+
+	// best method
+	public int majorityElement(int[] nums) {
+		int major = 0;
+		int cnt = 0;
+
+		for (int num : nums) {
+			if (cnt == 0) {
+				major = num;
+				cnt++;
+			} else if (num == major) {
+				cnt++;
+			} else {
+				cnt--;
+			}
+		}
+
+		return major;
+	}
 }

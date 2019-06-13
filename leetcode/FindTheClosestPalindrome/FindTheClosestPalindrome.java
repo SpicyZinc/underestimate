@@ -47,6 +47,7 @@ public class FindTheClosestPalindrome {
 			String possible = Long.toString(Long.parseLong(left) + increment); 
 			String closestPalindrome = getPalindrome(possible, isOdd);
 			// note size >= 2 not closestPalindrome.length()
+			// in theory, even cnt of palindrome should be the same size of closestPalindrome
 			if (size >= 2 && (closestPalindrome.length() < size || Long.valueOf(closestPalindrome) == 0)) {
 				closestPalindrome = generateAll9Palindrome(size);
 			}

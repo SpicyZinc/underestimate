@@ -32,56 +32,23 @@ so the count of 1 will be the number of islands
 */
 
 public class NumberOfIslands {
-    public int numIslands(char[][] grid) {
-        int m = grid.length;
-        if (m == 0) {
-        	return 0;
-        }
-        int n = grid[0].length;
-        if (n == 0) {
-        	return 0;
-        }
-        int cnt = 0;
-        for (int i = 0; i < m; i++) {
-        	for (int j = 0; j < n; j++) {
-        		if (grid[i][j] == '1') {
-        			cnt++;
-        			dfs(grid, m, n, i, j);
-        		}
-        	}
-        }
-
-        return cnt;
-    }
-
-    public void dfs(char[][] grid, int m, int n, int i, int j) {
-    	if (i < 0 || i >= m || j < 0 || j >= n) {
-    		return;
-    	}
-    	if (grid[i][j] == '1') {
-    		grid[i][j] = '2';
-
-    		dfs(grid, m, n, i, j-1);
-    		dfs(grid, m, n, i, j+1);
-    		dfs(grid, m, n, i-1, j);
-    		dfs(grid, m, n, i+1, j);
-    	}
-    }
-
-    // self written
+	// Sun Jun  9 17:45:08 2019
     public int[][] directions = {
         {0, -1},
         {0, 1},
         {-1, 0},
         {1, 0},
     };
+
     public int numIslands(char[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
         }
+
         int m = grid.length;
         int n = grid[0].length;
         int cnt = 0;
+
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == '1') {
@@ -90,18 +57,23 @@ public class NumberOfIslands {
                 }
             }
         }
+
         return cnt;
     }
     
-    // main purpose is to set 1 to 2
+    // main purpose is to set 1 to 2 to indicated visited
     public void dfs(char[][] grid, int i, int j) {
         int m = grid.length;
         int n = grid[0].length;
+
         if (i < 0 || i >= m || j < 0 || j >= n) {
             return;
         }
+
         if (grid[i][j] == '1') {
+        	// set to 2 to indicated visited
             grid[i][j] = '2';
+
             for (int[] dir : directions) {
                 int newX = i + dir[0];
                 int newY = j + dir[1];

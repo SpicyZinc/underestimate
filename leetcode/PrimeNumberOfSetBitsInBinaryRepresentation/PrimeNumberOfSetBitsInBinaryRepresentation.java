@@ -39,7 +39,7 @@ class PrimeNumberOfSetBitsInBinaryRepresentation {
 		int count = 0;
 		for (int i = L; i <= R; i++) {
             if (L > 1) {
-                int cnt = countOfSetbit(i);
+                int cnt = countSetBits(i);
                 if (isPrime(cnt)) {
                     count++;
                 }                
@@ -58,6 +58,16 @@ class PrimeNumberOfSetBitsInBinaryRepresentation {
         return hs.contains(x);
 	}
 
+	public int countSetBits(int n) {
+		int count = 0;
+		while (n > 0) {
+			count += n & 1;
+			n >>= 1;
+		}
+
+		return count;
+	}
+
 	public int countOfSetbit(int n) {
 		int cnt = 0;
 		for (int i = 0; i < 32; i++) {
@@ -66,6 +76,7 @@ class PrimeNumberOfSetBitsInBinaryRepresentation {
 			}
 			n >>= 1;
 		}
+
 		return cnt;
 	}
 }
