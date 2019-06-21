@@ -20,6 +20,7 @@ to a letter), we simply return.
 If there is no sub-string to go on, we know we have found a valid solution, so we increase the count
 
 2. DP:
+注意 0 不行
 http://blog.csdn.net/linhuanmars/article/details/24570759
 
 ways[i] = ways[i - 1] + ways[i - 2], because there are at most 26, two digits
@@ -27,63 +28,92 @@ ways[i] is the number of decoding ways for substring(0, i)
 */
 
 public class DecodeWays {
-    // 240 / 259 test cases passed
-    public int numDecodings(String s) {
-        if (s.length() == 0 || s == null) {
-            return 0;
-        }
+	// Sat Jun 15 22:14:00 2019
+	public int numDecodings(String s) {
+		if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+			return 0;
+		}
+		
+		int size = s.length();
+		int[] dp = new int[size + 1];
+		
+		dp[0] = 1;
+		dp[1] = 1;
+		
+		for (int i = 2; i <= size; i++) {
+			char first = s.charAt(i - 2);
+			char second = s.charAt(i - 1);
 
-        return dfs(s);
-    }
-    
-    public int dfs(String s) {
-        // stopping case
-        if (s.length() == 0 || s == null) {
-            return 1;
-        }
-        // case '0' as input
-        if (s.charAt(0) == '0') {
-            return 0; 
-        }
+			if (second != '0') {
+				dp[i] = dp[i - 1];
+			}
+			
+			if (first == '1' || first == '2' && second >= '0' && second <= '6') {
+				dp[i] += dp[i - 2];
+			}
+		}
+		
+		return dp[size];
+	}
+	// DP
+	public int numDecodings(String s) {  
+		if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+			return 0;  
+		}
 
-        int cnt = dfs(s.substring(1));
-        if (s.length() >= 2) {
-            char first = s.charAt(0);
-            char second = s.charAt(1);
-            if (first == '1' || first == '2' && second >= '0' && second <= '6') {
-                cnt += dfs(s.substring(2));
-            }
-        }
+		int[] ways = new int[s.length() + 1];
+		ways[0] = 1;
+		ways[1] = 1;
 
-        return cnt;
-    }
-    // DP
-    public int numDecodings(String s) {  
-        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
-            return 0;  
-        }
+		for (int i = 2; i <= s.length(); i++) {
+			char first = s.charAt(i - 2);
+			char second = s.charAt(i - 1);
 
-        int[] ways = new int[s.length() + 1];
-        ways[0] = 1;
-        ways[1] = 1;
+			// 12 1(A) and 2(B) or 12 as L 两种
+			// 但是一旦有0 就不行了
+			if (second != '0') {
+				ways[i] += ways[i - 1];  
+			}
 
-        for (int i = 2; i <= s.length(); i++) {
-            char first = s.charAt(i - 2);
-            char second = s.charAt(i - 1);
+			// ways[i - 2] + 一个两位数 这个两位数有要求
+			// 如果是1 second可以是[0-9] 没有限制
+			// 如果是2 second只能是[0-6]
+			if (first == '1' || first == '2' && second >= '0' && second <= '6') {
+				ways[i] += ways[i - 2];  
+			}
+		}
 
-            // 12 1(A) and 2(B) or 12 as L 两种
-            // 但是一旦有0 就不行了
-            if (second != '0') {
-                ways[i] += ways[i - 1];  
-            }
+		return ways[s.length()];
+	}
 
-            // 如果是1 second可以是[0-9] 没有限制
-            // 如果是2 second只能是[0-6]
-            if (first == '1' || first == '2' && second >= '0' && second <= '6') {
-                ways[i] += ways[i - 2];  
-            }
-        }
+	// 240 / 259 test cases passed
+	public int numDecodings(String s) {
+		if (s.length() == 0 || s == null) {
+			return 0;
+		}
 
-        return ways[s.length()];
-    }
+		return dfs(s);
+	}
+	
+	public int dfs(String s) {
+		// stopping case
+		if (s.length() == 0 || s == null) {
+			return 1;
+		}
+		// case '0' as input
+		if (s.charAt(0) == '0') {
+			return 0; 
+		}
+
+		int cnt = dfs(s.substring(1));
+		if (s.length() >= 2) {
+			char first = s.charAt(0);
+			char second = s.charAt(1);
+			if (first == '1' || first == '2' && second >= '0' && second <= '6') {
+				cnt += dfs(s.substring(2));
+			}
+		}
+
+		return cnt;
+	}
 }

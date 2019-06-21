@@ -18,16 +18,19 @@ Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a se
  
 Visually, the graph looks like the following:
 
-       1
-      / \
-     /   \
-    0 --- 2
-         / \
-         \_/
+	   1
+	  / \
+	 /   \
+	0 --- 2
+		 / \
+		 \_/
 Note: The information about the tree serialization is only meant so that you can understand error output if you get a wrong answer.
 You don't need to understand the serialization to solve the problem.
 
 idea:
+需要记住的就是 一个 Node 的 neighbor 可以是 别的 Node 的 neighbor
+所以必要重复 克隆 
+
 http://blog.csdn.net/fightforyourdream/article/details/17497883
 
 A queue is used to do breath first traversal (BFS).
@@ -39,79 +42,79 @@ or dfs
 
 // Definition for undirected graph.
 class Node {
-    public int val;
-    public List<Node> neighbors;
+	public int val;
+	public List<Node> neighbors;
 
-    public Node() {}
+	public Node() {}
 
-    public Node(int _val,List<Node> _neighbors) {
-        val = _val;
-        neighbors = _neighbors;
-    }
+	public Node(int _val,List<Node> _neighbors) {
+		val = _val;
+		neighbors = _neighbors;
+	}
 }
 
 public class CloneGraph {
-	// 02/13/2019
 	// DFS easier
-	// assume label is unique, otherwise use UndirectedGraphNode as key
+	// Sun Jun 16 00:58:57 2019
 	public Node cloneGraph(Node node) {
-		Map<Integer, Node> map = new HashMap<>();
+		Map<Node, Node> hm = new HashMap<>();
 
-        return dfsClone(node, map);
-    }
+		return dfsClone(node, hm);
+	}
 
-    private Node dfsClone(Node node, Map<Integer, Node> map) {
-        if (node == null) {
-        	return null;
-        }
+	public Node dfsClone(Node node, Map<Node, Node> hm) {
+		if (node == null) {
+			return null;
+		}
 
-        if (map.containsKey(node.val)) {
-            return map.get(node.val);
-        }
+		if (hm.containsKey(node)) {
+			return hm.get(node);
+		}
 
-        Node clone = new Node(node.val, new ArrayList<>());
-        map.put(node.val, clone);
+		Node cloned = new Node(node.val, new ArrayList<>());
+		hm.put(node, cloned);
 
-        for (Node neighbor : node.neighbors) {
-            clone.neighbors.add(dfsClone(neighbor, map));
-        }
+		for (Node neighbor : node.neighbors) {
+			cloned.neighbors.add(dfsClone(neighbor, hm));
+		}
 
-        return clone;
-    }
+		return cloned;
+	}
 
 	// Sun Jun  9 13:41:32 2019
 	public Node cloneGraph(Node node) {
-        if (node == null) {
-            return node;
-        }
+		if (node == null) {
+			return node;
+		}
 
-        Map<Node, Node> hm = new HashMap<>();
-        Node cloned = new Node(node.val);
-        hm.put(node, cloned);
-        
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(node);
-        
-        while (!queue.isEmpty()) {
-            Node current = queue.poll();
-            List<Node> neighbors = current.neighbors;
-            
-            Node currentCloned = hm.get(current);
-            List<Node> neighborsCloned = new ArrayList<>();
+		Map<Node, Node> hm = new HashMap<>();
+		Node cloned = new Node(node.val, new ArrayList<>());
+		hm.put(node, cloned);
+		
+		Queue<Node> queue = new LinkedList<>();
+		queue.add(node);
+		
+		while (!queue.isEmpty()) {
+			Node current = queue.poll();
+			List<Node> neighbors = current.neighbors;
+			
+			Node currentCloned = hm.get(current);
+			List<Node> neighborsCloned = new ArrayList<>();
 
-            for (Node neighbor : neighbors) {
-            	// note, where to offer(), matters
-                if (!hm.containsKey(neighbor)) {
-                    queue.offer(neighbor);
-                }
-                Node neighborCloned = hm.getOrDefault(neighbor, new Node(neighbor.val));
-                neighborsCloned.add(neighborCloned);
-                hm.put(neighbor, neighborCloned);
-            }
-            // finish clone
-            currentCloned.neighbors = neighborsCloned;
-        }
+			for (Node neighbor : neighbors) {
+				// note, where to offer(), matters
+				if (!hm.containsKey(neighbor)) {
+					queue.offer(neighbor);
+				}
 
-        return cloned;
-    }
+				Node neighborCloned = hm.getOrDefault(neighbor, new Node(neighbor.val));
+				neighborsCloned.add(neighborCloned);
+				hm.put(neighbor, neighborCloned);
+			}
+			// finish clone
+			currentCloned.neighbors = neighborsCloned;
+		}
+
+		return cloned;
+	}
 }

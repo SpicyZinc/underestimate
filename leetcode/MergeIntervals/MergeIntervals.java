@@ -52,123 +52,128 @@ public class MergeIntervals {
 			System.out.println(mergedList.get(i).toString());
 		}
 	}
-    // 02/10/2019
-    public List<Interval> merge(List<Interval> intervals) {
-        List<Interval> result = new ArrayList<>();
-        
-        if (intervals.size() == 0 || intervals == null) {
-            return result;
-        }
-        
-        Collections.sort(intervals, new Comparator<Interval>() {
-            @Override
-            public int compare(Interval a, Interval b) {
-                return a.start - b.start;
-            }
-        });
-        
-        result.add(intervals.get(0));
-        
-        for (int i = 1; i < intervals.size(); i++) {
-            Interval curr = intervals.get(i);
-            Interval prev = result.get(result.size() - 1);
-            
-            if (curr.start > prev.end) {
-                result.add(curr);
-            } else {
-                prev.end = Math.max(prev.end, curr.end);
-            }
-        }
-        
-        return result;
-    }
-    // 07/17/2018
-    public List<Interval> merge(List<Interval> intervals) {
-        List<Interval> merged = new ArrayList<>();
-        if (intervals.size() == 0) {
-            return merged;    
-        }
-        
-        Collections.sort(intervals, new Comparator<Interval>() {
-            @Override
-            public int compare(Interval a, Interval b) {
-                return a.start - b.start;
-            }
-        });
+	// Sat Jun 15 16:43:51 2019
+	public int[][] merge(int[][] intervals) {
+		if (intervals.length == 0 || intervals == null) {
+			return new int[][] {};
+		}
+		
+		Arrays.sort(intervals, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+		
+		List<int[]> merged = new ArrayList<>();
 
-        merged.add(intervals.get(0));
+		merged.add(intervals[0]);
 
-        for (int i = 1; i < intervals.size(); i++) {
-            Interval prev = merged.get(merged.size() - 1);
-            Interval curr = intervals.get(i);
+		for (int i = 1; i < intervals.length; i++) {
+			int[] interval = intervals[i];
+			int[] prev = merged.get(merged.size() - 1);
 
-            if (curr.start > prev.end) {
-                merged.add(curr);
-            } else {
-                prev.end = Math.max(prev.end, curr.end);
-            }
-        }
+			if (interval[0] > prev[1]) {
+				merged.add(interval);
+			} else {
+				prev[1] = Math.max(prev[1], interval[1]);
+			}
+		}
 
-        return merged;
-    }
+		int[][] result = new int[merged.size()][2];
+		for (int i = 0; i < merged.size(); i++) {
+			int[] interval = merged.get(i);
+			result[i] = interval;
+		}
+
+		return result;
+	}
+
+	// 02/10/2019
+	public List<Interval> merge(List<Interval> intervals) {
+		List<Interval> result = new ArrayList<>();
+		
+		if (intervals.size() == 0 || intervals == null) {
+			return result;
+		}
+		
+		Collections.sort(intervals, new Comparator<Interval>() {
+			@Override
+			public int compare(Interval a, Interval b) {
+				return a.start - b.start;
+			}
+		});
+		
+		result.add(intervals.get(0));
+		
+		for (int i = 1; i < intervals.size(); i++) {
+			Interval curr = intervals.get(i);
+			Interval prev = result.get(result.size() - 1);
+			
+			if (curr.start > prev.end) {
+				result.add(curr);
+			} else {
+				prev.end = Math.max(prev.end, curr.end);
+			}
+		}
+		
+		return result;
+	}
 
 	// method 1
-    public List<Interval> merge(List<Interval> intervals) {
-        if (intervals.size() < 2) {
-            return intervals;
-        }
-        Collections.sort(intervals, new Comparator<Interval>() {
-            @Override
-            public int compare(Interval a, Interval b) {
-                return a.start - b.start;
-            }
-        });
-        List<Interval> result = new ArrayList<Interval>();
-        Interval firstInterval = intervals.get(0);
-        int start = firstInterval.start; 
-        int end = firstInterval.end;
-        for (int i = 0; i < intervals.size(); i++) {
-            Interval current = intervals.get(i);
-            if (current.start <= end) {
-                end = Math.max(end, current.end);
-            } else {
-                result.add(new Interval(start, end));
-                start = current.start;
-                end = current.end;
-            }
-        }
-        // last one
-        result.add(new Interval(start, end));
+	public List<Interval> merge(List<Interval> intervals) {
+		if (intervals.size() < 2) {
+			return intervals;
+		}
+		Collections.sort(intervals, new Comparator<Interval>() {
+			@Override
+			public int compare(Interval a, Interval b) {
+				return a.start - b.start;
+			}
+		});
+		List<Interval> result = new ArrayList<Interval>();
+		Interval firstInterval = intervals.get(0);
+		int start = firstInterval.start; 
+		int end = firstInterval.end;
+		for (int i = 0; i < intervals.size(); i++) {
+			Interval current = intervals.get(i);
+			if (current.start <= end) {
+				end = Math.max(end, current.end);
+			} else {
+				result.add(new Interval(start, end));
+				start = current.start;
+				end = current.end;
+			}
+		}
+		// last one
+		result.add(new Interval(start, end));
 
-        return result;
-    }
-    // method 2
-    public List<Interval> merge(List<Interval> intervals) {
-    	List<Interval> result = new ArrayList<Interval>();
-    	if (intervals.size() == 0) {
-    		return result;
-    	}
-    	// sort intervals based on the start
-    	Collections.sort(intervals, new Comparator<Interval>() {
-    		@Override
-    		public int compare(Interval a, Interval b) {
-    			return a.start - b.start;
-    		}
-    	});
-    	result.add(intervals.get(0));
-    	for (int i = 1; i < intervals.size(); i++) {
-    		Interval curr = intervals.get(i);
-    		Interval prev = result.get(result.size() - 1);
-    		if (curr.start > prev.end) {
-    			result.add(curr);
-    		} else {
-    			if (curr.end > prev.end) {
-    				// note: to extend the interval which is already in result or create new interval
-    				prev.end = curr.end;
-    			}
-    		}
-    	}
+		return result;
+	}
+	// method 2
+	public List<Interval> merge(List<Interval> intervals) {
+		List<Interval> result = new ArrayList<Interval>();
+		if (intervals.size() == 0) {
+			return result;
+		}
+		// sort intervals based on the start
+		Collections.sort(intervals, new Comparator<Interval>() {
+			@Override
+			public int compare(Interval a, Interval b) {
+				return a.start - b.start;
+			}
+		});
 
-    	return result;
-    }
+		result.add(intervals.get(0));
+
+		for (int i = 1; i < intervals.size(); i++) {
+			Interval curr = intervals.get(i);
+			Interval prev = result.get(result.size() - 1);
+			if (curr.start > prev.end) {
+				result.add(curr);
+			} else {
+				if (curr.end > prev.end) {
+					// note: to extend the interval which is already in result or create new interval
+					prev.end = curr.end;
+				}
+			}
+		}
+
+		return result;
+	}
 }

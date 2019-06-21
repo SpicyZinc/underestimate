@@ -14,53 +14,93 @@ O(n)
 */
 
 public class JumpGame {
-	// best version, greedy algorithm
+	// Sat Jun 15 15:12:42 2019
+	// i now think this is easy to understand
+	// steps = maxReach - i
 	public int jump(int[] nums) {
-		int n = nums.length;
-        int prevReachedPost = 0; // 上一个可以reach到的 position
-        int minSteps = 0;
-        int maxReach = 0;
-
-        for (int i = 0; i < n - 1; i++) {
-            maxReach = Math.max(maxReach, i + nums[i]);
-            // Once the current point reaches curEnd, then trigger another jump
-            if (i == prevReachedPost) {
-                minSteps++;
-                prevReachedPost = maxReach;
-                if (prevReachedPost == n - 1) {
-                	break;
-                }
-            }
-        }
-
-        return minSteps;
-    }
-
-	public int jump(int[] A) {
-		if (A.length <= 1) {
+		if (nums.length <= 1) {
 			return 0;
 		}
 
-		int maxReach = A[0];
-		int steps = A[0];
+		// 已经跳了一次
 		int jumps = 1;
-
-		// 某个 maxReach 步数用光了 才跳一步
-		for (int i = 1; i < A.length; i++) {
-			if (i == A.length - 1) {
+		// 一个 jump 包含的步数 steps
+		// i 增加 会消耗掉 steps
+		int steps = nums[0];
+		int maxReach = 0 + nums[0]; // index + nums[index]
+		
+		for (int i = 1; i < nums.length; i++) {
+			if (i == nums.length - 1) {
 				return jumps;
 			}
-			if (i + A[i] > maxReach) {
-				maxReach = i + A[i];
-			}
+			
+			// update maxReach
+			maxReach = Math.max(maxReach, i + nums[i]);
+			
 			steps--;
+			
 			if (steps == 0) {
+				// steps == 0, need to another jump
 				jumps++;
 				steps = maxReach - i;
 			}
 		}
-
+		
 		return jumps;
+	}
+
+	// dp[i] The minimum number of jumps to reach i
+	// why TLE
+	public int jump(int[] nums) {
+		if (nums.length <= 1) {
+			return 0;
+		}
+
+		int size = nums.length;
+		int[] dp = new int[size];
+
+		for (int i = 1; i < size; i++) {
+			// min number of jumps to reach i
+			int min = Integer.MAX_VALUE;
+
+			for (int j = 0; j < i; j++) {
+				// if min number of jumps to j < i already > steps to i, no need to compare
+				if (dp[j] >= min) {
+					continue;
+				}
+				if (j + nums[j] >= i) {
+					min = Math.min(min, dp[j] + 1);
+				}
+			}
+
+			dp[i] = min;
+		}
+
+		return dp[dp.length - 1];
+	}
+
+	// best version, greedy algorithm
+	public int jump(int[] nums) {
+		int n = nums.length;
+		int prevReachedPos = 0; // 上一个可以reach到的 position
+
+		int minSteps = 0;
+		int maxReach = 0;
+
+		for (int i = 0; i < n - 1; i++) {
+			maxReach = Math.max(maxReach, i + nums[i]);
+			// Once the current point reaches curEnd, then trigger another jump
+			if (i == prevReachedPos) {
+				minSteps++;
+				prevReachedPos = maxReach;
+
+				if (prevReachedPos == n - 1) {
+					break;
+				}
+			}
+		}
+
+		return minSteps;
 	}
 
 	/*
@@ -71,7 +111,7 @@ public class JumpGame {
 	because each step is maximum jump length
 	*/
 	public int jump(int[] A) {
-        int jumpCnt = 0;
+		int jumpCnt = 0;
 		int startPos = 0;
 		int max = 0;
 		// int max = 0 + A[0]; // wrong
@@ -91,31 +131,5 @@ public class JumpGame {
 		}
 
 		return jumpCnt;
-    }
-	
-	// dp[i] The minimum number of jumps to reach i which is the last index 
-	public int jump(int[] A) {
-		if (A.length <= 1) {
-			return 0;
-		}
-
-		int[] dp = new int[A.length];
-
-		for (int i = 1; i < A.length; i++) {
-			int min = Integer.MAX_VALUE;
-
-			for (int j = 0; j < i; j++) {
-				if (dp[j] >= min) {
-					continue;
-				}
-				if (j + A[j] >= i) {
-					min = Math.min(min, dp[j] + 1);
-				}
-			}
-
-			dp[i] = min;
-		}
-
-		return dp[dp.length - 1];
 	}
 }

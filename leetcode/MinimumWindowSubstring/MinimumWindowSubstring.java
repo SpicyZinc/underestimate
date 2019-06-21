@@ -37,6 +37,65 @@ public class MinimumWindowSubstring {
 		String minimumWindow = aTest.minWindow(S, T);
 		System.out.println("minimumWindow == " + minimumWindow);		
 	}
+	// Sun Jun 16 16:13:57 2019
+	public String minWindow(String s, String t) {
+		int sLen = s.length();
+		int tLen = t.length();
+
+		int[] sLetters = new int[256];
+		int[] tLetters = new int[256];
+
+		// build map for string t
+		for (int i = 0; i < tLen; i++) {
+			char c = t.charAt(i);
+			tLetters[c]++;
+		}
+
+		// count unique char's count
+		int tUniqueCharsCount = 0;
+		for (int i = 0; i < tLetters.length; i++) {
+			if (tLetters[i] > 0) {
+				tUniqueCharsCount++;
+			}
+		}
+
+		int right = 0;
+		int uniqueTCharsCountInWindow = 0;
+
+		String minWindowStr = "";
+
+		for (int left = 0; left < sLen; left++) {
+			
+			while (right < sLen && uniqueTCharsCountInWindow < tUniqueCharsCount) {
+				char c = s.charAt(right);
+				sLetters[c]++;
+				// 不仅有 而且个数一样
+				if (sLetters[c] == tLetters[c]) {
+					uniqueTCharsCountInWindow++;
+				}
+
+				right++;
+			}
+
+			// found out a window where uniqueTCharsCountInWindow == tUniqueCharsCount
+			if (uniqueTCharsCountInWindow == tUniqueCharsCount) {
+				// at first or found out smaller window
+				if (minWindowStr.length() == 0 || right - left < minWindowStr.length()) {
+					minWindowStr = s.substring(left, right);
+				}
+			}
+
+			char charAtLeft = s.charAt(left);
+			// left shift
+			sLetters[charAtLeft]--;
+			if (sLetters[charAtLeft] == tLetters[charAtLeft] - 1) {
+				uniqueTCharsCountInWindow--;
+			}
+		}
+
+		return minWindowStr;
+	}
+
 	// 同向双指针
 	// how to define cover the t
 	// 就是 sLetters[c] >= tLetters[c]
@@ -108,7 +167,7 @@ public class MinimumWindowSubstring {
 		}
 
 		Map<Character, Integer> tLetters = new HashMap<>();
-        
+		
 		for (int i = 0; i < tLen; i++) {
 			char c = t.charAt(i);
 			tLetters.put(c, tLetters.getOrDefault(c, 0) + 1);
@@ -122,7 +181,7 @@ public class MinimumWindowSubstring {
 			char c = s.charAt(right);
 			
 			if (tLetters.containsKey(c)) {
-                
+				
 				tLetters.put(c, tLetters.get(c) - 1);
 
 				if (tLetters.get(c) >= 0) {
@@ -176,207 +235,207 @@ public class MinimumWindowSubstring {
 
 		for (int right = 0; right < sLen; right++) {
 			char c = s.charAt(right);
-            // only operate when current char appear in T
-            if (tMap.containsKey(c)) {
-                tMap.put(c, tMap.get(c) - 1);
-                if (tMap.get(c) >= 0) {
-                    tUniqueCharsCountInS++;
-                }
+			// only operate when current char appear in T
+			if (tMap.containsKey(c)) {
+				tMap.put(c, tMap.get(c) - 1);
+				if (tMap.get(c) >= 0) {
+					tUniqueCharsCountInS++;
+				}
 
-                while (tUniqueCharsCountInS == tLen) {
-                    // update minWindowStr
-                    if (minLen > right - left + 1) {
-                        minLen = right - left + 1;
-                        minWindowStr = s.substring(left, right + 1);
-                    }
+				while (tUniqueCharsCountInS == tLen) {
+					// update minWindowStr
+					if (minLen > right - left + 1) {
+						minLen = right - left + 1;
+						minWindowStr = s.substring(left, right + 1);
+					}
 
-                    char charAtLeft = s.charAt(left);
-                    // start to move left on the condition that some minWindowStr found out
-                    if (tMap.containsKey(charAtLeft)) {
-                        tMap.put(charAtLeft, tMap.get(charAtLeft) + 1);
-                        if (tMap.get(charAtLeft) > 0) {
-                            tUniqueCharsCountInS--;
-                        }
-                    }
-                    left++;
-                }
-            }
+					char charAtLeft = s.charAt(left);
+					// start to move left on the condition that some minWindowStr found out
+					if (tMap.containsKey(charAtLeft)) {
+						tMap.put(charAtLeft, tMap.get(charAtLeft) + 1);
+						if (tMap.get(charAtLeft) > 0) {
+							tUniqueCharsCountInS--;
+						}
+					}
+					left++;
+				}
+			}
 		}
-        
-        return minWindowStr;
+		
+		return minWindowStr;
 	}
-    // 08/25/2018 prepare for Amazon
-    // although fail 267 / 268 test cases passed, but good to try
-    public String minWindow(String s, String t) {
-        String result = "";
-        if (t.length() > s.length()) {
-            return result;
-        }
-        
-        int[] letters = new int[256];
-        for (int i = 0; i < t.length(); i++) {
-            int c = t.charAt(i);
-            letters[c]++;
-        }
-        
-        int min = s.length() + 1;
-        
-        for (int i = 0; i < s.length(); i++) {
-            int[] copy = Arrays.copyOf(letters, letters.length);
-            for (int j = i; j < s.length(); j++) {
-                int c = s.charAt(j);
-                if (copy[c] >= 1) {
-                    copy[c]--;
-                }
-                if (isEmpty(copy)) {
-                    int len = j - i + 1;
-                    if (min > len) {
-                        min = len;
-                        result = s.substring(i, j + 1);
-                    }
-                }
-            }
-        }
-        
-        return min == s.length() + 1 ? "" : result;
-    }
-    
-    public boolean isEmpty(int[] letters) {
-        for (int cnt : letters) {
-            if (cnt != 0) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
+	// 08/25/2018 prepare for Amazon
+	// although fail 267 / 268 test cases passed, but good to try
+	public String minWindow(String s, String t) {
+		String result = "";
+		if (t.length() > s.length()) {
+			return result;
+		}
+		
+		int[] letters = new int[256];
+		for (int i = 0; i < t.length(); i++) {
+			int c = t.charAt(i);
+			letters[c]++;
+		}
+		
+		int min = s.length() + 1;
+		
+		for (int i = 0; i < s.length(); i++) {
+			int[] copy = Arrays.copyOf(letters, letters.length);
+			for (int j = i; j < s.length(); j++) {
+				int c = s.charAt(j);
+				if (copy[c] >= 1) {
+					copy[c]--;
+				}
+				if (isEmpty(copy)) {
+					int len = j - i + 1;
+					if (min > len) {
+						min = len;
+						result = s.substring(i, j + 1);
+					}
+				}
+			}
+		}
+		
+		return min == s.length() + 1 ? "" : result;
+	}
+	
+	public boolean isEmpty(int[] letters) {
+		for (int cnt : letters) {
+			if (cnt != 0) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 
-    // 07/09/2018 prepare for Google
-    public String minWindow(String s, String t) {
-        String result = "";
-        if (t.length() > s.length()) {
-            return result;
-        }
+	// 07/09/2018 prepare for Google
+	public String minWindow(String s, String t) {
+		String result = "";
+		if (t.length() > s.length()) {
+			return result;
+		}
 
-        int left = 0;
-        int tCharsCountInS = 0;
-        int size = s.length();
-        int minLen = size + 1; // 就像 initialize Integer.MAX_VALUE
+		int left = 0;
+		int tCharsCountInS = 0;
+		int size = s.length();
+		int minLen = size + 1; // 就像 initialize Integer.MAX_VALUE
 
-        Map<Character, Integer> hm = new HashMap<>();
-        for (int i = 0; i < t.length(); i++) {
-            char c = t.charAt(i);
-            hm.put(c, hm.getOrDefault(c, 0) + 1);
-        }
+		Map<Character, Integer> hm = new HashMap<>();
+		for (int i = 0; i < t.length(); i++) {
+			char c = t.charAt(i);
+			hm.put(c, hm.getOrDefault(c, 0) + 1);
+		}
 
-        for (int right = 0; right < size; right++) {
-            char rightMost = s.charAt(right);
-            if (hm.containsKey(rightMost)) {
-                hm.put(rightMost, hm.get(rightMost) - 1);
-                if (hm.get(rightMost) >= 0) {
-                    tCharsCountInS++;
-                }
-                // move the window's left
-                while (tCharsCountInS == t.length()) {
-                    // update minLen
-                    if (right - left + 1 < minLen) {
-                        minLen = right - left + 1;
-                        result = s.substring(left, right + 1);
-                    }
-                    // start moving window's left
-                    char leftMost = s.charAt(left);
-                    if (hm.containsKey(leftMost)) {
-                        hm.put(leftMost, hm.get(leftMost) + 1);
-                        if (hm.get(leftMost) > 0) {
-                            tCharsCountInS--;
-                        }
-                    }
-                    left++;
-                }
-            }
-        }
+		for (int right = 0; right < size; right++) {
+			char rightMost = s.charAt(right);
+			if (hm.containsKey(rightMost)) {
+				hm.put(rightMost, hm.get(rightMost) - 1);
+				if (hm.get(rightMost) >= 0) {
+					tCharsCountInS++;
+				}
+				// move the window's left
+				while (tCharsCountInS == t.length()) {
+					// update minLen
+					if (right - left + 1 < minLen) {
+						minLen = right - left + 1;
+						result = s.substring(left, right + 1);
+					}
+					// start moving window's left
+					char leftMost = s.charAt(left);
+					if (hm.containsKey(leftMost)) {
+						hm.put(leftMost, hm.get(leftMost) + 1);
+						if (hm.get(leftMost) > 0) {
+							tCharsCountInS--;
+						}
+					}
+					left++;
+				}
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    // newly written version
-    public String minWindow(String s, String t) {
-        Map<Character, Integer> hm = new HashMap<Character, Integer>();
-        for (int i = 0; i < t.length(); i++) {
-            char c = t.charAt(i);
-            hm.put(c, hm.getOrDefault(c, 0) + 1);
-        }
-        
-        int size = s.length();
-        int minLen = size + 1;
-        int cntCharsT = 0; // counter for appeared T's character in S
-        int windowLeft = 0;
-        String window = "";
-        
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (hm.containsKey(c)) {
-                hm.put(c, hm.get(c) - 1);   
-                if (hm.get(c) >= 0) cntCharsT++;
-            }
-            while (cntCharsT == t.length()) {
-                char leftChar = s.charAt(windowLeft);
-                if (hm.containsKey(leftChar)) {
-                    // when map values zero, meaning window covers T
-                    // window shrinks, restore map
-                    hm.put(leftChar, hm.get(leftChar) + 1);
-                    if (hm.get(leftChar) >= 1) {
-                        int len = i - windowLeft + 1;
-                        if (minLen > len) {
-                            minLen = len;
-                            window = s.substring(windowLeft, i + 1);
-                        }
-                        cntCharsT--;
-                    }
-                }
-                windowLeft++;
-            }
-        }
-        
-        return window;
-    }
+	// newly written version
+	public String minWindow(String s, String t) {
+		Map<Character, Integer> hm = new HashMap<Character, Integer>();
+		for (int i = 0; i < t.length(); i++) {
+			char c = t.charAt(i);
+			hm.put(c, hm.getOrDefault(c, 0) + 1);
+		}
+		
+		int size = s.length();
+		int minLen = size + 1;
+		int cntCharsT = 0; // counter for appeared T's character in S
+		int windowLeft = 0;
+		String window = "";
+		
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (hm.containsKey(c)) {
+				hm.put(c, hm.get(c) - 1);   
+				if (hm.get(c) >= 0) cntCharsT++;
+			}
+			while (cntCharsT == t.length()) {
+				char leftChar = s.charAt(windowLeft);
+				if (hm.containsKey(leftChar)) {
+					// when map values zero, meaning window covers T
+					// window shrinks, restore map
+					hm.put(leftChar, hm.get(leftChar) + 1);
+					if (hm.get(leftChar) >= 1) {
+						int len = i - windowLeft + 1;
+						if (minLen > len) {
+							minLen = len;
+							window = s.substring(windowLeft, i + 1);
+						}
+						cntCharsT--;
+					}
+				}
+				windowLeft++;
+			}
+		}
+		
+		return window;
+	}
 
 	// self written, passed 267 / 268 test cases, TLE
-    public String minWindow(String s, String t) {
-        Map<Character, Integer> hm = new HashMap<Character, Integer>();
-        for (int i = 0; i < t.length(); i++) {
-            char c = t.charAt(i);
-            hm.put(c, hm.getOrDefault(c, 0) + 1);
-        }
-        
-        int size = s.length();
-        int minLen = size + 1;
-        String window = "";
-        int left = 0;
-        while (size - left >= t.length()) {
-            Map<Character, Integer> copyMap = new HashMap<Character, Integer>(hm);
-            for (int i = left; i < size; i++) {
-                char c = s.charAt(i);
-                if (copyMap.containsKey(c)) {
-                    int count = copyMap.get(c);
-                    if (count == 1) {
-                        copyMap.remove(c);
-                    } else if (count > 1) {
-                        copyMap.put(c, count - 1);
-                    }
-                }
-                if (copyMap.size() == 0) {
-                    int windowLen = i - left + 1;
-                    if (minLen > windowLen) {
-                        minLen = windowLen;
-                        window = s.substring(left, i + 1);
-                        break;
-                    }
-                }
-            }
-            left++;
-        }
-        
-        return window;
-    }
+	public String minWindow(String s, String t) {
+		Map<Character, Integer> hm = new HashMap<Character, Integer>();
+		for (int i = 0; i < t.length(); i++) {
+			char c = t.charAt(i);
+			hm.put(c, hm.getOrDefault(c, 0) + 1);
+		}
+		
+		int size = s.length();
+		int minLen = size + 1;
+		String window = "";
+		int left = 0;
+		while (size - left >= t.length()) {
+			Map<Character, Integer> copyMap = new HashMap<Character, Integer>(hm);
+			for (int i = left; i < size; i++) {
+				char c = s.charAt(i);
+				if (copyMap.containsKey(c)) {
+					int count = copyMap.get(c);
+					if (count == 1) {
+						copyMap.remove(c);
+					} else if (count > 1) {
+						copyMap.put(c, count - 1);
+					}
+				}
+				if (copyMap.size() == 0) {
+					int windowLen = i - left + 1;
+					if (minLen > windowLen) {
+						minLen = windowLen;
+						window = s.substring(left, i + 1);
+						break;
+					}
+				}
+			}
+			left++;
+		}
+		
+		return window;
+	}
 }

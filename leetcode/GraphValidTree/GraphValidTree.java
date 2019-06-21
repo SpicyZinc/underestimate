@@ -52,6 +52,93 @@ public class GraphValidTree {
 		boolean result = eg.validTree(n, edges);
 		System.out.println(result);
 	}
+	// Sun Jun 16 22:30:29 2019
+	// union find
+	public boolean validTree(int n, int[][] edges) {
+		if (n - 1 != edges.length) {
+			return false;
+		}
+
+		int[] f = new int[n];
+
+		for (int i = 0; i < n; i++) {
+			f[i] = i;
+		}
+
+		for (int[] edge : edges) {
+			int a = edge[0];
+			int b = edge[1];
+
+			int fa = find(a, f);
+			int fb = find(b, f);
+
+			if (fa == fb) {
+				return false;
+			}
+
+			// 搞清楚 怎样才是 指向带头大哥
+			// 反了不行
+			// f[fa] = fb;
+			f[fb] = fa;
+		}
+
+		return true;
+	}
+
+	public int find(int i, int[] f) {
+		while (i != f[i]) {
+			i = f[i];
+		}
+
+		return i;
+	}
+	// BFS
+	// Sun Jun 16 23:31:17 2019
+	public boolean validTree(int n, int[][] edges) {
+		// use hashmap as a graph
+		Map<Integer, List<Integer>> hm = new HashMap<>();
+  
+		for (int[] edge : edges) {
+			int a = edge[0];
+			int b = edge[1];
+			
+			hm.computeIfAbsent(a, x -> new ArrayList<>()).add(b);
+			hm.computeIfAbsent(b, x -> new ArrayList<>()).add(a);
+		}
+		
+		boolean[] visited = new boolean[n];
+		Queue<Integer> queue = new LinkedList<>();
+		queue.offer(0);
+		
+		while (!queue.isEmpty()) {
+			int node = queue.poll();
+			
+			// cycle
+			if (visited[node]) {
+				return false;
+			}
+
+			visited[node] = true;
+			
+			if (hm.get(node) != null) {
+				for (int nextNode : hm.get(node)) {
+					if (!visited[nextNode]) {
+						queue.offer(nextNode);
+					}
+				}
+			}
+		}
+		
+		// check if all nodes have been visited
+		for (boolean status : visited) {
+			if (!status) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
 	// DFS
 	public boolean validTree(int n, int[][] edges) {
 		Map<Integer, List<Integer>> hm = new HashMap<>();
@@ -107,6 +194,7 @@ public class GraphValidTree {
 		for (int i = 0; i < n; i++) {
 			hm.put(i, new ArrayList<Integer>());
 		}
+
 		for (int[] edge : edges) {
 			int first = edge[0];
 			int second = edge[1];
@@ -148,10 +236,10 @@ public class GraphValidTree {
 	// see if only 1 connected component
 	// 先比较 再union
 	public boolean validTree(int n, int[][] edges) {
-        // tree should have n nodes with n-1 edges
-        if (n - 1 != edges.length) {
-            return false;
-        }
+		// tree should have n nodes with n - 1 edges
+		if (n - 1 != edges.length) {
+			return false;
+		}
 
 		int[] f = new int[n];
 		for (int i = 0; i < n; i++) {
@@ -164,8 +252,8 @@ public class GraphValidTree {
 
 			int fa = find(a, f);
 			int fb = find(b, f);
-            
-            // 还没有union 就相等了 说明有环
+			
+			// 还没有union 就相等了 说明有环
 			if (fa == fb) {
 				return false;
 			}
@@ -184,7 +272,7 @@ public class GraphValidTree {
 		while (i != j) {
 			int fi = f[i];
 			f[i] = j;
-			i = f[i];
+			i = fi;
 		}
 
 		return j;

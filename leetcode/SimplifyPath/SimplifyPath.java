@@ -33,73 +33,73 @@ import java.util.*;
 public class SimplifyPath {
 	// 09/27/2018
 	public String simplifyPath(String path) {
-        int n = path.length();
-        
-        Stack<String> directories = new Stack<>();
-        String chars = "";
-        
-        for (int i = 0; i <= n; i++) {
-            char c = i == n ? '0' : path.charAt(i);
-            
-            if (i == n || c == '/') {
-                if (chars.equals("..")) {
-                    if (!directories.isEmpty()) {
-                        directories.pop();
-                    }
-                } else if (chars.length() > 0 && !chars.equals(".")) { // can only be directory
-                    directories.push(chars);
-                }
-                chars = "";
-            } else {
-                chars += c;
-            }
-        }
-        
-        // if nothing, return current directory
-        if (directories.isEmpty()) {
-            return "/";
-        }
-        
-        String result = "";
-        for (int i = 0; i < directories.size(); i++) {
-            result += "/" + directories.get(i);
-        }
-        
-        return result;
-    }
+		int n = path.length();
+		
+		Stack<String> directories = new Stack<>();
+		String chars = "";
 
-    public String simplifyPath(String path) {
-        Stack<String> files = new Stack<>();
-        String segment = "";
-        int n = path.length();
+		for (int i = 0; i <= n; i++) {
+			char c = i == n ? '0' : path.charAt(i);
+			
+			if (i == n || c == '/') {
+				if (chars.equals("..")) {
+					if (!directories.isEmpty()) {
+						directories.pop();
+					}
+				} else if (chars.length() > 0 && !chars.equals(".")) { // can only be directory
+					directories.push(chars);
+				}
+				chars = "";
+			} else {
+				chars += c;
+			}
+		}
+		
+		// if nothing, return current directory
+		if (directories.isEmpty()) {
+			return "/";
+		}
+		
+		String result = "";
+		for (int i = 0; i < directories.size(); i++) {
+			result += "/" + directories.get(i);
+		}
+		
+		return result;
+	}
+
+	public String simplifyPath(String path) {
+		Stack<String> files = new Stack<>();
+		String segment = "";
+		int n = path.length();
 		// path = "/home/", => "/home"
 		// path = "/a/./b/../../c/", => "/c"
-        for (int i = 0; i <= n; i++) {
-        	// i == path.length() in order to push last segment into stack
-            if (i == n || path.charAt(i) == '/') {
-                if (segment.equals("..")) {
-                    if (files.size() > 0) {
-                        files.pop();
-                    }
-                } else if (segment.length() > 0 && !segment.equals(".")) { // can only be file
-                    files.push(segment);
-                }
-                segment = "";
-            } else {
-                segment += path.charAt(i);
-            }
-        }
+		for (int i = 0; i <= n; i++) {
+			// i == path.length() in order to push last segment into stack
+			if (i == n || path.charAt(i) == '/') {
+				if (segment.equals("..")) {
+					if (files.size() > 0) {
+						files.pop();
+					}
+				} else if (segment.length() > 0 && !segment.equals(".")) { // can only be file
+					files.push(segment);
+				}
+				segment = "";
+			} else {
+				segment += path.charAt(i);
+			}
+		}
 
-        if (files.isEmpty()) {
-            return "/";
-        }
-        
-        String result = "";
-        // can index access stack
-        for (int i = 0; i < files.size(); i++) {
-            result += "/" + files.get(i);
-        }
-        
-        return result;
-    }
+		if (files.isEmpty()) {
+			return "/";
+		}
+		
+		String result = "";
+		// can index access stack
+		for (int i = 0; i < files.size(); i++) {
+			result += "/" + files.get(i);
+		}
+		
+		return result;
+	}
 }

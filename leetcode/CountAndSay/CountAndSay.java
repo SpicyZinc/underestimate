@@ -42,29 +42,29 @@ public class CountAndSay {
 		System.out.println();
 	}
 
-    // 03/14/2019
-    public String countAndSay(int n) {
-        String start = "1";
+	// 03/14/2019
+	public String countAndSay(int n) {
+		String start = "1";
 		// noet, i < n, because temp initialization is index 0
-        for (int i = 1; i < n; i++) {
-        	// generate a new ith start, overwrite the last one
-            start = cas(start);
-        }
-        
-        return start;
-    }
-    
-    public String cas(String s) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < s.length(); i++) {
-            int count = 1;
-            while (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
-                i++;
-                count++;
-            }
-            sb.append(count + "" + s.charAt(i));
-        }
-        
-        return sb.toString();
-    }
+		for (int i = 1; i < n; i++) {
+			// generate a new ith start, overwrite the last one
+			start = cas(start);
+		}
+		
+		return start;
+	}
+	
+	public String cas(String s) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < s.length(); i++) {
+			int count = 1;
+			while (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
+				i++;
+				count++;
+			}
+			sb.append(count + "" + s.charAt(i));
+		}
+
+		return sb.toString();
+	}
 }

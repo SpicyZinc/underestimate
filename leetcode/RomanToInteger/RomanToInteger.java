@@ -40,64 +40,67 @@ public class RomanToInteger {
 		System.out.println("roman4 == " + aTest.romanToInt(roman4));
 		System.out.println("This year == " + aTest.romanToInt(thisYear));
 	}
-    // 07/18/2018
-    // note, compare the char at the behind following with current preceding, 
-    // compare integer value not the ROMAN char value
-    // note a equal sign
-    public int romanToInt(String s) {
-        Map<Character, Integer> hm = new HashMap<>();
-        hm.put('I', 1);
-        hm.put('V', 5);
-        hm.put('X', 10);
-        hm.put('L', 50);
-        hm.put('C', 100);
-        hm.put('D', 500);
-        hm.put('M', 1000);
-        
-        int num = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            int curr = hm.get(c);
-            int next = i == s.length() - 1 ? 0 : hm.get(s.charAt(i + 1));
+	// 07/18/2018
+	// note, compare the char at the behind following with current preceding, 
+	// compare integer value not the ROMAN char value
+	// note a equal sign
+	public int romanToInt(String s) {
+		Map<Character, Integer> hm = new HashMap<>();
+		hm.put('I', 1);
+		hm.put('V', 5);
+		hm.put('X', 10);
+		hm.put('L', 50);
+		hm.put('C', 100);
+		hm.put('D', 500);
+		hm.put('M', 1000);
+		
+		int val = 0;
+		
+		for (int i = 0; i < s.length(); i++) {
+			boolean isLastPos = i == s.length() - 1;
+			char c = s.charAt(i);
+			// curr and next 指的是c 对应的 value 从 hm里 对应的
+			int curr = hm.get(c);
+			int next = isLastPos ? 0 : hm.get(s.charAt(i + 1));
+			
+			if (isLastPos || curr >= next) {
+				val += curr;
+			} else {
+				val -= curr;
+			}
+		}
+		
+		return val;
+	}
 
-            if (i == s.length() - 1 || curr >= next) {
-                num += curr;               
-            } else {
-                num -= curr;
-            }
-        }
-        
-        return num;
-    }
-
-    public int romanToInt(String s) {
-        Map<Character, Integer> map = new HashMap<Character, Integer>();
-        map.put('I', 1);
-        map.put('V', 5);
-        map.put('X', 10);
-        map.put('L', 50);
-        map.put('C', 100);
-        map.put('D', 500);
-        map.put('M', 1000);
+	public int romanToInt(String s) {
+		Map<Character, Integer> map = new HashMap<Character, Integer>();
+		map.put('I', 1);
+		map.put('V', 5);
+		map.put('X', 10);
+		map.put('L', 50);
+		map.put('C', 100);
+		map.put('D', 500);
+		map.put('M', 1000);
  
-        int x = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            x += sign(s, i, map) * map.get(c);
-        }
+		int x = 0;
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			x += sign(s, i, map) * map.get(c);
+		}
  
-        return x;
-    }
-    // sign function to decide plus "+" sign and negative "-" sign  
-    public int sign(String s, int i, Map<Character, Integer> map) {
-        if (i == s.length()-1) {
-            return 1;
-        }
+		return x;
+	}
+	// sign function to decide plus "+" sign and negative "-" sign  
+	public int sign(String s, int i, Map<Character, Integer> map) {
+		if (i == s.length()-1) {
+			return 1;
+		}
 		// MCMXLIV = 1000 + (1000 - 100) + (50 - 10) + (5 - 1) = 1944
-        if (map.get(s.charAt(i)) < map.get(s.charAt(i + 1))) {
-            return -1;
-        } else { // map.get(s.charAt(i)) >= map.get(s.charAt(i+1))
-            return 1;
-        }
-    }
+		if (map.get(s.charAt(i)) < map.get(s.charAt(i + 1))) {
+			return -1;
+		} else { // map.get(s.charAt(i)) >= map.get(s.charAt(i+1))
+			return 1;
+		}
+	}
 }

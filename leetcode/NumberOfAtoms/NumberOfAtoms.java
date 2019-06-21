@@ -127,8 +127,8 @@ class NumberOfAtoms {
 				i = pos;
 			}
 		}
-        
-        StringBuilder sb = new StringBuilder();
+		
+		StringBuilder sb = new StringBuilder();
 		List<String> list = new ArrayList<>(current.keySet());
 		Collections.sort(list);
 
@@ -201,9 +201,9 @@ class NumberOfAtoms {
 				i = pos;
 
 				map.put(s, map.getOrDefault(s, 0) + cnt);
-            }
+			}
 
-        }
+		}
 
 		StringBuilder sb = new StringBuilder();
 		List<String> list = new ArrayList<>(map.keySet());
@@ -214,7 +214,7 @@ class NumberOfAtoms {
 			sb.append(atom + (cnt > 1 ? cnt : ""));
 		}
 
-        return sb.toString();
+		return sb.toString();
 	}
 
 	// get the count of the element, default is 1
@@ -235,81 +235,81 @@ class NumberOfAtoms {
 		return new int[] {val, k};
 	}
 
-    // public String countOfAtoms(String formula) {
-    //     StringBuilder sb = new StringBuilder();
+	// public String countOfAtoms(String formula) {
+	//     StringBuilder sb = new StringBuilder();
 
-    //     Map<String, Integer> map = dfs(formula);
-    //     List<String> atoms = new ArrayList<>(map.keySet());
-        
-    //     Collections.sort(atoms);
-    //     for (String atom : atoms) {
-    //         int cnt = map.get(atom);
-    //         sb.append(atom + (cnt > 1 ? cnt : ""));
-    //     }
+	//     Map<String, Integer> map = dfs(formula);
+	//     List<String> atoms = new ArrayList<>(map.keySet());
+		
+	//     Collections.sort(atoms);
+	//     for (String atom : atoms) {
+	//         int cnt = map.get(atom);
+	//         sb.append(atom + (cnt > 1 ? cnt : ""));
+	//     }
 
-    //     return sb.toString();
-    // }
+	//     return sb.toString();
+	// }
 
-    // private Map<String, Integer> dfs(String formula) {
-    //     Map<String, Integer> hm = new HashMap<>();
-    //     if (formula == null || formula.length() == 0) {
-    //         return hm;
-    //     }
+	// private Map<String, Integer> dfs(String formula) {
+	//     Map<String, Integer> hm = new HashMap<>();
+	//     if (formula == null || formula.length() == 0) {
+	//         return hm;
+	//     }
 
-    //     int i = 0;
-    //     int len = formula.length();
-    //     int[] posAndCnt;
-    //     // 1. == '('
-    //     // 2. != '('
-    //     while (i < len) {
-    //         if (formula.charAt(i) == '(') {
-    //             int j = i;
-    //             int parenthesisCnt = 0;
-    //             for (j = i; j < len; j++) {
-    //                 if (formula.charAt(j) == '(') {
-    //                     parenthesisCnt++;
-    //                 } else if (formula.charAt(j) == ')') {
-    //                     parenthesisCnt--;
-    //                 }
+	//     int i = 0;
+	//     int len = formula.length();
+	//     int[] posAndCnt;
+	//     // 1. == '('
+	//     // 2. != '('
+	//     while (i < len) {
+	//         if (formula.charAt(i) == '(') {
+	//             int j = i;
+	//             int parenthesisCnt = 0;
+	//             for (j = i; j < len; j++) {
+	//                 if (formula.charAt(j) == '(') {
+	//                     parenthesisCnt++;
+	//                 } else if (formula.charAt(j) == ')') {
+	//                     parenthesisCnt--;
+	//                 }
 
-    //                 if (parenthesisCnt == 0) {
-    //                     break;
-    //                 }
-    //             }
+	//                 if (parenthesisCnt == 0) {
+	//                     break;
+	//                 }
+	//             }
 
-    //             posAndCnt = positionAndCount(formula, j + 1);
-    //             Map<String, Integer> subMap = dfs(formula.substring(i + 1, j));
-    //             for (String atom : subMap.keySet()) {
-    //                 hm.put(atom, subMap.get(atom) * posAndCnt[1] + hm.getOrDefault(atom, 0));
-    //             } 
-    //         } else {
-    //             int j = i + 1;
-    //             // get an element rest letters
-    //             while (j < len && Character.isLowerCase(formula.charAt(j))) {
-    //                 j++; 
-    //             }
-    //             posAndCnt = positionAndCount(formula, j);
-    //             String atom = formula.substring(i, j);
-    //             hm.put(atom, posAndCnt[1] + hm.getOrDefault(atom, 0)); 
-    //         }
+	//             posAndCnt = positionAndCount(formula, j + 1);
+	//             Map<String, Integer> subMap = dfs(formula.substring(i + 1, j));
+	//             for (String atom : subMap.keySet()) {
+	//                 hm.put(atom, subMap.get(atom) * posAndCnt[1] + hm.getOrDefault(atom, 0));
+	//             } 
+	//         } else {
+	//             int j = i + 1;
+	//             // get an element rest letters
+	//             while (j < len && Character.isLowerCase(formula.charAt(j))) {
+	//                 j++; 
+	//             }
+	//             posAndCnt = positionAndCount(formula, j);
+	//             String atom = formula.substring(i, j);
+	//             hm.put(atom, posAndCnt[1] + hm.getOrDefault(atom, 0)); 
+	//         }
 
-    //         i = posAndCnt[0];
-    //     }
-        
-    //     return hm;
-    // }
+	//         i = posAndCnt[0];
+	//     }
+		
+	//     return hm;
+	// }
 
-    // private int[] positionAndCount(String formula, int cntStart) {
-    //     int cnt = 1;
-    //     int k = cntStart;
+	// private int[] positionAndCount(String formula, int cntStart) {
+	//     int cnt = 1;
+	//     int k = cntStart;
 
-    //     while (k < formula.length() && Character.isDigit(formula.charAt(k))) {
-    //         k++;
-    //     }
-    //     if (k > cntStart) {
-    //         cnt = Integer.parseInt(formula.substring(cntStart, k));
-    //     }
+	//     while (k < formula.length() && Character.isDigit(formula.charAt(k))) {
+	//         k++;
+	//     }
+	//     if (k > cntStart) {
+	//         cnt = Integer.parseInt(formula.substring(cntStart, k));
+	//     }
 
-    //     return new int[] {k, cnt};
-    // }
+	//     return new int[] {k, cnt};
+	// }
 }

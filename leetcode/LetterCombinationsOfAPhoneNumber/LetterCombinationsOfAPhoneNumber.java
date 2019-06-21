@@ -36,88 +36,90 @@ public class LetterCombinationsOfAPhoneNumber {
 
 	// best method 1
 	public List<String> letterCombinations(String digits) {
-        Map<Character, String> hm = new HashMap<Character, String>();
-        hm.put('2', "abc");
-        hm.put('3', "def");
-        hm.put('4', "ghi");
-        hm.put('5', "jkl");
-        hm.put('6', "mno");
-        hm.put('7', "pqrs");
-        hm.put('8', "tuv");
-        hm.put('9', "wxyz");
-        
-        List<String> result = new ArrayList<String>();
-        if (digits.length() == 0 || digits == null) {
-            return result;
-        }
-        dfs(digits, 0, hm, "", result);
+		Map<Character, String> hm = new HashMap<Character, String>();
+		hm.put('2', "abc");
+		hm.put('3', "def");
+		hm.put('4', "ghi");
+		hm.put('5', "jkl");
+		hm.put('6', "mno");
+		hm.put('7', "pqrs");
+		hm.put('8', "tuv");
+		hm.put('9', "wxyz");
+		
+		List<String> result = new ArrayList<String>();
+		if (digits.length() == 0 || digits == null) {
+			return result;
+		}
+		dfs(digits, 0, hm, "", result);
 
-        return result;
-    }
-    
-    private void dfs(String digits, int index, Map<Character, String> hm, String path, List<String> result) {
-        if (path.length() == digits.length()) {
-            result.add(path);
-            return;
-        }
+		return result;
+	}
+	
+	private void dfs(String digits, int index, Map<Character, String> hm, String path, List<String> result) {
+		if (path.length() == digits.length()) {
+			result.add(path);
 
-        char digit = digits.charAt(index);
-        String letters = hm.get(digit);
-        for (int j = 0; j < letters.length(); j++) {
-            dfs(digits, index + 1, hm, path + letters.charAt(j), result);
-        }
-    }
+			return;
+		}
 
-    // method 2
-   	public List<String> letterCombinations(String digits) {
-        List<String> result = new ArrayList<String>();
-        if (digits == null || digits.length() == 0) {
-            return result;
-        }
-        combine(result, digits, 0, new StringBuilder());
-        return result;
-    }
+		char digit = digits.charAt(index);
+		String letters = hm.get(digit);
+		for (int j = 0; j < letters.length(); j++) {
+			dfs(digits, index + 1, hm, path + letters.charAt(j), result);
+		}
+	}
 
-    public void combine(List<String> result, String digits, int index, StringBuilder sb) {
-        char[][] map = {
-            {},
-            {}, 
-            {'a','b','c'},
-            {'d','e','f'},
-            {'g','h','i'},
-            {'j','k','l'},
-            {'m','n','o'}, 
-            {'p','q','s','r'}, 
-            {'t','u','v'},
-            {'w','x','y','z'}
-        };
+	// method 2
+	public List<String> letterCombinations(String digits) {
+		List<String> result = new ArrayList<String>();
+		if (digits == null || digits.length() == 0) {
+			return result;
+		}
+		combine(result, digits, 0, new StringBuilder());
 
-        if (index == digits.length()) {
-            result.add(new String(sb.toString()));
-            return;
-        }
+		return result;
+	}
 
-        int key = digits.charAt(index) - '0';
-        char[] chars = map[key];
-        for (int i = 0; i < chars.length; i++) {
-            sb.append(chars[i]);
-            combine(result, digits, index + 1, sb);
-            sb.deleteCharAt(sb.length() - 1);
-        }
-    }
+	public void combine(List<String> result, String digits, int index, StringBuilder sb) {
+		char[][] map = {
+			{},
+			{}, 
+			{'a','b','c'},
+			{'d','e','f'},
+			{'g','h','i'},
+			{'j','k','l'},
+			{'m','n','o'}, 
+			{'p','q','s','r'}, 
+			{'t','u','v'},
+			{'w','x','y','z'}
+		};
+
+		if (index == digits.length()) {
+			result.add(new String(sb.toString()));
+			return;
+		}
+
+		int key = digits.charAt(index) - '0';
+		char[] chars = map[key];
+		for (int i = 0; i < chars.length; i++) {
+			sb.append(chars[i]);
+			combine(result, digits, index + 1, sb);
+			sb.deleteCharAt(sb.length() - 1);
+		}
+	}
 
 	// method 3
-    public ArrayList<String> letterCombinations(String digits) {
+	public ArrayList<String> letterCombinations(String digits) {
 		if (digits.startsWith("0") || digits.startsWith("1")) {
-            return new ArrayList<String>();
-        }
+			return new ArrayList<String>();
+		}
 
 		ArrayList<String> result = new ArrayList<String>();		
 		char[] digit = digits.toCharArray();
 		letterCombine(result, 0, digit, new StringBuilder());
 
 		return result;        
-    }
+	}
 	// eg. 563, level is the pointer for each digit
 	public void letterCombine(ArrayList<String> result, int level, char[] digit, StringBuilder sb) {
 		for (int i = 0; i < getLength(digit[level]); i++) {

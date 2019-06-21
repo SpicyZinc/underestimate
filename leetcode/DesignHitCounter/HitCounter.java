@@ -41,34 +41,63 @@ Dropbox question
 */
 
 public class HitCounter {
+	// Sun Jun 16 02:31:26 2019
+	// 对应 真正时间
+	// 如果两个时间 仅仅 timestamp % 相等 说明不是一个时间
+	int[] times = new int[300];
+	int[] hits = new int[300];
+
+	public void hit(int timestamp) {
+		int idx = timestamp % 300;
+
+		if (times[idx] != timestamp) {
+			times[idx] = timestamp;
+			hits[idx] = 1;
+		} else {
+			hits[idx] += 1;
+		}
+	}
+
+	public int getHits(int timestamp) {
+		int hitCnt = 0;
+		// within 5 mins, 300 seconds
+		for (int i = 0; i < 300; i++) {
+			if (timestamp - times[i] < 300) {
+				hitCnt += hits[i];
+			}
+		}
+
+		return hitCnt;
+	}
+
 	// Fri May 10 23:48:09 2019
 	List<Integer> list;
-    
-    /** Initialize your data structure here. */
-    public HitCounter() {
-        list = new ArrayList<>();    
-    }
-    
-    /** Record a hit.
-        @param timestamp - The current timestamp (in seconds granularity). */
-    public void hit(int timestamp) {
-        list.add(timestamp);
-    }
-    
-    /** Return the number of hits in the past 5 minutes.
-        @param timestamp - The current timestamp (in seconds granularity). */
-    public int getHits(int timestamp) {
-        int hits = 0;
-        for (int i = list.size() - 1; i >= 0; i--) {
-            if (timestamp - list.get(i) < 300) {
-                hits++;
-            } else {
-                break;
-            }
-        }
-        
-        return hits;
-    }
+	
+	/** Initialize your data structure here. */
+	public HitCounter() {
+		list = new ArrayList<>();    
+	}
+	
+	/** Record a hit.
+		@param timestamp - The current timestamp (in seconds granularity). */
+	public void hit(int timestamp) {
+		list.add(timestamp);
+	}
+	
+	/** Return the number of hits in the past 5 minutes.
+		@param timestamp - The current timestamp (in seconds granularity). */
+	public int getHits(int timestamp) {
+		int hits = 0;
+		for (int i = list.size() - 1; i >= 0; i--) {
+			if (timestamp - list.get(i) < 300) {
+				hits++;
+			} else {
+				break;
+			}
+		}
+		
+		return hits;
+	}
 
 
 	Queue<Integer> queue;
@@ -98,10 +127,10 @@ public class HitCounter {
 		return queue.size();
 	}
 
-    // follow up
-    int[] times;
-    int[] hits;
-    /** Initialize your data structure here. */  
+	// follow up
+	int[] times;
+	int[] hits;
+	/** Initialize your data structure here. */  
 	public HitCounter() {
 		times = new int[300];
 		hits = new int[300];
@@ -111,17 +140,17 @@ public class HitCounter {
 	 * Record a hit. 
 	 * @param timestamp [description]
 	 */
-    public void hit(int timestamp) {
-    	int idx = timestamp % 300;
-    	// no hit at this timestamp before or over 5 min
-    	// 因为每秒很多hits 这样保证了只记住300s(5min) 之内的
-    	if (times[idx] != timestamp) {
-    		times[idx] = timestamp;
-    		hits[idx] = 1;
-    	} else {
-    		hits[idx] += 1;
-    	}
-    }
+	public void hit(int timestamp) {
+		int idx = timestamp % 300;
+		// no hit at this timestamp before or over 5 min
+		// 因为每秒很多hits 这样保证了只记住300s(5min) 之内的
+		if (times[idx] != timestamp) {
+			times[idx] = timestamp;
+			hits[idx] = 1;
+		} else {
+			hits[idx] += 1;
+		}
+	}
 
 	/**
 	 * Return the number of hits in the past 5 minutes. 

@@ -13,70 +13,70 @@ idea:
 2. sort the arrays, skip duplicates, binary search
 */
 
-
 public class IntersectionOfTwoArrays {
-    public int[] intersection(int[] nums1, int[] nums2) {
-    	Set<Integer> hs = new HashSet<Integer>();
-    	Set<Integer> res = new HashSet<Integer>();
+	public int[] intersection(int[] nums1, int[] nums2) {
+		Set<Integer> hs = new HashSet<Integer>();
+		Set<Integer> result = new HashSet<Integer>();
 
-        for (int i : nums1) {
-        	hs.add(i);
-        }
-        for (int i : nums2) {
-        	if (hs.contains(i)) {
-        		res.add(i);
-        	}
-        }
+		for (int num : nums1) {
+			hs.add(num);
+		}
+		for (int num : nums2) {
+			if (hs.contains(num)) {
+				result.add(num);
+			}
+		}
 
-        int i = 0;
-        int[] result = new int[res.size()];
-        for (int num : res) {
-        	result[i++] = num;
-        }
-        return result;
-    }
+		int i = 0;
+		int[] common = new int[result.size()];
+		for (int num : result) {
+			common[i++] = num;
+		}
 
-    // binary search
-    public int[] intersection(int[] nums1, int[] nums2) {
+		return common;
+	}
 
-        Arrays.sort(nums1);
-        Arrays.sort(nums2);
+	// binary search
+	public int[] intersection(int[] nums1, int[] nums2) {
 
-        int m = nums1.length;
-        List<Integer> intersect = new ArrayList<Integer>();
+		Arrays.sort(nums1);
+		Arrays.sort(nums2);
 
-        for (int i = 0; i < m; i++) {
-            if (i > 0 && nums1[i] == nums1[i - 1]) {
-                continue;
-            }
-            if (binarySearch(nums2, nums1[i])) {
-                intersect.add(nums1[i]);
-            }
-        }
+		int m = nums1.length;
+		List<Integer> intersect = new ArrayList<Integer>();
 
-        int[] result = new int[intersect.size()];
-        for (int i = 0; i < intersect.size(); i++) {
-            result[i] = intersect.get(i);
-        }
+		for (int i = 0; i < m; i++) {
+			if (i > 0 && nums1[i] == nums1[i - 1]) {
+				continue;
+			}
+			if (binarySearch(nums2, nums1[i])) {
+				intersect.add(nums1[i]);
+			}
+		}
 
-        return result;
-    }
+		int[] result = new int[intersect.size()];
+		for (int i = 0; i < intersect.size(); i++) {
+			result[i] = intersect.get(i);
+		}
 
-    public boolean binarySearch(int[] nums, int target) {
-        int start = 0;
-        int end = nums.length - 1;
+		return result;
+	}
 
-        while (start <= end) {
-            int mid = start + (end - start) / 2;
-            if (nums[mid] == target) {
-                return true;
-            } else if (nums[mid] > target) {
-                end = mid - 1;
-            } else {
-                start = mid + 1;
-            }
-        }
+	public boolean binarySearch(int[] nums, int target) {
+		int start = 0;
+		int end = nums.length - 1;
 
-        return false;
-    }
+		while (start <= end) {
+			int mid = start + (end - start) / 2;
+			if (nums[mid] == target) {
+				return true;
+			} else if (nums[mid] > target) {
+				end = mid - 1;
+			} else {
+				start = mid + 1;
+			}
+		}
+
+		return false;
+	}
 }

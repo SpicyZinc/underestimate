@@ -30,95 +30,100 @@ Start from an empty List.
 import java.util.*;
 
 public class Permutations {
-    public static void main(String[] args) {
-        Permutations eg = new Permutations();
-        int[] nums = new int[] {1, 2, 3, 1};
-        List<List<Integer>> result = eg.permute(nums);
+	public static void main(String[] args) {
+		Permutations eg = new Permutations();
+		int[] nums = new int[] {1, 2, 3, 1};
+		List<List<Integer>> result = eg.permute(nums);
 
-        for (List<Integer> path : result) {
-            System.out.println(path.toString());
-        }
-    }
-    // correct method
-    public List<List<Integer>> permute(int[] num) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
-        permute(num, 0, result);
+		for (List<Integer> path : result) {
+			System.out.println(path.toString());
+		}
+	}
+	// correct method
+	public List<List<Integer>> permute(int[] nums) {
+		List<List<Integer>> result = new ArrayList<>();
 
-        return result;
-    }
+		dfs(nums, 0, result);
+		
+		return result;
+	}
+	
+	public void dfs(int[] nums, int pos, List<List<Integer>> result) {
+		int size = nums.length;
+		
+		if (pos == size - 1) {
+			List<Integer> path = new ArrayList<>();
+			for (int num : nums) {
+				path.add(num);
+			}
+			result.add(path);
+			
+			return;
+		}
+		
+		for (int i = pos; i < size; i++) {
+			swap(nums, pos, i);
+			dfs(nums, pos + 1, result);
+			swap(nums, pos, i);
+		}
+	}
+	
+	public void swap(int[] nums, int i, int j) {
+		int temp = nums[i];
+		nums[i] = nums[j];
+		nums[j] = temp;
+	}
 
-    public void permute(int[] num, int pos, List<List<Integer>> result) {
-        if (pos == num.length - 1) {
-            List<Integer> temp = new ArrayList<Integer>();
-            for (int i : num) {
-                temp.add(i) ;
-            }
-            result.add(temp);
-        } else {
-            for (int j = pos; j < num.length; j++) {
-                swap(num, pos, j);
-                permute(num, pos + 1, result);
-                swap(num, pos, j);
-            }
-        }
-    }
+	// list.contains(), only applies to unique array to get permutations
+	public List<List<Integer>> permute(int[] nums) {
+		List<List<Integer>> result = new ArrayList<>();
+		dfs(result, new ArrayList<>(), nums);
 
-    public void swap(int[] num, int x, int y) {
-        int temp = num[x];
-        num[x] = num[y];
-        num[y] = temp;
-    }
+		return result;
+	}
 
-    // list.contains(), only applies to unique array to get permutations
-    public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        dfs(result, new ArrayList<>(), nums);
+	private void dfs(List<List<Integer>> result, List<Integer> path, int[] nums) {
+		if (path.size() == nums.length) {
+			result.add(new ArrayList<Integer>(path));
+			return;
+		}
 
-        return result;
-    }
+		for (int i = 0; i < nums.length; i++) {
+			// note how to avoid duplicate elements
+			if (path.contains(nums[i])) {
+				continue;
+			}
 
-    private void dfs(List<List<Integer>> result, List<Integer> path, int[] nums) {
-        if (path.size() == nums.length) {
-            result.add(new ArrayList<Integer>(path));
-            return;
-        }
+			path.add(nums[i]);
+			dfs(result, path, nums);
+			path.remove(path.size() - 1);
+		}
+	}
 
-        for (int i = 0; i < nums.length; i++) {
-            // note how to avoid duplicate elements
-            if (path.contains(nums[i])) {
-                continue;
-            }
-
-            path.add(nums[i]);
-            dfs(result, path, nums);
-            path.remove(path.size() - 1);
-        }
-    }
-
-    // method 3, iteration
-    public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
-        // start from an empty list
-        result.add(new ArrayList<Integer>());
-     
-        for (int i = 0; i < nums.length; i++) {
-            // list of list in current iteration of the array nums
-            List<List<Integer>> current = new ArrayList<List<Integer>>();
-     
-            for (List<Integer> path : result) {
-                // # of locations to insert is largest index + 1
-                for (int j = 0; j < path.size() + 1; j++) {
-                    // + add nums[i] to different locations
-                    path.add(j, nums[i]);
-                    current.add(new ArrayList<Integer>(path));   
-                    // - remove nums[i] add
-                    path.remove(j);
-                }
-            }
-     
-            result = new ArrayList<List<Integer>>(current);
-        }
-     
-        return result;
-    }
+	// method 3, iteration
+	public List<List<Integer>> permute(int[] nums) {
+		List<List<Integer>> result = new ArrayList<List<Integer>>();
+		// start from an empty list
+		result.add(new ArrayList<Integer>());
+	 
+		for (int i = 0; i < nums.length; i++) {
+			// list of list in current iteration of the array nums
+			List<List<Integer>> current = new ArrayList<List<Integer>>();
+	 
+			for (List<Integer> path : result) {
+				// # of locations to insert is largest index + 1
+				for (int j = 0; j < path.size() + 1; j++) {
+					// + add nums[i] to different locations
+					path.add(j, nums[i]);
+					current.add(new ArrayList<Integer>(path));   
+					// - remove nums[i] add
+					path.remove(j);
+				}
+			}
+	 
+			result = new ArrayList<List<Integer>>(current);
+		}
+	 
+		return result;
+	}
 }

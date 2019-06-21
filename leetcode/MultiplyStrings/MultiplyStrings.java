@@ -8,7 +8,7 @@ Both num1 and num2 does not contain any leading zero.
 You must not use any built-in BigInteger library or convert the inputs to integer directly.
 
 idea:
-product length will sum of two strings length
+product length will at most be sum of two strings length
 from tail to head, insert to head through tail in product[]
 main idea is single digit multiplies single digit
 */
@@ -22,34 +22,38 @@ public class MultiplyStrings {
 		System.out.println("The product of two nums are " + product);
 	}
 	// best
+	// Wed Jun 19 01:03:28 2019
 	public String multiply(String num1, String num2) {
-        int n1 = num1.length();
-        int n2 = num2.length();
-        int[] product = new int[n1 + n2];
-        
-        for (int i = n1 - 1; i >= 0; i--) {
-            for (int j = n2 - 1; j >= 0; j--) {
-                int a = num1.charAt(i) - '0';
-                int b = num2.charAt(j) - '0';
-                int index = (n1 - i - 1) + (n2 - j - 1);
-                product[index] += a * b;
-                product[index + 1] += product[index] / 10;
-                product[index] %= 10;
-            }
-        }
-        
-        StringBuilder sb = new StringBuilder();
-        for (int i = product.length - 1; i > 0; i--) {
-            // get rid of all zeros except i == 0
-            if (sb.length() == 0 && product[i] == 0) {
-                continue;
-            }
-            sb.append(product[i]);
-        }
-        // last one even it is zero, still append
-        sb.append(product[0]);
-        return sb.toString();
-    }
+		int n1 = num1.length();
+		int n2 = num2.length();
+		int[] product = new int[n1 + n2];
+		
+		for (int i = n1 - 1; i >= 0; i--) {
+			int a = num1.charAt(i) - '0';
+
+			for (int j = n2 - 1; j >= 0; j--) {
+				int b = num2.charAt(j) - '0';
+
+				int index = (n1 - i - 1) + (n2 - j - 1);
+
+				product[index] += a * b;
+				product[index + 1] += product[index] / 10;
+				product[index] %= 10;
+			}
+		}
+		
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = product.length - 1; i >= 0; i--) {
+			// get rid of all zeros except i == 0
+			if (sb.length() == 0 && i > 0 && product[i] == 0) {
+				continue;
+			}
+			sb.append(product[i]);
+		}
+
+		return sb.toString();
+	}
 
 	public String multiply(String num1, String num2) {
 		int n1 = num1.length();

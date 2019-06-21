@@ -9,7 +9,7 @@ A = [3,2,1,0,4], return false.
 
 idea:
 use greedy algorithm
-just hard think
+这个是 reach index, while value is step length
 */
 
 import java.util.*;
@@ -25,42 +25,44 @@ public class JumpGame {
 
 		System.out.println(aCanJump);
 		System.out.println(bCanJump);
-        
-    }
-    // best version
-    public boolean canJump(int[] nums) {
-        int maxReach = 0;
-        for (int i = 0; i < nums.length; i++) {
-            // even max reach cannot reach i position, return false
-            // greedy algorithm
-            if (i > maxReach) {
-                return false;
-            }
+		
+	}
+	// best version
+	public boolean canJump(int[] nums) {
+		int maxReach = 0;
 
-            maxReach = Math.max(maxReach, i + nums[i]);
-        }
+		for (int i = 0; i < nums.length; i++) {
+			// even max reach cannot reach i position, return false
+			// greedy algorithm
+			if (i > maxReach) {
+				return false;
+			}
 
-        return true;
-    }
-    // direct version
-    public boolean canJump(int[] A) {
-        if (A.length <= 1) {
-            return true;
-        }
+			maxReach = Math.max(maxReach, i + nums[i]);
+		}
 
-        int maxReach = 0;
-        int canForwardMaxSteps = 1;
-        for (int i = 0; i < A.length; i++) {
-            canForwardMaxSteps--;
-            if (i + A[i] > maxReach) {
-                maxReach = i + A[i];
-                canForwardMaxSteps = A[i];
-            }
-            if (canForwardMaxSteps == 0 && i < A.length - 1) {
-                return false;
-            }
-        }
+		return true;
+	}
 
-        return true;
-    }
+	// direct version
+	public boolean canJump(int[] A) {
+		if (A.length <= 1) {
+			return true;
+		}
+
+		int maxReach = 0;
+		int canForwardMaxSteps = 1;
+		for (int i = 0; i < A.length; i++) {
+			canForwardMaxSteps--;
+			if (i + A[i] > maxReach) {
+				maxReach = i + A[i];
+				canForwardMaxSteps = A[i];
+			}
+			if (canForwardMaxSteps == 0 && i < A.length - 1) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

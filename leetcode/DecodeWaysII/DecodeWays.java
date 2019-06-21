@@ -27,35 +27,49 @@ f(i) = ( f(i-1) * ways(i) ) + ( f(i-2) * ways(i-1, i) )
 note: need to use long
 */
 public class DecodeWays {
-    public int numDecodings(String s) {
-    	int M = 1000000007;
-    	long first = ways(s.charAt(0));
-    	if (s.length() <= 1) return (int) first;
-    	long second = first * ways(s.charAt(1)) + ways(s.charAt(0), s.charAt(1));
-    	for (int i = 2; i < s.length(); i++) {
-    		long temp = second;
-    		second = ( first * ways(s.charAt(i - 1), s.charAt(i)) + second * ways(s.charAt(i)) ) % M;
-    		first = temp;
-    	}
-    	return (int) second;
+	public int numDecodings(String s) {
+		int M = 1000000007;
+
+		long first = ways(s.charAt(0));
+		if (s.length() <= 1) {
+			return (int) first;
+		}
+
+		long second = first * ways(s.charAt(1)) + ways(s.charAt(0), s.charAt(1));
+		for (int i = 2; i < s.length(); i++) {
+			long temp = second;
+			second = ( first * ways(s.charAt(i - 1), s.charAt(i)) + second * ways(s.charAt(i)) ) % M;
+			first = temp;
+		}
+
+		return (int) second;
 	}
-    
-    private int ways(char c) {
-		if (c == '*') return 9;
-		if (c == '0') return 0;
+	
+	private int ways(char c) {
+		if (c == '*') {
+			return 9;
+		}
+
+		if (c == '0') {
+			return 0;
+		}
+
 		return 1;
 	}
 
-    private int ways(char c1, char c2) {
+	private int ways(char c1, char c2) {
 		// four cases
 		// 15
 		// **
 		// *6
 		// 2*
 		int val = 0;
+
 		if (c1 != '*' && c2 != '*') {
 			val = Integer.parseInt("" + c1 + c2);
-			if (val >= 10 && val <= 26) return 1;
+			if (val >= 10 && val <= 26) {
+				return 1;
+			}
 		} else if (c1 == '*' && c2 == '*') {
 			return 9 + 6;
 		} else if (c1 == '*') {
@@ -73,6 +87,7 @@ public class DecodeWays {
 				return 6;
 			}
 		}
+
 		return 0;
 	}
 }

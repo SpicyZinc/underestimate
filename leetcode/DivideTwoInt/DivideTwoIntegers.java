@@ -19,7 +19,7 @@ public class DivideTwoIntegers {
 		System.out.println(result);
 	}
 
-    public int divide(int dividend, int divisor) {
+	public int divide(int dividend, int divisor) {
 		if (dividend == 0 || divisor == 1) {
 			return dividend;
 		}
@@ -47,70 +47,70 @@ public class DivideTwoIntegers {
 		}
 
 		return (dividend > 0) ^ (divisor > 0) ? (-result) : result; 
-    }
+	}
 
-    // simpler version
-    public int divide(int dividend, int divisor) {
-        long p = Math.abs((long) dividend);
-        long q = Math.abs((long) divisor);
-        
-        int result = 0;
-        while (p >= q) {
-            int counter = 0;
-            while (p >= (q << counter)) {
-                counter++;
-            }
-
-            result += 1 << (counter - 1);
-            p -= q << (counter - 1);
-        }
-
-        if (dividend && divisor > 0) {
-        	return result;
-        } else {
-        	return -result;
-        }
-        if ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) {
-            return ret;
-        } else {
-            return -ret;
-        }
-    }
-
-    // 02/02/2019
-    // lintcode version
+	// simpler version
 	public int divide(int dividend, int divisor) {
-        if (divisor == 0) {
-             return dividend >= 0? Integer.MAX_VALUE : Integer.MIN_VALUE;
-        }
-        
-        if (dividend == 0) {
-            return 0;
-        }
-        
-        if (dividend == Integer.MIN_VALUE && divisor == -1) {
-            return Integer.MAX_VALUE;
-        }
-        
-        long p = Math.abs((long) dividend);
-        long q = Math.abs((long) divisor);
-        
-        int result = 0;
+		long p = Math.abs((long) dividend);
+		long q = Math.abs((long) divisor);
+		
+		int result = 0;
+		while (p >= q) {
+			int counter = 0;
+			while (p >= (q << counter)) {
+				counter++;
+			}
 
-        while (p >= q) {
-            int counter = 0;
-            while (p >= (q << counter)) {
-                counter++;
-            }
+			result += 1 << (counter - 1);
+			p -= q << (counter - 1);
+		}
 
-            result += 1 << (counter - 1);
-            p -= q << (counter - 1);
-        }
+		if (dividend && divisor > 0) {
+			return result;
+		} else {
+			return -result;
+		}
+		if ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) {
+			return ret;
+		} else {
+			return -ret;
+		}
+	}
 
-        if ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) {
-            return result;
-        } else {
-            return -result;
-        }
-    }
+	// 02/02/2019
+	// lintcode version
+	public int divide(int dividend, int divisor) {
+		if (divisor == 0) {
+			 return dividend >= 0? Integer.MAX_VALUE : Integer.MIN_VALUE;
+		}
+		
+		if (dividend == 0) {
+			return 0;
+		}
+		
+		if (dividend == Integer.MIN_VALUE && divisor == -1) {
+			return Integer.MAX_VALUE;
+		}
+		
+		long p = Math.abs((long) dividend);
+		long q = Math.abs((long) divisor);
+		
+		int result = 0;
+
+		while (p >= q) {
+			int counter = 0;
+			while (p >= (q << counter)) {
+				counter++;
+			}
+
+			result += 1 << (counter - 1);
+			p -= q << (counter - 1);
+		}
+
+		if ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) {
+			return result;
+		} else {
+			return -result;
+		}
+	}
 }

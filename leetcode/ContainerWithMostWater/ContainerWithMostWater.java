@@ -1,11 +1,11 @@
 /*
-Given n non-negative integers a1, a2, ..., an, 
-where each represents a point at coordinate (i, ai). 
-n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0). 
+Given n non-negative integers a1, a2, ..., an,
+where each represents a point at coordinate (i, ai).
+n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0).
 Find two lines, which together with x-axis forms a container, such that the container contains the most water.
 Note: You may not slant the container.
 
-idea: diagram			     			
+idea: diagram
 				 |           
 				 |        |                
 |			     |        |                   
@@ -18,8 +18,8 @@ idea: diagram
 ---------------------------------------------
 
 Our final goal is to find i, j, such that
-A(i,j) = (j−i) * min(height(i), height(j)) is maximized. 
-At every step, if height[i] < height[j], move i up by one. 
+A(i,j) = (j−i) * min(height(i), height(j)) is maximized.
+At every step, if height[i] < height[j], move i up by one.
 Otherwise move j down by one, until the two pointers meet.
 
 谁高度小 谁往中间移动 以期望用更可能高的高度抵消宽度变小的损失
@@ -46,21 +46,21 @@ public class ContainerWithMostWater {
 	}
 
 	public int maxArea(int[] height) {
-        int i = 0;
-        int j = height.length - 1;
-        int maxArea = 0;
+		int i = 0;
+		int j = height.length - 1;
+		int maxArea = 0;
 
-        while (i < j) {
+		while (i < j) {
 			int area = (j - i) * Math.min(height[i], height[j]);
-            maxArea = Math.max(maxArea, area);
+			maxArea = Math.max(maxArea, area);
 
-            if (height[i] > height[j]) {
-                j--;
-            } else {
-                i++;
-            }
-        }
+			if (height[i] > height[j]) {
+				j--;
+			} else {
+				i++;
+			}
+		}
 
-        return maxArea;
-    }
+		return maxArea;
+	}
 }

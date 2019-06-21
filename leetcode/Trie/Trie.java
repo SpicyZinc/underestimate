@@ -15,13 +15,13 @@ http://www.cnblogs.com/tonyluis/p/4563990.html
 也可以用 HashMap as children
 
 class TrieNode {
-    char c;
-    Map<Character, TrieNode> children = new HashMap<>();
-    boolean isLeaf;
+	char c;
+	Map<Character, TrieNode> children = new HashMap<>();
+	boolean isLeaf;
 
-    public TrieNode(char c) {
-        this.c = c;
-    }
+	public TrieNode(char c) {
+		this.c = c;
+	}
 }
 
 https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
@@ -58,10 +58,12 @@ public class Trie {
 		if (word.length() == 0 || word == null) {
 			return;
 		}
+
 		TrieNode node = root;
 		for (int i = 0; i < word.length(); i++) {
 			char c = word.charAt(i);
 			int pos = c - 'a';
+
 			if (node.children[pos] == null) {
 				node.children[pos] = new TrieNode(c);
 			}

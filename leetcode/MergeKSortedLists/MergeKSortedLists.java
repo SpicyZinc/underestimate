@@ -66,38 +66,39 @@ public class MergeKSortedLists {
 	}
 
 	public ListNode mergeKLists(ListNode[] lists) {
-        if (lists.length == 0 || lists == null) {
-            return null;
-        }
-        // priority queue to get smallest list node
-        PriorityQueue<ListNode> pq = new PriorityQueue<ListNode>(new Comparator<ListNode>() {
-            @Override
-            public int compare(ListNode a, ListNode b) {
-                return a.val - b.val;
-            }
-        });
+		if (lists.length == 0 || lists == null) {
+			return null;
+		}
 
-        for (ListNode head : lists) {
-            if (head != null) {
-                pq.add(head);
-            }
-        }
+		// priority queue to get smallest list node
+		PriorityQueue<ListNode> pq = new PriorityQueue<ListNode>(new Comparator<ListNode>() {
+			@Override
+			public int compare(ListNode a, ListNode b) {
+				return a.val - b.val;
+			}
+		});
 
-        ListNode dummyMerged = new ListNode(0);
-        ListNode current = dummyMerged;
+		for (ListNode head : lists) {
+			if (head != null) {
+				pq.add(head);
+			}
+		}
 
-        while (!pq.isEmpty()) {
-            ListNode currMin = pq.poll();
-            current.next = currMin;
-            current = current.next;
+		ListNode dummyMerged = new ListNode(0);
+		ListNode current = dummyMerged;
 
-            if (currMin.next != null) {
-                pq.add(currMin.next);    
-            }
-        }
-        
-        return dummyMerged.next;
-    }
+		while (!pq.isEmpty()) {
+			ListNode currMin = pq.poll();
+			current.next = currMin;
+			current = current.next;
+
+			if (currMin.next != null) {
+				pq.add(currMin.next);    
+			}
+		}
+		
+		return dummyMerged.next;
+	}
 
 	// method 2
 	public ListNode mergeKLists(ListNode[] lists) {
@@ -124,7 +125,7 @@ public class MergeKSortedLists {
 		if (p == null) {
 			dummyHead.next = q;
 		}
-		
+
 		while (p != null && q != null) {
 			// stay as it does at head list
 			if (p.val < q.val) {
@@ -138,15 +139,15 @@ public class MergeKSortedLists {
 					break;
 				}
 			} else {
-                prev.next = q;
-                // update prev
+				prev.next = q;
+				// update prev
 				prev = q;
 
 				ListNode tmp = q.next;
-				q.next = p;				
+				q.next = p;
 				// update q with q.next;
 				q = tmp;
-            }
+			}
 		}
 	}
 }

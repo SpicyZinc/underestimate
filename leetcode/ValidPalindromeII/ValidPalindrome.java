@@ -27,12 +27,14 @@ class ValidPalindromeII {
 		int j = s.length() - 1;
 
 		while (i < j && s.charAt(i) == s.charAt(j)) {
-            i++;
-            j--;
+			i++;
+			j--;
 		}
-        if (i >= j || isPalindrome(s, i + 1, j) || isPalindrome(s, i, j - 1)) {
-            return true;
-        }
+
+		if (i >= j || isPalindrome(s, i + 1, j) || isPalindrome(s, i, j - 1)) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -44,34 +46,39 @@ class ValidPalindromeII {
 			i++;
 			j--;
 		}
+
 		return true;
 	}
+
 	// TLE
 	public boolean validPalindrome(String s) {
 		int len = s.length();
 		if (len <= 2) {
 			return true;
 		}
+
 		for (int i = 0; i < len; i++) {
 			String substring = s.substring(0, i) + s.substring(i + 1);
 			if (isPalindrome(substring)) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
 	public boolean isPalindrome(String s) {
-        if (s.length() == 0 || s == null) return true;
+		if (s.length() == 0 || s == null) return true;
 
-        int n = s.length();
-        int i = 0;
+		int n = s.length();
+		int i = 0;
 		while (i < n / 2) {
 			if (s.charAt(i) != s.charAt(n-1-i)) {
-			    return false;
-            }
+				return false;
+			}
 			i++;
 		}
+
 		return true;
-    }
+	}
 }

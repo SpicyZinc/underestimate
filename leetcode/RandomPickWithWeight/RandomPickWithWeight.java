@@ -20,7 +20,8 @@ Input:
 Output: [null,0,1,1,1,0]
 Explanation of Input Syntax:
 
-The input is two lists: the subroutines called and their arguments. Solution's constructor has one argument, the array w. pickIndex has no arguments. Arguments are always wrapped with a list, even if there aren't any.
+The input is two lists: the subroutines called and their arguments. Solution's constructor has one argument, the array w. pickIndex has no arguments.
+Arguments are always wrapped with a list, even if there aren't any.
 
 idea:
 https://www.cnblogs.com/grandyang/p/9784690.html
@@ -31,37 +32,38 @@ class RandomPickWithWeight {
 	// Mon May  6 00:14:30 2019
 	int[] sum;
 	Random random;
-    
-    public Solution(int[] w) {
-        this.sum = new int[w.length];
-        this.sum[0] = w[0];
-        for (int i = 1; i < w.length; i++) {
-            this.sum[i] = this.sum[i - 1] + w[i];
-        }
-        
-        this.random = new Random();
-    }
+	
+	public Solution(int[] w) {
+		this.sum = new int[w.length];
+		this.sum[0] = w[0];
 
-    public int pickIndex() {
-        int sumWeights = sum[sum.length - 1];
-        int r = random.nextInt(sumWeights) + 1;
-        
-        // search for inserted position for r
-        int left = 0;
-        int right = sum.length - 1;
-        
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            
-            if (sum[mid] < r) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
+		for (int i = 1; i < w.length; i++) {
+			this.sum[i] = this.sum[i - 1] + w[i];
+		}
+		
+		this.random = new Random();
+	}
 
-        return left;
-    }
+	public int pickIndex() {
+		int sumWeights = sum[sum.length - 1];
+		int r = random.nextInt(sumWeights) + 1;
+		
+		// search for inserted position for r
+		int left = 0;
+		int right = sum.length - 1;
+		
+		while (left <= right) {
+			int mid = left + (right - left) / 2;
+			
+			if (sum[mid] < r) {
+				left = mid + 1;
+			} else {
+				right = mid - 1;
+			}
+		}
+
+		return left;
+	}
 
 
 	Random random;

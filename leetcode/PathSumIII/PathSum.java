@@ -83,7 +83,9 @@ public class PathSum {
 		int cntPathToCurr = hm.getOrDefault(preSum - target, 0);
 
 		hm.put(preSum, hm.getOrDefault(preSum, 0) + 1);
+
 		int result = cntPathToCurr + dfs(node.left, preSum, target, hm) + dfs(node.right, preSum, target, hm);
+
 		hm.put(preSum, hm.get(preSum) - 1);
 
 		return result;

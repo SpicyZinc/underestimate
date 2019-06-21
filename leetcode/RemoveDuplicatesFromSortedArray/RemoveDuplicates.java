@@ -37,51 +37,58 @@ class RemoveDuplicates {
 		System.out.println("New size of array5: " + my_array5.length + " " + eg.removeDuplicates(my_array5));
 	}
 
+	// Tue Jun 18 23:07:43 2019
 	public int removeDuplicates(int[] nums) {
-        if (nums.length < 2) {
-            return nums.length;
-        }
-        int i = 1;
-        int j = 0;
-        
-        while (i < nums.length) {
-            if (nums[j] != nums[i]) {
-                j++;
-                // this is to make sure all unique values go to left front
-                nums[j] = nums[i];
-            }
-            i++;
-        }
-        
-        return j + 1;
-    }
-
-	// self written
+		// 记住 这个方法里 j 是 index 
+		// 最后 j + 1
+		int j = 0;
+		
+		int size = nums.length;
+		
+		for (int i = 1; i < size; i++) {
+			int prev = nums[i - 1];
+			int curr = nums[i];
+			
+			if (prev != curr) {
+				nums[++j] = curr;
+			}
+		}
+		
+		return j + 1;
+	}
+	// similar as above, just while()
 	public int removeDuplicates(int[] nums) {
-        int j = 1;
-        for (int i = 0; i < nums.length - 1; i++) {
-            int curr = nums[i];
-            int next = nums[i + 1];
-            if (curr == next) {
-                continue;
-            } else {
-                nums[j++] = next;
-            }
-        }
+		if (nums.length < 2) {
+			return nums.length;
+		}
 
-        return j;
-    }
+		int i = 1;
+		int j = 0;
+		
+		while (i < nums.length) {
+			if (nums[j] != nums[i]) {
+				j++;
+				// this is to make sure all unique values go to left front
+				nums[j] = nums[i];
+			}
+			i++;
+		}
+		
+		return j + 1;
+	}
+
 	// best method
 	public int removeDuplicates(int[] nums) {
-        int j = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != nums[j]) {
-                // note j still starts from 1
-                nums[++j] = nums[i];
-            }
-        }
-        return j+1;
-    }
+		int j = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i] != nums[j]) {
+				// note j still starts from 1
+				nums[++j] = nums[i];
+			}
+		}
+
+		return j + 1;
+	}
 	// method 2
 	public int removeDuplicatesTwo(int a[]) {
 		int i, j = 0;

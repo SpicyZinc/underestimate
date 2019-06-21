@@ -23,35 +23,35 @@ public class SortColors {
 		for (int i : a) {
 			System.out.print(i + " ");
 		}
-        System.out.print("\n");
+		System.out.print("\n");
 	}
 
 	// sort method, in-place, time complexity O(n)
 	public void sortColors(int[] nums) {
-        int left = 0;
-        int right = nums.length - 1;
-        
-        int i = 0;
-        
-        while (i <= right) {
-            int color = nums[i];
-            // if belongs to the top group, swap it with the element just below the top
-            if (color == 0) {
-                swap(nums, i, left);
-                i++;
-                left++;
-            } else if (color == 2) { // if belongs in the bottom, swap it with the element just above the bottom
-                swap(nums, i, right);
-                right--;
-            } else { // if in the middle, leave it
-                i++;
-            }
-        }
-    }
-    
-    private void swap(int[] A, int i, int j) {
-        int temp = A[i];
-        A[i] = A[j];
-        A[j] = temp;
-    }
+		int left = 0;
+		int right = nums.length - 1;
+		
+		int i = 0;
+		
+		while (i <= right) {
+			int color = nums[i];
+			// if belongs to the top group, swap it with the element just below the top
+			if (color == 0) {
+				swap(nums, i, left);
+				i++;
+				left++;
+			} else if (color == 2) { // if belongs in the bottom, swap it with the element just above the bottom
+				swap(nums, i, right);
+				right--;
+			} else { // if in the middle, leave it
+				i++;
+			}
+		}
+	}
+	
+	private void swap(int[] A, int i, int j) {
+		int temp = A[i];
+		A[i] = A[j];
+		A[j] = temp;
+	}
 }

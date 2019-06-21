@@ -70,120 +70,120 @@ http://www.cnblogs.com/grandyang/p/7897166.html
 import java.util.*;
 
 class AutocompleteSystem {
-    public static void main(String[] args) {
-        String[] sentences = new String[] {"abc","abbc","a"};
-        int[] times = new int[] {3,3,3};
+	public static void main(String[] args) {
+		String[] sentences = new String[] {"abc","abbc","a"};
+		int[] times = new int[] {3,3,3};
 
-        AutocompleteSystem eg = new AutocompleteSystem(sentences, times);
-        
-        // System.out.println(eg.freq);
-        // System.out.println(eg.data);
+		AutocompleteSystem eg = new AutocompleteSystem(sentences, times);
+		
+		// System.out.println(eg.freq);
+		// System.out.println(eg.data);
 
-        List<String> autocompletes = new ArrayList<>();
-        
-        autocompletes = eg.input('b');
-        // System.out.println(autocompletes);
-        autocompletes = eg.input('c');
-        // System.out.println(autocompletes);
-        autocompletes = eg.input('#');
-        // System.out.println(autocompletes);
+		List<String> autocompletes = new ArrayList<>();
+		
+		autocompletes = eg.input('b');
+		// System.out.println(autocompletes);
+		autocompletes = eg.input('c');
+		// System.out.println(autocompletes);
+		autocompletes = eg.input('#');
+		// System.out.println(autocompletes);
 
-        // System.out.println(eg.freq);
-        // System.out.println(eg.data);
-        // System.out.println("==========");
+		// System.out.println(eg.freq);
+		// System.out.println(eg.data);
+		// System.out.println("==========");
 
-        autocompletes = eg.input('b');
-        // System.out.println(autocompletes);
-        autocompletes = eg.input('c');
-        // System.out.println(autocompletes);
-        autocompletes = eg.input('#');
-        // System.out.println(autocompletes);
+		autocompletes = eg.input('b');
+		// System.out.println(autocompletes);
+		autocompletes = eg.input('c');
+		// System.out.println(autocompletes);
+		autocompletes = eg.input('#');
+		// System.out.println(autocompletes);
 
-        System.out.println(eg.freq);
-        // System.out.println(eg.data);
-        // System.out.println("==========");
+		System.out.println(eg.freq);
+		// System.out.println(eg.data);
+		// System.out.println("==========");
 
-        System.out.println("???????");
-        autocompletes = eg.input('a');
-        System.out.println(eg.data);
-        System.out.println(autocompletes);
-        autocompletes = eg.input('b');
-        System.out.println(eg.data);
-        System.out.println(autocompletes);
-        autocompletes = eg.input('c');
-        System.out.println(autocompletes);
-        autocompletes = eg.input('#');
-        System.out.println(autocompletes);
+		System.out.println("???????");
+		autocompletes = eg.input('a');
+		System.out.println(eg.data);
+		System.out.println(autocompletes);
+		autocompletes = eg.input('b');
+		System.out.println(eg.data);
+		System.out.println(autocompletes);
+		autocompletes = eg.input('c');
+		System.out.println(autocompletes);
+		autocompletes = eg.input('#');
+		System.out.println(autocompletes);
 
-        System.out.println(eg.freq);
-        System.out.println(eg.data);
-    }
+		System.out.println(eg.freq);
+		System.out.println(eg.data);
+	}
 
-    
-    Map<String, Integer> freq;
-    String data;
+	
+	Map<String, Integer> freq;
+	String data;
 
-    public AutocompleteSystem(String[] sentences, int[] times) {
-        this.freq = new HashMap<>();
-        for (int i = 0; i < sentences.length; i++) {
-            this.freq.put(sentences[i], times[i]);
-        }
+	public AutocompleteSystem(String[] sentences, int[] times) {
+		this.freq = new HashMap<>();
+		for (int i = 0; i < sentences.length; i++) {
+			this.freq.put(sentences[i], times[i]);
+		}
 
-        this.data = "";
-    }
+		this.data = "";
+	}
 
-    public List<String> input(char c) {
-        if (c == '#') {
-            freq.put(data, freq.getOrDefault(data, 0) + 1);
-            data = "";
+	public List<String> input(char c) {
+		if (c == '#') {
+			freq.put(data, freq.getOrDefault(data, 0) + 1);
+			data = "";
 
-            return new ArrayList<String>();
-        }
+			return new ArrayList<String>();
+		}
 
-        data += c;
+		data += c;
 
-        PriorityQueue<Pair> pq = new PriorityQueue<Pair>(new Comparator<Pair>() {
-            @Override
-            public int compare(Pair a, Pair b) {
-            	return a.times != b.times ? a.times - b.times : b.str.compareTo(a.str);
-            }
-        });
+		PriorityQueue<Pair> pq = new PriorityQueue<Pair>(new Comparator<Pair>() {
+			@Override
+			public int compare(Pair a, Pair b) {
+				return a.times != b.times ? a.times - b.times : b.str.compareTo(a.str);
+			}
+		});
 
-        for (String sentence : freq.keySet()) {
-            boolean matched = true;
-            // boolean matched = sentence.contains(data); not working 
-            for (int i = 0; i < data.length(); i++) {
-                if (sentence.length() < data.length() || sentence.length() >= data.length() && data.charAt(i) != sentence.charAt(i)) {
-                    matched = false;
-                    break;
-                }
-            }
+		for (String sentence : freq.keySet()) {
+			boolean matched = true;
+			// boolean matched = sentence.contains(data); not working 
+			for (int i = 0; i < data.length(); i++) {
+				if (sentence.length() < data.length() || sentence.length() >= data.length() && data.charAt(i) != sentence.charAt(i)) {
+					matched = false;
+					break;
+				}
+			}
 
-            if (matched) {
-                pq.add(new Pair(sentence, freq.get(sentence)));
-                if (pq.size() > 3) {
-                    pq.poll();
-                }
-            }
-        }
+			if (matched) {
+				pq.add(new Pair(sentence, freq.get(sentence)));
+				if (pq.size() > 3) {
+					pq.poll();
+				}
+			}
+		}
 
-        List<String> result = new ArrayList<>();   
-        while (!pq.isEmpty()) {
-            result.add(0, pq.poll().str);
-        }
+		List<String> result = new ArrayList<>();   
+		while (!pq.isEmpty()) {
+			result.add(0, pq.poll().str);
+		}
 
-        return result;
-    }
+		return result;
+	}
 }
 
 class Pair {
-    String str;
-    int times;
+	String str;
+	int times;
 
-    public Pair(String str, int times) {
-        this.str = str;
-        this.times = times;
-    }
+	public Pair(String str, int times) {
+		this.str = str;
+		this.times = times;
+	}
 }
 
 /**

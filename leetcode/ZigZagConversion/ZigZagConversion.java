@@ -52,28 +52,28 @@ public class ZigZagConversion {
 		System.out.println("After ZigZag Conversion: " + s);
 	}
 
-    public String convert(String s, int nRows) {
-    	if (s.length() == 0 || s == null) {
-    		return "";
-        }
-        if (nRows == 1) {
-        	return s;
-        }
+	public String convert(String s, int nRows) {
+		if (s.length() == 0 || s == null) {
+			return "";
+		}
+		if (nRows == 1) {
+			return s;
+		}
 
-        String result = "";
-        int n = s.length();
-        int base = 2 * nRows - 2;
+		String result = "";
+		int n = s.length();
+		int base = 2 * nRows - 2;
 
-        for (int i = 0; i < nRows; i++) {
-            for (int j = i; j < n; j += base) {
-                result += s.charAt(j);
-                // 在中间的row 还要多加一个
-                if (i > 0 && i < nRows - 1 && j + base - 2 * i < n) {
-                    result += s.charAt(j + base - 2 * i);
-                }
-            }
-        }
+		for (int i = 0; i < nRows; i++) {
+			for (int j = i; j < n; j += base) {
+				result += s.charAt(j);
+				// 在中间的row 还要多加一个
+				if (i > 0 && i < nRows - 1 && j + base - 2 * i < n) {
+					result += s.charAt(j + base - 2 * i);
+				}
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 }

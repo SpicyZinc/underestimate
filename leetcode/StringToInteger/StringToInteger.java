@@ -54,128 +54,129 @@ One thing to note:
 this is to calculate from the behind
 
 for (int i = str.length() - 1; i >= 0; i--) {
-    int temp = str.charAt(i) - '0';
-    result += temp * Math.pow(10, str.length() - 1 - i);
+	int temp = str.charAt(i) - '0';
+	result += temp * Math.pow(10, str.length() - 1 - i);
 }
+amazon on site haha 05/24/2019
 */
 
 public class StringToInteger {
 	// Sun May 19 22:49:09 2019
 	public int myAtoi(String str) {
-        if (str == null || str.trim().length() == 0) {
-            return 0;
-        }
-        
-        str = str.trim();
-        
-        double val = 0;
-        char sign = '+';
-        
-        int i = 0;
-        if (str.charAt(0) == '+') {
-            i++;
-        } else if (str.charAt(0) == '-') {
-            i++;
-            sign = '-';
-        }
-        
-        int len = str.length();
-        
-        while (i < len && Character.isDigit(str.charAt(i))) {
-            val = val * 10 + str.charAt(i) - '0';
-            i++;
-        }
-        
-        if (sign == '-') {
-            val *= -1;
-        }
-        
-        if (val > Integer.MAX_VALUE) {
-            return Integer.MAX_VALUE;
-        }
-        
-        if (val < Integer.MIN_VALUE) {
-            return Integer.MIN_VALUE;
-        }
-        
-        
-        return (int) val;
-    }
+		if (str == null || str.trim().length() == 0) {
+			return 0;
+		}
+		
+		str = str.trim();
+		
+		double val = 0;
+		char sign = '+';
+		
+		int i = 0;
+		if (str.charAt(0) == '+') {
+			i++;
+		} else if (str.charAt(0) == '-') {
+			i++;
+			sign = '-';
+		}
+		
+		int len = str.length();
+		
+		while (i < len && Character.isDigit(str.charAt(i))) {
+			val = val * 10 + str.charAt(i) - '0';
+			i++;
+		}
+		
+		if (sign == '-') {
+			val *= -1;
+		}
+		
+		if (val > Integer.MAX_VALUE) {
+			return Integer.MAX_VALUE;
+		}
+		
+		if (val < Integer.MIN_VALUE) {
+			return Integer.MIN_VALUE;
+		}
+		
+		
+		return (int) val;
+	}
 
 	// Mon Apr  1 23:58:22 2019
 	public int myAtoi(String str) {
-        if (str == null || str.trim().length() == 0) {
-            return 0;
-        }
-        
-        str = str.trim();
-        char sign = '+';
-        int i = 0;
-        
-        if (str.charAt(0) == '+') {
-            i++;
-        } else if (str.charAt(0) == '-') {
-            i++;
-            sign = '-';
-        }
-        
-        double result = 0;
-        
-        while (i < str.length() && Character.isDigit(str.charAt(i))) {
-            result = result * 10 + (str.charAt(i) - '0');
-            i++;
-        }
-        
-        if (sign == '-') {
-            result *= -1;
-        }
-        
-        if (result > Integer.MAX_VALUE) {
-            return Integer.MAX_VALUE;
-        }
-        
-        if (result < Integer.MIN_VALUE) {
-            return Integer.MIN_VALUE;
-        }
-        
-        return (int) result;
-    }
+		if (str == null || str.trim().length() == 0) {
+			return 0;
+		}
+		
+		str = str.trim();
+		char sign = '+';
+		int i = 0;
+		
+		if (str.charAt(0) == '+') {
+			i++;
+		} else if (str.charAt(0) == '-') {
+			i++;
+			sign = '-';
+		}
+		
+		double result = 0;
+		
+		while (i < str.length() && Character.isDigit(str.charAt(i))) {
+			result = result * 10 + (str.charAt(i) - '0');
+			i++;
+		}
+		
+		if (sign == '-') {
+			result *= -1;
+		}
+		
+		if (result > Integer.MAX_VALUE) {
+			return Integer.MAX_VALUE;
+		}
+		
+		if (result < Integer.MIN_VALUE) {
+			return Integer.MIN_VALUE;
+		}
+		
+		return (int) result;
+	}
 
-    public int myAtoi(String str) {
-        if (str == null || str.trim().length() == 0) {
-            return 0;
-        }
+	public int myAtoi(String str) {
+		if (str == null || str.trim().length() == 0) {
+			return 0;
+		}
 
-        str = str.trim();
-        char sign = '+';
-        int i = 0;
-        // check negative or positive
-        if (str.charAt(0) == '+') {
-            i++;
-        } else if (str.charAt(0) == '-') {
-            i++;
-            sign = '-';
-        }
+		str = str.trim();
+		char sign = '+';
+		int i = 0;
+		// check negative or positive
+		if (str.charAt(0) == '+') {
+			i++;
+		} else if (str.charAt(0) == '-') {
+			i++;
+			sign = '-';
+		}
 
-        int len = str.length();
-        double result = 0;
-        while (i < len && Character.isDigit(str.charAt(i))) {
-            result = result * 10 + (str.charAt(i) - '0');
-            i++;
-        }
-        
-        if (sign == '-') {
-            result = -1 * result;
-        }
+		int len = str.length();
+		double result = 0;
+		while (i < len && Character.isDigit(str.charAt(i))) {
+			result = result * 10 + (str.charAt(i) - '0');
+			i++;
+		}
+		
+		if (sign == '-') {
+			result = -1 * result;
+		}
 
-        if (result > Integer.MAX_VALUE) {
-            return Integer.MAX_VALUE;
-        }
+		if (result > Integer.MAX_VALUE) {
+			return Integer.MAX_VALUE;
+		}
 
-        if (result < Integer.MIN_VALUE) {
-            return Integer.MIN_VALUE;
-        }
+		if (result < Integer.MIN_VALUE) {
+			return Integer.MIN_VALUE;
+		}
 
-        return (int) result;
-    }
+		return (int) result;
+	}
 }

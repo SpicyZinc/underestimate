@@ -47,7 +47,6 @@ class TreeNode {
 }
 
 public class BinaryTreeZigzagLevelOrderTraversal {
-
 	public static void main(String[] args) {
 		TreeNode root = new TreeNode(3);
 		root.left = new TreeNode(9);
@@ -61,6 +60,46 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 		for (List<Integer> layer : result) {
 			System.out.println(layer);
 		}
+	}
+	// Sat Jun 15 22:32:05 2019
+	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+		List<List<Integer>> result = new ArrayList<>();
+
+		if (root == null) {
+			return result;
+		}
+
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.add(root);
+
+		boolean fromLeftToRight = true;
+
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+
+			List<Integer> path = new ArrayList<>();
+			for (int i = 0; i < size; i++) {
+				TreeNode node = queue.poll();
+				if (fromLeftToRight) {
+					path.add(node.val);
+				} else {
+					path.add(0, node.val);
+				}
+
+				if (node.left != null) {
+					queue.add(node.left);
+				}
+				if (node.right != null) {
+					queue.add(node.right);
+				}
+			}
+
+			fromLeftToRight = !fromLeftToRight;
+
+			result.add(path);
+		}
+
+		return result;
 	}
 
 	// Sun May 19 01:48:30 2019

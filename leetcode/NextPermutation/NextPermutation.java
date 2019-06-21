@@ -84,6 +84,62 @@ sort 后面所有的 这是仍然是 升序的 只需要 reverse()
 
 */
 public class NextPermutation {
+	// Wed Jun 19 00:45:03 2019
+	public void nextPermutation(int[] nums) {
+		int size = nums.length;
+		
+		int i = size - 1;
+		
+		while (i >= 1) {
+			if (nums[i] > nums[i - 1]) {
+				break;
+			}
+			i--;
+		}
+		
+		// not forget to check
+		if (i >= 1) {
+			int decreaseVal = nums[i - 1];
+			int right = size - 1;
+
+			while (right > i - 1 && nums[right] <= decreaseVal) {
+				right--;
+			}
+
+			swap(nums, i - 1, right);    
+		}
+		
+		reverse(nums, i, size - 1);
+	}
+	
+	public void swap(int[] nums, int i, int j) {
+		int temp = nums[i];
+		nums[i] = nums[j];
+		nums[j] = temp;
+	}
+	
+	private void reverse(int[] nums, int start, int end) {
+		if (start > end) {
+			return;
+		}
+
+		if (end > nums.length) {
+			return;
+		}
+		
+		int mid = start + (end - start) / 2;
+
+		while (start <= mid) {
+			int tmp = nums[start];
+			nums[start] = nums[end];
+			nums[end] = tmp;
+
+			start++;
+			end--;
+		}
+	}
+
+
 	// easy understand
 	public void nextPermutation(int[] nums) {
 		int n = nums.length;
@@ -116,38 +172,45 @@ public class NextPermutation {
 	}
 
 	public void nextPermutation(int[] num) {
-        for (int i = num.length - 2; i >= 0; i--) {
-            if (num[i + 1] > num[i]) {
-                for (int j = num.length - 1; j > i; j--) {
-                    if (num[j] > num[i]) {
-                        swap(num, i, j);
-                        break;
-                    }
-                }
-                // reverse the items from i + 1 to num.size() - 1
-                reverse(num, i + 1, num.length - 1);
-                return;
-            }
-        }
-        // no ascending order found, reverse all the numbers
-        reverse(num, 0, num.length - 1);
-    }
+		for (int i = num.length - 2; i >= 0; i--) {
+			if (num[i + 1] > num[i]) {
+				for (int j = num.length - 1; j > i; j--) {
+					if (num[j] > num[i]) {
+						swap(num, i, j);
+						break;
+					}
+				}
+				// reverse the items from i + 1 to num.size() - 1
+				reverse(num, i + 1, num.length - 1);
+				return;
+			}
+		}
+		// no ascending order found, reverse all the numbers
+		reverse(num, 0, num.length - 1);
+	}
 	// method to reverse an array
 	// just remember, this is classic
-	private void reverse(int[] num, int start, int end) {
-		if (start > end) return;
-		if (end > num.length) return;
+	private void reverse(int[] nums, int start, int end) {
+		if (start > end) {
+			return;
+		}
+
+		if (end > nums.length) {
+			return;
+		}
 		
 		int mid = start + (end - start) / 2;
+
 		while (start <= mid) {
-			int tmp = num[start];
-			num[start] = num[end];
-			num[end] = tmp;
+			int tmp = nums[start];
+			nums[start] = nums[end];
+			nums[end] = tmp;
+
 			start++;
 			end--;
 		}
 	}
-	// method swap
+
 	private void swap(int[] a, int x, int y) {
 		int tmp = a[x];
 		a[x] = a[y];

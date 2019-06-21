@@ -62,7 +62,9 @@ public class WoodCut {
 
 		while (start + 1 < end) {
 			int mid = start + (end - start) / 2;
+
 			int count = getCount(L, mid);
+
 			if (count >= k) {
 				start = mid;
 			} else {
@@ -75,10 +77,12 @@ public class WoodCut {
 
 	// whether it cut with length x and get more than k pieces
 	private int getCount(int[] L, int len) {
-		int sum = 0;
+		int count = 0;
+
 		for (int l : L) {
-			sum += l / len;
+			count += l / len;
 		}
-		return sum;
+
+		return count;
 	}
 }
