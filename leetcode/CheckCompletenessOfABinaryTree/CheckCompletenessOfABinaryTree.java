@@ -38,6 +38,9 @@ idea:
 BFS
 For a complete binary tree, there should not be any node after we met an empty one.
 
+When level-order traversal in a complete tree, after the last node, all nodes in the queue should be null.
+Otherwise, the tree is not complete
+
 example 1, # # # # # # #
 example 2, # 7 # # # #
 */
@@ -51,6 +54,31 @@ class TreeNode {
 }
 
 class CheckCompletenessOfABinaryTree {
+	// Sun Jul  7 18:29:18 2019
+	public boolean isCompleteTree(TreeNode root) {
+		boolean isLastNode = false;
+
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+
+		while (!queue.isEmpty()) {
+			TreeNode node = queue.poll();
+
+			if (node == null) {
+				isLastNode = true;
+			} else {
+				if (isLastNode) {
+					return false;
+				}
+				queue.offer(node.left);
+				queue.offer(node.right);
+			}
+		}
+
+		return true;
+	}
+
+	// used peek(), not comfortable to understand
 	public boolean isCompleteTree(TreeNode root) {
 		Queue<TreeNode> queue = new LinkedList<>();
 		queue.offer(root);

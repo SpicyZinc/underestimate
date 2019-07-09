@@ -26,6 +26,17 @@ Note:
 0 <= A[i] <= 10000
 
 idea:
+
+array of hashmap
+理解的关键
+dp[i] ends at A[i] {1: 2, 2: 3, ..., 6: 1}
+等差为1的数列长为 2
+等差为2的数列长为 3
+...
+等差为6的数列长为 1
+
+
+
 Map of Map
 key => diff
 value => map (key => till index, value => length of arithmetic sequence)
@@ -40,52 +51,52 @@ class LongestArithmeticSequence {
 		}
 
 		int n = A.length;
-        int maxLen = 0;
-        
-        // Declare a dp array that is an array of hashmaps.
-        // The map for each index maintains an element of the form-
-        // (difference, length of max chain ending at that index with that difference).        
-        HashMap<Integer, Integer>[] dp = new HashMap[n];
-        
-        for (int i = 0; i < n; ++i) {
-            // Initialize the map.
-            dp[i] = new HashMap<Integer, Integer>();
-        }
-        
-        for (int i = 1; i < n; i++) {
-            int x = A[i];
-            // Iterate over values to the left of i.
-            for (int j = 0; j < i; j++) {
-                int y = A[j];
+		int maxLen = 0;
+		
+		// Declare a dp array that is an array of hashmaps.
+		// The map for each index maintains an element of the form-
+		// (difference, length of max chain ending at that index with that difference).        
+		HashMap<Integer, Integer>[] dp = new HashMap[n];
+		
+		for (int i = 0; i < n; i++) {
+			// Initialize the map.
+			dp[i] = new HashMap<Integer, Integer>();
+		}
+		
+		for (int i = 1; i < n; i++) {
+			int x = A[i];
 
-                int d = x - y;
-                
-                // We at least have a minimum chain length of 2 now,
-                // given that (A[j], A[i]) with the difference d, 
-                // by default forms a chain of length 2.
-                int len = 2;  
-                
-                if (dp[j].containsKey(d)) {
-                    // At index j, if we had already seen a difference d,
-                    // then potentially, we can add A[i] to the same chain
-                    // and extend it by length 1.
-                    len = dp[j].get(d) + 1;
-                }
-                
-                // Obtain the maximum chain length already seen so far at index i 
-                // for the given difference d;
-                int curr = dp[i].getOrDefault(d, 0);
-                
-                // Update the max chain length for difference d at index i.
-                dp[i].put(d, Math.max(curr, len));
-                
-                // Update the global max.
-                maxLen = Math.max(maxLen, dp[i].get(d));
-            }
-        }
-        
-        return maxLen;
-    }
+			// Iterate over values to the left of i.
+			for (int j = 0; j < i; j++) {
+				int y = A[j];
+
+				int d = x - y;
+				
+				// We at least have a minimum chain length of 2 now,
+				// given that (A[j], A[i]) with the difference d, 
+				// by default forms a chain of length 2.
+				int len = 2;  
+				
+				if (dp[j].containsKey(d)) {
+					// At index j, if we had already seen a difference d,
+					// then potentially, we can add A[i] to the same chain and extend it by length 1.
+					// by +1 refers to A[i]
+					len = dp[j].get(d) + 1;
+				}
+				
+				// Obtain the maximum chain length already seen so far at index i for the given difference d
+				int prevLen = dp[i].getOrDefault(d, 0);
+				
+				// Update the max chain length for difference d at index i.
+				dp[i].put(d, Math.max(prevLen, len));
+				
+				// Update the global max.
+				maxLen = Math.max(maxLen, dp[i].get(d));
+			}
+		}
+		
+		return maxLen;
+	}
 
 	// TLE
 	public int longestArithSeqLength(int[] A) {

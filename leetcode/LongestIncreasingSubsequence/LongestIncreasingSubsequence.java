@@ -24,169 +24,169 @@ public class LongestIncreasingSubsequence {
 		LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
 		// int[] nums = {10, 9, 2, 5, 3, 7, 101, 18};
 		// int[] nums = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-        int[] nums = {2, 4, 3, 5, 1, 7, 6, 9, 8}; // There are 8 LIS but the solution shows only two
+		int[] nums = {2, 4, 3, 5, 1, 7, 6, 9, 8}; // There are 8 LIS but the solution shows only two
 		int result = lis.lengthOfLIS(nums);
 		System.out.println(result);
 	}
-    // 02/03/2019
-    public int longestIncreasingSubsequence(int[] nums) {
-        if (nums.length == 0 || nums == null) {
-            return 0;
-        }
+	// 02/03/2019
+	public int longestIncreasingSubsequence(int[] nums) {
+		if (nums.length == 0 || nums == null) {
+			return 0;
+		}
 
-        int n = nums.length;
-        int[] dp = new int[n];
-        int maxLen = 1;
-        
-        for (int i = 0; i < n; i++) {
-            dp[i] = 1;
-            for (int j = 0; j <= i; j++) {
-                if (nums[i] > nums[j]) {
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                }
-            }
-            maxLen = Math.max(maxLen, dp[i]);
-        }
-        
-        return maxLen;
-    }
-    // dp[i] represents array[0, i] inclusive
-    // the length of longest increasing substring until i inclusively
-    public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        if (n == 0) {
-            return 0;
-        }
-        int max = 1;
-        int[] dp = new int[n];
-        for (int i = 0; i < n; i++) {
-            dp[i] = 1;
-            for (int j = i - 1; j >= 0; j--) {
-                if (nums[i] > nums[j]) {
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                }
-            }
-            max = Math.max(max, dp[i]);
-        }
-        
-        return max;
-    }
-    // length of longest increasing subsequence path
-    public int lengthOfLIS(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
-        }
-        
-        int max = 1;
-        int[] size = new int[nums.length];
-        String[] path = new String[nums.length];
-        
-        size[0] = 1;
-        path[0] = nums[0] + " ";
-        for (int i = 1; i < nums.length; i++) {
-            size[i] = 1;
-            path[i] = nums[i] + " ";
-            for (int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    size[i] = Math.max(size[i], size[j] + 1);
-                    path[i] = path[j] + nums[i] + " ";
-                }               
-            }       
-            if (max < size[i]) {
-                max = size[i];
-            }
-        }
-        
-        for (int i = 1; i < nums.length; i++) {
-            if (size[i] == max) {
-                System.out.println("Longest Increasing Subsequence: " + path[i]);
-            }
-        }
+		int n = nums.length;
+		int[] dp = new int[n];
+		int maxLen = 1;
+		
+		for (int i = 0; i < n; i++) {
+			dp[i] = 1;
+			for (int j = 0; j <= i; j++) {
+				if (nums[i] > nums[j]) {
+					dp[i] = Math.max(dp[i], dp[j] + 1);
+				}
+			}
+			maxLen = Math.max(maxLen, dp[i]);
+		}
+		
+		return maxLen;
+	}
+	// dp[i] represents array[0, i] inclusive
+	// the length of longest increasing substring until i inclusively
+	public int lengthOfLIS(int[] nums) {
+		int n = nums.length;
+		if (n == 0) {
+			return 0;
+		}
+		int max = 1;
+		int[] dp = new int[n];
+		for (int i = 0; i < n; i++) {
+			dp[i] = 1;
+			for (int j = i - 1; j >= 0; j--) {
+				if (nums[i] > nums[j]) {
+					dp[i] = Math.max(dp[i], dp[j] + 1);
+				}
+			}
+			max = Math.max(max, dp[i]);
+		}
+		
+		return max;
+	}
+	// length of longest increasing subsequence path
+	public int lengthOfLIS(int[] nums) {
+		if (nums.length == 0) {
+			return 0;
+		}
+		
+		int max = 1;
+		int[] size = new int[nums.length];
+		String[] path = new String[nums.length];
+		
+		size[0] = 1;
+		path[0] = nums[0] + " ";
+		for (int i = 1; i < nums.length; i++) {
+			size[i] = 1;
+			path[i] = nums[i] + " ";
+			for (int j = 0; j < i; j++) {
+				if (nums[i] > nums[j]) {
+					size[i] = Math.max(size[i], size[j] + 1);
+					path[i] = path[j] + nums[i] + " ";
+				}               
+			}       
+			if (max < size[i]) {
+				max = size[i];
+			}
+		}
+		
+		for (int i = 1; i < nums.length; i++) {
+			if (size[i] == max) {
+				System.out.println("Longest Increasing Subsequence: " + path[i]);
+			}
+		}
 
-        return max;
-    }
-    // 20 / 24 test cases passed
-    // failed [10,9,2,5,3,4]
-    public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        if (n == 0) {
-            return 0;
-        }
-        int max = 1;
-        for (int i = 0; i < n; i++) {
-            int curr = nums[i];
-            int cnt = 1;
-            for (int j = i + 1; j < n; j++) {
-                if (nums[j] > curr) {
-                    curr = nums[j];
-                    cnt++;
-                }
-                max = Math.max(max, cnt);
-            }
-        }
+		return max;
+	}
+	// 20 / 24 test cases passed
+	// failed [10,9,2,5,3,4]
+	public int lengthOfLIS(int[] nums) {
+		int n = nums.length;
+		if (n == 0) {
+			return 0;
+		}
+		int max = 1;
+		for (int i = 0; i < n; i++) {
+			int curr = nums[i];
+			int cnt = 1;
+			for (int j = i + 1; j < n; j++) {
+				if (nums[j] > curr) {
+					curr = nums[j];
+					cnt++;
+				}
+				max = Math.max(max, cnt);
+			}
+		}
 
-        return max;
-    }
+		return max;
+	}
 	// recursion timeout
 	public int lengthOfLIS(int[] nums) {
 		if (nums == null || nums.length == 0) {
-    		return 0;
-    	}
-    	int[] max = new int[1];
-    	LIS(nums, nums.length, max);
-    	return max[0];
+			return 0;
+		}
+		int[] max = new int[1];
+		LIS(nums, nums.length, max);
+		return max[0];
 	}
 
 	public int LIS(int arr[], int n, int[] max) {
-	    if (n == 1) {
-            return 1;
-        }
+		if (n == 1) {
+			return 1;
+		}
 
-	    int res = 1;
-        int maxEndingHere = 1;
+		int res = 1;
+		int maxEndingHere = 1;
 
-	    for (int i = 1; i < n; i++) {
-	        res = LIS(arr, i, max);
-	        if (arr[i-1] < arr[n-1] && res + 1 > maxEndingHere) {
-	            maxEndingHere = res + 1;
-	        }
-	    }
-        max[0] = Math.max(max[0], maxEndingHere);
+		for (int i = 1; i < n; i++) {
+			res = LIS(arr, i, max);
+			if (arr[i-1] < arr[n-1] && res + 1 > maxEndingHere) {
+				maxEndingHere = res + 1;
+			}
+		}
+		max[0] = Math.max(max[0], maxEndingHere);
 
-	    return maxEndingHere;
+		return maxEndingHere;
 	}
 	// binary search
-    public int lengthOfLIS(int[] nums) {
-        if (nums.length == 0) return 0;
-        int len = nums.length;
-        int[] seqEnd = new int[len + 1];
-        seqEnd[1] = 0;
-        int lisLen = 1;
-        for (int i=1; i<len; i++) {
-            int pos = findPos(nums,seqEnd,lisLen,i);
-            seqEnd[pos] = i;
-            if (pos > lisLen) {
-            	lisLen = pos;
-            }
-        }
+	public int lengthOfLIS(int[] nums) {
+		if (nums.length == 0) return 0;
+		int len = nums.length;
+		int[] seqEnd = new int[len + 1];
+		seqEnd[1] = 0;
+		int lisLen = 1;
+		for (int i=1; i<len; i++) {
+			int pos = findPos(nums,seqEnd,lisLen,i);
+			seqEnd[pos] = i;
+			if (pos > lisLen) {
+				lisLen = pos;
+			}
+		}
 
-        return lisLen;
-    }
+		return lisLen;
+	}
 
-    public int findPos(int[] nums, int[] seqEnd, int lisLen, int index) {
-        int start = 1;
-        int end = lisLen;
-        while (start <= end) {
-            int mid = (start + end) / 2;
-            if (nums[index] == nums[seqEnd[mid]]) {
-                return mid;
-            } else if (nums[index] > nums[seqEnd[mid]]) {
-                start = mid + 1;
-            } else {
-            	end = mid - 1;
-            }
-        }
+	public int findPos(int[] nums, int[] seqEnd, int lisLen, int index) {
+		int start = 1;
+		int end = lisLen;
+		while (start <= end) {
+			int mid = (start + end) / 2;
+			if (nums[index] == nums[seqEnd[mid]]) {
+				return mid;
+			} else if (nums[index] > nums[seqEnd[mid]]) {
+				start = mid + 1;
+			} else {
+				end = mid - 1;
+			}
+		}
 
-        return start;
-    }
+		return start;
+	}
 }

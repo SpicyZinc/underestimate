@@ -80,8 +80,8 @@ class WordLadder {
 	public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
 		// first convert wordList to hashset
 		Set<String> hs = new HashSet<>();
-        // not forget to add beginWord
-        hs.add(beginWord);
+		// not forget to add beginWord
+		hs.add(beginWord);
 		for (String word : wordList) {
 			hs.add(word);
 		}
@@ -92,7 +92,7 @@ class WordLadder {
 
 		Entry entry = new Entry(beginWord, 0, null);
 		Queue<Entry> queue = new LinkedList<>();
-        queue.add(entry);
+		queue.add(entry);
 
 		while (!queue.isEmpty()) {
 			Entry curr = queue.poll();
@@ -101,8 +101,8 @@ class WordLadder {
 				break;
 			}
 
-            // not forget to remove
-            hs.remove(curr.word);
+			// not forget to remove
+			hs.remove(curr.word);
 
 			char[] chars = curr.word.toCharArray();
 
@@ -120,8 +120,8 @@ class WordLadder {
 						Entry end = new Entry(word, curr.level + 1, curr);
 
 						paths.add(end);
-                        // 及早break
-                        break;
+						// 及早break
+						break;
 					} else if (hs.contains(word)) {
 						Entry next = new Entry(word, curr.level + 1, curr);
 						queue.add(next);

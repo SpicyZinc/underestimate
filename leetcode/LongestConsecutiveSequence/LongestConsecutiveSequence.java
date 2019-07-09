@@ -71,6 +71,7 @@ class LongestConsecutiveSequence {
 
 		return Math.max(maxLen, end - start + 1);
 	}
+
 	// method 2
 	public int longestConsecutive(int[] nums) {
 		Set<Integer> hs = new HashSet<Integer>();
@@ -80,56 +81,58 @@ class LongestConsecutiveSequence {
 
 		int max = 0;
 		for (int num : nums) {
-			int cnt = 1;
+			int count = 1;
+			hs.remove(num);
+
 			int curr = num;
-			hs.remove(curr);
 			while (hs.contains(curr - 1)) {
 				hs.remove(curr - 1);
 				curr--;
-				cnt++;
+				count++;
 			}
+
 			curr = num;
 			while (hs.contains(curr + 1)) {
 				hs.remove(curr + 1);
 				curr++;
-				cnt++;
+				count++;
 			}
 
-			max = Math.max(max, cnt);
+			max = Math.max(max, count);
 		}
 
 		return max;
 	}
 	// method 2, iterative method can be converted to recursive method 
-    public int longestConsecutive(int[] nums) {
-        Set<Integer> hs = new HashSet<Integer>();
-        for (int v : nums) {
+	public int longestConsecutive(int[] nums) {
+		Set<Integer> hs = new HashSet<Integer>();
+		for (int v : nums) {
 			hs.add(v);
-        }
+		}
 			
-        int ans = 0;
-        for (int num : nums) {
+		int ans = 0;
+		for (int num : nums) {
 			if (hs.contains(num)) {
 				ans = Math.max(ans, getCount(hs, num, false) + getCount(hs, num + 1, true));
 			}
-        }
+		}
 				
-        return ans;
-    }
+		return ans;
+	}
 
 	public int getCount(Set<Integer> hs, int v, boolean asc) {
 		int count = 0;
 		while (hs.contains(v)) {
 			hs.remove(v);
-            count++;
-            if (asc) {
+			count++;
+			if (asc) {
 				v++;
-            } else {
+			} else {
 				v--;
 			}
-        }
+		}
 		
-        return count;
+		return count;
 	}
 	
 	// method 3
@@ -151,13 +154,13 @@ class LongestConsecutiveSequence {
 			int cnt = 1;
 			int temp = nums[i];
 			while (hm.containsKey(temp - 1)) {
-				visited[hm.get(temp-1)] = 1;
+				visited[hm.get(temp - 1)] = 1;
 				cnt++;
 				temp--;
 			}
 			temp = nums[i];
 			while (hm.containsKey(temp + 1)) {
-				visited[hm.get(temp+1)] = 1;
+				visited[hm.get(temp + 1)] = 1;
 				cnt++;
 				temp++;
 			}

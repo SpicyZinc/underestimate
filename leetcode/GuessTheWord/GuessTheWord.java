@@ -38,7 +38,7 @@ idea:
 // This is the Master's API interface.
 // You should not implement it, or speculate about its implementation
 interface Master {
-    public int guess(String word) {}
+	public int guess(String word) {}
 }
 
 class GuessTheWord {
@@ -64,7 +64,20 @@ class GuessTheWord {
 		}
 	}
 
-	public int match(String a, String b) {
+	public String[] shrinkWordList(String[] wordlist, String guessWord, int matches) {
+		List<String> shrinkedList = new ArrayList<>();
+		for (String word : wordlist) {
+			int matchCnt = getMatchCnt(word, guessWord);
+
+			if (matchCnt == matches) {
+				shrinkedList.add(word);
+			}
+		}
+
+		return shrinkedList.toArray(new String[shrinkedList.size()]);
+	}
+
+	public int getMatchCnt(String a, String b) {
 		int matchCnt = 0;
 		for (int i = 0; i < a.length(); i++) {
 			if (a.charAt(i) == b.charAt(i)) {
@@ -73,17 +86,5 @@ class GuessTheWord {
 		}
 
 		return matchCnt;
-	}
-
-	public String[] shrinkWordList(String[] wordlist, String guessWord, int matches) {
-		List<String> shrinkedList = new ArrayList<>();
-		for (String word : wordlist) {
-			int matchCnt = match(word, guessWord);
-			if (matchCnt == matches) {
-				shrinkedList.add(word);
-			}
-		}
-
-		return shrinkedList.toArray(new String[shrinkedList.size()]);
 	}
 }

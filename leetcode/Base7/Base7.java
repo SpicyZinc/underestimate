@@ -14,16 +14,19 @@ idea:
 typical method (/ base) to continue while then (% base) to get each digit
 */
 public class Base7 {
-    public String convertToBase7(int num) {
-        if (num == 0) {
-        	return "0";
-        }
-        boolean isNeg = num < 0;
-        String res = "";
-        while (num != 0) {
-            res = Math.abs(num % 7) + res;
-            num /= 7;
-        }
-        return isNeg ? "-" + res : res;   
-    }
+	public String convertToBase7(int num) {
+		if (num == 0) {
+			return "0";
+		}
+
+		boolean isNeg = num < 0;
+		String result = "";
+
+		while (num != 0) {
+			result = Math.abs(num % 7) + result;
+			num /= 7;
+		}
+
+		return isNeg ? "-" + result : result;
+	}
 }

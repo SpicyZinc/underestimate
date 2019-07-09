@@ -18,6 +18,22 @@ class LongestIncreasingSubarray {
 
 		System.out.println(max);
 	}
+	// Sun Jun 23 16:57:41 2019
+	public int getLIS(int[] nums) {
+		int n = nums.length;
+		int maxLen = 1;
+		int left = 0;
+
+		for (int i = 1; i < n; i++) {
+			if (nums[i - 1] >= nums[i]) {
+				maxLen = Math.max(maxLen, i - left);
+				left = i;
+			}
+		}
+
+		return maxLen;
+	}
+
 	// O(n^2) not necessary
 	public int getLIS(int[] nums) {
 		int n = nums.length;
@@ -28,21 +44,6 @@ class LongestIncreasingSubarray {
 			while (right < n && nums[right - 1] < nums[right]) {
 				maxLen = Math.max(maxLen, right - left + 1);
 				right++;
-			}
-		}
-
-		return maxLen;
-	}
-
-	public int getLIS(int[] nums) {
-		int n = nums.length;
-		int maxLen = 1;
-		int left = 0;
-
-		for (int i = 1; i < n; i++) {
-			if (nums[i - 1] >= nums[i]) {
-				maxLen = Math.max(maxLen, i - left);
-				left = i;
 			}
 		}
 

@@ -16,90 +16,54 @@ The input strings only contain lower case letters.
 The length of both given strings is in range [1, 10,000].
 
 idea:
-note: this is to get substring NOT subsequence, must be consecutive
 https://www.cnblogs.com/grandyang/p/6815227.html
-1. 什么挖不挖坑 很讨厌
-公用一个map
-2. basic idea, 2 steps
+同向双指针
+
 	How do we know string p is a permutation of string s?
 	Easy, each character in p is in s too. So we can abstract all permutation strings of s to a map (Character -> Count). i.e. abba -> {a:2, b:2}.
 	Since there are only 26 lower case letters in this problem, we can just use an array to represent the map.
 	
 	How do we know string s2 contains a permutation of s1? We just need to create a sliding window with length of s1,
-    move from beginning to the end of s2.
+	move from beginning to the end of s2.
 	When a character moves in from right of the window, we subtract 1 to that character count from the map.
 	When a character moves out from left of the window, we add 1 to that character count.
 	So once we see all zeros in the map, meaning equal numbers of every characters between s1 and the substring in the sliding window, we know the answer is true.
 */
 
 public class PermutationInString {
-	// method 1
+	// Sat Jul  6 01:22:47 2019
 	public boolean checkInclusion(String s1, String s2) {
-		int[] map = new int[128];
+		int[] map = new int[256];
 		for (int i = 0; i < s1.length(); i++) {
 			map[s1.charAt(i)]++;
 		}
+		
+		int size = s1.length();
+		int count = 0;
 		int left = 0;
-		int cnt = s1.length();
+
 		for (int right = 0; right < s2.length(); right++) {
 			char c = s2.charAt(right);
 			// 有没有在 map 中的 character 都要 更新
-			if (map[c]-- >= 1) {
-				cnt--;
+			if (map[c]-- >= 1) { 
+				count++;
 			}
-			while (cnt == 0) {
-				if (right - left + 1 == s1.length()) {
+
+			while (count == size) {
+				// 有且只有 size == window size 这样才是 permutation
+				if (right - left + 1 == size) {
 					return true;
 				}
-				// == 1 means 把 s1 中的一个移出window了
-				// cnt 要++
-				if (++map[s2.charAt(left++)] >= 1) {
-					cnt++;
+				
+				// move window left
+				map[s2.charAt(left)]++;
+				if (map[s2.charAt(left)] >= 1) {
+					count--;
 				}
+				left++;
 			}
 		}
 
 		return false;
-	}
-    // method 2
-    public boolean checkInclusion(String s1, String s2) {
-    	if (s1.length() == 0 || s1 == null) {
-    		return true;
-    	}
-    	if (s1.length() > s2.length()) {
-    		return false;
-    	}
-
-        int[] count = new int[26];
-        for (int i = 0; i < s1.length(); i++) {
-            char c1 = s1.charAt(i);
-            char c2 = s2.charAt(i);
-            count[c1 - 'a']++;
-            count[c2 - 'a']--;
-        }
-        if (allZero(count)) {
-        	return true;
-        }
-        int window = s1.length(); // why start with i = window, because length of window chars have been coped with
-        for (int i = window; i < s2.length(); i++) {
-        	char end = s2.charAt(i);
-        	char start = s2.charAt(i - window);
-        	count[end - 'a']--;
-        	count[start - 'a']++;
-        	if (allZero(count)) {
-        		return true;
-        	}
-        }
-        return false;
-    }
-
-	private boolean allZero(int[] count) {
-		for (int i = 0; i < count.length; i++) {
-			if (count[i] != 0) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 }

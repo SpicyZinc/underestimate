@@ -15,59 +15,66 @@ nums[i] will be between 1 and 65535.
 k will be between 1 and floor(nums.length / 3).
 
 idea:
-https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/discuss/108231/C++Java-DP-with-explanation-O(n)
-based on [i, i+k-1], where k <= i <= n-2k
-i
-posLeft[i] 得到最大left sum index
+https://www.cnblogs.com/grandyang/p/8453386.html
+based on [i, i + k - 1], where k <= i <= n - 2k
+
+posLeft[i] 起始位置 start index 在 [0, i] 且 size 为 k 得到最大left sum 的 起始位置 start index
+
+https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/discuss/108239/Java-DP-Generic-Solution-for-M-subarrays
 */
 class MaximumSumOfThreeNonOverlappingSubarrays {
-    public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
-        int n = nums.length;
-        int maxSum = 0;
-        int[] sum = new int[n + 1];
-        int[] posLeft = new int[n];
-        int[] posRight = new int[n];
-        int[] answer = new int[3];
-        // accumulative sum
-        for (int i = 0; i < n; i++) {
-        	sum[i + 1] = sum[i] + nums[i];
-        }
-        // DP for left subarray
-        int leftMax = sum[k] - sum[0];
-        for (int i = k; i < n; i++) {
-        	if (sum[i + 1] - sum[i + 1 - k] > leftMax) {
-        		leftMax = sum[i + 1] - sum[i + 1 - k];
-                posLeft[i] = i + 1 - k;
-        	} else {
-        		posLeft[i] = posLeft[i - 1];
-        	}
-        }
-        // DP for right subarray
-        // note, the condition is ">= total" for right interval, and "> total" for left interval
-        // note, not forget to initialize
-        int rightMax = sum[n] - sum[n - k];
-        posRight[n - k - 1 + 1] = n - k - 1 + 1;
-        for (int i = n - k - 1; i >= 0; i--) {
-        	if (sum[i + k] - sum[i] >= rightMax) {
-        		rightMax = sum[i + k] - sum[i];
-                posRight[i] = i;
-        	} else {
-        		posRight[i] = posRight[i + 1];
-        	}
-        }
-        // test all middle intervals i in [k, n - k * 2]
-        for (int i = k; i <= n - 2 * k; i++) {
-        	int left = posLeft[i - 1];
-        	int right = posRight[i + k];
-        	int total = (sum[left + k] - sum[left]) + (sum[i + k] - sum[i]) + (sum[right + k] - sum[right]);
-        	if (total > maxSum) {
-        		maxSum = total;
-        		answer[0] = left;
-        		answer[1] = i;
-        		answer[2] = right;
-        	}
-        }
+	public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
+		int n = nums.length;
+		int[] sum = new int[n + 1];
+		int[] posLeft = new int[n];
+		int[] posRight = new int[n];
+		
+		// accumulative sum
+		for (int i = 0; i < n; i++) {
+			sum[i + 1] = sum[i] + nums[i];
+		}
 
-        return answer;
-    }
+		// DP for left subarray
+		int leftMax = sum[k] - sum[0];
+		for (int i = k; i < n; i++) {
+			if (sum[i + 1] - sum[i + 1 - k] > leftMax) {
+				leftMax = sum[i + 1] - sum[i + 1 - k];
+				posLeft[i] = i + 1 - k;
+			} else {
+				posLeft[i] = posLeft[i - 1];
+			}
+		}
+
+		// DP for right subarray
+		// note, the condition is ">= total" for right interval, and "> total" for left interval
+		// note, not forget to initialize
+		int rightMax = sum[n] - sum[n - k];
+		posRight[n - k - 1 + 1] = n - k - 1 + 1;
+		for (int i = n - k - 1; i >= 0; i--) {
+			if (sum[i + k] - sum[i] >= rightMax) {
+				rightMax = sum[i + k] - sum[i];
+				posRight[i] = i;
+			} else {
+				posRight[i] = posRight[i + 1];
+			}
+		}
+
+		int maxSum = 0;
+		int[] answer = new int[3];
+		// test all middle intervals i in [k, n - k * 2]
+		for (int i = k; i <= n - 2 * k; i++) {
+			int left = posLeft[i - 1];
+			int right = posRight[i + k];
+			int total = (sum[left + k] - sum[left]) + (sum[i + k] - sum[i]) + (sum[right + k] - sum[right]);
+
+			if (total > maxSum) {
+				maxSum = total;
+				answer[0] = left;
+				answer[1] = i;
+				answer[2] = right;
+			}
+		}
+
+		return answer;
+	}
 }

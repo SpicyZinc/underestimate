@@ -25,73 +25,41 @@ http://blog.csdn.net/linhuanmars/article/details/20888505
 
 public class TrappingRainWater {
 	// 01/30/2019
-	public int trapRainWater(int[] heights) {
-        if (heights.length < 3 || heights == null) {
-            return 0;
-        }
-        
-        int n = heights.length;
-        
-        int[] leftHighest = new int[n];
-        int[] rightHighest = new int[n];
-        
-        leftHighest[0] = 0;
-        int max = heights[0];
-        for (int i = 1; i < n; i++) {
-            max = Math.max(max, heights[i - 1]);
-            leftHighest[i] = max;
-        }
+	public int trap(int[] heights) {
+		if (heights.length < 3 || heights == null) {
+			return 0;
+		}
+		
+		int n = heights.length;
+		
+		int[] leftHighest = new int[n];
+		int[] rightHighest = new int[n];
+		
+		// populate lefHighest
+		int max = heights[0];
+		leftHighest[0] = 0;
+		for (int i = 1; i < n; i++) {
+			max = Math.max(max, heights[i - 1]);
+			leftHighest[i] = max;
+		}
 
-        rightHighest[n - 1] = 0;
-        max = 0;
-        for (int i = n - 2; i >= 0; i--) {
-            max = Math.max(max, heights[i + 1]);
-            rightHighest[i] = max;
-        }
-        
-        int water = 0;
-        for (int i = 1; i < n - 1; i++) {
-            int higher = Math.min(leftHighest[i], rightHighest[i]);
-            int amount = higher - heights[i];
-            if (amount > 0) {
-                water += amount;
-            }
-        }
-        
-        return water;
-    }
-
-
-    public int trap(int[] height) {
-        if (height.length < 3 || height == null) {
-            return 0;
-        }
-
-        int n = height.length;
-        int[] leftHighest = new int[n];
-        int[] rightHighest = new int[n];
-
-        int max = 0;
-        // populate lefHighest
-        for (int i = 0; i < n; i++) {
-            leftHighest[i] = max;
-            max = Math.max(max, height[i]);
-        }
-
-        max = 0;
-        // populate rightHighest
-        for (int i = n - 1; i >= 0; i--) {
-            rightHighest[i] = max;
-            max = Math.max(max, height[i]);
-        }
-
-        int maxTrapped = 0;
-        for (int i = 0; i < n; i++) {
-            if (Math.min(leftHighest[i], rightHighest[i]) - height[i] > 0) {
-                maxTrapped += Math.min(leftHighest[i], rightHighest[i]) - height[i];
-            }
-        }
-
-        return maxTrapped;
-    }
+		// populate rightHighest
+		max = heights[n - 1];
+		rightHighest[n - 1] = 0;
+		for (int i = n - 2; i >= 0; i--) {
+			max = Math.max(max, heights[i + 1]);
+			rightHighest[i] = max;
+		}
+		
+		int water = 0;
+		for (int i = 1; i < n - 1; i++) {
+			int higher = Math.min(leftHighest[i], rightHighest[i]);
+			int amount = higher - heights[i];
+			if (amount > 0) {
+				water += amount;
+			}
+		}
+		
+		return water;
+	}
 }

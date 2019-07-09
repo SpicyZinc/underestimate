@@ -94,7 +94,7 @@ Since moving right would not eventually make it fall, it stays in place:
 
 The final answer is [2,2,2,3,2,2,2]:
 
-    #    
+	#    
  ####### 
  ####### 
  0123456 
@@ -120,6 +120,38 @@ https://www.cnblogs.com/grandyang/p/8460541.html
 */
 
 class PourWater {
+	// Sat Jun 22 23:44:44 2019
+	public int[] pourWater(int[] heights, int V, int K) {
+		while (V > 0) {
+			dropWater(heights, K);
+			V--;
+		}
+
+		return heights;
+	}
+
+	public void dropWater(int[] heights, int K) {
+		int dropStopPos = K;
+		for (int d = -1; d <= 1; d += 2) {
+			// pointer left or right
+			int pointer = K + d;
+			// 因为要 最远 所以 等号 = 在 while() 里考虑
+			while (pointer >= 0 && pointer < heights.length && heights[pointer] <= heights[pointer - d]) {
+				if (heights[pointer] < heights[dropStopPos]) {
+					dropStopPos = pointer;
+				}
+
+				pointer += d;
+			}
+
+			if (dropStopPos != K) {
+				break;
+			}
+		}
+		heights[dropStopPos]++;
+	}
+
+
 	public int[] pourWater(int[] heights, int V, int K) {
 		// 分V次drop 每次1滴
 		while (V > 0) {
@@ -150,7 +182,7 @@ class PourWater {
 				break;
 			}
 		}
-		// 在最后挺住的位置 +1 加上一滴水
+		// 在最后停下的位置 +1 加上一滴水
 		heights[dropStopPos]++;
 	}
 }

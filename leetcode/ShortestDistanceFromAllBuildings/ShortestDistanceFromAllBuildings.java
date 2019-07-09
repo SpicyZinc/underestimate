@@ -46,6 +46,86 @@ public class ShortestDistanceFromAllBuildings {
 
 		System.out.println(shortest);
 	}
+
+	// Sun Jun 30 22:54:29 2019
+	public int shortestDistance(int[][] grid) {
+		if (grid == null || grid[0].length == 0) {
+			return 0;
+		}
+
+		int[][] directions = {
+			{0, 1},
+			{0, -1},
+			{1, 0},
+			{-1, 0},
+		};
+
+		int m = grid.length;
+		int n = grid[0].length;
+
+		int buildingCount = 0;
+
+		int[][] distanceToAllBuildings = new int[m][n];
+		int[][] reachable = new int[m][n];
+
+		// 构造 每一个空地 到 building 的 距离场
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				// for each building
+				if (grid[i][j] == 1) {
+					buildingCount++;
+
+					int distance = 1;
+
+					boolean[][] visited = new boolean[m][n];
+
+					Queue<int[]> queue = new LinkedList<>();
+
+					queue.offer(new int[] {i, j});
+
+					while (!queue.isEmpty()) {
+						int size = queue.size();
+
+						for (int k = 0; k < size; k++) {
+
+							int[] position = queue.poll();
+							int x = position[0];
+							int y = position[1];
+
+							for (int[] dir : directions) {
+								int nextX = x + dir[0];
+								int nextY = y + dir[1];
+
+								if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && grid[nextX][nextY] == 0 && !visited[nextX][nextY]) {
+									// The shortest distance from [nextX][nextY] to this building is 'distance'.
+									distanceToAllBuildings[nextX][nextY] += distance;
+									reachable[nextX][nextY] += 1;
+
+									visited[nextX][nextY] = true;
+
+									queue.offer(new int[] {nextX, nextY});
+								}
+							}
+						}
+
+						distance++;
+					}
+				}
+			}
+		}
+
+		int min = Integer.MAX_VALUE;
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (grid[i][j] == 0 && reachable[i][j] == buildingCount) {
+					min = Math.min(min, distanceToAllBuildings[i][j]);
+				}
+			}
+		}
+
+		return min == Integer.MAX_VALUE ? -1 : min;
+	}
+
 	// 12/01/2018
 	public int shortestDistance(int[][] grid) {
 		if (grid == null || grid[0].length == 0) {
@@ -93,6 +173,7 @@ public class ShortestDistanceFromAllBuildings {
 
 								if (newX >= 0 && newX < m && newY >= 0 && newY < n && grid[newX][newY] == 0 && !isVisited[newX][newY]) {
 									// The shortest distance from [newX][newY] to this building is 'dist'.
+									System.out.println(newX + ", " + newY + " == " + dist);
 									distance[newX][newY] += dist;
 									reachable[newX][newY]++;
 
@@ -101,6 +182,8 @@ public class ShortestDistanceFromAllBuildings {
 								}
 							}
 						}
+
+						System.out.println("=======");
 
 						dist++;
 					}
@@ -135,21 +218,22 @@ public class ShortestDistanceFromAllBuildings {
 
 		int m = grid.length;
 		int n = grid[0].length;
-        int[][] copy = new int[m][n];
-        for (int i = 0; i < m; i++) {
+		int[][] copy = new int[m][n];
+
+		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-                copy[i][j] = grid[i][j];
-            }
-        }
-        
+				copy[i][j] = grid[i][j];
+			}
+		}
+		
 		// similar to dp, 累加值 (i, j) 到某个building的距离
 		int[][] sum = new int[m][n];
-        for (int i = 0; i < m; i++) {
+		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-                sum[i][j] = copy[i][j];
-            }
-        }
-        
+				sum[i][j] = copy[i][j];
+			}
+		}
+		
 		int shortestDistance = Integer.MAX_VALUE;
 		int val = 0;
 		for (int i = 0; i < m; i++) {
@@ -158,8 +242,8 @@ public class ShortestDistanceFromAllBuildings {
 				if (grid[i][j] == 1) {
 					shortestDistance = Integer.MAX_VALUE;
 
-                    int[][] dist = new int[m][n];
-                    dist = copy;
+					int[][] dist = new int[m][n];
+					dist = copy;
 
 					Queue<int[]> queue = new LinkedList<int[]>();
 					queue.offer(new int[] {i, j});

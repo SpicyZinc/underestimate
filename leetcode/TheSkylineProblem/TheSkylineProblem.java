@@ -56,61 +56,62 @@ public class TheSkylineProblem {
 		eg.getSkyline(buildings);
 	}
 
-    public List<int[]> getSkyline(int[][] buildings) {
-        List<int[]> result = new ArrayList<>();
-        List<int[]> heights = new ArrayList<>();
+	public List<int[]> getSkyline(int[][] buildings) {
+		List<int[]> result = new ArrayList<>();
+		List<int[]> heights = new ArrayList<>();
 
-        for (int[] building : buildings) {
-            heights.add(new int[] {building[0], -building[2]});
-            heights.add(new int[] {building[1], building[2]});
-        }
+		for (int[] building : buildings) {
+			heights.add(new int[] {building[0], -building[2]});
+			heights.add(new int[] {building[1], building[2]});
+		}
 
-        Collections.sort(heights, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] a, int[] b) {
-                if (a[0] != b[0]) {
-                    return a[0] - b[0];
-                } else {
-                    return a[1] - b[1];
-                }
-            }
-        });
+		Collections.sort(heights, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] a, int[] b) {
+				if (a[0] != b[0]) {
+					return a[0] - b[0];
+				} else {
+					return a[1] - b[1];
+				}
+			}
+		});
 
-        for (int[] height : heights) {
-        	System.out.println(Arrays.toString(height));
-        }
+		for (int[] height : heights) {
+			System.out.println(Arrays.toString(height));
+		}
 
-        // heights priority queue, max at the top
-        Queue<Integer> pq = new PriorityQueue<Integer>(11, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer a, Integer b) {
-                return b - a;
-            }
-        });
+		// heights priority queue, max at the top
+		Queue<Integer> pq = new PriorityQueue<Integer>(11, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer a, Integer b) {
+				return b - a;
+			}
+		});
 
-        // 先将地平线值0加入堆中
-        // 为了[12 0] 这个点 在这个例子中
-        int horizon = 0;
-        int prevHighest = horizon;
-        pq.offer(horizon);
+		// 先将地平线值0加入堆中
+		// 为了[12 0] 这个点 在这个例子中
+		int horizon = 0;
+		int prevHighest = horizon;
+		pq.offer(horizon);
 
-        for (int[] height : heights) {
-            int h = height[1];
-            // 区分左右顶点 依靠[0,1] 0 negative, 1 positive
-            if (h < 0) {
-                pq.offer(-h);
-            } else {
-                pq.remove(h);
-            }
-            int currHighest = pq.peek();
-            // 出现拐点了 要么更高的进来了 要么更高的出去了
-            // 使用出去或者进来点的x value, 但是是当前最高高度
-            if (prevHighest != currHighest) {
-                result.add(new int[] {height[0], currHighest});
-                prevHighest = currHighest;
-            }
-        }
+		for (int[] height : heights) {
+			int h = height[1];
+			// 区分左右顶点 依靠[0, 1] 0 位置 negative, 1 位置 positive
+			if (h < 0) {
+				pq.offer(-h);
+			} else {
+				pq.remove(h);
+			}
+			int currHighest = pq.peek();
+			// 出现拐点了 要么更高的进来了 要么更高的出去了
+			// 使用出去或者进来点的x value, 但是是当前最高高度
+			if (prevHighest != currHighest) {
+				result.add(new int[] {height[0], currHighest});
 
-        return result;
-    }
+				prevHighest = currHighest;
+			}
+		}
+
+		return result;
+	}
 }

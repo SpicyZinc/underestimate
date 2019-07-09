@@ -17,7 +17,6 @@ Example 2:
 Input: points = [[3,3],[5,-1],[-2,4]], K = 2
 Output: [[3,3],[-2,4]]
 (The answer [[-2,4],[3,3]] would also be accepted.)
- 
 
 Note:
 1 <= K <= points.length <= 10000
@@ -25,39 +24,53 @@ Note:
 -10000 < points[i][1] < 10000
 
 idea:
-I used priority queue of size k
+priority queue of size k
+or Comparator sort
 
+要么借助 quick sort
 */
 
 class KClosestPointsToOrigin {
-    public int[][] kClosest(int[][] points, int K) {
-        PriorityQueue<int[]> pq = new PriorityQueue<int[]>(new Comparator<int[]>() {
-            @Override
-            public int compare(int[] a, int[] b) {
-                return getDistance(b) - getDistance(a);
-            }
-        });
-        
-        for (int[] point : points) {
-            pq.offer(point);
-            if (pq.size() > K) {
-                pq.poll();
-            }
-        }
-        
-        int[][] result = new int[K][2];
-        int i = 0;
-        while (!pq.isEmpty()) {
-            result[i++] = pq.poll();
-        }
-        
-        return result;
-    }
-    
-    public int getDistance(int[] point) {
-        int x = point[0];
-        int y = point[1];
-        
-        return x * x + y * y;
-    }
+	// Sun Jul  7 17:53:10 2019
+	public int[][] kClosest(int[][] points, int K) {
+		Arrays.sort(points, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] a, int[] b) {
+				return a[0] * a[0] + a[1] * a[1] - (b[0] * b[0] + b[1] * b[1]);
+			}
+		});
+
+		return Arrays.copyOfRange(points, 0, K);
+	}
+
+	public int[][] kClosest(int[][] points, int K) {
+		PriorityQueue<int[]> pq = new PriorityQueue<int[]>(new Comparator<int[]>() {
+			@Override
+			public int compare(int[] a, int[] b) {
+				return getDistance(b) - getDistance(a);
+			}
+		});
+		
+		for (int[] point : points) {
+			pq.offer(point);
+			if (pq.size() > K) {
+				pq.poll();
+			}
+		}
+		
+		int[][] result = new int[K][2];
+		int i = 0;
+		while (!pq.isEmpty()) {
+			result[i++] = pq.poll();
+		}
+		
+		return result;
+	}
+
+	public int getDistance(int[] point) {
+		int x = point[0];
+		int y = point[1];
+		
+		return x * x + y * y;
+	}
 }

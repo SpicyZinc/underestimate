@@ -47,6 +47,7 @@ class ConstructBinarySearchTreeFromPreorderTraversal {
 
 		int i = start + 1;
 		for (; i <= end; i++) {
+			// 右半个树找到了 break
 			if (preorder[i] > val) {
 				break;
 			}

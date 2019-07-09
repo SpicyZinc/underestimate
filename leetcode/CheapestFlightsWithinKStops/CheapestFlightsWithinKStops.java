@@ -36,10 +36,11 @@ There will not be any duplicated flights or self cycles.
 idea:
 https://www.cnblogs.com/grandyang/p/9109981.html
 
+dfs
+or
 Dijkstra's algorithm (BFS)
 first build graph
 
-dfs
 */
 
 import java.util.*;
@@ -57,10 +58,11 @@ class CheapestFlightsWithinKStops {
 		eg.findCheapestPrice(n, flights, src, dst, K);
 	}
 
+	// DFS
 	int minCost = Integer.MAX_VALUE;
 
 	public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
-		// build graph first
+		// first build graph
 		int[][] graph = new int[n][n];
 		for (int[] flight : flights) {
 			graph[flight[0]][flight[1]] = flight[2];
@@ -75,6 +77,7 @@ class CheapestFlightsWithinKStops {
 	public void dfs(int[][] graph, int current, int dst, int K, Set<Integer> visited, int currCost) {
 		if (current == dst) {
 			minCost = currCost;
+
 			return;
 		}
 
@@ -98,6 +101,7 @@ class CheapestFlightsWithinKStops {
 		}
 	}
 
+	// BFS
 	public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
 		// build graph first
 		int[][] graph = new int[n][n];

@@ -18,6 +18,12 @@ If there is no second highest salary, then the query should return null.
 +---------------------+
 
 idea:
+LIMIT takes one or two numeric arguments
+
+SELECT * FROM table LIMIT offset, count;
+
+SELECT * FROM table LIMIT count == SELECT * FROM table LIMIT 0, count;
+
 With two arguments, the first argument specifies the offset of the first row to return,
 and the second specifies the maximum number of rows to return. 
 

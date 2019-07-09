@@ -27,27 +27,28 @@ public class FindTheClosestPalindrome {
 		String nearest = eg.nearestPalindromic("1000");
 		System.out.println(nearest);
 	}
-	// 02/07/2019
+	// Mon Jul  8 22:35:45 2019
 	public String nearestPalindromic(String n) {
-		String nearest = n;
-
 		int size = n.length();
 		if (size >= 2 && areAll9(n)) {
 			return generatePalindromForAll9(size);
 		}
 
-		boolean isOdd = size % 2 == 1;
 		int leftEnd = (size + 1) / 2;
 		String left = n.substring(0, leftEnd);
 
+		boolean isOdd = size % 2 == 1;
 		long minDiff = Long.MAX_VALUE;
 		long[] increments = {-1, 0, 1};
+
+		String nearest = n;
 
 		for (long increment : increments) {
 			String possible = Long.toString(Long.parseLong(left) + increment); 
 			String closestPalindrome = getPalindrome(possible, isOdd);
+
 			// note size >= 2 not closestPalindrome.length()
-			// in theory, even cnt of palindrome should be the same size of closestPalindrome
+			// in theory, even count of palindrome should be the same size of closestPalindrome
 			if (size >= 2 && (closestPalindrome.length() < size || Long.valueOf(closestPalindrome) == 0)) {
 				closestPalindrome = generateAll9Palindrome(size);
 			}
@@ -62,193 +63,195 @@ public class FindTheClosestPalindrome {
 		return nearest;
 	}
 
-    public String nearestPalindromic(String n) {
-        String nearest = n;
-        int size = n.length();
-        if (size >= 2 && areAll9(n)) {
-            return generatePalindromForAll9(size);
-        }
+	public String nearestPalindromic(String n) {
+		String nearest = n;
+		int size = n.length();
+		if (size >= 2 && areAll9(n)) {
+			return generatePalindromForAll9(size);
+		}
 
-        boolean isOdd = size % 2 == 1;
-        // whether even or odd, left is (size + 1) / 2
-        String left = n.substring(0, (size + 1) / 2);
-        long minDiff = Long.MAX_VALUE;
-        // increment applied to left
-        long[] increments = {-1, 0, 1};
-        for (long increment : increments) {
-            String possible = Long.toString(Long.valueOf(left) + increment);
-            // 1000, it is even
-            // possible left parts are 9, 10, 11
-            // corresponding palindrome are 99, 1001, 1111 because it is even
-            // 99 is answer, but 999 is nearest palindrome
-            String closestPalindrome = getPalindrome(possible, isOdd);
-            // note, need to check
-            if (size >= 2 && (closestPalindrome.length() < size || Long.parseLong(closestPalindrome) == 0)) {
-                closestPalindrome = generateAll9Palindrome(size);
-            }
-            // avoid the case which is input is palindrome, output should not the same as input
-            long diff = closestPalindrome.equals(n) ? Long.MAX_VALUE : Math.abs(Long.parseLong(closestPalindrome) - Long.parseLong(n));
-            if (diff < minDiff) {
-                minDiff = diff;
-                nearest = closestPalindrome;
-            }
-        }
+		boolean isOdd = size % 2 == 1;
+		// whether even or odd, left is (size + 1) / 2
+		String left = n.substring(0, (size + 1) / 2);
+		long minDiff = Long.MAX_VALUE;
+		// increment applied to left
+		long[] increments = {-1, 0, 1};
+		for (long increment : increments) {
+			String possible = Long.toString(Long.valueOf(left) + increment);
+			// 1000, it is even
+			// possible left parts are 9, 10, 11
+			// corresponding palindrome are 99, 1001, 1111 because it is even
+			// 99 is the picked up answer, but 999 is real nearest palindrome
+			String closestPalindrome = getPalindrome(possible, isOdd);
+			// note, need to check
+			if (size >= 2 && (closestPalindrome.length() < size || Long.parseLong(closestPalindrome) == 0)) {
+				closestPalindrome = generateAll9Palindrome(size);
+			}
+			// avoid the case which is input is palindrome, output should not the same as input
+			long diff = closestPalindrome.equals(n) ? Long.MAX_VALUE : Math.abs(Long.parseLong(closestPalindrome) - Long.parseLong(n));
+			if (diff < minDiff) {
+				minDiff = diff;
+				nearest = closestPalindrome;
+			}
+		}
 
-        return nearest;
-    }
-    // check if string is all 9
-    public boolean areAll9(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) != '9') {
-                return false;
-            }
-        }
-        return true;
-    }
-    // generate palindrome for 999
-    // note the number of digits
-    public String generatePalindromForAll9(int size) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(1);
-        for (int i = 1; i < size; i++) {
-            sb.append(0);
-        }
-        sb.append(1);
+		return nearest;
+	}
+	// check if string is all 9
+	public boolean areAll9(String s) {
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) != '9') {
+				return false;
+			}
+		}
+		return true;
+	}
+	// generate palindrome for 999
+	// note the number of digits
+	public String generatePalindromForAll9(int size) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(1);
+		for (int i = 1; i < size; i++) {
+			sb.append(0);
+		}
+		sb.append(1);
 
-        return sb.toString();
-    }
-    // e.g. 123 => 12321, 12 => 1221
-    // construct palindrome based on left
-    public String getPalindrome(String s, boolean isOdd) {
-        String leftMirrorAsRight = new StringBuilder(s).reverse().toString();
-        return isOdd ? s.substring(0, s.length() - 1) + leftMirrorAsRight : s + leftMirrorAsRight;
-    }
-    
-    public String generateAll9Palindrome(int size) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i < size; i++) {
-            sb.append(9);
-        }
-        return sb.toString();
-    }
+		return sb.toString();
+	}
+	// e.g. 123 => 12321, 12 => 1221
+	// construct palindrome based on left
+	public String getPalindrome(String s, boolean isOdd) {
+		String leftMirrorAsRight = new StringBuilder(s).reverse().toString();
+
+		return isOdd ? s.substring(0, s.length() - 1) + leftMirrorAsRight : s + leftMirrorAsRight;
+	}
+	
+	public String generateAll9Palindrome(int size) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 1; i < size; i++) {
+			sb.append(9);
+		}
+
+		return sb.toString();
+	}
 
 	// method 2, this is to find next closest palindrome
 	public String nearestPalindromic(String n) {
-        int size = n.length();
-        if ( AreAll9s(n) ) {
-        	return generateClosestAll9s(size);
-        }
-        // other regular cases
-        int[] nums = convert(n.toCharArray());
-        int mid = size / 2;
-        boolean leftsmaller = false;
-        int i = mid - 1;
-        int j = size % 2 == 1 ? mid + 1 : mid;
-        // Initially, ignore the middle same digits 
-        while (i >= 0 && j < size && nums[i] == nums[j]) {
-            i--;
-            j++;
-        }
-        // Find if the middle digit(s) need to be incremented or not (or copying left side is not sufficient)
-        // Indices i & j cross the boundary or left is smaller than right part for sure, use one boolean leftsmaller
-        if (i < 0 || j > size || nums[i] < nums[j]) {
-            leftsmaller = true;
-        }
-        // Copy the mirror of left to tight
-        while (i >= 0) {
-            nums[j] = nums[i];
-            j++;
-            i--;
-        }
-        // Handle the case where middle digit(s) must be incremented
-        if (leftsmaller) {
-            int carry = -1;
-            i = mid - 1;
-            // If there are odd digits, then increment the middle digit and store the carry
-            if (size % 2 == 1) {
-                nums[mid] += carry;
-                carry = nums[mid] / 10;
-                nums[mid] %= 10;
-                j = mid + 1;
-            } else {
-                j = mid;
-            }
-            // Add 1 to the rightmost digit of the left side, propagate the carry towards MSB digit
-            // and simultaneously copying mirror of the left side to the right side
-            while (i >= 0) {
-                nums[i] += carry;
-                carry = nums[i] / 10;
-                nums[i] %= 10;
-                nums[j++] = nums[i--]; // copy mirror to right
-            }
-        }
+		int size = n.length();
+		if ( AreAll9s(n) ) {
+			return generateClosestAll9s(size);
+		}
+		// other regular cases
+		int[] nums = convert(n.toCharArray());
+		int mid = size / 2;
+		boolean leftsmaller = false;
+		int i = mid - 1;
+		int j = size % 2 == 1 ? mid + 1 : mid;
+		// Initially, ignore the middle same digits 
+		while (i >= 0 && j < size && nums[i] == nums[j]) {
+			i--;
+			j++;
+		}
+		// Find if the middle digit(s) need to be incremented or not (or copying left side is not sufficient)
+		// Indices i & j cross the boundary or left is smaller than right part for sure, use one boolean leftsmaller
+		if (i < 0 || j > size || nums[i] < nums[j]) {
+			leftsmaller = true;
+		}
+		// Copy the mirror of left to tight
+		while (i >= 0) {
+			nums[j] = nums[i];
+			j++;
+			i--;
+		}
+		// Handle the case where middle digit(s) must be incremented
+		if (leftsmaller) {
+			int carry = -1;
+			i = mid - 1;
+			// If there are odd digits, then increment the middle digit and store the carry
+			if (size % 2 == 1) {
+				nums[mid] += carry;
+				carry = nums[mid] / 10;
+				nums[mid] %= 10;
+				j = mid + 1;
+			} else {
+				j = mid;
+			}
+			// Add 1 to the rightmost digit of the left side, propagate the carry towards MSB digit
+			// and simultaneously copying mirror of the left side to the right side
+			while (i >= 0) {
+				nums[i] += carry;
+				carry = nums[i] / 10;
+				nums[i] %= 10;
+				nums[j++] = nums[i--]; // copy mirror to right
+			}
+		}
 
-        return convertToString(nums);
-    }
+		return convertToString(nums);
+	}
 
-    public boolean AreAll9s(String nums) {
-        for (int i = 0; i < nums.length(); i++) {
-            if ( nums.charAt(i) != '9' ) {
-                return false;
-            }
-        }
+	public boolean AreAll9s(String nums) {
+		for (int i = 0; i < nums.length(); i++) {
+			if ( nums.charAt(i) != '9' ) {
+				return false;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    private int[] convert(char[] nums) {
-        int[] result = new int[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            result[i] = nums[i] - '0';
-        }
-        return result;
-    }
+	private int[] convert(char[] nums) {
+		int[] result = new int[nums.length];
+		for (int i = 0; i < nums.length; i++) {
+			result[i] = nums[i] - '0';
+		}
+		return result;
+	}
 
-    private String convertToString(int[] nums) {
-        StringBuilder sb = new StringBuilder();
-        for (int num : nums) {
-            sb.append(num);
-        }
-
-        return sb.toString();
-    }
-
-    private String generateClosestAll9s(int size) {
+	private String convertToString(int[] nums) {
 		StringBuilder sb = new StringBuilder();
-        sb.append('1');
-        for (int i = 1; i < size; i++) {
-            sb.append('0');
-        }
-        sb.append('1');
+		for (int num : nums) {
+			sb.append(num);
+		}
 
-        return sb.toString();
-    }
+		return sb.toString();
+	}
+
+	private String generateClosestAll9s(int size) {
+		StringBuilder sb = new StringBuilder();
+		sb.append('1');
+		for (int i = 1; i < size; i++) {
+			sb.append('0');
+		}
+		sb.append('1');
+
+		return sb.toString();
+	}
 	
 	// direct method
 	public String nearestPalindromic(String n) {
-        long N = Long.parseLong(n);
-        for (long i = 1; i <= N; i++) {
-            if (isPalindrome(N - i)) {
-                return "" + (N - i);
-            }
-            if (isPalindrome(N + i)) {
-                return "" + (N + i);
-            }
-        }
-        
-        return "0";
-    }
+		long N = Long.parseLong(n);
+		for (long i = 1; i <= N; i++) {
+			if (isPalindrome(N - i)) {
+				return "" + (N - i);
+			}
+			if (isPalindrome(N + i)) {
+				return "" + (N + i);
+			}
+		}
 
-    public boolean isPalindrome(long n) {
-        String str = String.valueOf(n);
-        int l = str.length();
-        
-        for (int i = 0; i < l / 2; i++) {
-            if (str.charAt(i) != str.charAt(l - 1 - i)) {
-                return false;
-            }
-        }
+		return "0";
+	}
 
-        return true;
-    }
+	public boolean isPalindrome(long n) {
+		String str = String.valueOf(n);
+		int size = str.length();
+		
+		for (int i = 0; i < size / 2; i++) {
+			if (str.charAt(i) != str.charAt(size - 1 - i)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

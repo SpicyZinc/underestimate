@@ -51,6 +51,45 @@ class IntervalListIntersections {
 			System.out.println(Arrays.toString(row));
 		}
 	}
+	// Fri Jul  5 17:48:14 2019
+	public int[][] intervalIntersection(int[][] A, int[][] B) {
+		int m = A.length;
+		int n = B.length;
+
+		int i = 0;
+		int j = 0;
+
+		List<int[]> intervals = new ArrayList<>();
+
+		while (i < m && j < n) {
+			int[] rangeA = A[i];
+			int[] rangeB = B[j];
+
+			if (rangeB[0] > rangeA[1]) {
+				i++;
+			} else if (rangeA[0] > rangeB[1]) {
+				j++;
+			} else {
+				intervals.add(new int[] {Math.max(rangeA[0], rangeB[0]), Math.min(rangeA[1], rangeB[1])});
+				// 还要细分 谁 advance by 1, note
+				if (rangeA[1] < rangeB[1]) {
+					i++;
+				} else {
+					j++;
+				}
+			}
+		}
+
+		int size = intervals.size();
+		int[][] result = new int[size][2];
+		
+		int k = 0;
+		for (int[] interval : intervals) {     
+			result[k++] = interval;
+		}
+
+		return result;
+	}
 
 	public int[][] intervalIntersection(int[][] A, int[][] B) {
 		List<Point> points = new ArrayList<>();
@@ -89,6 +128,7 @@ class IntervalListIntersections {
 			}
 			if (count == 1 && start != -1) {
 				result.add(new int[] {start, point.val});
+
 				start = -1;
 			}
 		}

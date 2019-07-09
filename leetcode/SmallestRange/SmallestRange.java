@@ -48,7 +48,7 @@ class SmallestRange {
 		int[] result = new int[2];
 		
 		int minRange = Integer.MAX_VALUE;
-		// key is position, value is frequency
+		// key is position, value is frequency of this position 这个所属原list的位置 这个位置出现的次数
 		Map<Integer, Integer> allPositions = new HashMap<>();
 
 		int cntPos = 0;
@@ -150,57 +150,57 @@ class SmallestRange {
 
 	// method 2
 	class Element {
-        int idx;
-        int val;
-        int listId;
-        
-        public Element(int idx, int val, int listId) {
-            this.idx = idx;
-            this.val = val;
-            this.listId = listId;
-        }
-    }
+		int idx;
+		int val;
+		int listId;
+		
+		public Element(int idx, int val, int listId) {
+			this.idx = idx;
+			this.val = val;
+			this.listId = listId;
+		}
+	}
 
-    public int[] smallestRange(List<List<Integer>> nums) {
-        PriorityQueue<Element> pq = new PriorityQueue<Element>(new Comparator<Element>() {
-            @Override
-            public int compare(Element a, Element b) {
-                return a.val - b.val;
-            }
-        });
+	public int[] smallestRange(List<List<Integer>> nums) {
+		PriorityQueue<Element> pq = new PriorityQueue<Element>(new Comparator<Element>() {
+			@Override
+			public int compare(Element a, Element b) {
+				return a.val - b.val;
+			}
+		});
 
-        int max = Integer.MIN_VALUE;
-        int start = -1;
-        int end = -1;
-        int range = Integer.MAX_VALUE;
+		int max = Integer.MIN_VALUE;
+		int start = -1;
+		int end = -1;
+		int range = Integer.MAX_VALUE;
 
-        for (int i = 0; i < nums.size(); i++) {
-            int minOfList = nums.get(i).get(0);
-            pq.offer(new Element(0, minOfList, i));
+		for (int i = 0; i < nums.size(); i++) {
+			int minOfList = nums.get(i).get(0);
+			pq.offer(new Element(0, minOfList, i));
 
-            max = Math.max(max, minOfList);
-        }
+			max = Math.max(max, minOfList);
+		}
 
-        while (pq.size() == nums.size()) {
-            Element smallest = pq.poll();
+		while (pq.size() == nums.size()) {
+			Element smallest = pq.poll();
 
-            if (max - smallest.val < range) {
-                range = max - smallest.val;
-                start = smallest.val;
-                end = max;
-            }
-            // add the next element of that array which pops the smallest to pq
-            // how? manually update it by changing its property
-            // 如果贡献smallest的list还没有到底的话
-            if (smallest.idx + 1 < nums.get(smallest.listId).size()) {
-                smallest.idx += 1;
-                smallest.val = nums.get(smallest.listId).get(smallest.idx);
-                pq.offer(smallest);
-                // update max
-                max = Math.max(max, smallest.val);
-            }
-        }
+			if (max - smallest.val < range) {
+				range = max - smallest.val;
+				start = smallest.val;
+				end = max;
+			}
+			// add the next element of that array which pops the smallest to pq
+			// how? manually update it by changing its property
+			// 如果贡献smallest的list还没有到底的话
+			if (smallest.idx + 1 < nums.get(smallest.listId).size()) {
+				smallest.idx += 1;
+				smallest.val = nums.get(smallest.listId).get(smallest.idx);
+				pq.offer(smallest);
+				// update max
+				max = Math.max(max, smallest.val);
+			}
+		}
 
-        return new int[] {start, end};
-    }
+		return new int[] {start, end};
+	}
 }

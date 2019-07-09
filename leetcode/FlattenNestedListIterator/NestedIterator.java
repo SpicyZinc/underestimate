@@ -38,67 +38,67 @@ push the last in nestedList to stack first
  * }
  */
 public class NestedIterator implements Iterator<Integer> {
-    Stack<NestedInteger> stack = new Stack<NestedInteger>();
-    public NestedIterator(List<NestedInteger> nestedList) {
-        if (nestedList == null) {
-            return;
-        }
-        for (int i = nestedList.size() - 1; i >= 0; i--) {
-            stack.push(nestedList.get(i));
-        }
-    }
+	Stack<NestedInteger> stack = new Stack<NestedInteger>();
+	public NestedIterator(List<NestedInteger> nestedList) {
+		if (nestedList == null) {
+			return;
+		}
+		for (int i = nestedList.size() - 1; i >= 0; i--) {
+			stack.push(nestedList.get(i));
+		}
+	}
 
-    @Override
-    public Integer next() {
-        return stack.pop().getInteger();
-    }
+	@Override
+	public Integer next() {
+		return stack.pop().getInteger();
+	}
 
-    @Override
-    public boolean hasNext() {
-        while (!stack.isEmpty()) {
-            NestedInteger top = stack.peek();
-            if (top.isInteger()) {
-                return true;
-            } else {
-                stack.pop();
-                List<NestedInteger> temp = top.getList();
-                for (int i = temp.size() - 1; i >= 0; i--) {
-                    stack.push(temp.get(i));
-                }
-            }
-        }
+	@Override
+	public boolean hasNext() {
+		while (!stack.isEmpty()) {
+			NestedInteger top = stack.peek();
+			if (top.isInteger()) {
+				return true;
+			} else {
+				stack.pop();
+				List<NestedInteger> temp = top.getList();
+				for (int i = temp.size() - 1; i >= 0; i--) {
+					stack.push(temp.get(i));
+				}
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    // hacker way with DFS
-    List<Integer> result;
-    int index;
-    public NestedIterator(List<NestedInteger> nestedList) {
-        result = new ArrayList<Integer>();
-        index = 0;
-        dfs(nestedList, result);
-    }
+	// hacker way with DFS
+	List<Integer> result;
+	int index;
+	public NestedIterator(List<NestedInteger> nestedList) {
+		result = new ArrayList<Integer>();
+		index = 0;
+		dfs(nestedList, result);
+	}
 
-    @Override
-    public Integer next() {
-        return result.get(index++);
-    }
+	@Override
+	public Integer next() {
+		return result.get(index++);
+	}
 
-    @Override
-    public boolean hasNext() {
-        return index != result.size();
-    }
+	@Override
+	public boolean hasNext() {
+		return index != result.size();
+	}
 
-    public void dfs(List<NestedInteger> list, List<Integer> result) {
-        for (NestedInteger temp : list) {
-            if (temp.isInteger()) {
-                result.add(temp.getInteger());
-            } else {
-                dfs(temp.getList(), result);
-            }
-        }
-    }
+	public void dfs(List<NestedInteger> list, List<Integer> result) {
+		for (NestedInteger temp : list) {
+			if (temp.isInteger()) {
+				result.add(temp.getInteger());
+			} else {
+				dfs(temp.getList(), result);
+			}
+		}
+	}
 }
 
 /**

@@ -12,7 +12,7 @@ Input: bottom = "XYZ", allowed = ["XYD", "YZE", "DEA", "FFF"]
 Output: true
 Explanation:
 We can stack the pyramid like this:
-    A
+	A
    / \
   D   E
  / \ / \
@@ -37,36 +37,51 @@ bottom layer becomes above layer
 iteratively
 */
 
-class PyramidTransitionMatrix {
-    public boolean pyramidTransition(String bottom, List<String> allowed) {
-		Map<String, Set<Character>> hm = new HashMap<>();
-		for (String allow : allowed) {
-			String key = allow.substring(0, 2);
-			if (hm.containsKey(key)) {
-				hm.get(key).add(allow.charAt(2));
-			} else {
-                Set<Character> temp = new HashSet<Character>();
-                temp.add(allow.charAt(2));
-				hm.put(key, temp);
-			}
-		}
+import java.util.*;
 
-		return helper(bottom, "", hm);
+class PyramidTransitionMatrix {
+	public static void main(String[] args) {
+		String bottom = "BCD";
+		String[] allowedPattern = {"BCG", "CDE", "GEA", "FFF"};
+
+		List<String> allowed = Arrays.asList(allowedPattern);
+
+		PyramidTransitionMatrix eg = new PyramidTransitionMatrix();
+		eg.pyramidTransition(bottom, allowed);
 	}
 
-	private boolean helper(String currentLevel, String above, Map<String, Set<Character>> hm) {
-		if (currentLevel.length() == 2 && above.length() == 1) {
+	public boolean pyramidTransition(String bottom, List<String> allowed) {
+		Map<String, Set<Character>> hm = new HashMap<>();
+
+		for (String allow : allowed) {
+			// get base
+			String base = allow.substring(0, 2);
+			// get top
+			char top = allow.charAt(2);
+			hm.computeIfAbsent(base, x -> new HashSet<>()).add(top);
+		}
+
+		return dfs(bottom, "", hm);
+	}
+
+	public boolean dfs(String base, String above, Map<String, Set<Character>> hm) {
+		// 已经构造完成一个 pyramid
+		if (base.length() == 2 && above.length() == 1) {
 			return true;
 		}
-		if (currentLevel.length() - 1 == above.length()) {
-			// move to above level, above becomes currentLevel
-			return helper(above, "", hm);
+		// base 层 比上一次 多 1 个 就是要 重新 换 base 了
+		if (base.length() - 1 == above.length()) {
+			// move to above level, above becomes base
+			return dfs(above, "", hm);
 		}
+
+		// 根据 上一层填充的长度 来 选择 base
 		int pos = above.length();
-		String base = currentLevel.substring(pos, pos + 2);
-		if (hm.containsKey(base)) {
-			for (char c : hm.get(base)) {
-				if (helper(currentLevel, above + c, hm)) {
+		String baseLine = base.substring(pos, pos + 2);
+
+		if (hm.containsKey(baseLine)) {
+			for (char c : hm.get(baseLine)) {
+				if (dfs(base, above + c, hm)) {
 					return true;
 				}
 			}

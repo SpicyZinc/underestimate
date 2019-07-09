@@ -24,14 +24,40 @@ Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.
 Note:
 0 ≤ N ≤ 30.
 
+idea:
+05/24/2019 Amazon onsite
 */
 
 class FibonacciNumber {
-    public int fib(int N) {
-        if (N == 0 || N == 1) {
-            return N;
-        }
-        
-        return fib(N - 1) + fib(N - 2);
-    }
+	public static void main(String[] args) {
+		FibonacciNumber eg = new FibonacciNumber();
+
+		int fn1 = eg.fib(8);
+		long fn2 = eg.fibDP(8);
+
+		System.out.println(fn1);
+		System.out.println(fn2);
+	}
+
+	public int fib(int N) {
+		if (N == 0 || N == 1) {
+			return N;
+		}
+
+		return fib(N - 1) + fib(N - 2);
+	}
+
+	public long fibDP(int n) {
+		long n1 = 1;
+		long n2 = 1;
+		long current = 2;
+
+		for (int i = 3; i <= n; i++) {
+			current = n1 + n2;
+			n1 = n2;
+			n2 = current;
+		}
+
+		return current;
+	}
 }

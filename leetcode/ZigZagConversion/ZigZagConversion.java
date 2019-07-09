@@ -26,6 +26,13 @@ Y A   H R
 P     I
 
 idea:
+第一行
+最后一行
+numRows + numRows - 1 - 1
+差距就是 多少行 然后 再加上 折回来的部分 少两个
+
+对于其他的中间行 j + base - 2 * i
+
 http://www.lifeincode.net/programming/leetcode-zigzag-conversion-java/
 
 0       8        16 ...

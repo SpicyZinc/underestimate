@@ -22,8 +22,8 @@ There may be multiple valid order of letters, return any one of them is fine.
 
 idea:
 two maps,
-hm char <-> Set<Character> == parent char <-> subsequent following chars
-inDegree char <-> cnt of points pointing to char
+hm: char <-> Set<Character> == parent char <-> subsequent following chars
+inDegree: char <-> count of points pointing to this char
 in essence, this is topological sorting of DAG
 
 有多少个letter 就是多少个vertex 在 graph 中
@@ -54,6 +54,82 @@ class AlienDictionary {
 		String order = eg.alienOrder(words); // "wertf"
 		System.out.println(order);
 	}
+	// Mon Jul  8 21:54:24 2019
+	public String alienOrder(String[] words) {
+		String order = "";
+		
+		if (words.length == 0 || words == null) {
+			return order;
+		}
+		
+		Map<Character, Set<Character>> graph = new HashMap<>();
+		Map<Character, Integer> indegree = new HashMap<>();
+		
+		int size = words.length;
+		
+		for (String word : words) {
+			for (int i = 0; i < word.length(); i++) {
+				indegree.put(word.charAt(i), 0);
+			}
+		}
+			
+		for (int i = 0; i < size - 1; i++) {
+			String curr = words[i];
+			String next = words[i + 1];
+			
+			int minLen = Math.min(curr.length(), next.length());
+			
+			for (int j = 0; j < minLen; j++) {
+				char a = curr.charAt(j);
+				char b = next.charAt(j);
+				
+				if (a != b) {
+					Set<Character> hs = graph.computeIfAbsent(a, x -> new HashSet<>());
+					if (!hs.contains(b)) {
+						indegree.put(b, indegree.getOrDefault(b, 0) + 1);
+						hs.add(b);
+					}
+					// 别忘了 break
+					break;
+				}
+			}
+		}
+		
+		Queue<Character> queue = new LinkedList<>();
+
+		for (Map.Entry<Character, Integer> entry : indegree.entrySet()) {
+			char c = entry.getKey();
+			int count = entry.getValue();
+			
+			if (count == 0) {
+				queue.offer(c);
+			}
+		}
+		
+		while (!queue.isEmpty()) {
+			char c = queue.poll();
+			order += c;
+			
+			Set<Character> followings = graph.get(c);
+			
+			if (followings != null) {
+				for (char follow : followings) {
+					indegree.put(follow, indegree.get(follow) - 1);
+					
+					if (indegree.get(follow) == 0) {
+						queue.offer(follow);
+					}
+				}
+			}
+		}
+		
+		if (order.length() != indegree.size()) {
+			return "";
+		}
+		
+		return order;
+	}
+
 	// Sun Jun  9 20:43:25 2019
 	public String alienOrder(String[] words) {
 		String order = "";
@@ -73,8 +149,9 @@ class AlienDictionary {
 				inDegree.put(word.charAt(i), 0);
 			}
 		}
+
 		// graph
-        for (int i = 0; i < size - 1; i++) {
+		for (int i = 0; i < size - 1; i++) {
 			String curr = words[i];
 			String next = words[i + 1];
 
@@ -172,13 +249,13 @@ class AlienDictionary {
 					if (hs == null) {
 						hs = new HashSet<>();
 					}
-                    // note, has to check first?
-                    if (!hs.contains(b)) {
-                        hs.add(b);
-                        graph.put(a, hs);
+					// note, has to check first?
+					if (!hs.contains(b)) {
+						hs.add(b);
+						graph.put(a, hs);
 
-                        indegree.put(b, indegree.getOrDefault(b, 0) + 1);
-                    }
+						indegree.put(b, indegree.getOrDefault(b, 0) + 1);
+					}
 
 					break;
 				}
@@ -186,7 +263,7 @@ class AlienDictionary {
 		}
 
 		// find indegree 0 point (char)
-        // queue only store node (char) of indegree 0
+		// queue only store node (char) of indegree 0
 		Queue<Character> queue = new LinkedList<>();
 
 		for (Map.Entry<Character, Integer> entry : indegree.entrySet()) {
@@ -214,10 +291,10 @@ class AlienDictionary {
 				}
 			}
 		}
-        
-        if (order.length() != indegree.size()) {
-            return "";
-        }
+		
+		if (order.length() != indegree.size()) {
+			return "";
+		}
 
 		return order;
 	}

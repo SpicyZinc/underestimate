@@ -26,12 +26,12 @@ Four edges correspond to row == 0 || row == totalRow - 1 || col == 0 || col == t
 public class DiagonalTraverse {
 	// [0,0] -> [0,1],[1,0] -> [2,0],[1,1],[0,2] -> [1,2],[2,1] -> [2,2]
 	// 找规律 注意 利用sum parity to find 交替变换的方向
-	// best solution
+
 	public int[] findDiagonalOrder(int[][] matrix) {
 		if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
 			return new int[0];
 		}
-		
+
 		int m = matrix.length;
 		int n = matrix[0].length;
 

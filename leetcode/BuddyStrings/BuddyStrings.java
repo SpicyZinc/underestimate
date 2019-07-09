@@ -31,36 +31,37 @@ self come up this idea
 */
 
 class BuddyStrings {
-    public boolean buddyStrings(String A, String B) {
-        if (A.length() == 0 && B.length() == 0) {
-            return false;
-        }
-        
-        if (A.length() != B.length()) {
-            return false;
-        }
-        
-        List<Character> list = new ArrayList<Character>();
-        for (int i = 0; i < A.length(); i++) {
-            if (A.charAt(i) != B.charAt(i)) {
-                list.add(A.charAt(i));
-                list.add(B.charAt(i));
-            }
-        }
-        
-        if (!list.isEmpty()) {
-            return list.size() == 4 && list.get(0) == list.get(3) && list.get(1) == list.get(2) || list.isEmpty() && !A.equals(B);    
-        } else {
+	public boolean buddyStrings(String A, String B) {
+		if (A.length() == 0 && B.length() == 0) {
+			return false;
+		}
+		
+		if (A.length() != B.length()) {
+			return false;
+		}
+		
+		List<Character> list = new ArrayList<Character>();
+		for (int i = 0; i < A.length(); i++) {
+			if (A.charAt(i) != B.charAt(i)) {
+				list.add(A.charAt(i));
+				list.add(B.charAt(i));
+			}
+		}
+		
+		if (!list.isEmpty()) {
+			return list.size() == 4 && list.get(0) == list.get(3) && list.get(1) == list.get(2) || list.isEmpty() && !A.equals(B);    
+		} else {
 			boolean isDuplicate = false;
-	        char[] chars = A.toCharArray();
-	        Arrays.sort(chars);
-	        for (int i = 1; i < chars.length; i++) {
-	            if (chars[i - 1] == chars[i]) {
-	                isDuplicate = true;
-	            }
-	        }
+			char[] chars = A.toCharArray();
+			Arrays.sort(chars);
 
-            return A.length() == 1 || isDuplicate;
-        }        
-    }
+			for (int i = 1; i < chars.length; i++) {
+				if (chars[i - 1] == chars[i]) {
+					isDuplicate = true;
+				}
+			}
+
+			return A.length() == 1 || isDuplicate;
+		}        
+	}
 }

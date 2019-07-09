@@ -23,8 +23,29 @@ Note:
 All points are distinct.
 
 idea:
-https://leetcode.com/problems/minimum-area-rectangle/discuss/192025/Java-N2-Hashmap
-need to go back, copied, not fully understand
+用 hashmap 就是为了以后好找 确定 一个 rectangle
+	|
+	|
+	|		p2
+	|
+	|
+	|	p1
+	|
+----------------------		
+	|
+	|
+	|
+
+p1 (x1, y1)
+p2 (x2, y2)
+
+x1 != x2 && y1 != y2
+再辅助以 hashmap
+hm.get(x1).contains(y2)
+hm.get(x2).contains(y1)
+
+这样来构成一个 rectangle
+注意这个技巧 
 */
 
 class MinimumAreaRectangle {

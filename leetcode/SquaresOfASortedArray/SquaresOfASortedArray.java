@@ -18,6 +18,8 @@ A is sorted in non-decreasing order.
 
 idea:
 找到正负转换节点
+然后再依次 left-- or right++
+就像 merge sorted array
 */
 
 class SquaresOfASortedArray {

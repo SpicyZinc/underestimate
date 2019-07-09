@@ -10,56 +10,53 @@ idea:
 3. recursively
 */
 public class ReverseString {
-    public static void main(String[] args) {
-        ReverseString eg = new ReverseString();
-        System.out.println(eg.reverseString("abc"));
+	public static void main(String[] args) {
+		ReverseString eg = new ReverseString();
+		System.out.println(eg.reverseString("abc"));
+	}
 
-    }
-    // method 2: use swap method
-    public String reverseString(String s) {
-        if (s.length() == 0 || s == null) {
-            return s;
-        }
+	public void reverseString(char[] s) {
+		char[] chars = s;
+		int size = s.length;
 
-        int length = s.length();
-        char[] chars = s.toCharArray();
-        for (int L = 0, R = length - 1; L < R; L++, R--) {
-            char temp = chars[L];
-            chars[L] = chars[R];
-            chars[R] = temp;
-        }
+		for (int i = 0; i < size / 2; i++) {
+			char temp = chars[i];
+			chars[i] = chars[size - 1 - i];
+			chars[size - 1 - i] = temp;
+		}
+	}
 
-        return new String(chars);
-    }
+	public void reverseString(char[] s) {
+		if (s == null || s.length == 0) {
+			return;
+		}
 
-    public String reverseString(String s){
-        if (s == null || s.length() == 0) {
-            return s;
-        }
-        char[] chars = s.toCharArray();
-        int begin = 0, end = s.length() - 1;
-        while (begin <= end) {
-            char c = chars[begin];
-            chars[begin] = chars[end];
-            chars[end] = c;
-            begin++;
-            end--;
-        }
-        
-        return new String(chars);
-    }
+		int begin = 0;
+		int end = s.length - 1;
 
-    // method 1, use StringBuilder reverse()
-    public String reverseString(String s) {
-        StringBuilder str = new StringBuilder(s);
-        return str.reverse().toString();
-    }
-    // method 3, recursively reverse
-    //  Memory Limit Exceeded
-    public String reverseString(String s) {
-        if (s == null || s.length() <= 1) {
-            return s;
-        }
-        return reverseString(s.substring(1)) + s.substring(0, 1);
-    }
+		while (begin <= end) {
+			char c = s[begin];
+			s[begin] = s[end];
+			s[end] = c;
+
+			begin++;
+			end--;
+		}
+	}
+
+	// use StringBuilder reverse()
+	public String reverseString(String s) {
+		StringBuilder str = new StringBuilder(s);
+
+		return str.reverse().toString();
+	}
+
+	// recursively reverse, Memory Limit Exceeded
+	public String reverseString(String s) {
+		if (s == null || s.length() <= 1) {
+			return s;
+		}
+
+		return reverseString(s.substring(1)) + s.substring(0, 1);
+	}
 }

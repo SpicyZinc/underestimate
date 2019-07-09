@@ -49,6 +49,7 @@ public class Reverse String {
 			int end = Math.min(s.begin() + i + k, s.length());
 			reverse(s.begin() + i, end);
 		}
+
 		return s;
     }
 }

@@ -58,7 +58,7 @@ public class LongestIncreasingPathInAMatrix {
 		return longestIncreasingPathLen;
 	}
 
-	// i, j 以 为起点的path的最大长度
+	// 以 i, j为起点的path的最大长度
 	public int dfs(int[][] matrix, int i, int j, int[][] memo) {
 		if (memo[i][j] != 0) {
 			return memo[i][j];

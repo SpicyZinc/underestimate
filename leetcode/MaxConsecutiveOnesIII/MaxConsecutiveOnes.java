@@ -22,14 +22,38 @@ Note:
 A[i] is 0 or 1
 
 idea:
-need to come back
+sliding window
+this is equivalent to
+Find the longest subarray with at most K zeros.
+
+dp
+http://www.noteanddata.com/leetcode-1004-Max-Consecutive-Ones-III-java-solution-note.html
 */
 
 class MaxConsecutiveOnes {
 	public int longestOnes(int[] A, int K) {
+		int left = 0;
+		int right = 0;
+
+		for (; right < A.length; right++) {
+			if (A[right] == 0) {
+				// convert 0 to 1
+				K--;
+			}
+			// K used up, 用光了
+			if (K < 0 && A[left++] == 0) {
+				K++;
+			}
+		}
+
+		return right - left;
+	}
+
+	public int longestOnes(int[] A, int K) {
 		int size = A.length;
-		int max = Integer.MIN_VALUE;
 		int[] dp = new int[K + 1];
+
+		int max = Integer.MIN_VALUE;
 
 		for (int i = 0; i < size; i++) {
 			for (int j = K; j >= 0; j--) {

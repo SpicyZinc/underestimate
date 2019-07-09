@@ -54,6 +54,85 @@ class SlidingPuzzle {
 
 		eg.slidingPuzzle(board);
 	}
+	// Mon Jun 24 00:28:39 2019
+	public int slidingPuzzle(int[][] board) {
+		int m = board.length;
+		int n = board[0].length;
+		
+		int[][] directions = new int[][] {
+			{0, -1},
+			{-1, 0},
+			{0, 1},
+			{1, 0},
+		};
+		
+		Set<String> visited = new HashSet<>();
+		
+		String target = "123450";
+		
+		Queue<String> queue = new LinkedList<>();
+		String encoded = encode(board);
+		queue.add(encoded);
+		
+		int cnt = 0;
+		
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			
+			for (int i = 0; i < size; i++) {
+				String s = queue.poll();
+				
+				if (s.equals(target)) {
+					return cnt;
+				}
+				
+				int pos = s.indexOf("0");
+				
+				int x = pos / n;
+				int y = pos % n;
+				
+				for (int[] dir : directions) {
+					int nextX = x + dir[0];
+					int nextY = y + dir[1];
+					
+					if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n) {
+						String newStr = swap(s, pos, nextX * n + nextY);
+						if (visited.add(newStr)) {
+							queue.add(newStr);
+						}
+					}
+				}
+			}
+
+			cnt++;
+		}
+		
+		return -1;
+	}
+
+	
+	public String swap(String s, int i, int j) {
+		char[] chars = s.toCharArray();
+		char c = chars[i];
+		chars[i] = chars[j];
+		chars[j] = c;
+		
+		return new String(chars);
+	}
+	
+	public String encode(int[][] board) {
+		StringBuilder sb = new StringBuilder();
+		
+		for (int[] line : board) {
+			for (int num : line) {
+				sb.append(num);
+			}
+		}
+
+		return sb.toString();
+	}
+
+
 	// BFS
 	public int slidingPuzzle(int[][] board) {
 		int m = board.length;
@@ -76,8 +155,10 @@ class SlidingPuzzle {
 
 		while (!queue.isEmpty()) {
 			int size = queue.size();
+
 			for (int i = 0; i < size; i++) {
 				String s = queue.poll();
+
 				if (s.equals(target)) {
 					return cnt;
 				}
@@ -108,6 +189,7 @@ class SlidingPuzzle {
 
 	private String convertToString(int[][] board) {
 		StringBuilder sb = new StringBuilder();
+
 		for (int[] line : board) {
 			for (int i : line) {
 				sb.append(i);
@@ -128,7 +210,7 @@ class SlidingPuzzle {
 
 
 	int min = Integer.MAX_VALUE;
-	Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+	Map<Integer, Integer> hm = new HashMap<>();
 
 	public int slidingPuzzle(int[][] board) {
 		int m = board.length;
@@ -158,14 +240,16 @@ class SlidingPuzzle {
 	public void dfs(int[][] board, int x, int y, int moveCnt) {
 		// some early return cases
 		// 1. if current move count > min, no need to continue
-		// 2. if fount one successful, update min and return
+		// 2. if found out one successful, update min and return
 		// 3. if hashmap contains code <-> moveCnt pair before, avoid duplicate, return
 		if (moveCnt > min) {
 			return;
 		}
+
 		int code = encode(board);
 		if (code == 123450) {
 			min = moveCnt;
+
 			return;
 		}
 		// code here cannot be 123450
@@ -185,9 +269,11 @@ class SlidingPuzzle {
 			{1, 0},
 			{-1, 0},
 		};
+
 		for (int[] dir : directions) {
 			int newX = x + dir[0];
 			int newY = y + dir[1];
+
 			if (newX < m && newX >= 0 && newY < n && newY >= 0) {
 				swap(board, x, y, newX, newY);
 				dfs(board, newX, newY, moveCnt + 1);
@@ -196,23 +282,23 @@ class SlidingPuzzle {
 		}
 	}
 
-	public void swap(int[][] board, int m, int n, int x, int y) {
-		int temp = board[m][n];
-		board[m][n] = board[x][y];
-		board[x][y] = temp;
-	}
-
 	public int encode(int[][] board) {
 		int m = board.length;
 		int n = board[0].length;
 		int code = 0;
+
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				code *= 10;
-				code += board[i][j];
+				code = code * 10 + board[i][j];
 			}
 		}
 
 		return code;
+	}
+
+	public void swap(int[][] board, int m, int n, int x, int y) {
+		int temp = board[m][n];
+		board[m][n] = board[x][y];
+		board[x][y] = temp;
 	}
 }

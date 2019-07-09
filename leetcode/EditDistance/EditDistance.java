@@ -61,77 +61,77 @@ public class EditDistance {
 
 		return dp[m][n];
 	}
-    // 08/25/2018
-    public int minDistance(String word1, String word2) {
-        int size1 = word1.length();
-        int size2 = word2.length();
-        
-        int[][] dp = new int[size1 + 1][size2 + 1];
-        // empty to empty string, 0 change
-        dp[0][0] = 0;
-        // i chars to empty string, i times of changes
-        for (int i = 1; i <= size1; i++) {
-            dp[i][0] = i;
-        }
-        for (int j = 1; j <= size2; j++) {
-            dp[0][j] = j;
-        }
-        
-        for (int i = 1; i <= size1; i++) {
-            for (int j = 1; j <= size2; j++) {
-                char c1 = word1.charAt(i - 1);
-                char c2 = word2.charAt(j - 1);
-                if (c1 == c2) {
-                    dp[i][j] = dp[i - 1][j - 1];
-                } else {
-                    int insert = dp[i][j - 1] + 1;
-                    int remove = dp[i - 1][j] + 1;
-                    int replace = dp[i - 1][j - 1] + 1;
-                    // min of insertion, deletion, replacement
-                    dp[i][j] = Math.min(replace, Math.min(insert, remove));
-                }
-            }
-        }
-        
-        return dp[size1][size2];
-    }
+	// 08/25/2018
+	public int minDistance(String word1, String word2) {
+		int size1 = word1.length();
+		int size2 = word2.length();
+		
+		int[][] dp = new int[size1 + 1][size2 + 1];
+		// empty to empty string, 0 change
+		dp[0][0] = 0;
+		// i chars to empty string, i times of changes
+		for (int i = 1; i <= size1; i++) {
+			dp[i][0] = i;
+		}
+		for (int j = 1; j <= size2; j++) {
+			dp[0][j] = j;
+		}
+		
+		for (int i = 1; i <= size1; i++) {
+			for (int j = 1; j <= size2; j++) {
+				char c1 = word1.charAt(i - 1);
+				char c2 = word2.charAt(j - 1);
+				if (c1 == c2) {
+					dp[i][j] = dp[i - 1][j - 1];
+				} else {
+					int insert = dp[i][j - 1] + 1;
+					int remove = dp[i - 1][j] + 1;
+					int replace = dp[i - 1][j - 1] + 1;
+					// min of insertion, deletion, replacement
+					dp[i][j] = Math.min(replace, Math.min(insert, remove));
+				}
+			}
+		}
+		
+		return dp[size1][size2];
+	}
 
-    // recursive
-    // 12/01/2018
-    public int minDistance(String word1, String word2) {
-        Map<String, Integer> editMemo = new HashMap<String, Integer>();
-        return dfs(word1, 0, word2, 0, editMemo);
-    }
-    
-    private int dfs(String word1, int i, String word2, int j, Map<String, Integer> editMemo) {
-        String key = i + "-" + j;
-        
-        if (editMemo.containsKey(key)) {
-            return editMemo.get(key);
-        }
-        
-        int m = word1.length();
-        int n = word2.length();
-        
-        int editions = 0;
-        if (j == n && i < m) {
-            editions = m - i;
-        } else if (i == m && j < n) {
-            editions = n - j;
-        } else if (i < m && j < n) {
-            if (word1.charAt(i) == word2.charAt(j)) {
-                editions = dfs(word1, i + 1, word2, j + 1, editMemo);
-            } else {
-                int insert = dfs(word1, i + 1, word2, j, editMemo) + 1;
-                int delete = dfs(word1, i, word2, j + 1, editMemo) + 1;
-                int replace = dfs(word1, i + 1, word2, j + 1, editMemo) + 1;
-                
-                editions = Math.min(insert, Math.min(delete, replace));
-            }
-        }
-        
-        editMemo.put(key, editions);
-        
-        return editions;
-    }
+	// recursive
+	// 12/01/2018
+	public int minDistance(String word1, String word2) {
+		Map<String, Integer> editMemo = new HashMap<String, Integer>();
+		return dfs(word1, 0, word2, 0, editMemo);
+	}
+	
+	private int dfs(String word1, int i, String word2, int j, Map<String, Integer> editMemo) {
+		String key = i + "-" + j;
+		
+		if (editMemo.containsKey(key)) {
+			return editMemo.get(key);
+		}
+		
+		int m = word1.length();
+		int n = word2.length();
+		
+		int editions = 0;
+		if (j == n && i < m) {
+			editions = m - i;
+		} else if (i == m && j < n) {
+			editions = n - j;
+		} else if (i < m && j < n) {
+			if (word1.charAt(i) == word2.charAt(j)) {
+				editions = dfs(word1, i + 1, word2, j + 1, editMemo);
+			} else {
+				int insert = dfs(word1, i + 1, word2, j, editMemo) + 1;
+				int delete = dfs(word1, i, word2, j + 1, editMemo) + 1;
+				int replace = dfs(word1, i + 1, word2, j + 1, editMemo) + 1;
+				
+				editions = Math.min(insert, Math.min(delete, replace));
+			}
+		}
+		
+		editMemo.put(key, editions);
+		
+		return editions;
+	}
 }

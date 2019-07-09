@@ -7,7 +7,6 @@ search(word) can search a literal word or a regular expression string containing
 A . means it can represent any one letter.
 
 For example:
-
 addWord("bad")
 addWord("dad")
 addWord("mad")
@@ -32,15 +31,15 @@ class TrieNode {
 	boolean hasWord;
 
 	public TrieNode() {
-		children = new TrieNode[26];
+		this.children = new TrieNode[26];
 		for (int i = 0; i < 26; i++) {
-			children[i] = null;
+			this.children[i] = null;
 		}
-		hasWord = false;
+		this.hasWord = false;
 	}
 }
 
-// 01/20/2019
+// Thu Jul  4 21:50:28 2019
 public class WordDictionary {
 	private TrieNode root;
 
@@ -50,6 +49,7 @@ public class WordDictionary {
 
 	public void addWord(String word) {
 		TrieNode node = root;
+
 		for (int i = 0; i < word.length(); i++) {
 			char c = word.charAt(i);
 			if (node.children[c - 'a'] == null) {
@@ -63,8 +63,8 @@ public class WordDictionary {
 	public boolean search(String word) {
 		return dfs(word, 0, root);
 	}
+
 	// 不为null是继续往下找的关键
-	// 01/27/2019
 	public boolean dfs(String word, int idx, TrieNode node) {
 		if (idx == word.length()) {
 			return node.hasWord;
@@ -72,6 +72,7 @@ public class WordDictionary {
 
 		char c = word.charAt(idx);
 		if (c == '.') {
+			// test against all 26 children
 			for (int i = 0; i < 26; i++) {
 				if (node.children[i] != null) {
 					if (dfs(word, idx + 1, node.children[i])) {
@@ -79,59 +80,10 @@ public class WordDictionary {
 					}
 				}
 			}
+
 			return false;
 		} else if (node.children[c - 'a'] != null) {
 			return dfs(word, idx + 1, node.children[c - 'a']);
-		} else {
-			return false;
-		}
-	}
-}
-
-public class WordDictionary {
-	private TrieNode root;
-	public WordDictionary() {
-		root = new TrieNode();
-	}
-	// Adds a word into the data structure.
-	public void addWord(String word) {
-		TrieNode node = root;
-		for (int i = 0; i < word.length(); i++) {
-			char c = word.charAt(i);
-			if (node.children[c - 'a'] == null) {
-				node.children[c - 'a'] = new TrieNode();
-			}
-			// node point to next child
-			node = node.children[c - 'a'];
-		}
-		node.hasWord = true;
-	}
-
-	// Returns if the word is in the data structure.
-	// A word could contain the dot character '.' to represent any one letter.
-	public boolean search(String word) {
-	    return dfs(word, 0, root);
-	}
-	
-	// helper function for search()
-	private boolean dfs(String word, int index, TrieNode node) {
-		if (index == word.length()) {
-			return node.hasWord;
-		}
-
-		char c = word.charAt(index);
-		if (c == '.') {
-			// test against all 26 children
-			for (int i = 0; i < 26; i++) {
-				if (node.children[i] != null) {
-	    			if (dfs(word, index + 1, node.children[i])) {
-	    				return true;
-	    			}
-				}
-			}
-			return false;
-		} else if (node.children[c - 'a'] != null) { // only this one
-			return dfs(word, index + 1, node.children[c - 'a']);
 		} else {
 			return false;
 		}

@@ -26,9 +26,14 @@ In the real world, multiple people could have the same most number of friends, c
 
 idea:
 union all
+
+If you use the UNION ALL explicitly, the duplicate rows, if available, remain in the result.
+Because UNION ALL does not need to handle duplicates, it performs faster than UNION DISTINCT .
+
+the UNION operator removed it and kept only distinct ones
 */
 
-SELECT ids, COUNT(ids)
+SELECT ids as id, COUNT(ids) as num
 FROM (
 	SELECT requester_id AS ids
 	FROM request_accepted

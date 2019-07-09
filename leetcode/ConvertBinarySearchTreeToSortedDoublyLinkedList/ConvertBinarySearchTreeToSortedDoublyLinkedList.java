@@ -26,12 +26,13 @@ The solid line indicates the successor relationship, while the dashed line means
 idea:
 https://www.cnblogs.com/grandyang/p/9615871.html
 
-inorder to make sure sorted
+inorder traversal to make sure sorted
 dfs for tree
-note, this is circular, bst and DLL share the same node structure
+note, this is circular, BST and DLL share the same node structure
+left == .prev
+right == .next
 
 head and prev need to be global
-
 
 先对 root 和 prev 做连接
 先保存要访问的下一个结点
@@ -56,7 +57,52 @@ class Node {
 };
 
 class ConvertBinarySearchTreeToSortedDoublyLinkedList {
-	// method 1
+	// Fri Jul  5 01:42:10 2019
+	// iterative
+	public Node treeToDoublyList(Node root) {
+		if (root == null) {
+			return null;
+		}
+
+		Node head = null;
+		Node tail = null;
+
+		Node node = root;
+
+		Stack<Node> stack = new Stack<>();
+		// note, not empty
+		while (node != null || !stack.isEmpty()) {
+			while (node != null) {
+				stack.push(node);
+				node = node.left;
+			}
+
+			// the most left node which is the smallest node
+			// since this is BST
+			node = stack.pop();
+			if (head == null) {
+				head = node;
+			}
+
+			if (tail != null) {
+				// tail.next = node;
+				tail.right = node;
+				// node.prev = tail;
+				node.left = tail;
+			}
+			// tail points to current node 这是依次升序的
+			tail = node;
+			// 前进 node
+			node = node.right;
+		}
+
+		head.left = tail;
+		tail.right = head;
+
+		return head;
+	}
+
+	// recursion
 	Node head = null;
 	Node prev = null;
 
@@ -82,41 +128,5 @@ class ConvertBinarySearchTreeToSortedDoublyLinkedList {
 		treeToDoublyList(right);
 
 		return head;
-	}
-
-	// method 2
-	Node head = null;
-	Node prev = null;
-
-	public Node treeToDoublyList(Node root) {
-		if (root == null) {
-			return null;
-		}
-
-		inorderDFS(root);
-
-		prev.right = head;
-		head.left = prev;
-
-		return head;
-	}
-
-	public void inorderDFS(Node node) {
-		if (node == null) {
-			return;
-		}
-
-		inorderDFS(node.left);
-
-		if (head == null) {
-			head = node;
-			prev = node;
-		} else {
-			prev.right = node;
-			node.left = prev;
-			prev = node;
-		}
-
-		inorderDFS(node.right);
 	}
 }

@@ -41,99 +41,99 @@ tail = (tail + 1) % k
 */
 
 class MyCircularDeque {
-    int k;
-    int[] list;
-    int head;
-    int tail;
-    int size;
+	int k;
+	int[] list;
+	int head;
+	int tail;
+	int size;
 
-    /** Initialize your data structure here. Set the size of the deque to be k. */
-    public MyCircularDeque(int k) {
-        this.k = k;
-        this.list = new int[k];
-        
-        this.head = k - 1;
-        this.tail = 0;
-        this.size = 0;
-    }
-    
-    /** Adds an item at the front of Deque. Return true if the operation is successful. */
-    public boolean insertFront(int value) {
-        if (size == k) {
-            return false;
-        }
-        
-        list[head] = value;
-        head = (head - 1 + k) % k;
-        size++;
-        
-        return true;
-    }
-    
-    /** Adds an item at the rear of Deque. Return true if the operation is successful. */
-    public boolean insertLast(int value) {
-        if (size == k) {
-            return false;
-        }
-        
-        list[tail] = value;
-        tail = (tail + 1) % k;
-        size++;
-        
-        return true;
-    }
-    
-    /** Deletes an item from the front of Deque. Return true if the operation is successful. */
-    public boolean deleteFront() {
-        if (size == 0) {
-            return false;
-        }
-        
-        head = (head + 1) % k;
-        size--;
-        
-        return true;
-    }
-    
-    /** Deletes an item from the rear of Deque. Return true if the operation is successful. */
-    public boolean deleteLast() {
-        if (size == 0) {
-            return false;
-        }
-        
-        tail = (tail - 1 + k) % k;
-        size--;
-        
-        return true;
-    }
-    
-    /** Get the front item from the deque. */
-    public int getFront() {
-        if (size == 0) {
-            return -1;
-        }
+	/** Initialize your data structure here. Set the size of the circular deque to be k. */
+	public MyCircularDeque(int k) {
+		this.k = k;
+		this.list = new int[k];
 
-        return list[(head + 1) % k];
-    }
-    
-    /** Get the last item from the deque. */
-    public int getRear() {
-        if (size == 0) {
-            return -1;
-        }
+		this.head = k - 1;
+		this.tail = 0;
+		this.size = 0;
+	}
 
-        return list[(tail - 1 + k) % k];
-    }
-    
-    /** Checks whether the circular deque is empty or not. */
-    public boolean isEmpty() {
-        return size == 0;
-    }
-    
-    /** Checks whether the circular deque is full or not. */
-    public boolean isFull() {
-        return size == k;
-    }
+	/** Adds an item at the front of Deque. Return true if the operation is successful. */
+	public boolean insertFront(int value) {
+		if (size == k) {
+			return false;
+		}
+
+		list[head] = value;
+		head = (head - 1 + k) % k;
+		size++;
+		
+		return true;
+	}
+
+	/** Adds an item at the rear of Deque. Return true if the operation is successful. */
+	public boolean insertLast(int value) {
+		if (size == k) {
+			return false;
+		}
+
+		list[tail] = value;
+		tail = (tail + 1) % k;
+		size++;
+		
+		return true;
+	}
+	
+	/** Deletes an item from the front of Deque. Return true if the operation is successful. */
+	public boolean deleteFront() {
+		if (size == 0) {
+			return false;
+		}
+		
+		head = (head + 1) % k;
+		size--;
+		
+		return true;
+	}
+	
+	/** Deletes an item from the rear of Deque. Return true if the operation is successful. */
+	public boolean deleteLast() {
+		if (size == 0) {
+			return false;
+		}
+		
+		tail = (tail - 1 + k) % k;
+		size--;
+		
+		return true;
+	}
+	
+	/** Get the front item from the deque. */
+	public int getFront() {
+		if (size == 0) {
+			return -1;
+		}
+
+		return list[(head + 1) % k];
+	}
+	
+	/** Get the last item from the deque. */
+	public int getRear() {
+		if (size == 0) {
+			return -1;
+		}
+
+		return list[(tail - 1 + k) % k];
+	}
+	
+	/** Checks whether the circular deque is empty or not. */
+	public boolean isEmpty() {
+		return size == 0;
+	}
+	
+	/** Checks whether the circular deque is full or not. */
+	public boolean isFull() {
+		return size == k;
+	}
 }
 
 /**
