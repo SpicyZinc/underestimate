@@ -20,29 +20,32 @@ e.g. 4, 6, 7, 7, 8, no need to go the next level recursion, avoid duplicate on t
 */
 
 public class IncreasingSubsequences {
-    public List<List<Integer>> findSubsequences(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        dfs(nums, 0, new ArrayList<Integer>(), result);
-        return result;
-    }
+	public List<List<Integer>> findSubsequences(int[] nums) {
+		List<List<Integer>> result = new ArrayList<>();
+		dfs(nums, 0, new ArrayList<Integer>(), result);
 
-    public void dfs(int[] nums, int index, List<Integer> path, List<List<Integer>> result) {
-        if (path.size() > 1) {
-            result.add(new ArrayList<Integer>(path));
-        }
-        Set<Integer> hs = new HashSet<Integer>();
-        for (int i = index; i < nums.length; i++) {
-            // skip the duplicate, if not skip, must i++
-            if (hs.contains(nums[i])) {
-                continue;
-            }
+		return result;
+	}
 
-            if (index == 0 || index > 0 && nums[i] >= nums[index - 1]) {
-                hs.add(nums[i]);
-                path.add(nums[i]);
-                dfs(nums, i + 1, path, result);
-                path.remove(path.size() - 1);
-            }
-        }
-    }
+	public void dfs(int[] nums, int index, List<Integer> path, List<List<Integer>> result) {
+		if (path.size() > 1) {
+			result.add(new ArrayList<Integer>(path));
+		}
+
+		Set<Integer> hs = new HashSet<>();
+		for (int i = index; i < nums.length; i++) {
+			// skip the duplicate, if not skip, must i++
+			if (hs.contains(nums[i])) {
+				continue;
+			}
+
+			if (index == 0 || index > 0 && nums[i] >= nums[index - 1]) {
+				hs.add(nums[i]);
+
+				path.add(nums[i]);
+				dfs(nums, i + 1, path, result);
+				path.remove(path.size() - 1);
+			}
+		}
+	}
 }

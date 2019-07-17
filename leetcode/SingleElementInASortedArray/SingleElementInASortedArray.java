@@ -20,59 +20,62 @@ http://bookshadow.com/weblog/2017/03/11/leetcode-single-element-in-a-sorted-arra
 */
 
 public class SingleElementInASortedArray {
-    public int singleNonDuplicate(int[] nums) {
-        if (nums.length == 1) {
-            return nums[0];
-        }
-        int unique = 0;
-        for (int i = 1; i < nums.length - 1; i++) {
-            int prev = nums[i - 1];
-            int curr = nums[i];
-            int next = nums[i + 1];
-            if (i == 1 && prev != curr) {
-                unique = prev;
-            }
-            else if (i == nums.length - 2 && next != curr) {
-                unique = next;
-            }
-            else if (prev != curr && curr != next) {
-                unique = curr;
-            }
-        }
+	public int singleNonDuplicate(int[] nums) {
+		if (nums.length == 1) {
+			return nums[0];
+		}
 
-        return unique;
-    }
+		int unique = 0;
 
-    public int singleNonDuplicate(int[] nums) {
-        if (nums.length == 1) {
-            return nums[0];
-        }
+		for (int i = 1; i < nums.length - 1; i++) {
+			int prev = nums[i - 1];
+			int curr = nums[i];
+			int next = nums[i + 1];
 
-        int low = 0;
-        int high = nums.length - 1;
-        while (low < high) {
-            int mid = low + (high - low) / 2;
-            if (nums[mid] > nums[mid - 1] && nums[mid] < nums[mid + 1]) {
-                return nums[mid];
-            }
-            else if (nums[mid] == nums[mid - 1]) {
-                // check parity, mid - 1 is the length
-                if ((mid - 1) % 2 == 0) {
-                    low = mid + 1;
-                }
-                else {
-                    high = mid - 2;
-                }
-            }
-            else if (nums[mid] == nums[mid + 1]) {
-                if (mid % 2 == 0) {
-                    low = mid + 2;
-                }
-                else {
-                    high = mid - 1;
-                }
-            }
-        }
-        return nums[low];
-    }
+			if (i == 1 && prev != curr) {
+				unique = prev;
+			} else if (i == nums.length - 2 && curr != next) {
+				unique = next;
+			} else if (prev != curr && curr != next) {
+				unique = curr;
+			}
+		}
+
+		return unique;
+	}
+
+	// binary search, the only one should be in the odd number length part
+	public int singleNonDuplicate(int[] nums) {
+		if (nums.length == 1) {
+			return nums[0];
+		}
+
+		int low = 0;
+		int high = nums.length - 1;
+
+		while (low < high) {
+			int mid = low + (high - low) / 2;
+
+			if (nums[mid - 1] < nums[mid] && nums[mid] < nums[mid + 1]) {
+				return nums[mid];
+			} else if (nums[mid] == nums[mid - 1]) {
+				// check parity
+				// 因为除了一个 其他所有都是两个
+				// (mid - 2) - 0 + 1 偶数个, 只能在 后半部分
+				if ((mid - 1) % 2 == 0) {
+					low = mid + 1;
+				} else {
+					high = mid - 2;
+				}
+			} else if (nums[mid] == nums[mid + 1]) {
+				if (mid % 2 == 0) {
+					low = mid + 2;
+				} else {
+					high = mid - 1;
+				}
+			}
+		}
+
+		return nums[low];
+	}
 }

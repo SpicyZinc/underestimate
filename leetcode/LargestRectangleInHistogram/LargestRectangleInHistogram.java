@@ -22,7 +22,7 @@ minHeight * (# of heights)
    In addition, each end, should check all heights before it, no matter if it is a consecutive increasing span or not
 
 O(n): find last height whose next height will decrease in height
-    check all heights before and including this last height
+	check all heights before and including this last height
 	moving forward, use this last height + 1 as starting point to finish walking through the height array
 */
 public class LargestRectangleInHistogram {
@@ -50,6 +50,7 @@ public class LargestRectangleInHistogram {
 	public int largestRectangleArea(int[] heights) {
 		int maxArea = 0;
 		int[] minHeights = new int[heights.length]; // to i inclusive, minimum Height
+
 		for (int i = 0; i < heights.length; i++) {
 			for (int j = i; j < heights.length; j++) {
 				if (i == j) {
@@ -67,59 +68,60 @@ public class LargestRectangleInHistogram {
 
 	// passed OJ, so fast 3 ms
 	// 是以质取胜还是以量取胜 高度连续增长序列可能很高Height需要很短 x 距离 或是 很长 x 距离 一般的Height
-    public int largestRectangleArea(int[] heights) {
-        int n = heights.length;
-        int start = 0;
-        int maxArea = 0;
-        
-        while (start < n) {
-            int end = n - 1;
-            for (int i = start + 1; i <= end; i++) {
-                // find where the decreasing bar, set end to be bar before the decreasing point
-                if (heights[i - 1] > heights[i]) {
-                    end = i - 1;
-                }
-            }
-            int minHeight = heights[end];
-            for (int i = end; i >= 0; i--) {
-                minHeight = Math.min(minHeight, heights[i]);
-                int area = minHeight * (end - i + 1);
-                maxArea = Math.max(maxArea, area);
-            }
-            start = end + 1;
-        }
-        
-        return maxArea;
-    }
+	public int largestRectangleArea(int[] heights) {
+		int n = heights.length;
+		int start = 0;
+		int maxArea = 0;
+		
+		while (start < n) {
+			int end = n - 1;
+			for (int i = start + 1; i <= end; i++) {
+				// find where the decreasing bar, set end to be bar before the decreasing point
+				if (heights[i - 1] > heights[i]) {
+					end = i - 1;
+				}
+			}
 
-    // 用单调递增 stack
-    // 01/26/2019 17 ms
-    public int largestRectangleArea(int[] heights) {
-        if (heights.length == 0 || heights == null) {
-            return 0;
-        }
+			int minHeight = heights[end];
+			for (int i = end; i >= 0; i--) {
+				minHeight = Math.min(minHeight, heights[i]);
+				int area = minHeight * (end - i + 1);
+				maxArea = Math.max(maxArea, area);
+			}
+			start = end + 1;
+		}
+		
+		return maxArea;
+	}
 
-        Stack<Integer> stack = new Stack<>();
-        
-        int maxArea = 0;
+	// 用单调递增 stack
+	// 01/26/2019 17 ms
+	public int largestRectangleArea(int[] heights) {
+		if (heights.length == 0 || heights == null) {
+			return 0;
+		}
 
-        for (int i = 0; i <= heights.length; i++) {
-            int curr = i == heights.length ? 0 : heights[i]; 
-            
-            while (!stack.isEmpty() && heights[stack.peek()] >= curr) {
-                // this is the height of the bar just kicked out
-                int h = heights[stack.pop()];
+		Stack<Integer> stack = new Stack<>();
+		
+		int maxArea = 0;
 
-                int left = stack.isEmpty() ? 0 : stack.peek() + 1;
-                int right = i - 1;
-                int thisArea = h * (right - left + 1);
+		for (int i = 0; i <= heights.length; i++) {
+			int curr = i == heights.length ? 0 : heights[i]; 
+			
+			while (!stack.isEmpty() && heights[stack.peek()] >= curr) {
+				// this is the height of the bar just kicked out
+				int h = heights[stack.pop()];
 
-                maxArea = Math.max(maxArea, thisArea);
-            }
+				int left = stack.isEmpty() ? 0 : stack.peek() + 1;
+				int right = i - 1;
+				int thisArea = h * (right - left + 1);
 
-            stack.push(i);
-        }
+				maxArea = Math.max(maxArea, thisArea);
+			}
 
-        return maxArea;
-    }
+			stack.push(i);
+		}
+
+		return maxArea;
+	}
 }

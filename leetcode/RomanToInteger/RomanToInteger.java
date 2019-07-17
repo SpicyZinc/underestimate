@@ -62,14 +62,14 @@ public class RomanToInteger {
 			// curr and next 指的是c 对应的 value 从 hm里 对应的
 			int curr = hm.get(c);
 			int next = isLastPos ? 0 : hm.get(s.charAt(i + 1));
-			
+
 			if (isLastPos || curr >= next) {
 				val += curr;
 			} else {
 				val -= curr;
 			}
 		}
-		
+
 		return val;
 	}
 

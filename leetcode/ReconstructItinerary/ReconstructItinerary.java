@@ -38,13 +38,8 @@ public class ReconstructItinerary {
 		List<String> resultOne = eg.findItinerary(ticketsOne);
 		List<String> resultTwo = eg.findItinerary(ticketsTwo);
 
-		for (String s : resultOne) {
-			System.out.println(s);
-		}
-
-        for (String s : resultTwo) {
-            System.out.println(s);
-        }
+		System.out.println(resultOne);
+		System.out.println(resultTwo);
 	}
 	// Sun Apr 28 18:25:49 2019
 	public List<String> findItinerary(List<List<String>> tickets) {
@@ -62,7 +57,7 @@ public class ReconstructItinerary {
 			hm.computeIfAbsent(from, p -> new PriorityQueue<String>()).offer(to);
 		}
 
-		dfs("JFK", hm, result);
+		dfs(START, hm, result);
 
 		return result;
 	}
@@ -76,28 +71,28 @@ public class ReconstructItinerary {
 		result.add(0, start);
 	}
 
-    public List<String> findItinerary(String[][] tickets) {
-    	LinkedList<String> result = new LinkedList<String>();
-    	Map<String, PriorityQueue<String>> map = new HashMap<String, PriorityQueue<String>>();
+	public List<String> findItinerary(String[][] tickets) {
+		LinkedList<String> result = new LinkedList<String>();
+		Map<String, PriorityQueue<String>> map = new HashMap<String, PriorityQueue<String>>();
 
-    	if (tickets == null || tickets.length == 0) {
-    		return result;
-    	}
+		if (tickets == null || tickets.length == 0) {
+			return result;
+		}
 
-    	for (String[] ticket : tickets) {
-            String from = ticket[0];
-            String to = ticket[1];
+		for (String[] ticket : tickets) {
+			String from = ticket[0];
+			String to = ticket[1];
 
-    		if (!map.containsKey(from)) {
-    			map.put(from, new PriorityQueue<String>());
-    		}
-    		map.get(from).offer(to);
-    	}
+			if (!map.containsKey(from)) {
+				map.put(from, new PriorityQueue<String>());
+			}
+			map.get(from).offer(to);
+		}
 
-    	dfs(START, map, result);
+		dfs(START, map, result);
 
-    	return result;
-    }
+		return result;
+	}
 
 	public void dfs(String start, Map<String, PriorityQueue<String>> map, LinkedList<String> result) {
 		while (map.containsKey(start) && !map.get(start).isEmpty()) {
@@ -105,20 +100,19 @@ public class ReconstructItinerary {
 		}
 		result.addFirst(start);
 
-	    // can use stack as well, but not very understand this
-	    // String now = "JFK";
-	    // Stack<String> s = new Stack<String>();
-	    // for(int i = 0; i < tickets.length; i++) {
-	    //     while(!myMap.containsKey(now) || myMap.get(now).isEmpty()) {
-	    //         s.push(now);
-	    //         now = ans.remove(ans.size()-1);
-	    //     }
-	    //     ans.add(now);
-	    //     now = myMap.get(now).poll();
-	    // }
-	    // ans.add(now);
-	    // while(!s.isEmpty()) ans.add(s.pop());
-	    // return ans;
+		// can use stack as well, but not very understand this
+		// String now = "JFK";
+		// Stack<String> s = new Stack<String>();
+		// for(int i = 0; i < tickets.length; i++) {
+		//     while(!myMap.containsKey(now) || myMap.get(now).isEmpty()) {
+		//         s.push(now);
+		//         now = ans.remove(ans.size()-1);
+		//     }
+		//     ans.add(now);
+		//     now = myMap.get(now).poll();
+		// }
+		// ans.add(now);
+		// while(!s.isEmpty()) ans.add(s.pop());
+		// return ans;
 	}
 }
-

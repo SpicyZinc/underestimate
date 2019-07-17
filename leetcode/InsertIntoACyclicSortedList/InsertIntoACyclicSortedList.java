@@ -29,54 +29,63 @@ https://yeqiuquan.blogspot.com/2017/04/lintcode-599-insert-into-cyclic-sorted.ht
 要么插入的insertVal 恰好在 某两个数值之间
 要么是最小 或 最大值
 
-    3---->4---->5---->6---->9---->12
-    <------------------------------
+	3---->4---->5---->6---->9---->12
+	<------------------------------
 
 insert 15 or 2
 
 curr 理论上是 > prev, 如果 prev > curr, 说明到了首尾相交处
 
+note,
+Node() constructor takes a next as parameter
+while (curr != head)
 */
 
 class Node {
-    public int val;
-    public Node next;
+	public int val;
+	public Node next;
 
-    public Node() {}
+	public Node() {}
 
-    public Node(int _val,Node _next) {
-        val = _val;
-        next = _next;
-    }
+	public Node(int _val,Node _next) {
+		val = _val;
+		next = _next;
+	}
 };
 
 class InsertIntoACyclicSortedList {
-    public Node insert(Node head, int insertVal) {
-        if (head == null) {
-            Node node = new Node(insertVal);
-            node.next = node;
-            return node;
-        }
-        
-        Node prev = head;
-        Node curr = head.next;
-        
-        while (true) {
-            if (prev.val <= insertVal && curr.val >= insertVal ||
-                prev.val >= curr.val && curr.val >= insertVal || // insert even smaller
-                prev.val >= curr.val && prev.val <= insertVal    // insert even bigger
-            ) {
-                Node node = new Node(insertVal);
-                prev.next = node;
-                node.next = curr;
+	// Sat Jul 13 20:53:43 2019
+	public Node insert(Node head, int insertVal) {
+		Node node = new Node(insertVal, null);
 
-                break;
-            }
+		if (head == null) {
+			// because it is cyclic list
+			node.next = node;
 
-            prev = curr;
-            curr = curr.next;
-        }
+			return node;
+		}
 
-        return head;
-    }
+		Node prev = head;
+		Node curr = head.next;
+
+		while (curr != head) {
+			int prevVal = prev.val;
+			int currVal = curr.val;
+			// 正常的插入
+			// 在首尾中间的插入 要么大于 尾 要么小于 头
+			if (prevVal <= insertVal && currVal >= insertVal ||
+				prevVal > currVal && (prevVal <= insertVal || currVal >= insertVal)
+			) {
+				break;
+			}
+
+			prev = curr;
+			curr = curr.next;
+		}
+
+		prev.next = node;
+		node.next = curr;
+
+		return head;
+	}
 }

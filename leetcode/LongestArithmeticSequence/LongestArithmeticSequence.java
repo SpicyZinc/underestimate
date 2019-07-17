@@ -36,7 +36,6 @@ dp[i] ends at A[i] {1: 2, 2: 3, ..., 6: 1}
 等差为6的数列长为 1
 
 
-
 Map of Map
 key => diff
 value => map (key => till index, value => length of arithmetic sequence)
@@ -45,6 +44,31 @@ very similar to ArithmeticSlicesSubsequence
 */
 
 class LongestArithmeticSequence {
+	// Wed Jul 10 12:35:17 2019
+	public int longestArithSeqLength(int[] A) {
+		int size = A.length;
+
+		Map<Integer, Integer>[] dp = new Map[size];
+
+		int maxLen = 0;
+
+		for (int i = 0; i < size; i++) {
+			dp[i] = new HashMap<>();
+			for (int j = 0; j < i; j++) {
+				int diff = A[i] - A[j];
+				int prevLen = dp[i].getOrDefault(diff, 0);
+				// default A[j] 算一个 然后加上 A[i] 又一个
+				int currLen = dp[j].getOrDefault(diff, 1) + 1;
+				// update dp[i] which is a map
+				dp[i].put(diff, Math.max(prevLen, currLen));
+
+				maxLen = Math.max(maxLen, dp[i].get(diff));
+			}
+		}
+		
+		return maxLen;
+	}
+
 	public int longestArithSeqLength(int[] A) {
 		if (A.length <= 1) {
 			return A.length;

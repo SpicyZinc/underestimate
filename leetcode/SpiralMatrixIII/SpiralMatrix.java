@@ -25,8 +25,10 @@ Note:
 idea:
 步长 is like 1, 1, 2, 2, 3, 3, 4, 4, 5, 5
 
-When we go east, we do c++ (column increases), when we go west, we do c--,
-when we go south, we do r++ (row increases), and when we go north, we do r--.
+When we go east, we do c++ (column increases),
+when we go west, we do c--,
+when we go south, we do r++ (row increases),
+when we go north, we do r--.
 
 need to come back figure out why commented out code caused TLE
 我不应该 先++ 应该先传进去然后 ++
@@ -38,64 +40,65 @@ class SpiralMatrix {
 		eg.test(); 
 	}
 
+	int n = 5;
 	public void test() {
-		int n = 5;
 		for (int i = 0; i < 3; i++) {
 			System.out.println("before " + n);
-			increases(n++);
+			increases();
 			System.out.println("after " + n);
 		}
 	}
 
-	public void increases(int n) {
+	public void increases() {
+		n++;
 		System.out.println("called " + n);
 	}
 
-	int idx = 0;
+	int index = 0;
 	int[][] result;
 
 	public int[][] spiralMatrixIII(int R, int C, int r0, int c0) {
-		result = new int[R * C][2];
-		idx = 0;
-
+		this.index = 0;
+		this.result = new int[R * C][2];
+		
 		int i = r0;
 		int j = c0;
+		
+		int steps = 1;
 
-		int step = 1;
-
-		while (idx < R * C) {
-			for (int k = 0; k < step; k++) {
+		while (index < R * C) {
+			for (int k = 0; k < steps; k++) {
 				// j++;
 				add(i, j++, R, C);
 			}
-
-			for (int k = 0; k < step; k++) {
+			
+			for (int k = 0; k < steps; k++) {
 				// i++;
 				add(i++, j, R, C);
 			}
-
-			step++;
-
-			for (int k = 0; k < step; k++) {
+			
+			steps++;
+			
+			for (int k = 0; k < steps; k++) {
 				// j--;
 				add(i, j--, R, C);
 			}
-
-			for (int k = 0; k < step; k++) {
+			
+			for (int k = 0; k < steps; k++) {
 				// i--;
 				add(i--, j, R, C);
 			}
 
-			step++;
+			steps++;
 		}
-
+		
 		return result;
 	}
-
+	
 	public void add(int i, int j, int m, int n) {
 		if (i >= 0 && i < m && j >= 0 && j < n) {
-			result[idx] = new int[] {i, j};
-			idx++;
+			result[index] = new int[] {i, j};
+			index++;
 		}
 	}
 }

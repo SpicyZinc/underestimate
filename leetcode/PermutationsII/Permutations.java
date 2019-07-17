@@ -20,7 +20,7 @@ public class Permutations {
 		}
 
 		permute(nums, 0, result);
-		
+
 		return result;
 	}
 

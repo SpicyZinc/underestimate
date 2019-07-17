@@ -25,6 +25,7 @@ public class Solution extends Reader4 {
 	char[] temp = new char[4];
 	int buf4Size = 4;
 	int buf4Index = 4;
+
 	// return the number of characters read
 	public int read(char[] buf, int n) {
 		int size = 0;

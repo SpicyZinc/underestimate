@@ -35,10 +35,10 @@ public class TwoSum {
 
 				break;
 			}
-			
+
 			hm.put(nums[i], i);
 		}
-		
+
 		return result;
 	}
 }

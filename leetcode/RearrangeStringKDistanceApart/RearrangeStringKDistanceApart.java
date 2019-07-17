@@ -19,6 +19,8 @@ Another possible answer is: "abcabcda"
 The same letters are at least distance 2 from each other.
 
 idea:
+need to come back
+
 https://www.cnblogs.com/grandyang/p/5586009.html
 这道题的关键就是 当 PriorityQueue poll时 因为有排序 先poll出频率高的char
 这是heap 只关注堆顶
@@ -116,67 +118,68 @@ public class RearrangeStringKDistanceApart {
 
 	// 01/01/2019, 56/57 passed
 	public String rearrangeString(String s, int k) {
-        if (k == 0) {
-            return s;
-        }
-        
-        int size = s.length();
-            
-        Map<Character, Integer> hm = new HashMap<>();
-        
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            hm.put(c, hm.getOrDefault(c, 0) + 1);
-        }
-        
-        PriorityQueue<Character> pq = new PriorityQueue<>(new Comparator<Character>() {
-            @Override
-            public int compare(Character a, Character b) {
-                if (hm.get(a) != hm.get(b)) {
-                    return hm.get(b) - hm.get(a);
-                } else {
-                    return a.compareTo(b);
-                }
-            }
-        });
-        
-        // first, put all different characters into the queue
+		if (k == 0) {
+			return s;
+		}
+		
+		int size = s.length();
+			
+		Map<Character, Integer> hm = new HashMap<>();
+		
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			hm.put(c, hm.getOrDefault(c, 0) + 1);
+		}
+		
+		PriorityQueue<Character> pq = new PriorityQueue<>(new Comparator<Character>() {
+			@Override
+			public int compare(Character a, Character b) {
+				if (hm.get(a) != hm.get(b)) {
+					return hm.get(b) - hm.get(a);
+				} else {
+					return a.compareTo(b);
+				}
+			}
+		});
+		
+		// first, put all different characters into the queue
 		// take this as starting repeating unit
 		pq.addAll(hm.keySet());
-        
-        StringBuilder sb = new StringBuilder();
-            
-        while (!pq.isEmpty()) {
-            List<Character> repeatingUnit = new ArrayList<>();
-            int cnt = Math.min(k, size);
-            
-            for (int i = 0; i < cnt; i++) {
-                if (pq.isEmpty()) {
-                    return "";
-                }
-                
-                char c = pq.poll();
-                
-                sb.append(c);
-                // update length, reconstructed string, its length cannot be bigger the original length
-                size--;
-                // update map
-                hm.put(c, hm.get(c) - 1);
+		
+		StringBuilder sb = new StringBuilder();
+			
+		while (!pq.isEmpty()) {
+			// 记录下 repeatingUnit 再加回pq 下一轮用
+			List<Character> repeatingUnit = new ArrayList<>();
+			int cnt = Math.min(k, size);
+			
+			for (int i = 0; i < cnt; i++) {
+				if (pq.isEmpty()) {
+					return "";
+				}
+				
+				char c = pq.poll();
+				
+				sb.append(c);
+				// update length, reconstructed string, its length cannot be bigger the original length
+				size--;
+				// update map
+				hm.put(c, hm.get(c) - 1);
 
-                if (hm.get(c) > 0) {
-                    repeatingUnit.add(c);    
-                }
-            }
-            
-            // if a character is used up, cannot add it to repeatingUnit, which will cause this char to be added to the queue
-            // because next while will add this character to return string
-            // in addition, return '' if the queue is empty
-            for (char c : repeatingUnit) {
-                pq.offer(c);
-            }
-        }
-        
-        return sb.toString();
+				if (hm.get(c) > 0) {
+					repeatingUnit.add(c);    
+				}
+			}
+			
+			// if a character is used up, cannot add it to repeatingUnit, which will cause this char to be added to the queue
+			// because next while will add this character to return string
+			// in addition, return '' if the queue is empty
+			for (char c : repeatingUnit) {
+				pq.offer(c);
+			}
+		}
+		
+		return sb.toString();
 	}
 
 	public String rearrangeString(String str, int k) {
@@ -237,23 +240,19 @@ public class RearrangeStringKDistanceApart {
 			for (char c : repeatingUnit) {
 				queue.offer(c);
 			}
-
-			// System.out.println(hm);
-			// System.out.println(queue);
-			// System.out.println(sb.toString());
-			// System.out.println("==========");
 		}
 
 		return sb.toString();
 	}
-
+	// passed, but not understand
 	public String rearrangeString(String str, int k) {
 		int len = str.length();
 		int[] count = new int[26];
 		int[] valid = new int[26];
 
 		for (int i = 0; i < len; i++) {
-			count[str.charAt(i) - 'a']++;
+			char c = str.charAt(i);
+			count[c - 'a']++;
 		}
 
 		StringBuilder sb = new StringBuilder();
@@ -274,6 +273,7 @@ public class RearrangeStringKDistanceApart {
 	private int findValidMax(int[] count, int[] valid, int index) {
 		int max = Integer.MIN_VALUE;
 		int candidatePos = -1;
+
 		for (int i = 0; i < count.length; i++) {
 			if (count[i] > 0 && count[i] > max && index >= valid[i]) {
 				max = count[i];

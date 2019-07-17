@@ -95,11 +95,49 @@ class ConvertBinarySearchTreeToSortedDoublyLinkedList {
 			// 前进 node
 			node = node.right;
 		}
-
+		// 头尾相连
 		head.left = tail;
 		tail.right = head;
 
 		return head;
+	}
+
+	// easy to understand recursion
+	public Node treeToDoublyList(Node root) {
+		if (root == null) {
+			return null;
+		}
+
+		Node left = treeToDoublyList(root.left);
+		Node right = treeToDoublyList(root.right);
+
+		// 大概是 头尾相连
+		root.left = root;
+		root.right = root;
+		
+		return concatenate(concatenate(left, root), right);
+	}
+
+	public Node concatenate(Node left, Node right) {
+		if (left == null) {
+			return right;
+		}
+
+		if (right == null) {
+			return left;
+		}
+		
+		// 因为头尾相连才可以这样做
+		Node leftLast = left.left;
+		Node rightLast = right.left;
+
+		leftLast.right = right;
+		right.left = leftLast;
+
+		left.left = rightLast;
+		rightLast.right = left;
+		
+		return left;
 	}
 
 	// recursion

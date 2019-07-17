@@ -44,6 +44,7 @@ class MinimumAddToMakeParenthesesValid {
 	public int minAddToMakeValid(String S) {
 		int count = 0;
 		Stack<Character> stack = new Stack<>();
+
 		for (int i = 0; i < S.length(); i++) {
 			char c = S.charAt(i);
 
@@ -54,7 +55,7 @@ class MinimumAddToMakeParenthesesValid {
 				count++;
 			} else {
 				stack.pop();
-			} 
+			}
 		}
 
 		return stack.size() + count;

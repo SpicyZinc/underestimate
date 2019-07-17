@@ -42,7 +42,6 @@ a separate class Node containing a neighbors property
 dfs()
 
 or union find
-
 */
 
 import java.util.*;
@@ -154,6 +153,7 @@ class AccountsMerge {
 				// Connect the current email node to the previous email node;
 				Node prev = map.get(list.get(j - 1));
 				Node curr = map.get(email);
+
 				prev.neighbors.add(curr);
 				curr.neighbors.add(prev);
 			}
@@ -164,7 +164,7 @@ class AccountsMerge {
 		for (String s : map.keySet()) {
 			if (visited.add(s)) {
 				List<String> list = new LinkedList<>();
-				list.add(s);              
+				list.add(s);
 				dfs(map.get(s), visited, list);
 				Collections.sort(list);
 				// 把 username 插入第一个位置

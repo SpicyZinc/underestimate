@@ -48,6 +48,7 @@ class ShortestSubarrayWithSumAtLeastK {
 			for (int j = i; j < n; j++) {
 				if (sum[j + 1] - sum[i] >= K && (shortestLen == -1 || shortestLen > j + 1 - i)) {
 					shortestLen = j + 1 - i;
+
 					break;
 				}
 			}

@@ -63,154 +63,154 @@ class NumberOfIslands {
 	}
 	// Tue May 14 01:34:42 2019
 	public List<Integer> numIslands2(int m, int n, int[][] positions) {
-        List<Integer> result = new ArrayList<>();
+		List<Integer> result = new ArrayList<>();
 
-        if (positions == null || positions.length == 0 ) {
-            return result;
-        }
-        
-        // initialization
-        int[] f = new int[m * n];
-        for (int i = 0; i < m * n; i++) {
-            f[i] = i;
-        }
-        
-        int[][] island = new int[m][n];
-        int islandsCnt = 0;
-        
-        int[][] directions = {
-            {0, 1},
-            {0, -1},
-            {1, 0},
-            {-1, 0},
-        };
-        
-        for (int[] position : positions) {
-            int x = position[0];
-            int y = position[1];
-            
-            if (island[x][y] != 1) {
-                islandsCnt++;
-                
-                island[x][y] = 1;
-                
-                int id = x * n + y;
-                
-                for (int[] dir : directions) {
-                    int nextX = x + dir[0];
-                    int nextY = y + dir[1];
-                    
-                    if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && island[nextX][nextY] == 1) {
-                        int nextId = nextX * n + nextY;
-                        
-                        int fId = find(id, f);
-                        int fNextId = find(nextId, f);
-                        // id四周的点 have to union()
-                        if (fId != fNextId) {
-                        	// note, who assign who
-                            f[fId] = fNextId;
-                            islandsCnt--;
-                        }
-                    }
-                }
-            }
-            
-            result.add(islandsCnt);
-        }
-        
-        return result;
-    }
-    
-    public int find(int i, int[] f) {
-        int j = i;
-        while (j != f[j]) {
-            j = f[j];
-        }
-        
-        while (i != j) {
-            int fi = f[i];
-            f[i] = j;
-            i = fi;
-        }
-        
-        return i;
-    }
+		if (positions == null || positions.length == 0 ) {
+			return result;
+		}
+
+		// initialization
+		int[] f = new int[m * n];
+		for (int i = 0; i < m * n; i++) {
+			f[i] = i;
+		}
+		
+		int[][] island = new int[m][n];
+		int islandsCnt = 0;
+
+		int[][] directions = {
+			{0, 1},
+			{0, -1},
+			{1, 0},
+			{-1, 0},
+		};
+
+		for (int[] position : positions) {
+			int x = position[0];
+			int y = position[1];
+			
+			if (island[x][y] != 1) {
+				islandsCnt++;
+				
+				island[x][y] = 1;
+				
+				int id = x * n + y;
+				
+				for (int[] dir : directions) {
+					int nextX = x + dir[0];
+					int nextY = y + dir[1];
+					
+					if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && island[nextX][nextY] == 1) {
+						int nextId = nextX * n + nextY;
+
+						int fId = find(id, f);
+						int fNextId = find(nextId, f);
+						// id四周的点 have to union()
+						if (fId != fNextId) {
+							// note, who assign who
+							f[fId] = fNextId;
+							islandsCnt--;
+						}
+					}
+				}
+			}
+			
+			result.add(islandsCnt);
+		}
+		
+		return result;
+	}
+	
+	public int find(int i, int[] f) {
+		int j = i;
+
+		while (j != f[j]) {
+			j = f[j];
+		}
+
+		while (i != j) {
+			int fi = f[i];
+			f[i] = j;
+			i = fi;
+		}
+		
+		return i;
+	}
 
 
 	// 01/28/2019
 	// lintcode version
 	public List<Integer> numIslands2(int n, int m, Point[] operators) {
-        List<Integer> result = new ArrayList<>();
-        if (operators == null || operators.length == 0) {
-            return result;
-        }
-        
-        // initialization
-        int[] f = new int[n * m];
-        for (int i = 0; i < n * m; i++) {
-            f[i] = i;
-        }
-        
+		List<Integer> result = new ArrayList<>();
+		if (operators == null || operators.length == 0) {
+			return result;
+		}
+		
+		// initialization
+		int[] f = new int[n * m];
+		for (int i = 0; i < n * m; i++) {
+			f[i] = i;
+		}
 
-        int[][] island = new int[n][m];
-        int islandsCnt = 0;
-        
-        int[][] directions = {
-            {0, 1},
-            {0, -1},
-            {1, 0},
-            {-1, 0},
-        };
-        
-        for (Point operator : operators) {
-            int x = operator.x;
-            int y = operator.y;
-            
-            if (island[x][y] != 1) {
-                islandsCnt++;
-                
-                island[x][y] = 1;
-                
-                int id = x * m + y;
-                
-                for (int[] dir : directions) {
-                    int nextX = x + dir[0];
-                    int nextY = y + dir[1];
-                    
-                    if (nextX >= 0 && nextX < n && nextY >= 0 && nextY < m && island[nextX][nextY] == 1) {
-                        int nextId = nextX * m + nextY;
-                        
-                        int fId = find(id, f);
-                        int fNextId = find(nextId, f);
-                        // id四周的点 have to union()
-                        if (fId != fNextId) {
-                            f[fId] = fNextId;
-                            islandsCnt--;
-                        }
-                    }
-                }
-            }
-            
-            result.add(islandsCnt);
-        }
-        
-        return result;
-    }
-    
-    public int find(int i, int[] f) {
-        int j = i;
-        while (j != f[j]) {
-            j = f[j];
-        }
-        
-        while (i != j) {
-            int fi = f[i];
-            f[i] = j;
-            i = fi;
-        }
-        
-        return i;
-    }
+		int[][] island = new int[n][m];
+		int islandsCnt = 0;
+		
+		int[][] directions = {
+			{0, 1},
+			{0, -1},
+			{1, 0},
+			{-1, 0},
+		};
+		
+		for (Point operator : operators) {
+			int x = operator.x;
+			int y = operator.y;
+			
+			if (island[x][y] != 1) {
+				islandsCnt++;
+				
+				island[x][y] = 1;
+				
+				int id = x * m + y;
+				
+				for (int[] dir : directions) {
+					int nextX = x + dir[0];
+					int nextY = y + dir[1];
+					
+					if (nextX >= 0 && nextX < n && nextY >= 0 && nextY < m && island[nextX][nextY] == 1) {
+						int nextId = nextX * m + nextY;
+						
+						int fId = find(id, f);
+						int fNextId = find(nextId, f);
+						// id四周的点 have to union()
+						if (fId != fNextId) {
+							f[fId] = fNextId;
+							islandsCnt--;
+						}
+					}
+				}
+			}
+			
+			result.add(islandsCnt);
+		}
+		
+		return result;
+	}
+	
+	public int find(int i, int[] f) {
+		int j = i;
+		while (j != f[j]) {
+			j = f[j];
+		}
+		
+		while (i != j) {
+			int fi = f[i];
+			f[i] = j;
+			i = fi;
+		}
+		
+		return i;
+	}
 
 	public List<Integer> numIslands2(int m, int n, int[][] positions) {
 		List<Integer> result = new ArrayList<Integer>();

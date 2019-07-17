@@ -26,24 +26,24 @@ then loop through C and D all pairs to equal to -sum, since A, B, C, and D are t
 */
 
 public class FourSum {
-	public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
-		
-		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
-        int cnt = 0;
-        for (int i = 0; i < A.length; i++) {
-        	for (int j = 0; j < B.length; j++) {
-        		int sum = A[i] + B[j];
-        		hm.put(sum, hm.getOrDefault(sum, 0) + 1);
-        	}
-        }
+	public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {		
+		Map<Integer, Integer> hm = new HashMap<>();
+		int cnt = 0;
 
-        for (int k = 0; k < C.length; k++) {
-        	for (int l = 0; l < D.length; l++) {
-        		int sum = C[k] + D[l];
-        		cnt += hm.getOrDefault(-1 * sum, 0);
-        	}
-        }
+		for (int i = 0; i < A.length; i++) {
+			for (int j = 0; j < B.length; j++) {
+				int sum = A[i] + B[j];
+				hm.put(sum, hm.getOrDefault(sum, 0) + 1);
+			}
+		}
 
-        return cnt;
-    }
+		for (int k = 0; k < C.length; k++) {
+			for (int l = 0; l < D.length; l++) {
+				int sum = C[k] + D[l];
+				cnt += hm.getOrDefault(-1 * sum, 0);
+			}
+		}
+
+		return cnt;
+	}
 }

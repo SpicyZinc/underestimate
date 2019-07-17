@@ -13,7 +13,7 @@ Output: 7 -> 8 -> 0 -> 7
 
 idea:
 7 -> 2 -> 4 -> 3
-     5 -> 6 -> 4
+	 5 -> 6 -> 4
 
 Sum of Two Integers
 Add Two Numbers
@@ -22,38 +22,39 @@ similar to first Add Two Numbers,
 the only difference is that this one's input is reversed, so use stack or reverse first
 */
 class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
+	int val;
+	ListNode next;
+	ListNode(int x) { val = x; }
 }
 
 public class AddTwoNumbers {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        Stack<Integer> s1 = new Stack<Integer>();
-        Stack<Integer> s2 = new Stack<Integer>();
-        
-        while (l1 != null) {
-            s1.push(l1.val);
-            l1 = l1.next;
-        }
-        while (l2 != null) {
-            s2.push(l2.val);
-            l2 = l2.next;
-        }
-        
-        int carry = 0;
-        ListNode curr = new ListNode(0);
-        
-        while (!s1.isEmpty() || !s2.isEmpty()) {
-            int val = (s1.empty() ? 0 : s1.pop()) + (s2.empty() ? 0 : s2.pop()) + carry;
-            carry = val / 10;
-            curr.val = val % 10;
-            // insert at front
-            ListNode node = new ListNode(carry);
-            node.next = curr;
-            curr = node;
-        }
-        // curr.val == 0 means carry = 0, no need to have the extra curr, so curr.next
-        return curr.val == 0 ? curr.next : curr;
-    }
+	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+		Stack<Integer> s1 = new Stack<>();
+		Stack<Integer> s2 = new Stack<>();
+
+		while (l1 != null) {
+			s1.push(l1.val);
+			l1 = l1.next;
+		}
+
+		while (l2 != null) {
+			s2.push(l2.val);
+			l2 = l2.next;
+		}
+		
+		int carry = 0;
+		ListNode curr = new ListNode(0);
+		
+		while (!s1.isEmpty() || !s2.isEmpty()) {
+			int val = (s1.empty() ? 0 : s1.pop()) + (s2.empty() ? 0 : s2.pop()) + carry;
+			carry = val / 10;
+			curr.val = val % 10;
+			// insert at front
+			ListNode node = new ListNode(carry);
+			node.next = curr;
+			curr = node;
+		}
+		// curr.val == 0 means carry = 0, no need to have the extra curr, so curr.next
+		return curr.val == 0 ? curr.next : curr;
+	}
 }

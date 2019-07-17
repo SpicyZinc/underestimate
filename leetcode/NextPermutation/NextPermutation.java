@@ -96,7 +96,7 @@ public class NextPermutation {
 			}
 			i--;
 		}
-		
+
 		// not forget to check
 		if (i >= 1) {
 			int decreaseVal = nums[i - 1];
@@ -111,13 +111,13 @@ public class NextPermutation {
 		
 		reverse(nums, i, size - 1);
 	}
-	
+
 	public void swap(int[] nums, int i, int j) {
 		int temp = nums[i];
 		nums[i] = nums[j];
 		nums[j] = temp;
 	}
-	
+
 	private void reverse(int[] nums, int start, int end) {
 		if (start > end) {
 			return;
@@ -126,7 +126,7 @@ public class NextPermutation {
 		if (end > nums.length) {
 			return;
 		}
-		
+
 		int mid = start + (end - start) / 2;
 
 		while (start <= mid) {
@@ -198,7 +198,7 @@ public class NextPermutation {
 		if (end > nums.length) {
 			return;
 		}
-		
+
 		int mid = start + (end - start) / 2;
 
 		while (start <= mid) {

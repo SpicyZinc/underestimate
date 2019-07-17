@@ -19,12 +19,12 @@ The number of nodes in the given list will be between 1 and 100.
 
 idea:
 slow and fast pointer
-
 */
+
 class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
+	int val;
+	ListNode next;
+	ListNode(int x) { val = x; }
 }
 
 class MiddleOfTheLinkedList {

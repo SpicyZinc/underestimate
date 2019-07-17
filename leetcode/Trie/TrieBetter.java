@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
  
 class TrieNode {
-	char data;     
+	char data;
 	LinkedList children; 
 	TrieNode parent;
 	boolean isEnd;
@@ -11,14 +11,18 @@ class TrieNode {
 	public TrieNode(char c) {
 		data = c;
 		children = new LinkedList();
-		isEnd = false;        
+		isEnd = false;
 	}  
 	
 	public TrieNode getChild(char c) {
-		if (children != null)
-			for (TrieNode eachChild : children)
-				if (eachChild.data == c)
+		if (children != null) {
+			for (TrieNode eachChild : children) {
+				if (eachChild.data == c) {
 					return eachChild;
+				}
+			}
+		}
+
 		return null;
 	}
 	
@@ -34,15 +38,16 @@ class TrieNode {
 				 list.addAll(children.get(i).getWords());
 			  }
 		   }
-	   }       
-	   return list; 
+	   }
+
+	   return list;
 	}
 	
 	public String toString() {
 		if (parent == null) {
-			 return "";
+			return "";
 		} else {
-			 return parent.toString() + new String(new char[] {data});
+			return parent.toString() + new String(new char[] {data});
 		}
 	}
 }
@@ -87,18 +92,21 @@ class TrieBetter {
 		if (current.isEnd == true) {       
 			return true;
 		}
+
 		return false;
 	}
 	
 	public List autocomplete(String prefix) {     
-	   TrieNode lastNode = root;
-	   for (int i = 0; i< prefix.length(); i++) {
-		   lastNode = lastNode.getChild(prefix.charAt(i));	     
-		   if (lastNode == null) 
-			   return new ArrayList();      
-	   }
-	   
-	   return lastNode.getWords();
+		TrieNode lastNode = root;
+		for (int i = 0; i< prefix.length(); i++) {
+			lastNode = lastNode.getChild(prefix.charAt(i));	     
+
+			if (lastNode == null) {
+				return new ArrayList();
+			}
+		}
+		
+		return lastNode.getWords();
 	}
 }    
  
@@ -114,7 +122,7 @@ public class AutocompleteWithTrie {
 			t.insert("ali express");
 			t.insert("ebay");
 			t.insert("walmart");          
-			List a= t.autocomplete("amaz");
+			List a = t.autocomplete("amaz");
 			for (int i = 0; i < a.size(); i++) {
 				System.out.println(a.get(i));
 			}

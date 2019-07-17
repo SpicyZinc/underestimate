@@ -23,6 +23,7 @@ class ReorganizeString {
 	public String reorganizeString(String S) {
 		int len = S.length();
 		int[] chars = new int[26];
+
 		for (int i = 0; i < len; i++) {
 			char c = S.charAt(i);
 			chars[c - 'a']++;
@@ -36,7 +37,7 @@ class ReorganizeString {
 			for (int j = 0; j < 26; j++) {
 				if (chars[j] > max && (i == 0 || result[i - 1] - 'a' != j)) {
 					max = chars[j];
-                    index = j;
+					index = j;
 				}
 			}
 			// 如果没有符合情况的 early return

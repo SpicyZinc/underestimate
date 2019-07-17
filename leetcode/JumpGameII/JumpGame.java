@@ -16,7 +16,7 @@ O(n)
 public class JumpGame {
 	// Sat Jun 15 15:12:42 2019
 	// i now think this is easy to understand
-	// steps = maxReach - i
+	// steps = maxReachIndex - i
 	public int jump(int[] nums) {
 		if (nums.length <= 1) {
 			return 0;
@@ -27,22 +27,22 @@ public class JumpGame {
 		// 一个 jump 包含的步数 steps
 		// i 增加 会消耗掉 steps
 		int steps = nums[0];
-		int maxReach = 0 + nums[0]; // index + nums[index]
+		int maxReachIndex = 0 + nums[0]; // index + nums[index]
 		
 		for (int i = 1; i < nums.length; i++) {
 			if (i == nums.length - 1) {
 				return jumps;
 			}
 			
-			// update maxReach
-			maxReach = Math.max(maxReach, i + nums[i]);
+			// update maxReachIndex
+			maxReachIndex = Math.max(maxReachIndex, i + nums[i]);
 			
 			steps--;
 			
 			if (steps == 0) {
 				// steps == 0, need to another jump
 				jumps++;
-				steps = maxReach - i;
+				steps = maxReachIndex - i;
 			}
 		}
 		

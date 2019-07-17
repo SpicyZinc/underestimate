@@ -1,5 +1,4 @@
 /*
-
 Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.
 
 Formally the function should:
@@ -15,28 +14,28 @@ Given [5, 4, 3, 2, 1],
 return false.
 
 idea:
-continually decrease min and second_min
-see if there is a third number greater than second_min;
-if there is, min < second_min < 3rd num
+continually decrease min and secondMin
+see if there is a third number greater than secondMin;
+if there is, min < secondMin < 3rd min num
 then we get the answer
 */
 
 public class IncreasingTripletSubsequence {
-    public boolean increasingTriplet(int[] nums) {
-        int min = Integer.MAX_VALUE;
-        int second_min = Integer.MAX_VALUE;
-        for (int num : nums) {
-        	if ( num <= min ) {
-        		min = num;
-        	}
-        	else if ( num <= second_min && second_min > min ) {
-        		second_min = num;
-        	}
-        	else {
-        		return true;
-        	}
-        }
-        return false;
-    }
+	public boolean increasingTriplet(int[] nums) {
+		int min = Integer.MAX_VALUE;
+		int secondMin = Integer.MAX_VALUE;
+
+		for (int num : nums) {
+			if (num <= min) {
+				min = num;
+			} else if (num <= secondMin && secondMin > min) {
+				secondMin = num;
+			} else {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
 

@@ -59,33 +59,33 @@ value is the number of arithmetic slices subsequences for this diff
 
 public class ArithmeticSlicesSubsequence {
 	public int numberOfArithmeticSlices(int[] A) {
-        int result = 0;
-        if (A.length <= 2 || A == null) {
-            return result;
-        }
-        
-        int n = A.length;
-        Map<Integer, Integer>[] dp = new Map[n];
-        
-        for (int i = 0; i < n; i++) {
-            dp[i] = new HashMap<>();
+		int result = 0;
+		if (A.length <= 2 || A == null) {
+			return result;
+		}
 
-            for (int j = 0; j < i; j++) {
-                long diff = (long) A[i] - (long) A[j];
-                if (diff <= Integer.MIN_VALUE || diff >= Integer.MAX_VALUE) {
-                    continue;
-                }
-                
-                int d = (int) diff;
-                int val1 = dp[i].getOrDefault(d, 0);
-                int val2 = dp[j].getOrDefault(d, 0);
-                
-                dp[i].put(d, val1 + val2 + 1);
-                
-                result += val2;
-            }
-        }
-        
-        return result;
-    }
+		int n = A.length;
+		Map<Integer, Integer>[] dp = new Map[n];
+
+		for (int i = 0; i < n; i++) {
+			dp[i] = new HashMap<>();
+
+			for (int j = 0; j < i; j++) {
+				long diff = (long) A[i] - (long) A[j];
+				if (diff <= Integer.MIN_VALUE || diff >= Integer.MAX_VALUE) {
+					continue;
+				}
+
+				int d = (int) diff;
+				int val1 = dp[i].getOrDefault(d, 0);
+				int val2 = dp[j].getOrDefault(d, 0);
+
+				dp[i].put(d, val1 + val2 + 1);
+
+				result += val2;
+			}
+		}
+
+		return result;
+	}
 }

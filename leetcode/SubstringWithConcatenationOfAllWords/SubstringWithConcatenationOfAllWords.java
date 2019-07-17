@@ -39,7 +39,7 @@ public class SubstringWithConcatenationOfAllWords {
 			return result;
 		}
 
-		Map<String, Integer> hm = new HashMap<String, Integer>();
+		Map<String, Integer> hm = new HashMap<>();
 		for (String word : words) {
 			hm.put(word, hm.getOrDefault(word, 0) + 1);
 		}
@@ -74,7 +74,7 @@ public class SubstringWithConcatenationOfAllWords {
 
 			i++;
 		}
-		
+
 		return result;
 	}
 }

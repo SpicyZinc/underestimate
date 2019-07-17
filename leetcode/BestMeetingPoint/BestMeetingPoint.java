@@ -53,9 +53,10 @@ public class BestMeetingPoint {
 			}
 		}
 
-		int distance = 0;
 		int xLen = xPositions.size();
 		int yLen = yPositions.size();
+		int distance = 0;
+
 		for (int i = 0; i < xLen; i++) {
 			distance += Math.abs(xPositions.get(i) - xPositions.get(xLen / 2));
 		}

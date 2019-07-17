@@ -21,11 +21,12 @@ Explanation: Landing happen before taking off.
 
 idea:
 sweep line
-巧妙利用flag +1 -1
 */
 
 class Interval {
-	int start, end;
+	int start;
+	int end;
+
 	Interval(int start, int end) {
 		this.start = start;
 		this.end = end;

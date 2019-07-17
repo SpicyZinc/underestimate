@@ -55,9 +55,67 @@ public class TheSkylineProblem {
 		TheSkylineProblem eg = new TheSkylineProblem();
 		eg.getSkyline(buildings);
 	}
+	// Wed Jul 10 01:29:02 2019
+	public List<List<Integer>> getSkyline(int[][] buildings) {
+		int size = buildings.length;
+		
+		List<int[]> heights = new ArrayList<>();
+		
+		for (int[] building : buildings) {
+			int x1 = building[0];
+			int x2 = building[1];
+			
+			int hi = building[2];
+			
+			heights.add(new int[] {x1, -hi});
+			heights.add(new int[] {x2, hi});
+		}
+		
+		Collections.sort(heights, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] a, int[] b) {
+				return a[0] != b[0] ? a[0] - b[0] : a[1] - b[1];
+			}
+		});
+		
+		Queue<Integer> pq = new PriorityQueue<>(11, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer a, Integer b) {
+				return b - a;
+			}
+		});
+		
+		List<List<Integer>> result = new ArrayList<>();
+		
+		int horizon = 0;
+		int prevHighest = horizon;
+		pq.offer(horizon);
+		
+		for (int[] height : heights) {
+			int h = height[1];
+			
+			if (h < 0) {
+				pq.offer(-h);
+			} else {
+				pq.remove(h);
+			}
+			
+			int currHighest = pq.peek();
+			if (currHighest != prevHighest) {
+				List<Integer> point = new ArrayList<>();
+				point.add(height[0]);
+				point.add(currHighest);
+
+				result.add(point);
+
+				prevHighest = currHighest;
+			}
+		}
+		
+		return result;
+	}
 
 	public List<int[]> getSkyline(int[][] buildings) {
-		List<int[]> result = new ArrayList<>();
 		List<int[]> heights = new ArrayList<>();
 
 		for (int[] building : buildings) {
@@ -88,23 +146,27 @@ public class TheSkylineProblem {
 			}
 		});
 
+		List<int[]> result = new ArrayList<>();
+
 		// 先将地平线值0加入堆中
 		// 为了[12 0] 这个点 在这个例子中
 		int horizon = 0;
 		int prevHighest = horizon;
+
 		pq.offer(horizon);
 
 		for (int[] height : heights) {
 			int h = height[1];
 			// 区分左右顶点 依靠[0, 1] 0 位置 negative, 1 位置 positive
-			if (h < 0) {
+			if (h < 0) { // 左顶点 进入 pq
 				pq.offer(-h);
-			} else {
+			} else { // 右顶点 离开 pq
 				pq.remove(h);
 			}
+
 			int currHighest = pq.peek();
-			// 出现拐点了 要么更高的进来了 要么更高的出去了
-			// 使用出去或者进来点的x value, 但是是当前最高高度
+			// 出现拐点了 要么更高的进来了 要么更高的出去了 离开了 pq 次高的变为最高的
+			// 使用出去或者进来点的x value (拐点), 但是是当前最高高度 但是我们有 currHeighest
 			if (prevHighest != currHighest) {
 				result.add(new int[] {height[0], currHighest});
 

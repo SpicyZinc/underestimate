@@ -75,12 +75,14 @@ public class Trie {
 	/** Returns if the word is in the trie. */
 	public boolean search(String word) {
 		TrieNode node = deepInTrie(word);
+
 		return node == null ? false : node.isLeaf;
 	}
 	
 	/** Returns if there is any word in the trie that starts with the given prefix. */
 	public boolean startsWith(String prefix) {
 		TrieNode node = deepInTrie(prefix);
+
 		return node != null;
 	}
 
@@ -89,7 +91,10 @@ public class Trie {
 		TrieNode node = root;
 		for (int i = 0; i < s.length(); i++) {
 			int pos = s.charAt(i) - 'a';
-			if (node.children[pos] == null) return null;
+			if (node.children[pos] == null) {
+				return null;
+			}
+
 			node = node.children[pos];
 		}
 

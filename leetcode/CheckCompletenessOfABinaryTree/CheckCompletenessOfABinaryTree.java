@@ -70,6 +70,7 @@ class CheckCompletenessOfABinaryTree {
 				if (isLastNode) {
 					return false;
 				}
+
 				queue.offer(node.left);
 				queue.offer(node.right);
 			}

@@ -98,8 +98,7 @@ public class StringToInteger {
 		if (val < Integer.MIN_VALUE) {
 			return Integer.MIN_VALUE;
 		}
-		
-		
+
 		return (int) val;
 	}
 
@@ -138,7 +137,7 @@ public class StringToInteger {
 		if (result < Integer.MIN_VALUE) {
 			return Integer.MIN_VALUE;
 		}
-		
+
 		return (int) result;
 	}
 

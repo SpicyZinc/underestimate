@@ -60,57 +60,57 @@ public class N_Queens {
 		}
 	}
 
-    public List<List<String>> solveNQueens(int n) {
-        List<List<String>> result = new ArrayList<>();
-        dfs(0, new int[n], result);
-        
-        return result;
-    }
-    
-    public void dfs(int pos, int[] path, List<List<String>> result) {
-        int n = path.length;
+	public List<List<String>> solveNQueens(int n) {
+		List<List<String>> result = new ArrayList<>();
+		dfs(0, new int[n], result);
+		
+		return result;
+	}
+	
+	public void dfs(int pos, int[] path, List<List<String>> result) {
+		int n = path.length;
 
-        if (pos == n) {
-            result.add(buildSolution(path));
-        } else {
-            for (int i = 0; i < n; i++) {
-                path[pos] = i;
-                if (isValid(path, pos)) {
-                    dfs(pos + 1, path, result);
-                }
-            }
-        }
-    }
-    
-    public List<String> buildSolution(int[] path) {
-        int n = path.length;
-        List<String> solution = new ArrayList<String>();
-        for (int i = 0; i < n; i++) {
-            // for each row, find where the Q is
-            StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < n; j++) {
-                sb.append(path[i] == j ? 'Q' : '.');
-            }
-            solution.add(sb.toString());
-        }
-        
-        return solution;
-    }
-    // 只检查 当前 row 之前的 row
-    public boolean isValid(int[] path, int currentRow) {
-        // path[] represents all different rows, which guarantees that same row cannot have two queens
-        for (int i = 0; i < currentRow; i++) {
-            // 如果之前的某row也有同样的column
-            // same column
-            if (path[i] == path[currentRow]) {
-                return false;
-            }
-            // check if on major or minor diagonal by absolute diff value of y1 - y2 == x1 - x2
-            if (Math.abs(path[currentRow] - path[i]) == currentRow - i) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
+		if (pos == n) {
+			result.add(buildSolution(path));
+		} else {
+			for (int i = 0; i < n; i++) {
+				path[pos] = i;
+				if (isValid(path, pos)) {
+					dfs(pos + 1, path, result);
+				}
+			}
+		}
+	}
+	
+	public List<String> buildSolution(int[] path) {
+		int n = path.length;
+		List<String> solution = new ArrayList<String>();
+		for (int i = 0; i < n; i++) {
+			// for each row, find where the Q is
+			StringBuilder sb = new StringBuilder();
+			for (int j = 0; j < n; j++) {
+				sb.append(path[i] == j ? 'Q' : '.');
+			}
+			solution.add(sb.toString());
+		}
+		
+		return solution;
+	}
+	// 只检查 当前 row 之前的 row
+	public boolean isValid(int[] path, int currentRow) {
+		// path[] represents all different rows, which guarantees that same row cannot have two queens
+		for (int i = 0; i < currentRow; i++) {
+			// 如果之前的某row也有同样的column
+			// same column
+			if (path[i] == path[currentRow]) {
+				return false;
+			}
+			// check if on major or minor diagonal by absolute diff value of y1 - y2 == x1 - x2
+			if (Math.abs(path[currentRow] - path[i]) == currentRow - i) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

@@ -51,7 +51,7 @@ public class ConvertBinarySearchTreeToDoublyLinkedList {
 
 		// Init stack
 		Stack<TreeNode> stack = new Stack<TreeNode>();
-		TreeNode node = root;    
+		TreeNode node = root;
 		stack.push(node);
 
 		// Create DoublyListNode header
@@ -65,6 +65,7 @@ public class ConvertBinarySearchTreeToDoublyLinkedList {
 			}
 			// add node to doubly linked list
 			node = stack.pop();
+
 			DoublyListNode currrent = new DoublyListNode(node.val);
 			dllNode.next = currrent;
 			currrent.prev = dllNode;

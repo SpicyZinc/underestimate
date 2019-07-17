@@ -30,60 +30,62 @@ public class BestTimetToBuySellStock {
 	// split the array into two parts, and each part is a buy and sell I problem
 	// in I, only one final maxProfit; but here, two transactions,
 	// so save maxProfit into array
+	public int maxProfit(int[] prices) {
+		if (prices.length == 0 || prices == null) {
+			return 0;
+		}
+
+		int n = prices.length;
+		int[] preMaxProfit = new int[n];
+		int[] postMaxProfit = new int[n];
+
+		int minBuyInPrice = prices[0];
+		for (int i = 1; i < n; i++) {
+			minBuyInPrice = Math.min(minBuyInPrice, prices[i]);
+			// save all possible pre maxProfit for array ending at i
+			preMaxProfit[i] = Math.max(preMaxProfit[i - 1], prices[i] - minBuyInPrice);
+		}
+		// why 从后面开始 因为 先买后卖
+		int maxSellOutPrice = prices[n - 1];
+		for (int i = n - 2; i >= 0; i--) {
+			maxSellOutPrice = Math.max(maxSellOutPrice, prices[i]);
+			postMaxProfit[i] = Math.max(postMaxProfit[i + 1], maxSellOutPrice - prices[i]);
+		}
+
+		int maxProfit = 0;
+		// get the maximum of forward[i] + backward[i]
+		for (int i = 0; i < n; i++) {
+			maxProfit = Math.max(maxProfit, preMaxProfit[i] + postMaxProfit[i]);
+		}
+
+		return maxProfit;
+	}
 
 	public int maxProfit(int[] prices) {
-        if (prices.length == 0 || prices == null) {
-            return 0;
-        }
-        int n = prices.length;
-        int[] preMaxProfit = new int[n];
-        int[] postMaxProfit = new int[n];
-        
-        int minBuyInPrice = prices[0];
-        for (int i = 1; i < n; i++) {
-            minBuyInPrice = Math.min(minBuyInPrice, prices[i]);
-            // save all possible pre maxProfit for array ending at i
-            preMaxProfit[i] = Math.max(preMaxProfit[i - 1], prices[i] - minBuyInPrice);
-        }
-        
-        int maxSellOutPrice = prices[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            maxSellOutPrice = Math.max(maxSellOutPrice, prices[i]);
-            postMaxProfit[i] = Math.max(postMaxProfit[i + 1], maxSellOutPrice - prices[i]);
-        }
-
-        int maxProfit = 0;
-        // get the maximum of forward[i] + backward[i]
-        for (int i = 0; i < n; i++) {
-            maxProfit = Math.max(maxProfit, preMaxProfit[i] + postMaxProfit[i]);
-        }
-
-        return maxProfit;
-    }
-
-    public int maxProfit(int[] prices) {
 		if (prices.length <= 1) {
-            return 0;
+			return 0;
 		}
-            
-        // stores the max profit in [0, ... , i] subarray in prices
-    	int[] maxEndWith = new int[prices.length];
+			
+		// stores the max profit in [0, ... , i] subarray in prices
+		int[] maxEndWith = new int[prices.length];
 		int lowest = prices[0];
 		int maxprofit = 0;
 		maxEndWith[0] = 0;
 		for (int i = 1; i < prices.length; i++) {
 			int profit = prices[i] - lowest;
+
 			if (profit > maxprofit) {
 				maxprofit = profit;
 			}
+
 			maxEndWith[i] = maxprofit;
 			
 			if (prices[i] < lowest) {
 				lowest = prices[i];
 			}					
 		}
-        
-        int ret = maxEndWith[prices.length - 1];
+		
+		int ret = maxEndWith[prices.length - 1];
 		// reverse to see what is the max profit of [i, ... , n-1] subarray in prices 
 		// and meanwhile calculate the final result
 		int highest = prices[prices.length - 1];
@@ -102,8 +104,8 @@ public class BestTimetToBuySellStock {
 			}				
 		}
 
-        return ret;
-    }
+		return ret;
+	}
 	
 	// method 2 TLE
 	public int maxProfit(int[] prices) {

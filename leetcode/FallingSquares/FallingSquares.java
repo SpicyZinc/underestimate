@@ -75,12 +75,14 @@ class FallingSquares {
 			int sideLength = position[1];
 			int end = start + sideLength;
 			int baseHeight = 0;
+
 			// check again each interval
 			for (Interval interval : intervals) {
 				// no intersection
 				if (interval.start >= end || interval.end <= start) {
 					continue;
 				}
+
 				baseHeight = Math.max(baseHeight, interval.height);
 			}
 
@@ -105,4 +107,3 @@ class Interval {
 		this.height = height;
 	}
 }
-

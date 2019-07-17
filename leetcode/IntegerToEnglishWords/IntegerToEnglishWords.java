@@ -41,22 +41,22 @@ public class IntegerToEnglishWords {
 		hm.put(8, "Eight");
 		hm.put(9, "Nine");
 		hm.put(10, "Ten");
-		hm.put(11, "Eleven");  
-		hm.put(12, "Twelve");  
-		hm.put(13, "Thirteen");  
-		hm.put(14, "Fourteen");  
-		hm.put(15, "Fifteen");  
-		hm.put(16, "Sixteen");  
-		hm.put(17, "Seventeen"); 
-		hm.put(18, "Eighteen"); 
-		hm.put(19, "Nineteen"); 
-		hm.put(20, "Twenty"); 
-		hm.put(30, "Thirty"); 
-		hm.put(40, "Forty"); 
-		hm.put(50, "Fifty"); 
-		hm.put(60, "Sixty"); 
-		hm.put(70, "Seventy"); 
-		hm.put(80, "Eighty"); 
+		hm.put(11, "Eleven");
+		hm.put(12, "Twelve");
+		hm.put(13, "Thirteen");
+		hm.put(14, "Fourteen");
+		hm.put(15, "Fifteen");
+		hm.put(16, "Sixteen");
+		hm.put(17, "Seventeen");
+		hm.put(18, "Eighteen");
+		hm.put(19, "Nineteen");
+		hm.put(20, "Twenty");
+		hm.put(30, "Thirty");
+		hm.put(40, "Forty");
+		hm.put(50, "Fifty");
+		hm.put(60, "Sixty");
+		hm.put(70, "Seventy");
+		hm.put(80, "Eighty");
 		hm.put(90, "Ninety");
 		
 		// edge case

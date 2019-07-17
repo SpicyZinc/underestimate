@@ -52,6 +52,7 @@ public class N_Queens {
 		// element is column number in the grid
 		int[] solution = new int[n];
 		placeNQueens(count, solution, 0);
+
 		return count[0];		
 	}
 	
@@ -59,6 +60,7 @@ public class N_Queens {
 		int n = solution.length;
 		if (row == n) {
 			count[0]++;
+
 			return;
 		} else {
 			// i is element in solution[]
@@ -89,42 +91,44 @@ public class N_Queens {
 		return false;
 	}
 
-	// self written version passed test
+	// Mon Jul 15 01:03:34 2019
 	public int totalNQueens(int n) {
-        if (n <= 0) {
-            return 0;
-        }
-        int[] solutions = new int[n];
-        int[] count = new int[1];
-        total(count, solutions, 0);
-        
-        return count[0];
-    }
+		if (n <= 0) {
+			return 0;
+		}
 
-    public void total(int[] count, int[] solutions, int row) {
-        int n = solutions.length;
-        if (row == n) {
-            count[0]++;
-        } else {
-            for (int i = 0; i < n; i++) {
-                solutions[row] = i;
-                if ( isValid(solutions, row, i) ) {
-                    total(count, solutions, row + 1);
-                }
-            }
-        }
-    }
-    
-    public boolean isValid(int[] solutions, int row, int col) {
-        for (int i = 0; i < row; i++) {
-            if (solutions[i] == col) {
-                return false;
-            }
-            if (row - i == Math.abs(solutions[i] - col)) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
+		int[] solutions = new int[n];
+		int[] count = new int[1];
+		dfs(count, solutions, 0);
+		
+		return count[0];
+	}
+
+	public void dfs(int[] count, int[] solutions, int row) {
+		int n = solutions.length;
+
+		if (row == n) {
+			count[0]++;
+		} else {
+			for (int i = 0; i < n; i++) {
+				solutions[row] = i;
+				if (isValid(solutions, row, i)) {
+					dfs(count, solutions, row + 1);
+				}
+			}
+		}
+	}
+	
+	public boolean isValid(int[] solutions, int row, int col) {
+		for (int i = 0; i < row; i++) {
+			if (solutions[i] == col) {
+				return false;
+			}
+			if (row - i == Math.abs(solutions[i] - col)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

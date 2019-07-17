@@ -12,23 +12,67 @@ coins = [2], amount = 3
 return -1.
 
 idea:
+贪婪算法 要保证 从后到前
 1. brute force
 2. recursion with memoization
 https://www.cnblogs.com/grandyang/p/5138186.html
 3. dp
+dp[i] to get amount of i, the min number of coins
 */
 
 public class CoinChange {
+	// Sun Jul 14 00:08:41 2019
+	public int coinChange(int[] coins, int amount) {
+		int size = coins.length;
+
+		int[] dp = new int[amount + 1];
+		for (int i = 1; i <= amount; i++) {
+			dp[i] = amount + 1;
+		}
+		
+		for (int i = 1; i <= amount; i++) {
+			// to reach 'i' amount
+			// try all coin values in coins[]
+			for (int coin : coins) {
+				if (i >= coin) {
+					dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+				}
+			}
+		}
+
+		return dp[amount] == amount + 1 ? -1 : dp[amount];
+	}
+	// Sat Jul 13 23:39:42 2019
+	public int coinChange(int[] coins, int amount) {
+		int[] dp = new int[amount + 1];
+		// note, not forget to initialize with max possible number of coins
+		Arrays.fill(dp, amount + 1);
+		dp[0] = 0;
+
+		for (int i = 1; i <= amount; i++) {
+			for (int coin : coins) {
+				if (coin <= i) {
+					// +1 is used one coin
+					dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+				}
+			}
+		}
+
+		return dp[amount] > amount ? -1 : dp[amount];
+	}
+
 	// brute force, TLE, 114 / 182 test cases passed
 	int minCount = Integer.MAX_VALUE;
+
 	public int coinChange(int[] coins, int amount) {
 		Arrays.sort(coins);
 
-		coinChange(coins.length - 1, 0, coins, amount);
+		dfs(coins, amount, coins.length - 1, 0);
+
 		return minCount == Integer.MAX_VALUE ? -1 : minCount;
 	}
 
-	private void coinChange(int pos, int currCnt, int[] coins, int remaining) {
+	private void dfs(int[] coins, int remaining, int pos, int currCnt) {
 		if (remaining < 0) {
 			return;
 		}
@@ -40,10 +84,9 @@ public class CoinChange {
 		}
 
 		for (int i = pos; i >= 0; i--) {
-			coinChange(i, currCnt + 1, coins, remaining - coins[i]);
+			dfs(coins, remaining - coins[i], i, currCnt + 1);
 		}
 	}
-
 
 	public int coinChange(int[] coins, int amount) {
 		if (amount < 1) {
@@ -55,7 +98,7 @@ public class CoinChange {
 
 	// remaining: remaining amount after the last step
 	// count[] length is amount
-	// count[amount - 1] last element in array, which is minimum number of coins to sum up to amount
+	// count[amount - 1] last element in array, which is minimum number of coins to sum up to that 'amount'
 	private int dfs(int[] coins, int remaining, int[] count) {
 		if (remaining < 0) {
 			return -1;
@@ -76,28 +119,8 @@ public class CoinChange {
 				minCnt = Math.min(minCnt, cnt + 1);
 			}
 		}
-		count[remaining - 1] = (minCnt == Integer.MAX_VALUE) ? -1 : minCnt;
+		count[remaining - 1] = minCnt == Integer.MAX_VALUE ? -1 : minCnt;
 
 		return count[remaining - 1];
-	}
-
-	// 01/23/2019
-	// dp[i] to get amount of i, the min number of coins
-	public int coinChange(int[] coins, int amount) {
-		int[] dp = new int[amount + 1];
-		// note, not forget to initialize with max possible number of coins
-		Arrays.fill(dp, amount + 1);
-		dp[0] = 0;
-
-		for (int i = 1; i <= amount; i++) {
-			for (int coin : coins) {
-				if (coin <= i) {
-					// +1 is used one coin
-					dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-				}
-			}
-		}
-
-		return dp[amount] > amount ? -1 : dp[amount];
 	}
 }

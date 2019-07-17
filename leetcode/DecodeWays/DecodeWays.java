@@ -47,7 +47,7 @@ public class DecodeWays {
 			if (second != '0') {
 				dp[i] = dp[i - 1];
 			}
-			
+
 			if (first == '1' || first == '2' && second >= '0' && second <= '6') {
 				dp[i] += dp[i - 2];
 			}

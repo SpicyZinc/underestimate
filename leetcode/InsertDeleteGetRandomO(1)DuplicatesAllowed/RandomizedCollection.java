@@ -39,73 +39,67 @@ note: last element is easy to deal with, so remove it
 */
 
 class RandomizedCollection {
-	// Sat May 11 00:25:29 2019
+	// Mon Jul 15 00:33:31 2019
 	List<Integer> list;
 	Map<Integer, Set<Integer>> hm;
 	Random random;
 
-    /** Initialize your data structure here. */
-    public RandomizedCollection() {
-        list = new ArrayList<>();
-        hm = new HashMap<>();
-        random = new Random();
-    }
-    
-    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
-    public boolean insert(int val) {
-        // update list
-        list.add(val);
+	/** Initialize your data structure here. */
+	public RandomizedCollection() {
+		list = new ArrayList<>();
+		hm = new HashMap<>();
+		random = new Random();
+	}
+	
+	/** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+	public boolean insert(int val) {
+		// update list
+		list.add(val);
+		// update hashmap
+		hm.computeIfAbsent(val, x -> new HashSet<>()).add(list.size() - 1);
+		// 加上之后 positions 个数才为 1 说明 insert successfully
+		return hm.get(val).size() == 1;
+	}
+	
+	/** Removes a value from the collection. Returns true if the collection contained the specified element. */
+	public boolean remove(int val) {
+		if (hm.containsKey(val)) {
+			Set<Integer> positions = hm.get(val);
+			int posToRemove = positions.iterator().next();
+			// remove from HashSet
+			positions.remove(posToRemove);
 
-        Set<Integer> positions = null;
-        if (!hm.containsKey(val)) {
-        	positions = new HashSet<>();
-        } else {
-        	positions = hm.get(val);
-        }
+			if (posToRemove < list.size() - 1) {
+				// remove from list by moving last value at the removed position
+				int last = list.get(list.size() - 1);
+				list.set(posToRemove, last);
+				// last leaves old position and goes to the new position
+				// update the last
+				Set<Integer> lastPositions = hm.get(last);
+				// 加上新位置
+				lastPositions.remove(list.size() - 1);
+				// 移走老位置
+				lastPositions.add(posToRemove);
+			}
+				
+			// remove last from list at final
+			list.remove(list.size() - 1);
+			if (positions.size() == 0) {
+				hm.remove(val);
+			} else {
+				hm.put(val, positions);
+			}
 
-        // update hashmap
-        hm.put(val, positions);
-        positions.add(list.size() - 1);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-        return positions.size() == 1;
-    }
-    
-    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
-    public boolean remove(int val) {
-    	if (hm.containsKey(val)) {
-            Set<Integer> positions = hm.get(val);
-    		int posToRemove = positions.iterator().next();
-            // remove from HashSet
-            positions.remove(posToRemove);
-            if (posToRemove < list.size() - 1) {
-                // remove from list by moving last value at the removed position
-                int last = list.get(list.size() - 1);
-                list.set(posToRemove, last);
-                // last leaves old position and goes to the new position
-                // update the last
-                Set<Integer> lastPositions = hm.get(last);
-                lastPositions.add(posToRemove);
-                lastPositions.remove(list.size() - 1);
-            }
-                
-            // remove last from list at final
-            list.remove(list.size() - 1);
-            if (positions.size() == 0) {
-                hm.remove(val);
-            } else {
-                hm.put(val, positions);
-            }
-
-            return true;
-    	} else {
-    		return false;
-    	}
-    }
-    
-    /** Get a random element from the collection. */
-    public int getRandom() {
-        return list.get(random.nextInt(list.size()));
-    } 
+	/** Get a random element from the collection. */
+	public int getRandom() {
+		return list.get(random.nextInt(list.size()));
+	}
 }
 
 /**

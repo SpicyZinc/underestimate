@@ -18,6 +18,72 @@ public class DivideTwoIntegers {
 		int result = s.divide(dividend, divisor);
 		System.out.println(result);
 	}
+	// Fri Jul 12 01:25:14 2019
+	public int divide(int dividend, int divisor) {
+		if (dividend == Integer.MIN_VALUE && divisor == -1) {
+			return Integer.MAX_VALUE;
+		}
+		
+		long p = Math.abs((long) dividend);
+		long q = Math.abs((long) divisor);
+		
+		int quotient = 0;
+		
+		while (p >= q) {
+			int counter = 0;
+						
+			while (p >= (q << counter)) {
+				counter++;
+			}
+		
+			quotient += 1 << (counter - 1);
+			p -= q << (counter - 1);
+		}
+		// 同号
+		if ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) {
+			return quotient;
+		} else { // 异号
+			return -quotient;
+		}
+	}
+
+	// Thu Jul 11 22:32:38 2019
+	public int divide(int dividend, int divisor) {
+		if (dividend == Integer.MIN_VALUE && divisor == -1) {
+			return Integer.MAX_VALUE;
+		}
+
+		long p = Math.abs((long) dividend);
+		long q = Math.abs((long) divisor);
+		
+		int result = 0;
+
+		while (p >= q) {
+			int counter = 0;
+			// 变成原来的2倍
+			// q + q + q + ..., + q
+			// counter is consecutive
+			// 2^0 1 
+			// 2^1 2
+			// 2^2 4
+			// 2^3 8
+			// 2^4 16
+			while (p >= (q << counter)) {
+				counter++;
+			}
+
+			// 2 ^ (counter - 1) < p
+			result += 1 << (counter - 1);
+			p -= q << (counter - 1);
+		}
+
+		// 同号
+		if ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) {
+			return result;
+		} else { // 异号
+			return -result;
+		}
+	}
 
 	public int divide(int dividend, int divisor) {
 		if (dividend == 0 || divisor == 1) {
@@ -30,7 +96,7 @@ public class DivideTwoIntegers {
 		long divd = Math.abs((long) dividend);
 		long divs = Math.abs((long) divisor);
 
-		List<Long> divisors = new ArrayList<Long>();
+		List<Long> divisors = new ArrayList<>();
 		while (divd >= divs) {
 			divisors.add(divs);
 			divs <<= 1;
@@ -47,70 +113,5 @@ public class DivideTwoIntegers {
 		}
 
 		return (dividend > 0) ^ (divisor > 0) ? (-result) : result; 
-	}
-
-	// simpler version
-	public int divide(int dividend, int divisor) {
-		long p = Math.abs((long) dividend);
-		long q = Math.abs((long) divisor);
-		
-		int result = 0;
-		while (p >= q) {
-			int counter = 0;
-			while (p >= (q << counter)) {
-				counter++;
-			}
-
-			result += 1 << (counter - 1);
-			p -= q << (counter - 1);
-		}
-
-		if (dividend && divisor > 0) {
-			return result;
-		} else {
-			return -result;
-		}
-		if ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) {
-			return ret;
-		} else {
-			return -ret;
-		}
-	}
-
-	// 02/02/2019
-	// lintcode version
-	public int divide(int dividend, int divisor) {
-		if (divisor == 0) {
-			 return dividend >= 0? Integer.MAX_VALUE : Integer.MIN_VALUE;
-		}
-		
-		if (dividend == 0) {
-			return 0;
-		}
-		
-		if (dividend == Integer.MIN_VALUE && divisor == -1) {
-			return Integer.MAX_VALUE;
-		}
-		
-		long p = Math.abs((long) dividend);
-		long q = Math.abs((long) divisor);
-		
-		int result = 0;
-
-		while (p >= q) {
-			int counter = 0;
-			while (p >= (q << counter)) {
-				counter++;
-			}
-
-			result += 1 << (counter - 1);
-			p -= q << (counter - 1);
-		}
-
-		if ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) {
-			return result;
-		} else {
-			return -result;
-		}
 	}
 }

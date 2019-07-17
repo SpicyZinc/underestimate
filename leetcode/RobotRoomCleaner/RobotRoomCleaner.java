@@ -92,14 +92,14 @@ class RobotRoomCleaner {
 	}
 
 	public void dfs(Robot robot, Set<String> visited, int x, int y, int currentDir) {
-		String path = x + "->" + y;
+		String cellId = x + "->" + y;
 		
-		if (visited.contains(path)) {
+		if (visited.contains(cellId)) {
 			return;
 		}
 		// clean current cell (x, y)
 		robot.clean();
-		visited.add(path);
+		visited.add(cellId);
 
 		// the robot can to four directions, we use right turn
 		for (int dir = 0; dir < 4; dir++) {
@@ -143,7 +143,7 @@ class RobotRoomCleaner {
 			}
 			// 不能进入面前的 cell
 			// cannot move to front cell, change direction clockwise
-			// turn to next direction
+			// turn to next direction, take clockwise 90 degree
 			robot.turnRight();
 			currentDir = (currentDir + 90) % 360;
 		}

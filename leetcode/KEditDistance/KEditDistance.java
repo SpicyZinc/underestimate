@@ -14,34 +14,32 @@ Return ["abc", "adc"]
 idea:
 https://massivealgorithms.blogspot.com/2015/11/buttercola-airbnb-k-edit-distance.html
 
-dp[i][j] 代表着 word1[0:i]到word2[0:j]的编辑距离,
+dp[i][j] 代表着 word1[0:i] 到 word2[0:j]的编辑距离,
 并且很容易知道这样的转移方程：
 if (word1.charAt(i - 1) == word2.char(j - 1)) {
 dp[i][j] = dp[i - 1][j - 1]; // 字符相同,
 不需要编辑
 } else {
-dp[i][j] = 1 + Math.min(dp[i - 1][j - 1]
-, Math.min(dp[i][j - 1], dp[i - 1][j]));
-// 字符不一,
-那么存在insertion或subsitution,
-
-// 意味着编辑距离为之前最小可能的编辑距离+1	
+dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], Math.min(dp[i][j - 1], dp[i - 1][j]));
+字符不一样, 那么存在insertion或subsitution,
+意味着编辑距离为之前最小可能的编辑距离+1	
 }
 捋清了这个,
-再来理解dp和next就很容易：
+再来理解dp和next就很容易:
 我们注意到上面的转移方程任意时候都只需要至多前一步的信息,
 所以我们只需要两个数组,
 一个标记前一步的情形,
 一个标记现在的情形 i.e. 用dp[j] 标记 以前的dp[i - 1][j], 以next[j] 代表以前的dp[i][j].
 那么也必然有：
 if (word1.charAt(i - 1) == word2.char(j - 1)) {
-next[j] = dp[j - 1]; // 老的dp[i][j] => next[j],
-//老的dp[i - 1][j - 1] => dp[j - 1]
+	next[j] = dp[j - 1];
+	// 老的dp[i][j] => next[j],
+	// 老的dp[i - 1][j - 1] => dp[j - 1]
 } else {
-next[j]= 1 + Math.min(dp[j - 1],
-Math.min(next[j - 1], dp[j]));
-// 老的dp[i][j-1] => next[j - 1],
-//老的dp[i - 1][j] => dp[j]
+	next[j]= 1 + Math.min(dp[j - 1],
+	Math.min(next[j - 1], dp[j]));
+	// 老的dp[i][j-1] => next[j - 1],
+	// 老的dp[i - 1][j] => dp[j]
 }
 
 need go back again
@@ -127,4 +125,3 @@ public class KEditDistance {
 		}
 	}
 }
-

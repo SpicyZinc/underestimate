@@ -45,22 +45,26 @@ public class BSTIterator {
 
 	// iteration
 	Stack<TreeNode> stack;
+
 	public BSTIterator(TreeNode root) {
-		stack = new Stack<TreeNode>();
+		this.stack = new Stack<>();
+
 		while (root != null) {
-			stack.push(root);
+			this.stack.push(root);
 			root = root.left;
 		}
 	}
-    /** @return whether we have a next smallest number */
+	/** @return whether we have a next smallest number */
 	public boolean hasNext() {
 		return !stack.isEmpty();
 	}
 
-    /** @return the next smallest number */
-    public int next() {
+	/** @return the next smallest number */
+	public int next() {
 		TreeNode node = stack.pop();
+
 		int result = node.val;
+
 		if (node.right != null) {
 			node = node.right;
 			while (node != null) {
@@ -72,33 +76,34 @@ public class BSTIterator {
 		return result;
 	}
 
-    // recursion
-    int index = 0;
-    List<TreeNode> list;
-   	public BSTIterator(TreeNode root) {
-        index = 0;
-        list = new ArrayList<TreeNode>();
-        dfs(root, list);
-    }
-    
-    public void dfs(TreeNode node, List<TreeNode> list) {
-        if (node == null) {
-            return;
-        }
-        dfs(node.left, list);
-        list.add(node);
-        dfs(node.right, list);
-    }
+	// recursion
+	int index = 0;
+	List<TreeNode> list;
+	public BSTIterator(TreeNode root) {
+		index = 0;
+		list = new ArrayList<TreeNode>();
+		dfs(root, list);
+	}
+	
+	public void dfs(TreeNode node, List<TreeNode> list) {
+		if (node == null) {
+			return;
+		}
 
-    public boolean hasNext() {
-        return index < list.size();
-    }
+		dfs(node.left, list);
+		list.add(node);
+		dfs(node.right, list);
+	}
 
-    public int next() {
-        return list.get(index++).val;
-    }
+	public boolean hasNext() {
+		return index < list.size();
+	}
 
-    public TreeNode next() {
-        return list.get(index++);
-    }
+	public int next() {
+		return list.get(index++).val;
+	}
+
+	public TreeNode next() {
+		return list.get(index++);
+	}
 }

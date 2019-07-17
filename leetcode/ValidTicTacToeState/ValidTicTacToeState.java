@@ -35,15 +35,18 @@ Each board[i][j] is a character in the set {" ", "X", "O"}.
 
 idea:
 two invalid cases
-1. countX == countO and 3 consecutive Xs
+三个连续 X 且 X 和 O 个数相等 不可能 因为总是先放X 既然 countX == countO
+三个连续 O
+1. countX == countO and 3 consecutive X's
 2. countX - countO == 1 and 3 consecutive Os, game should be over, no such case countX > countO
 */
 
 class ValidTicTacToeState {
-    public boolean validTicTacToe(String[] board) {
+	public boolean validTicTacToe(String[] board) {
 		int m = board.length;
 		int n = board[0].length();
 		char[][] charBoard = new char[m][n];
+
 		for (int i = 0; i < m; i++) {
 			String row = board[i];
 			for (int j = 0; j < n; j++) {
@@ -65,26 +68,28 @@ class ValidTicTacToeState {
 			}
 		}
 		// based on rule
-        // # of O cannot be bigger than # of X
-        // # of X cannot be 2 more than # of O
-        if (countO > countX || countX - countO > 1) {
-            return false;
-        }
+		// # of O cannot be bigger than # of X
+		// # of X cannot be 2 more than # of O
+		if (countO > countX || countX - countO > 1) {
+			return false;
+		}
 
 		if (countX == countO) {
-			if (!helperToDetectValid(charBoard, 'X')) {
+			if (!isValidState(charBoard, 'X')) {
 				return false;
 			}
 		} else if (countX - countO == 1) {
-			if (!helperToDetectValid(charBoard, 'O')) {
+			if (!isValidState(charBoard, 'O')) {
 				return false;
 			}
 		}
-        
-        return true;
+
+		return true;
 	}
+
 	// check if row, column, diagonal and anti-diagonal has a line of 3 consecutive character
-	private boolean helperToDetectValid(char[][] board, char c) {
+	// 检查是不是三个连续的 X or O
+	private boolean isValidState(char[][] board, char c) {
 		for (int i = 0; i < 3; i++) {
 			// row
 			if (c == board[i][0] && board[i][0] == board[i][1] && board[i][1] == board[i][2]) {

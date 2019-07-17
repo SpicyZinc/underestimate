@@ -15,60 +15,60 @@ easy operation
 */
 
 ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
+	int val;
+	ListNode next;
+	ListNode(int x) {
+		val = x;
+		next = null;
+	}
 }
 
 public class SortList {
-    public ListNode sortList(ListNode head) {
-        if (head == null || head.next == null) {
-        	return head;
-        }
+	public ListNode sortList(ListNode head) {
+		if (head == null || head.next == null) {
+			return head;
+		}
 
-        // 找到中间点
-        ListNode slow = head;
-        ListNode fast = head;
-        while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
+		// 找到中间点
+		ListNode slow = head;
+		ListNode fast = head;
+		while (fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
 
-        ListNode first = head;
-        ListNode second = slow.next;
-        slow.next = null; // cut the list two halves
+		ListNode first = head;
+		ListNode second = slow.next;
+		slow.next = null; // cut the list two halves
 
-        first = sortList(first);
-        second = sortList(second);
+		first = sortList(first);
+		second = sortList(second);
 
-        return merge(first, second);
-    }
+		return merge(first, second);
+	}
 
-    public ListNode merge(ListNode first, ListNode second) {
-        ListNode dummy = new ListNode(0);
-        ListNode current = dummy;
+	public ListNode merge(ListNode first, ListNode second) {
+		ListNode dummy = new ListNode(0);
+		ListNode current = dummy;
 
-        while (first != null && second != null) {
-            if (first.val < second.val) {
-                current.next = new ListNode(first.val);
-                first = first.next;
-            } else {
-                current.next = new ListNode(second.val);
-                second = second.next;
-            }
+		while (first != null && second != null) {
+			if (first.val < second.val) {
+				current.next = new ListNode(first.val);
+				first = first.next;
+			} else {
+				current.next = new ListNode(second.val);
+				second = second.next;
+			}
 
-            current = current.next;
-        }
+			current = current.next;
+		}
 
-        if (first != null) {
-            current.next = first;
-        } else {
-            current.next = second;
-        }
+		if (first != null) {
+			current.next = first;
+		} else {
+			current.next = second;
+		}
 
-        return dummy.next;
-    }
+		return dummy.next;
+	}
 }

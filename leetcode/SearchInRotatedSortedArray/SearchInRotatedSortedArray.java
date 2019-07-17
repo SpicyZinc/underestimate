@@ -35,7 +35,7 @@ public class SearchInRotatedSortedArray {
 
 		return -1;
 	}
-	// self written binary search version passed test
+	// Sun Jul 14 02:04:07 2019
 	public int search(int[] A, int target) {
 		int start = 0;
 		int end = A.length - 1;

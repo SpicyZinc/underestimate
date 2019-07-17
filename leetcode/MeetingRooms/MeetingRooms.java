@@ -8,22 +8,22 @@ sort the intervals, then there are any overlapping between two overlaps, return 
 */
 
 public class MeetingRooms {
-    public boolean canAttendMeetings(Interval[] intervals) {
-        Arrays.sort(intervals, new Comparator<Interval>() {
-            @Override
-            public int compare(Interval a, Interval b) {
-                return a.start - b.start;
-            }
-        });
-        
-        for (int i = 0; i < intervals.length - 1; i++) {
-            Interval curr = intervals[i];
-            Interval next = intervals[i + 1];
-            if (next.start < curr.end) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
+	public boolean canAttendMeetings(Interval[] intervals) {
+		Arrays.sort(intervals, new Comparator<Interval>() {
+			@Override
+			public int compare(Interval a, Interval b) {
+				return a.start - b.start;
+			}
+		});
+
+		for (int i = 0; i < intervals.length - 1; i++) {
+			Interval curr = intervals[i];
+			Interval next = intervals[i + 1];
+			if (next.start < curr.end) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

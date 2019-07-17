@@ -36,127 +36,128 @@ use pos + previous jumped steps as key
 */
 
 public class FrogJump {
-    // 12/04/2018
-    public boolean canCross(int[] stones) {
-        if (stones[1] >= 2) {
-            return false;
-        }
+	// 12/04/2018
+	public boolean canCross(int[] stones) {
+		if (stones[1] >= 2) {
+			return false;
+		}
 
-        Map<String, Boolean> hm = new HashMap<String, Boolean>();
-        
-        return canCross(stones, 1, 1, hm);
-    }
-    
-    public boolean canCross(int[] stones, int pos, int prevSteps, Map<String, Boolean> hm) {
-        // dont forget base case
-        if (pos == stones.length - 1) {
-            return true;
-        }
+		Map<String, Boolean> hm = new HashMap<String, Boolean>();
+		
+		return canCross(stones, 1, 1, hm);
+	}
 
-        String key = pos + "-" + prevSteps;
-        if (hm.containsKey(key)) {
-            return hm.get(key);
-        }
-        
-        for (int i = pos + 1; i < stones.length; i++) {
-            int jumpedSteps = stones[i] - stones[pos];
-            
-            if (jumpedSteps < prevSteps - 1) {
-                continue;
-            }
-            
-            if (jumpedSteps > prevSteps + 1) {
-                hm.put(key, false);
-                return false;
-            }
-            
-            if (canCross(stones, i, jumpedSteps, hm)) {
-                hm.put(key, true);
-                return true;
-            }
-        }
-        hm.put(key, false);
-        return false;
-    }
+	public boolean canCross(int[] stones, int pos, int prevSteps, Map<String, Boolean> hm) {
+		// don't forget base case
+		if (pos == stones.length - 1) {
+			return true;
+		}
 
-    // 09/16/2018 LiveRamp
-    public boolean canCross(int[] stones) {
-        if (stones[1] >= 2) {
-            return false;
-        }
+		String key = pos + "-" + prevSteps;
+		if (hm.containsKey(key)) {
+			return hm.get(key);
+		}
 
-        if (stones.length == 2) {
-            return true;
-        }
+		for (int i = pos + 1; i < stones.length; i++) {
+			int jumpedSteps = stones[i] - stones[pos];
+			
+			if (jumpedSteps < prevSteps - 1) {
+				continue;
+			}
+			
+			if (jumpedSteps > prevSteps + 1) {
+				hm.put(key, false);
+				return false;
+			}
+			
+			if (canCross(stones, i, jumpedSteps, hm)) {
+				hm.put(key, true);
+				return true;
+			}
+		}
+		hm.put(key, false);
 
-        Map<String, Boolean> hm = new HashMap<String, Boolean>();
+		return false;
+	}
 
-        return dfs(stones, 1, 1, hm);
-    }
+	// 09/16/2018 LiveRamp
+	public boolean canCross(int[] stones) {
+		if (stones[1] >= 2) {
+			return false;
+		}
 
-    public boolean dfs(int[] stones, int pos, int prevJumps, Map<String, Boolean> hm) {
-        if (pos == stones.length - 1) {
-            return true;
-        }
+		if (stones.length == 2) {
+			return true;
+		}
 
-        String key = pos + "-" + prevJumps;
-        if (hm.containsKey(key)) {
-            return hm.get(key);
-        }
+		Map<String, Boolean> hm = new HashMap<String, Boolean>();
 
-        for (int i = pos + 1; i < stones.length; i++) {
-            int jumpedSteps = stones[i] - stones[pos];
-            // if jumpedSteps in [prevSteps - 1, prevSteps + 1]
-            if (jumpedSteps < prevJumps - 1) {
-                continue;
-            }
-            if (jumpedSteps > prevJumps + 1) {
-                hm.put(key, false);
-                return false;
-            }
-            if (dfs(stones, i, jumpedSteps, hm)) {
-                hm.put(key, true);
-                return true;
-            }
-        }
+		return dfs(stones, 1, 1, hm);
+	}
 
-        hm.put(key, false);
+	public boolean dfs(int[] stones, int pos, int prevJumps, Map<String, Boolean> hm) {
+		if (pos == stones.length - 1) {
+			return true;
+		}
 
-        return false;
-    }
+		String key = pos + "-" + prevJumps;
+		if (hm.containsKey(key)) {
+			return hm.get(key);
+		}
 
-    // TLE, 16 / 39 test cases passed
-    public boolean canCross(int[] stones) {
-        // the first jump must be 1 unit
-        // frog already at stone 1 which is zero-based index of 0
-        // always stones[0] == 0
-        if (stones[1] >= 2) {
-            return false;
-        }
+		for (int i = pos + 1; i < stones.length; i++) {
+			int jumpedSteps = stones[i] - stones[pos];
+			// if jumpedSteps in [prevSteps - 1, prevSteps + 1]
+			if (jumpedSteps < prevJumps - 1) {
+				continue;
+			}
+			if (jumpedSteps > prevJumps + 1) {
+				hm.put(key, false);
+				return false;
+			}
+			if (dfs(stones, i, jumpedSteps, hm)) {
+				hm.put(key, true);
+				return true;
+			}
+		}
 
-        if (stones.length == 2) {
-            return true;
-        }
+		hm.put(key, false);
 
-        // not zero based position
-        return dfs(stones, 1, 1);
-    }
+		return false;
+	}
 
-    private boolean dfs(int[] stones, int pos, int prevSteps) {
-        if (pos == stones.length - 1) {
-            return true;
-        }
+	// TLE, 16 / 39 test cases passed
+	public boolean canCross(int[] stones) {
+		// the first jump must be 1 unit
+		// frog already at stone 1 which is zero-based index of 0
+		// always stones[0] == 0
+		if (stones[1] >= 2) {
+			return false;
+		}
 
-        for (int i = pos + 1; i < stones.length; i++) {
-            int jumpedSteps = stones[i] - stones[pos];
-            // if jumpedSteps in [prevSteps - 1, prevSteps + 1] 
-            if (jumpedSteps >= prevSteps - 1 && jumpedSteps <= prevSteps + 1) {
-                if (dfs(stones, i, jumpedSteps)) {
-                    return true;
-                }
-            }
-        }
-        
-        return false;
-    }
+		if (stones.length == 2) {
+			return true;
+		}
+
+		// not zero based position
+		return dfs(stones, 1, 1);
+	}
+
+	private boolean dfs(int[] stones, int pos, int prevSteps) {
+		if (pos == stones.length - 1) {
+			return true;
+		}
+
+		for (int i = pos + 1; i < stones.length; i++) {
+			int jumpedSteps = stones[i] - stones[pos];
+			// if jumpedSteps in [prevSteps - 1, prevSteps + 1] 
+			if (jumpedSteps >= prevSteps - 1 && jumpedSteps <= prevSteps + 1) {
+				if (dfs(stones, i, jumpedSteps)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 }

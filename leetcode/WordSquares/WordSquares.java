@@ -19,14 +19,14 @@ Input:
 Output:
 [
   [ "wall",
-    "area",
-    "lead",
-    "lady"
+	"area",
+	"lead",
+	"lady"
   ],
   [ "ball",
-    "area",
-    "lead",
-    "lady"
+	"area",
+	"lead",
+	"lady"
   ]
 ]
 Explanation:
@@ -38,14 +38,14 @@ Input:
 Output:
 [
   [ "baba",
-    "abat",
-    "baba",
-    "atan"
+	"abat",
+	"baba",
+	"atan"
   ],
   [ "baba",
-    "abat",
-    "baba",
-    "atal"
+	"abat",
+	"baba",
+	"atal"
   ]
 ]
 Explanation:
@@ -100,93 +100,94 @@ class WordSquares {
 
 	// Sun Jun  9 01:03:53 2019
 	public List<List<String>> wordSquares(String[] words) {
-        List<List<String>> result = new ArrayList<>();
-            
-        Map<String, Set<String>> hm = new HashMap<>();
-        for (String word : words) {
-            for (int i = 0; i <= word.length(); i++) {
-                String prefix = word.substring(0, i);
-                
-                hm.computeIfAbsent(prefix, x -> new HashSet<String>()).add(word);
-            }
-        }
-        
-        int squareLen = words[0].length();
-        dfs(0, squareLen, hm, new ArrayList<String>(), result);
-        
-        return result;
-    }
-    
-    public void dfs(int row, int n, Map<String, Set<String>> hm, List<String> square, List<List<String>> result) {
-        if (row == n) {
-            result.add(new ArrayList<String>(square));
-            
-            return;
-        }
-        
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < row; i++) {
-             sb.append(square.get(i).charAt(row)   );
-        }
-        String prefixForRow = sb.toString();
-        Set<String> candidates = hm.get(prefixForRow);
-        if (candidates == null) {
-            return;
-        }
-        
-        for (String candidate : candidates) {
-            square.add(candidate);
-            dfs(row + 1, n, hm, square, result);
-            square.remove(square.size() - 1);
-        }
-    }
+		List<List<String>> result = new ArrayList<>();
+			
+		Map<String, Set<String>> hm = new HashMap<>();
+		for (String word : words) {
+			for (int i = 0; i <= word.length(); i++) {
+				String prefix = word.substring(0, i);
+				
+				hm.computeIfAbsent(prefix, x -> new HashSet<String>()).add(word);
+			}
+		}
+		
+		int squareLen = words[0].length();
+		dfs(0, squareLen, hm, new ArrayList<String>(), result);
+		
+		return result;
+	}
+	
+	public void dfs(int row, int n, Map<String, Set<String>> hm, List<String> square, List<List<String>> result) {
+		if (row == n) {
+			result.add(new ArrayList<String>(square));
+			
+			return;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < row; i++) {
+			sb.append(square.get(i).charAt(row));
+		}
+
+		String prefixForRow = sb.toString();
+		Set<String> candidates = hm.get(prefixForRow);
+		if (candidates == null) {
+			return;
+		}
+		
+		for (String candidate : candidates) {
+			square.add(candidate);
+			dfs(row + 1, n, hm, square, result);
+			square.remove(square.size() - 1);
+		}
+	}
 
 	public List<List<String>> wordSquares(String[] words) {
-        List<List<String>> result = new ArrayList<>();
-        if (words.length == 0 || words == null) {
-            return result;
-        }
-        
-        Map<String, Set<String>> hm = new HashMap<>();
-        // create all prefix map
-        for (String word : words) {
-            for (int i = 0; i <= word.length(); i++) {
-                String prefix = word.substring(0, i);
-                hm.computeIfAbsent(prefix, x -> new HashSet<String>()).add(word);
-            }
-        }
-        
-        int squareLen = words[0].length();
-        dfs(0, squareLen, hm, new ArrayList<String>(), result);
-        
-        return result;
-    }
+		List<List<String>> result = new ArrayList<>();
+		if (words.length == 0 || words == null) {
+			return result;
+		}
+		
+		Map<String, Set<String>> hm = new HashMap<>();
+		// create all prefix map
+		for (String word : words) {
+			for (int i = 0; i <= word.length(); i++) {
+				String prefix = word.substring(0, i);
+				hm.computeIfAbsent(prefix, x -> new HashSet<String>()).add(word);
+			}
+		}
+		
+		int squareLen = words[0].length();
+		dfs(0, squareLen, hm, new ArrayList<String>(), result);
+		
+		return result;
+	}
 
-    public void dfs(int rowIdx, int squareLen, Map <String, Set<String>> hm, List<String> square, List<List<String>> result) {
-        // find one word square
-        if (rowIdx == squareLen) {
-            result.add(new ArrayList<String>(square));
+	public void dfs(int rowIdx, int squareLen, Map <String, Set<String>> hm, List<String> square, List<List<String>> result) {
+		// find one word square
+		if (rowIdx == squareLen) {
+			result.add(new ArrayList<String>(square));
 
-            return;
-        }
-        
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < rowIdx; i++) {
-        	// 用填好row的 col 来推测 row + 1
-            // different rows, but the same column (pos)
-            sb.append(square.get(i).charAt(rowIdx));
-        }
+			return;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < rowIdx; i++) {
+			// 用填好row的 col 来推测 row + 1
+			// different rows, but the same column (pos)
+			sb.append(square.get(i).charAt(rowIdx));
+		}
 
-        String prefix = sb.toString();
-        Set<String> candidates = hm.get(prefix);
-        if (candidates == null) {
-            return;
-        }
+		String prefix = sb.toString();
+		Set<String> candidates = hm.get(prefix);
+		if (candidates == null) {
+			return;
+		}
 
-        for (String candidate : candidates) {
-            square.add(candidate);
-            dfs(rowIdx + 1, squareLen, hm, square, result);
-            square.remove(square.size() - 1);
-        }
-    }
+		for (String candidate : candidates) {
+			square.add(candidate);
+			dfs(rowIdx + 1, squareLen, hm, square, result);
+			square.remove(square.size() - 1);
+		}
+	}
 }

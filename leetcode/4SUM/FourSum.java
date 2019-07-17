@@ -24,110 +24,71 @@ for (int i=0; i<num.length-1; i++) {
 	}
 }
 */
+
 import java.util.*;
+
 public class FourSum {
-    public ArrayList<ArrayList> fourSum(int[] num, int target) {
-        Arrays.sort(num);
-        HashSet<ArrayList> hs = new HashSet<ArrayList>();
-        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-		if (num.length < 4) {
-			return result;
-        }
-		
-        for (int i = 0; i < num.length - 1; i++) {
-            for (int j = i + 1; j < num.length; j++) {
-                for (int k = j + 1, l = num.length - 1; k < l;) {                     
-					int sum = num[i] + num[j] + num[k] + num[l];                     
+	// Sun Jul 14 20:13:46 2019
+	public List<List<Integer>> fourSum(int[] numbers, int target) {
+		List<List<Integer>> result = new ArrayList<>();
+		Set<List<Integer>> hs = new HashSet<>();
+
+		Arrays.sort(numbers);
+		int n = numbers.length;
+
+		for (int i = 0; i < n; i++) {
+			for (int j = i + 1; j < n; j++) {
+				for (int k = j + 1, l = n - 1; k < l;) {
+					int sum = numbers[i] + numbers[j] + numbers[k] + numbers[l];
+
 					if (sum > target) {
-                        l--;
-                    }
-                    else if (sum < target) {
-                        k++;
-                    }
-                    else if (sum == target) {
-                        ArrayList<Integer> found = new ArrayList<Integer>();
-                        found.add(num[i]);
-                        found.add(num[j]);
-                        found.add(num[k]);
-                        found.add(num[l]);
-                        if (hs.add(found)) {                            
-                            result.add(found);
-                        } 
-                        k++;
-                        l--; 
-                    }
-                }
-            }
-        }
+						l--;
+					} else if (sum < target) {
+						k++;
+					} else {
+						List<Integer> path = new ArrayList<>();
+						Collections.addAll(path, numbers[i], numbers[j], numbers[k], numbers[l]);
 
-        return result;
-    }
-    // self written version passed test
-    public List<List<Integer>> fourSum(int[] num, int target) {
-        HashSet<List<Integer>> hs = new HashSet<List<Integer>>();
-        List<List<Integer>> ret = new ArrayList<List<Integer>>();
-        int n = num.length;
-        if (n < 4) {
-            return ret;
-        }
-        
-        Arrays.sort(num);
-        
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                for (int k = j + 1, l = n - 1; k < l;) {
-                    int temp = num[i] + num[j] + num[k] + num[l];
-                    if ( temp < target ) {
-                        k++;
-                    }
-                    else if ( temp > target ) {
-                        l--;
-                    }
-                    else {
-                        List<Integer> item = new ArrayList<Integer>();
-                        item.add(num[i]);
-                        item.add(num[j]);
-                        item.add(num[k]);
-                        item.add(num[l]);
-                        if (hs.add(item)) {
-                            ret.add(item);
-                        }
-                        k++;
-                        l--;
-                    }
-                }
-            }
-        }
-        
-        return ret;
-    }
-    // most recent
-    public List<List<Integer>> fourSum(int[] numbers, int target) {
-        List<List<Integer>> result = new ArrayList<>();
-        Set<List<Integer>> hs = new HashSet<List<Integer>>();
-        Arrays.sort(numbers);
-        int n = numbers.length;
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                for (int k = j + 1, l = n - 1; k < l;) {
-                    int sum = numbers[i] + numbers[j] + numbers[k] + numbers[l];
-                    if (sum > target) {
-                        l--;
-                    } else if (sum < target) {
-                        k++;
-                    } else {
-                        List<Integer> path = new ArrayList<Integer>();
-                        Collections.addAll(path, numbers[i], numbers[j], numbers[k], numbers[l]);
-                        if (hs.add(path)) {
-                            result.add(path);
-                        }
-                        k++;
-                        l--;
-                    }
-                }
-            }
-        }
+						if (hs.add(path)) {
+							result.add(path);
+						}
 
-        return result;
-    }
+						k++;
+						l--;
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	// brute force
+	public List<List<Integer>> fourSum(int[] nums, int target) {
+		List<List<Integer>> list = new ArrayList<>();
+		Set<List<Integer>> hs = new HashSet<>();
+
+		int N = nums.length;
+
+		for (int i=0; i<N; i++) {
+			for (int j=i+1; j<N; j++) {
+				for (int k=j+1; k<N; k++) {
+					for (int l=k+1; l<N; l++) {
+						int sum = nums[i] + nums[j] + nums[k] + nums[l];
+
+						if (sum == target) {
+							List<Integer> path = new ArrayList<>();
+							Collections.addAll(path, nums[i], nums[j], nums[k], nums[l]);
+
+							if (hs.add(path)) {
+								list.add(path);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return list;
+	}
 }

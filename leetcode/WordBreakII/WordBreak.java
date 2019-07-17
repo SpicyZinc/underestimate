@@ -50,11 +50,13 @@ public class WordBreak {
 			String left = s.substring(0, i);
 
 			if (wordDict.contains(left)) {
+				// note, not forget i == s.length()
 				if (i == s.length()) {
 					result.add(left);
 				} else {
 					String right = s.substring(i, s.length());
 					List<String> rightWordBreak = dfs(right, wordDict, hm);
+
 					for (String path : rightWordBreak) {
 						result.add(left + " " + path);
 					}
@@ -142,6 +144,6 @@ public class WordBreak {
 			sb.append(str);
 		}
 
-		return sb.toString();	
+		return sb.toString();
 	}
 }

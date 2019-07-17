@@ -32,6 +32,7 @@ public class OneEditDistance {
 
             if (a != b) {
                 editCnt++;
+
                 if (editCnt > 1) {
                     return false;
                 }
@@ -49,11 +50,11 @@ public class OneEditDistance {
                 j++;
             }
         }
-        
+
         if (i < m || j < n) {
             editCnt++;
         }
-        
+
         return editCnt == 1;
     }
 }

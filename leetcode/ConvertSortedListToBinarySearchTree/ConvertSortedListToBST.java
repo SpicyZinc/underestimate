@@ -19,7 +19,6 @@ class TreeNode {
 	TreeNode(int x) { val = x; }
 }
 
-
 public class ConvertSortedListToBST  {
 	public TreeNode sortedListToBST(ListNode head) {
 		if (head == null) {
@@ -56,7 +55,7 @@ public class ConvertSortedListToBST  {
 			curr = curr.next;
 		}
 
-		ListNode middle = curr;		
+		ListNode middle = curr;
 		ListNode right = curr.next;
 		// 切断 list
 		curr.next = null;

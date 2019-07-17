@@ -10,13 +10,13 @@ this problem contains many useful reusable techniques for linked list
 */
 
 class ListNode {
-    int val;
-    ListNode next;
+	int val;
+	ListNode next;
 
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
+	ListNode(int x) {
+		val = x;
+		next = null;
+	}
 }
 
 public class ReorderList {
@@ -45,87 +45,87 @@ public class ReorderList {
 		System.out.print("\n");
 	}
 
-    // Sun Jun  2 15:25:53 2019
-    public void reorderList(ListNode head) {
-        if (head == null) {
-            return;
-        }
+	// Sun Jun  2 15:25:53 2019
+	public void reorderList(ListNode head) {
+		if (head == null) {
+			return;
+		}
 
-        ListNode fast = head;
-        ListNode slow = head;
-        
-        while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        
-        ListNode first = head;
-        ListNode second = slow.next;
-        slow.next = null;
-        
-        // reverse the second
-        ListNode prev = null;
-        ListNode curr = second;
-        
-        while (curr != null) {
-            ListNode next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-        }
-        
-        second = prev;
-        
-        // interweave two linked lists
-        while (second != null) {
-            ListNode next1 = first.next;
-            ListNode next2 = second.next;
-            
-            first.next = second;
-            second.next = next1;
+		ListNode fast = head;
+		ListNode slow = head;
+		
+		while (fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
 
-            first = next1;
-            second = next2;
-        }
-    }
+		ListNode first = head;
+		ListNode second = slow.next;
+		slow.next = null;
+		
+		// reverse the second half
+		ListNode prev = null;
+		ListNode curr = second;
+		
+		while (curr != null) {
+			ListNode next = curr.next;
+			curr.next = prev;
+			prev = curr;
+			curr = next;
+		}
+		
+		second = prev;
+
+		// interweave two linked lists
+		while (second != null) {
+			ListNode next1 = first.next;
+			ListNode next2 = second.next;
+			
+			first.next = second;
+			second.next = next1;
+
+			first = next1;
+			second = next2;
+		}
+	}
 
 	// Thu May 23 15:40:24 2019
 	public void reorderList(ListNode head) {
-        if (head == null || head.next == null) {
-            return;
-        }
-        // find middle point
-        ListNode slow = head;
-        ListNode fast = head;
-        while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        ListNode firstHalf = head;
-        ListNode secondHalf = slow.next;
+		if (head == null || head.next == null) {
+			return;
+		}
+		// find middle point
+		ListNode slow = head;
+		ListNode fast = head;
+		while (fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		ListNode firstHalf = head;
+		ListNode secondHalf = slow.next;
 
-        // note: not forget to cut off the list, detach two sub lists
-        slow.next = null;
+		// note, not forget to cut off the list, detach two sub lists
+		slow.next = null;
 
-        // reverse a linked list, in this case, the second half
-        ListNode prev = null;
-        ListNode curr = secondHalf;
-        while (curr != null) {
-            ListNode next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-        }
-        secondHalf = prev;
+		// reverse a linked list, in this case, the second half
+		ListNode prev = null;
+		ListNode curr = secondHalf;
+		while (curr != null) {
+			ListNode next = curr.next;
+			curr.next = prev;
+			prev = curr;
+			curr = next;
+		}
+		secondHalf = prev;
 
-        // interweave two linked lists
-        while (secondHalf != null) {
-            ListNode next1 = firstHalf.next;
-            ListNode next2 = secondHalf.next;
-            firstHalf.next = secondHalf;
-            secondHalf.next = next1;
-            firstHalf = next1;
-            secondHalf = next2;
-        }
-    }
+		// interweave two linked lists
+		while (secondHalf != null) {
+			ListNode next1 = firstHalf.next;
+			ListNode next2 = secondHalf.next;
+			firstHalf.next = secondHalf;
+			secondHalf.next = next1;
+			firstHalf = next1;
+			secondHalf = next2;
+		}
+	}
 }

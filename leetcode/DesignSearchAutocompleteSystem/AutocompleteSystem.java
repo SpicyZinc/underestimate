@@ -103,7 +103,6 @@ class AutocompleteSystem {
 		// System.out.println(eg.data);
 		// System.out.println("==========");
 
-		System.out.println("???????");
 		autocompletes = eg.input('a');
 		System.out.println(eg.data);
 		System.out.println(autocompletes);
@@ -119,7 +118,7 @@ class AutocompleteSystem {
 		System.out.println(eg.data);
 	}
 
-	
+
 	Map<String, Integer> freq;
 	String data;
 
@@ -161,13 +160,14 @@ class AutocompleteSystem {
 
 			if (matched) {
 				pq.add(new Pair(sentence, freq.get(sentence)));
+
 				if (pq.size() > 3) {
 					pq.poll();
 				}
 			}
 		}
 
-		List<String> result = new ArrayList<>();   
+		List<String> result = new ArrayList<>();
 		while (!pq.isEmpty()) {
 			result.add(0, pq.poll().str);
 		}

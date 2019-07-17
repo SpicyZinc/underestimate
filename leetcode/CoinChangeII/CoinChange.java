@@ -29,10 +29,46 @@ Output: 1
 
 idea:
 knapsack problem
-dp[i][j] the number of combinations first i of coins to amount j
+dp[i][j] the number of combinations for first i of coins to generate amount j
+
+dfs()
+T(sum, i) = T(sum - c[i], i) + T(sum, i + 1)
 */
 
 class CoinChange {
+	// dfs 要会
+	// dfs + memo === dp
+	public int change(int amount, int[] coins) {
+		int size = coins.length;
+
+		int[][] memo = new int[size][amount + 1];
+		for (int[] a : memo) {
+			Arrays.fill(a, -1);
+		}
+
+		return dfs(amount, coins, 0, memo);
+	}
+
+	public int dfs(int remaining, int[] coins, int pos, int[][] memo) {
+		int size = coins.length;
+
+		if (remaining == 0) {
+			return 1;
+		}
+		
+		if (remaining < 0 || pos >= size) {
+			return 0;
+		}
+
+		if (memo[pos][remaining] != -1) {
+			return memo[pos][remaining];
+		}
+
+		int count = dfs(remaining, coins, pos + 1, memo) + dfs(remaining - coins[pos], coins, pos, memo);
+
+		return memo[pos][remaining] = count;
+	}
+
 	public int change(int amount, int[] coins) {
 		int size = coins.length;
 		int[][] dp = new int[size + 1][amount + 1];
@@ -41,7 +77,7 @@ class CoinChange {
 		for (int i = 1; i <= size; i++) {
 			dp[i][0] = 1;
 			for (int j = 1; j <= amount; j++) {
-				// use current coin (i - 1) or not
+				// use current coins[i - 1] or not
 				dp[i][j] = dp[i - 1][j] + (j >= coins[i - 1] ? dp[i][j - coins[i - 1]] : 0);
 			}
 		}

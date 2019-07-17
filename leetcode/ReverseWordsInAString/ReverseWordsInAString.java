@@ -14,60 +14,95 @@ trim() first
 */
 
 public class ReverseWordsInAString  {
-    public static void main(String[] args) {
-        ReverseWordsInAString eg = new ReverseWordsInAString();
-        String s = " 1";
-        String result = eg.reverseWords(s);
+	public static void main(String[] args) {
+		ReverseWordsInAString eg = new ReverseWordsInAString();
+		String s = " 1";
+		String result = eg.reverseWords(s);
 
-        System.out.println("|" + result + "|");
-    }
+		System.out.println("|" + result + "|");
+	}
+	// Fri Jul 12 22:28:53 2019
+	public String reverseWords(String s) {
+		s = s.trim();
+		List<String> list = new ArrayList<>();
+		
+		int size = s.length();
+		int start = 0;
+		int i = 0;
+		
+		while (i < size) {
+			if (s.charAt(i) == ' ') {
+				String word = s.substring(start, i);
+				list.add(0, word);
+				
+				while (s.charAt(i) == ' ') {
+					i++;
+				}
 
-    public String reverseWords(String s) {
-        s = s.trim();
-        int len = s.length();
-        int idx = 0;
-        int start = 0;
-        
-        List<String> words = new ArrayList<String>();
-        String result = "";
-        
-        while (idx < len) {
-            if (s.charAt(idx) == ' ') {
-                String word = s.substring(start, idx);
-                words.add(word);
-                while (s.charAt(idx) == ' ') {
-                    idx++;
-                }
-                start = idx;
-            } else {
-                idx++;
-            }
-        }
-        // Don't forget the last word
-        String lastWord = s.substring(start, len);
-        words.add(lastWord);  
+				start = i;
+			} else {
+				i++;
+			}
+		}
+		
+		String lastWord = s.substring(start, size);
+		list.add(0, lastWord);
 
-        for (int i = words.size() - 1; i >= 0; i--) {
-            result += words.get(i) + (i > 0 ? " " : "");
-        }
-        
-        return result;
-    }
+		String reversed = "";
+		for (int j = 0; j < list.size(); j++) {
+			reversed += list.get(j) + (j == list.size() - 1 ? "" : " ");
+		}
 
-    // passed, but not guarantee that spaces count
-    public String reverseWords(String s) {
-        if (s.length() == 0 || s == null) {
-            return "";
-        }
+		return reversed;
+	}
 
-        s = s.trim();
-        String[] ss = s.split("\\s+");
+	public String reverseWords(String s) {
+		s = s.trim();
+		int len = s.length();
+		int idx = 0;
+		int start = 0;
 
-        String ret = "";        
-        for (int i = ss.length - 1; i >= 0; i--) {
-            ret += ss[i] + (i != 0 ? " " : "");
-        }
+		List<String> words = new ArrayList<>();
+		String result = "";
+		
+		while (idx < len) {
+			if (s.charAt(idx) == ' ') {
+				String word = s.substring(start, idx);
+				words.add(word);
+				// 穷尽个数未知的 spaces
+				while (s.charAt(idx) == ' ') {
+					idx++;
+				}
+				start = idx;
+			} else {
+				idx++;
+			}
+		}
+		// Don't forget the last word
+		String lastWord = s.substring(start, len);
+		words.add(lastWord);  
 
-        return ret;
-    }
+		for (int i = words.size() - 1; i >= 0; i--) {
+			result += words.get(i) + (i > 0 ? " " : "");
+		}
+		
+		return result;
+	}
+
+	// passed, but not guarantee that spaces count
+	public String reverseWords(String s) {
+		if (s.length() == 0 || s == null) {
+			return "";
+		}
+
+		s = s.trim();
+		String[] ss = s.split("\\s+");
+
+		String result = "";        
+		for (int i = ss.length - 1; i >= 0; i--) {
+			result += ss[i] + (i != 0 ? " " : "");
+		}
+
+		return result;
+	}
 }

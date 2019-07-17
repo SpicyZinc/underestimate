@@ -93,11 +93,11 @@ public class CloneGraph {
 		
 		Queue<Node> queue = new LinkedList<>();
 		queue.add(node);
-		
+
 		while (!queue.isEmpty()) {
 			Node current = queue.poll();
 			List<Node> neighbors = current.neighbors;
-			
+
 			Node currentCloned = hm.get(current);
 			List<Node> neighborsCloned = new ArrayList<>();
 

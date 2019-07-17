@@ -18,7 +18,6 @@ deQueue(): Delete an element from the circular queue. Return true if the operati
 isEmpty(): Checks whether the circular queue is empty or not.
 isFull(): Checks whether the circular queue is full or not.
  
-
 Example:
 MyCircularQueue circularQueue = new MycircularQueue(3); // set the size to be 3
 circularQueue.enQueue(1);  // return true
@@ -45,138 +44,141 @@ front = (front + 1) % k;
 */
 
 class MyCircularQueue {
-    // 12/04/2018
-    int[] queue;
-    int head;
-    int tail;
-    int size = 0;
-    
-    /** Initialize your data structure here. Set the size of the queue to be k. */
-    public MyCircularQueue(int k) {
-        queue = new int[k];
-        head = 0;
-        tail = -1;
-        size = 0;
-    }
-    
-    /** Insert an element into the circular queue. Return true if the operation is successful. */
-    public boolean enQueue(int value) {
-        int len = queue.length;
-        if (size >= len) {
-            return false;
-        }
-        
-        tail = (tail + 1) % len;
-        queue[tail] = value;
-        size++;
+	// 12/04/2018
+	int[] queue;
+	int head;
+	int tail;
+	int size = 0;
 
-        return true;
-    }
-    
-    /** Delete an element from the circular queue. Return true if the operation is successful. */
-    public boolean deQueue() {
-        int len = queue.length;
-        if (size <= 0) {
-            return false;
-        }
-        
-        head = (head + 1) % len;
-        size--;
+	/** Initialize your data structure here. Set the size of the queue to be k. */
+	public MyCircularQueue(int k) {
+		queue = new int[k];
+		head = 0;
+		tail = -1;
+		size = 0;
+	}
 
-        return true;
-    }
-    
-    /** Get the front item from the queue. */
-    public int Front() {
-        if (size <= 0) {
-            return -1;
-        }
+	/** Insert an element into the circular queue. Return true if the operation is successful. */
+	public boolean enQueue(int value) {
+		int len = queue.length;
+		if (size >= len) {
+			return false;
+		}
 
-        return queue[head];
-    }
-    
-    /** Get the last item from the queue. */
-    public int Rear() {
-        if (size <= 0) {
-            return -1;
-        }
+		tail = (tail + 1) % len;
+		queue[tail] = value;
+		size++;
 
-        return queue[tail];
-    }
-    
-    /** Checks whether the circular queue is empty or not. */
-    public boolean isEmpty() {
-        return size == 0;
-    }
-    
-    /** Checks whether the circular queue is full or not. */
-    public boolean isFull() {
-        return size == queue.length;
-    }
+		return true;
+	}
 
-    // 09/12/2018
-    int k;
-    int[] queue;
-    int front;
-    int rear;
-    int size;
+	/** Delete an element from the circular queue. Return true if the operation is successful. */
+	public boolean deQueue() {
+		int len = queue.length;
+		if (size <= 0) {
+			return false;
+		}
+		
+		head = (head + 1) % len;
+		size--;
 
-    /** Initialize your data structure here. Set the size of the queue to be k. */
-    public MyCircularQueue(int k) {
-        this.k = k;
-        this.queue = new int[k];
-        this.front = 0;
-        this.rear = -1;
-        this.size = 0;
-    }
-    
-    /** Insert an element into the circular queue. Return true if the operation is successful. */
-    public boolean enQueue(int value) {
-        if (size >= k) {
-            return false;
-        }
+		return true;
+	}
 
-        rear = (rear + 1) % k;
-        queue[rear] = value;
-        size++;
-        return true;
-    }
-    
-    /** Delete an element from the circular queue. Return true if the operation is successful. */
-    public boolean deQueue() {
-        if (size <= 0) {
-            return false;
-        }
-        front = (front + 1) % k;
-        size--;
-        return true;
-    }
-    
-    /** Get the front item from the queue. */
-    public int Front() {
-        if (size <= 0) {
-            return -1;
-        }
+	/** Get the front item from the queue. */
+	public int Front() {
+		if (size <= 0) {
+			return -1;
+		}
 
-        return queue[front];
-    }
-    
-    /** Get the last item from the queue. */
-    public int Rear() {
-        if (size <= 0) {
-            return -1;
-        }
-        
-        return queue[rear];   
-    }
-    
-    /** Checks whether the circular queue is empty or not. */
-    public boolean isEmpty() {
-        return size == 0;
-    }
-    
-    /** Checks whether the circular queue is full or not. */
-    public boolean isFull() {
-        return size == k;
-    }
+		return queue[head];
+	}
+	
+	/** Get the last item from the queue. */
+	public int Rear() {
+		if (size <= 0) {
+			return -1;
+		}
+
+		return queue[tail];
+	}
+	
+	/** Checks whether the circular queue is empty or not. */
+	public boolean isEmpty() {
+		return size == 0;
+	}
+	
+	/** Checks whether the circular queue is full or not. */
+	public boolean isFull() {
+		return size == queue.length;
+	}
+
+	// 09/12/2018
+	int k;
+	int[] queue;
+	int front;
+	int rear;
+	int size;
+
+	/** Initialize your data structure here. Set the size of the queue to be k. */
+	public MyCircularQueue(int k) {
+		this.k = k;
+		this.queue = new int[k];
+		this.front = 0;
+		this.rear = -1;
+		this.size = 0;
+	}
+
+	/** Insert an element into the circular queue. Return true if the operation is successful. */
+	public boolean enQueue(int value) {
+		if (size >= k) {
+			return false;
+		}
+
+		rear = (rear + 1) % k;
+		queue[rear] = value;
+		size++;
+
+		return true;
+	}
+
+	/** Delete an element from the circular queue. Return true if the operation is successful. */
+	public boolean deQueue() {
+		if (size <= 0) {
+			return false;
+		}
+
+		front = (front + 1) % k;
+		size--;
+
+		return true;
+	}
+
+	/** Get the front item from the queue. */
+	public int Front() {
+		if (size <= 0) {
+			return -1;
+		}
+
+		return queue[front];
+	}
+
+	/** Get the last item from the queue. */
+	public int Rear() {
+		if (size <= 0) {
+			return -1;
+		}
+
+		return queue[rear];   
+	}
+
+	/** Checks whether the circular queue is empty or not. */
+	public boolean isEmpty() {
+		return size == 0;
+	}
+
+	/** Checks whether the circular queue is full or not. */
+	public boolean isFull() {
+		return size == k;
+	}
 }

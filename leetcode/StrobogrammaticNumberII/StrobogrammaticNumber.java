@@ -17,19 +17,13 @@ import java.util.*;
 public class StrobogrammaticNumber {
 	public static void main(String[] args) {
 		StrobogrammaticNumber eg = new StrobogrammaticNumber();
-		List<String> result = eg.findStrobogrammatic(3);
-		// List<String> result = eg.findStrobogrammatic(2);
-		// List<String> result = eg.findStrobogrammatic(1);
-		for (String s : result) {
-			System.out.print(s + " ");
-		}
-		System.out.println();
+		List<String> result = eg.findStrobogrammatic(4);
+		System.out.println(result);
 	}
 	// 12/26/2018
-	// 07/10/2018
 	// 应该考虑到 empty string
 	// 1“”1, 6“”9 ...
-	// m < n 不能两边加 0
+	// m < n 能两边加 0
 	public List<String> findStrobogrammatic(int n) {
 		return build(n, n);
 	}
@@ -39,6 +33,7 @@ public class StrobogrammaticNumber {
 
 		if (m == 0) {
 			result.add("");
+
 			return result;
 		}
 
@@ -46,14 +41,17 @@ public class StrobogrammaticNumber {
 			result.add("0");
 			result.add("1");
 			result.add("8");
+
 			return result;
 		}
 
 		List<String> list = build(m - 2, n);
+
 		for (String num : list) {
 			if (m < n) {
 				result.add("0" + num + "0");
 			}
+
 			result.add("1" + num + "1");
 			result.add("6" + num + "9");
 			result.add("8" + num + "8");
@@ -64,14 +62,15 @@ public class StrobogrammaticNumber {
 	}
 
 
-    public List<String> findStrobogrammatic(int n) {
-        List<String> result = new ArrayList<>();
-        build(n, "", result);
-        return result;
-    }
+	public List<String> findStrobogrammatic(int n) {
+		List<String> result = new ArrayList<>();
+		build(n, "", result);
+
+		return result;
+	}
 
 	public void build(int n, String sNumber, List<String> result) {
-	    char[] table = {'0', '1', '8', '6', '9'};
+		char[] table = {'0', '1', '8', '6', '9'};
 
 		if (sNumber.length() == n) {
 			result.add(sNumber);
@@ -93,14 +92,14 @@ public class StrobogrammaticNumber {
 			build(n, sb.toString(), result);
 		}
 	}
-    
-    public void append(boolean isLast, char c, StringBuilder sb) {
-        if (c == '6') {
-            sb.insert(sb.length() / 2, "69");
-        } else if (c == '9') {
-            sb.insert(sb.length() / 2, "96");
-        } else {
-            sb.insert(sb.length() / 2, isLast ? c : "" + c + c);
-        }
-    }
+	
+	public void append(boolean isLast, char c, StringBuilder sb) {
+		if (c == '6') {
+			sb.insert(sb.length() / 2, "69");
+		} else if (c == '9') {
+			sb.insert(sb.length() / 2, "96");
+		} else {
+			sb.insert(sb.length() / 2, isLast ? c : "" + c + c);
+		}
+	}
 }

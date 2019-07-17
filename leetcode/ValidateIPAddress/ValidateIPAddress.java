@@ -52,34 +52,34 @@ public class ValidateIPAddress {
 	}
 	// Sun May  5 02:21:58 2019
 	public String validIPAddress(String IP) {
-        if (isValidIPv4(IP)) {
-            return "IPv4";
-        } else if (isValidIPv6(IP)) {
-            return "IPv6";
-        } else {
-            return "Neither";
-        }
-    }
-    
-    public boolean isValidIPv4(String ip) {
-        if (ip.length() < 7 || ip.charAt(0) == '.' || ip.charAt(ip.length() - 1) == '.') {
-            return false;
-        }
-        
-        String[] matches = ip.split("\\.");
-        if (matches.length != 4) {
-            return false;
-        }
-        
-        for (String match : matches) {
-            if (!isValidIPv4Token(match)) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
+		if (isValidIPv4(IP)) {
+			return "IPv4";
+		} else if (isValidIPv6(IP)) {
+			return "IPv6";
+		} else {
+			return "Neither";
+		}
+	}
+	
+	public boolean isValidIPv4(String ip) {
+		if (ip.length() < 7 || ip.charAt(0) == '.' || ip.charAt(ip.length() - 1) == '.') {
+			return false;
+		}
+		
+		String[] matches = ip.split("\\.");
+		if (matches.length != 4) {
+			return false;
+		}
+		
+		for (String match : matches) {
+			if (!isValidIPv4Token(match)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+	
 	private boolean isValidIPv4Token(String token) {
 		if (token.startsWith("0") && token.length() > 1) {
 			return false;
@@ -102,7 +102,7 @@ public class ValidateIPAddress {
 
 	private boolean isValidIPv6(String ip) {
 		// 15 == 0:0:0:0:0:0:0:0
-		// // first or last character is :, not valid ip
+		// first or last character is :, not valid ip
 		if (ip.length() < 15 || ip.charAt(0) == ':' || ip.charAt(ip.length() - 1) == ':') {
 			return false;
 		}
