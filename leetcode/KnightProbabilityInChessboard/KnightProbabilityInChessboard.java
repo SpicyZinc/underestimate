@@ -33,14 +33,14 @@ class KnightProbabilityInChessboard {
 		}
 
 		int[][] directions = {
-			{-1,-2},
-			{-2,-1},
-			{-2,1},
-			{-1,2},
-			{1,2},
-			{2,1},
-			{2,-1},
-			{1,-2}
+			{-1, -2},
+			{-2, -1},
+			{-2, 1},
+			{-1, 2},
+			{1, 2},
+			{2, 1},
+			{2, -1},
+			{1, -2}
 		};
 		
 		double[][] dp = new double[N][N];
@@ -50,6 +50,7 @@ class KnightProbabilityInChessboard {
 		// 每一步 都看有多少种不出去的走法 共有 m steps
 		for (int steps = 0; steps < K; steps++) {
 			double[][] temp = new double[N][N];
+
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j < N; j++) {
 					for (int[] dir : directions) {

@@ -158,7 +158,7 @@ class AccountsMerge {
 				curr.neighbors.add(prev);
 			}
 		}
-		
+
 		// DFS search for each components(each account);
 		Set<String> visited = new HashSet<>();
 		for (String s : map.keySet()) {
@@ -176,7 +176,7 @@ class AccountsMerge {
 
 		return result;
 	}
-	
+
 	public void dfs(Node node, Set<String> visited, List<String> list) {
 		for (Node neighbor : node.neighbors) {
 			if (visited.add(neighbor.email)) {

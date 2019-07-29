@@ -21,69 +21,74 @@ https://discuss.leetcode.com/topic/58321/java-ac-solution-with-explanation
 actually graph problem
 u-v
 v-u
-都要populate到图中 note value 要reverse
+都要populate到图中
+note value 要reverse
 然后dfs找下去 注意几种base return 情况
-a/b = x
-a/c = y
+
+a / b = x
+a / c = y
+变成这样
 [
-    a: 
-    [b:x]
-    [c:y]
+	a: 
+	[b:x]
+	[c:y]
 ]
+
+need to come back
 */
 
 public class EvaluateDivision {
-    public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
-        Map<String, Map<String, Double>> numMap = new HashMap<>();
-        int i = 0;
-        for (String[] str : equations) {
-            insertPairs(numMap, str[0], str[1], values[i]);
-            insertPairs(numMap, str[1], str[0], 1.0 / values[i]);
-            i++;
-        }
+	public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+		Map<String, Map<String, Double>> numMap = new HashMap<>();
+		int i = 0;
 
-        double[] res = new double[queries.length];
-        i = 0;
-        for (String[] q : queries) {
-            Double resObj = handleQuery(q[0], q[1], numMap, new HashSet<>());
-            res[i++] = (resObj != null) ? resObj : -1.0;
-        }
+		for (List<String> equation : equations) {
+			double value = values[i];
 
-        return res;
-    }
+			String dividend = equation.get(0);
+			String divisor = equation.get(1);
 
-    public void insertPairs(Map<String, Map<String, Double>> numMap, String num, String denom, Double value) {
-        Map<String, Double> denomMap = numMap.get(num);
-        if (denomMap == null) {
-            denomMap = new HashMap<>();
-            numMap.put(num, denomMap);
-        }
-        denomMap.put(denom, value);
-    }
+			numMap.computeIfAbsent(dividend, x -> new HashMap<>()).put(divisor, value);
+			numMap.computeIfAbsent(divisor, x -> new HashMap<>()).put(dividend, 1.0 / value);
 
-    public Double handleQuery(String num, String denom, Map<String, Map<String, Double>> numMap, Set<String> visitedSet) {
-        String dupeKey = num+":"+denom;
-        if (visitedSet.contains(dupeKey)) {
-            return null;
-        }
-        if (!numMap.containsKey(num) || !numMap.containsKey(denom)) {
-            return null;
-        }
-        if (num.equals(denom)) {
-            return 1.0;
-        }
+			i++;
+		}
 
-        Map<String, Double> denomMap = numMap.get(num);
+		i = 0;
+		double[] result = new double[queries.size()];
 
-        for (String key : denomMap.keySet()) {
-            visitedSet.add(dupeKey);
-            Double res = handleQuery(key, denom, numMap, visitedSet);
-            if (res != null) {
-                return denomMap.get(key) * res;
-            }
-            visitedSet.remove(dupeKey);
-        }
+		for (List<String>query : queries) {
+			Double resObj = handleQuery(query.get(0), query.get(1), numMap, new HashSet<>());
+			result[i++] = resObj != null ? resObj : -1.0;
+		}
 
-        return null;
-    }
+		return result;
+	}
+
+	public Double handleQuery(String num, String denom, Map<String, Map<String, Double>> numMap, Set<String> visited) {
+		String dupeKey = num + "/" + denom;
+
+		if (visited.contains(dupeKey)) {
+			return null;
+		}
+		if (!numMap.containsKey(num) || !numMap.containsKey(denom)) {
+			return null;
+		}
+		if (num.equals(denom)) {
+			return 1.0;
+		}
+
+		Map<String, Double> denomMap = numMap.get(num);
+
+		for (String key : denomMap.keySet()) {
+			visited.add(dupeKey);
+			Double res = handleQuery(key, denom, numMap, visited);
+			if (res != null) {
+				return denomMap.get(key) * res;
+			}
+			visited.remove(dupeKey);
+		}
+
+		return null;
+	}
 }

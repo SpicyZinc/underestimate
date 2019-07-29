@@ -15,46 +15,46 @@ count is the number of edit times
 
 public class OneEditDistance {
 	public boolean isOneEditDistance(String s, String t) {
-        int m = s.length();
-        int n = t.length();
-        int i = 0;
-        int j = 0;
-    
-        int editCnt = 0;
-        
-        if (Math.abs(m - n) > 1) {
-            return false;
-        }
-        
-        while (i < m && j < n) {
-            char a = s.charAt(i);
-            char b = t.charAt(j);
+		int m = s.length();
+		int n = t.length();
+		int i = 0;
+		int j = 0;
 
-            if (a != b) {
-                editCnt++;
+		int editCnt = 0;
+		
+		if (Math.abs(m - n) > 1) {
+			return false;
+		}
 
-                if (editCnt > 1) {
-                    return false;
-                }
+		while (i < m && j < n) {
+			char a = s.charAt(i);
+			char b = t.charAt(j);
 
-                if (m > n) {
-                    i++;
-                } else if (n > m) {
-                    j++;
-                } else {
-                    i++;
-                    j++;
-                }
-            } else {
-                i++;
-                j++;
-            }
-        }
+			if (a != b) {
+				editCnt++;
 
-        if (i < m || j < n) {
-            editCnt++;
-        }
+				if (editCnt > 1) {
+					return false;
+				}
 
-        return editCnt == 1;
-    }
+				if (m > n) {
+					i++;
+				} else if (n > m) {
+					j++;
+				} else {
+					i++;
+					j++;
+				}
+			} else {
+				i++;
+				j++;
+			}
+		}
+
+		if (i < m || j < n) {
+			editCnt++;
+		}
+
+		return editCnt == 1;
+	}
 }

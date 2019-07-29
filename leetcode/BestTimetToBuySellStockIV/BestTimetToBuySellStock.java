@@ -31,7 +31,7 @@ public class BestTimetToBuySellStock {
 
 		return Math.max(global[days - 1][k], mustsell[days - 1][k]);
 	}
-	
+
 	public int maxProfitFromMulti(int[] prices) {
 		int maxProfit = 0;
 

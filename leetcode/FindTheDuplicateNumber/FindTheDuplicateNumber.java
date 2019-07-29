@@ -34,24 +34,24 @@ public class FindTheDuplicateNumber {
 		return -1;
 	}
 
-    public int findDuplicate(int[] nums) {
-        int slow = 0;
-        int fast = 0;
+	public int findDuplicate(int[] nums) {
+		int slow = 0;
+		int fast = 0;
 
-        while (true) {
-            slow = nums[slow];
-            fast = nums[nums[fast]];
-            if (slow == fast) {
-            	break;
-            }
-        }
+		while (true) {
+			slow = nums[slow];
+			fast = nums[nums[fast]];
+			if (slow == fast) {
+				break;
+			}
+		}
 
-        int duplicate = 0;
-        while (duplicate != slow) {
-            duplicate = nums[duplicate];
-            slow = nums[slow];
-        }
+		int duplicate = 0;
+		while (duplicate != slow) {
+			duplicate = nums[duplicate];
+			slow = nums[slow];
+		}
 
-        return duplicate;
-    }
+		return duplicate;
+	}
 }

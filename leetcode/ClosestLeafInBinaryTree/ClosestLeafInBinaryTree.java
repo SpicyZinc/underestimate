@@ -11,9 +11,9 @@ Example 1:
 Input:
 root = [1, 3, 2], k = 1
 Diagram of binary tree:
-          1
-         / \
-        3   2
+		  1
+		 / \
+		3   2
 Output: 2 (or 3)
 Explanation: Either 2 or 3 is the nearest leaf node to the target of 1.
 
@@ -27,15 +27,15 @@ Example 3:
 Input:
 root = [1,2,3,4,null,null,null,5,null,6], k = 2
 Diagram of binary tree:
-             1
-            / \
-           2   3
-          /
-         4
-        /
-       5
-      /
-     6
+			 1
+			/ \
+		   2   3
+		  /
+		 4
+		/
+	   5
+	  /
+	 6
 Output: 3
 Explanation: The leaf node with value 3 (and not the leaf node with value 6) is nearest to the node with value 2.
 
@@ -61,55 +61,55 @@ class TreeNode {
 }
 
 class ClosestLeafInBinaryTree {
-    public int findClosestLeaf(TreeNode root, int k) {
-        Map<TreeNode, List<TreeNode>> graph = new HashMap<>();
-        // populate the graph
-        dfs(graph, root, null);
-        
-        Queue<TreeNode> queue = new LinkedList<>();
-        Set<TreeNode> visited = new HashSet<>();
-        
-        // 只有变成graph也就是个HashMap后才可以loop找到target of k
-        for (TreeNode node : graph.keySet()) {
-            if (node != null && node.val == k) {
-                queue.add(node);
-                visited.add(node);
-                break;
-            }
-        }
+	public int findClosestLeaf(TreeNode root, int k) {
+		Map<TreeNode, List<TreeNode>> graph = new HashMap<>();
+		// populate the graph
+		dfs(graph, root, null);
 
-        while (!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-            // 所指的list中只有node 显然是Leaf
-            if (node != null && graph.get(node).size() == 1) {
-                return node.val;
-            }
-            // 通过 neighbor 找, 一定是距离最小的 最closest
-            for (TreeNode neighbor : graph.get(node)) {
-                if (!visited.contains(neighbor)) {
-                    queue.add(neighbor);
-                    visited.add(neighbor);
-                }
-            }
-        }
-        
-        return -1;
-    }
-    
-    public void dfs(Map<TreeNode, List<TreeNode>> graph, TreeNode node, TreeNode parent) {
-        if (node != null) {
-            if (!graph.containsKey(node)) {
-                graph.put(node, new LinkedList<TreeNode>());
-            }
-            if (!graph.containsKey(parent)) {
-                graph.put(parent, new LinkedList<TreeNode>());
-            }
-                    
-            graph.get(node).add(parent);
-            graph.get(parent).add(node);
+		Queue<TreeNode> queue = new LinkedList<>();
+		Set<TreeNode> visited = new HashSet<>();
+		
+		// 只有变成graph也就是个HashMap后才可以loop找到target of k
+		for (TreeNode node : graph.keySet()) {
+			if (node != null && node.val == k) {
+				queue.add(node);
+				visited.add(node);
+				break;
+			}
+		}
 
-            dfs(graph, node.left, node);
-            dfs(graph, node.right, node);
-        }
-    }
+		while (!queue.isEmpty()) {
+			TreeNode node = queue.poll();
+			// 所指的list中只有node 显然是Leaf
+			if (node != null && graph.get(node).size() == 1) {
+				return node.val;
+			}
+			// 通过 neighbor 找, 一定是距离最小的 最closest
+			for (TreeNode neighbor : graph.get(node)) {
+				if (!visited.contains(neighbor)) {
+					queue.add(neighbor);
+					visited.add(neighbor);
+				}
+			}
+		}
+
+		return -1;
+	}
+
+	public void dfs(Map<TreeNode, List<TreeNode>> graph, TreeNode node, TreeNode parent) {
+		if (node != null) {
+			if (!graph.containsKey(node)) {
+				graph.put(node, new LinkedList<TreeNode>());
+			}
+			if (!graph.containsKey(parent)) {
+				graph.put(parent, new LinkedList<TreeNode>());
+			}
+
+			graph.get(node).add(parent);
+			graph.get(parent).add(node);
+
+			dfs(graph, node.left, node);
+			dfs(graph, node.right, node);
+		}
+	}
 }

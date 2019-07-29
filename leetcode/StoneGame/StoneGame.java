@@ -54,9 +54,9 @@ public class StoneGame {
 			for (int i = 0; i < n - span + 1; i++) {
 				int j = i + span - 1;
 				dp[i][j] = Integer.MAX_VALUE;
-		        for (int k = i; k < j; k++) {
-		            dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k + 1][j] + prefixSum[j + 1] - prefixSum[i]);
-		        }
+				for (int k = i; k < j; k++) {
+					dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k + 1][j] + prefixSum[j + 1] - prefixSum[i]);
+				}
 			}
 		}
 
