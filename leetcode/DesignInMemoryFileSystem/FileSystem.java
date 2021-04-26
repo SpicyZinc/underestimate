@@ -108,111 +108,111 @@ public class FileSystem {
 	}
 
 	// 12/02/2018
-    public Map<String, Set<String>> directories;
-    public Map<String, String> files;
+	public Map<String, Set<String>> directories;
+	public Map<String, String> files;
 
-    public FileSystem() {
-        directories = new HashMap<>();
-        files = new HashMap<>();
-    }
-    
-    public List<String> ls(String path) {
-        if (files.containsKey(path)) {
-            int lastIndex = path.lastIndexOf("/");
-            String file = path.substring(lastIndex + 1);
-            
-            List<String> result = new ArrayList<>();
-            result.add(file);
+	public FileSystem() {
+		directories = new HashMap<>();
+		files = new HashMap<>();
+	}
+	
+	public List<String> ls(String path) {
+		if (files.containsKey(path)) {
+			int lastIndex = path.lastIndexOf("/");
+			String file = path.substring(lastIndex + 1);
+			
+			List<String> result = new ArrayList<>();
+			result.add(file);
 
-            return result;
-        }
-        
-        if (directories.containsKey(path)) {
-            Set<String> hs = directories.get(path);
-            List<String> result = new ArrayList<>(hs);
-            Collections.sort(result);
+			return result;
+		}
+		
+		if (directories.containsKey(path)) {
+			Set<String> hs = directories.get(path);
+			List<String> result = new ArrayList<>(hs);
+			Collections.sort(result);
 
-            return result;
-        }
-        
-        return new ArrayList<String>();
-    }
-    
-    public void mkdir(String path) {
-        if (path.length() == 0 || path == null) {
-            return;
-        }
-        
-        String[] dirs = path.split("/");
-        String absolutePath = "";
+			return result;
+		}
+		
+		return new ArrayList<String>();
+	}
+	
+	public void mkdir(String path) {
+		if (path.length() == 0 || path == null) {
+			return;
+		}
+		
+		String[] dirs = path.split("/");
+		String absolutePath = "";
 
-        for (String dir : dirs) {
-            // skip empty directory
-            if (dir.length() == 0 || dir == null) {
+		for (String dir : dirs) {
+			// skip empty directory
+			if (dir.length() == 0 || dir == null) {
 				continue;
 			}
-            if (absolutePath.length() == 0) {
-                absolutePath += '/';
-            }
-            
-            Set<String> hs = directories.get(absolutePath);
-            if (hs == null) {
-                hs = new HashSet<>();
-            }
-            
-            hs.add(dir);
-            directories.put(absolutePath, hs);
-            
-            // absolutePath = (absolutePath.length() > 1 ? "/" : "") + dir;
-            absolutePath += absolutePath.length() > 1 ? "/" + dir : dir;
-        }
+			if (absolutePath.length() == 0) {
+				absolutePath += '/';
+			}
+			
+			Set<String> hs = directories.get(absolutePath);
+			if (hs == null) {
+				hs = new HashSet<>();
+			}
+			
+			hs.add(dir);
+			directories.put(absolutePath, hs);
 
-        System.out.println("directories == " + directories);
-        System.out.println("files == " + files);
-    }
+			// absolutePath = (absolutePath.length() > 1 ? "/" : "") + dir;
+			absolutePath += absolutePath.length() > 1 ? "/" + dir : dir;
+		}
 
-    public void addContentToFile(String filePath, String content) {
-        int lastIndex = filePath.lastIndexOf("/");
-        String directory = filePath.substring(0, lastIndex);
-        String file = filePath.substring(lastIndex + 1);
-        
-        // if directory is empty
-        if (directory.length() == 0 || directory == null) {
-            directory = "/";
-        }
-        // if directories not contain directory, make it first
-        if (!directories.containsKey(directory)) {
-            mkdir(directory);
-        }
-        
-        // directories
-        Set<String> hs = directories.get(directory);
-        if (hs == null) {
-            hs = new HashSet<>();
-        }
-        hs.add(file);
-        directories.put(directory, hs);
-        
-        // files
-        String fileContent = files.get(filePath);
-        if (fileContent == null || fileContent.length() == 0) {
-            fileContent = content;
-        } else {
-            fileContent += content;
-        }
-        files.put(filePath, fileContent);
+		System.out.println("directories == " + directories);
+		System.out.println("files == " + files);
+	}
 
-        System.out.println("directories == " + directories);
-        System.out.println("files == " + files);
-    }
-    
-    public String readContentFromFile(String filePath) {
-        if (!files.containsKey(filePath)) {
+	public void addContentToFile(String filePath, String content) {
+		int lastIndex = filePath.lastIndexOf("/");
+		String directory = filePath.substring(0, lastIndex);
+		String file = filePath.substring(lastIndex + 1);
+		
+		// if directory is empty
+		if (directory.length() == 0 || directory == null) {
+			directory = "/";
+		}
+		// if directories not contain directory, make it first
+		if (!directories.containsKey(directory)) {
+			mkdir(directory);
+		}
+		
+		// directories
+		Set<String> hs = directories.get(directory);
+		if (hs == null) {
+			hs = new HashSet<>();
+		}
+		hs.add(file);
+		directories.put(directory, hs);
+		
+		// files
+		String fileContent = files.get(filePath);
+		if (fileContent == null || fileContent.length() == 0) {
+			fileContent = content;
+		} else {
+			fileContent += content;
+		}
+		files.put(filePath, fileContent);
+
+		System.out.println("directories == " + directories);
+		System.out.println("files == " + files);
+	}
+	
+	public String readContentFromFile(String filePath) {
+		if (!files.containsKey(filePath)) {
 			return "";
 		}
 
 		return files.get(filePath);
-    }
+	}
 }
 
 // method 2, use File subclass
@@ -297,77 +297,77 @@ public class FileSystem {
 
 class FileSystem {
 
-    class File {
-        String content = "";
-        Map<String, File> files = new HashMap<>();
-        boolean isFile = false;
-    }
+	class File {
+		String content = "";
+		Map<String, File> files = new HashMap<>();
+		boolean isFile = false;
+	}
 
-    File root;
-    public FileSystem() {
-        root = new File();
-    }
+	File root;
+	public FileSystem() {
+		root = new File();
+	}
 
-    public List<String> ls(String path) {
-        File node = root;
-        List<String> result = new ArrayList<>();
+	public List<String> ls(String path) {
+		File node = root;
+		List<String> result = new ArrayList<>();
 
-        if (!path.equals("/")) {
-            String[] dirs = path.split("/");
-            int size = dirs.length;
-            for (int i = 1; i < size; i++) {
-                node = node.files.get(dirs[i]);
-            }
+		if (!path.equals("/")) {
+			String[] dirs = path.split("/");
+			int size = dirs.length;
+			for (int i = 1; i < size; i++) {
+				node = node.files.get(dirs[i]);
+			}
 
-            if (node.isFile) {
-                result.add(dirs[size - 1]);
+			if (node.isFile) {
+				result.add(dirs[size - 1]);
 
-                return result;
-            }
-        }
+				return result;
+			}
+		}
 
-        result = new ArrayList<>(node.files.keySet());
-        Collections.sort(files);
+		result = new ArrayList<>(node.files.keySet());
+		Collections.sort(files);
 
-        return files;
-    }
+		return files;
+	}
 
-    public void mkdir(String path) {
-        File node = root;
-        String[] d = path.split("/");
-        for (int i = 1; i < d.length; i++) {
-            if (!node.files.containsKey(d[i])) {
-                node.files.put(d[i], new File());
-            }
+	public void mkdir(String path) {
+		File node = root;
+		String[] d = path.split("/");
+		for (int i = 1; i < d.length; i++) {
+			if (!node.files.containsKey(d[i])) {
+				node.files.put(d[i], new File());
+			}
 
-            node = node.files.get(d[i]);
-        }
-    }
+			node = node.files.get(d[i]);
+		}
+	}
 
-    public void addContentToFile(String filePath, String content) {
-        File node = root;
-        String[] dirs = filePath.split("/");
-        for (int i = 1; i < dirs.length - 1; i++) {
-            node = node.files.get(dirs[i]);
-        }
-        if (!node.files.containsKey(dirs[dirs.length - 1])) {
-            node.files.put(dirs[dirs.length - 1], new File());
-        }
+	public void addContentToFile(String filePath, String content) {
+		File node = root;
+		String[] dirs = filePath.split("/");
+		for (int i = 1; i < dirs.length - 1; i++) {
+			node = node.files.get(dirs[i]);
+		}
+		if (!node.files.containsKey(dirs[dirs.length - 1])) {
+			node.files.put(dirs[dirs.length - 1], new File());
+		}
 
-        node = node.files.get(dirs[dirs.length - 1]);
-        node.isFile = true;
-        node.content = node.content + content;
-    }
+		node = node.files.get(dirs[dirs.length - 1]);
+		node.isFile = true;
+		node.content = node.content + content;
+	}
 
-    public String readContentFromFile(String filePath) {
-        File node = root;
-        String[] dirs = filePath.split("/");
-        for (int i = 1; i < dirs.length - 1; i++) {
-            node = node.files.get(dirs[i]);
-        }
+	public String readContentFromFile(String filePath) {
+		File node = root;
+		String[] dirs = filePath.split("/");
+		for (int i = 1; i < dirs.length - 1; i++) {
+			node = node.files.get(dirs[i]);
+		}
 
-        return node.files.get(dirs[dirs.length - 1]).content;
-    }
+		return node.files.get(dirs[dirs.length - 1]).content;
+	}
 }
 
 

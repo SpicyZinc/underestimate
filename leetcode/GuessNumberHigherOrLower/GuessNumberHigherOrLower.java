@@ -19,8 +19,8 @@ recursion or iteration
 */
 
 /* The guess API is defined in the parent class GuessGame.
-   @param num, your guess
-   @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
+	@param num, your guess
+	@return -1 if my number is lower, 1 if my number is higher, otherwise return 0
 	  int guess(int num); */
 
 public class GuessNumberHigherOrLower extends GuessGame {
@@ -31,6 +31,7 @@ public class GuessNumberHigherOrLower extends GuessGame {
 		while (start < end) {
 			int myGuess = start + (end - start) / 2;
 			int guessResult = guess(myGuess);
+
 			if (guessResult == 1) {
 				start = myGuess + 1;
 			} else if (guessResult == -1) {

@@ -36,96 +36,96 @@ class MedianFinder {
 	PriorityQueue<Long> minHeap;
 
 	// initialize your data structure here.
-    public MedianFinder() {
-        maxHeap = new PriorityQueue<Long>();
-        minHeap = new PriorityQueue<Long>();
-    }
+	public MedianFinder() {
+		maxHeap = new PriorityQueue<Long>();
+		minHeap = new PriorityQueue<Long>();
+	}
 
 	public void addNum(int num) {
-        // maxHeap store smaller number, so 有更小的要放进来
+		// maxHeap store smaller number, so 有更小的要放进来
 		if (maxHeap.size() == 0 || num <= -1 * maxHeap.peek()) {
-            maxHeap.offer(-1 * (long) num);
-        } else {
-            minHeap.offer((long) num);
-        }
+			maxHeap.offer(-1 * (long) num);
+		} else {
+			minHeap.offer((long) num);
+		}
 
-        balance();
-    }
-    
-    public double findMedian() {
-        if (maxHeap.size() > minHeap.size()) {
-            return -1 * maxHeap.peek();
-        } else {
-            return (minHeap.peek() - maxHeap.peek()) / 2.0;
-        }
-    }
-    
-    private void balance() {
-        while (maxHeap.size() < minHeap.size()) {
-            maxHeap.offer(-1 * minHeap.poll());
-        }
-        
-        while (minHeap.size() < maxHeap.size() - 1) {
-            minHeap.offer(-1 * maxHeap.poll());
-        }
-    }
+		balance();
+	}
+	
+	public double findMedian() {
+		if (maxHeap.size() > minHeap.size()) {
+			return -1 * maxHeap.peek();
+		} else {
+			return (minHeap.peek() - maxHeap.peek()) / 2.0;
+		}
+	}
+	
+	private void balance() {
+		while (maxHeap.size() < minHeap.size()) {
+			maxHeap.offer(-1 * minHeap.poll());
+		}
+		
+		while (minHeap.size() < maxHeap.size() - 1) {
+			minHeap.offer(-1 * maxHeap.poll());
+		}
+	}
 
 
-    // 12/04/2018
-    // small alway equal or 1 bigger than large
-    Queue<Long> small = null;
-    Queue<Long> large = null;
+	// 12/04/2018
+	// small alway equal or 1 bigger than large
+	Queue<Long> small = null;
+	Queue<Long> large = null;
 
 	// initialize your data structure here.
-    public MedianFinder() {
-        small = new PriorityQueue<Long>();
-        large = new PriorityQueue<Long>();
-    }
-    
-    public void addNum(int num) {
-        small.add(-1 * (long) num);
-        large.add(-1 * small.poll());
-        if (large.size() > small.size()) {
-            small.add(-1 * large.poll());
-        }
-    }
-    
-    public double findMedian() {
-        if (small.size() > large.size()) {
-            return -1 * small.peek();
-        } else {
-            return (large.peek() - small.peek()) / 2.0;
-        }
-    }
+	public MedianFinder() {
+		small = new PriorityQueue<Long>();
+		large = new PriorityQueue<Long>();
+	}
+
+	public void addNum(int num) {
+		small.add(-1 * (long) num);
+		large.add(-1 * small.poll());
+		if (large.size() > small.size()) {
+			small.add(-1 * large.poll());
+		}
+	}
+	
+	public double findMedian() {
+		if (small.size() > large.size()) {
+			return -1 * small.peek();
+		} else {
+			return (large.peek() - small.peek()) / 2.0;
+		}
+	}
 
 	Queue<Long> small = null;
-    Queue<Long> large = null;
+	Queue<Long> large = null;
 
-    // initialize your data structure here.
-    public MedianFinder() {
-        small = new PriorityQueue<Long>();
-        large = new PriorityQueue<Long>();
-    }
-    
-    public void addNum(int num) {
-        large.add((long) num);
-        small.add(-1 * large.poll());
-        // either large and small priority queue equal size or large is one element more than small
-        // this way makes sure the array split into two halves
-        if (large.size() < small.size()) {
-            large.add(-1 * small.poll());
-        }
-    }
-    
-    public double findMedian() {
-        if (large.size() > small.size()) {
-            return large.peek();
-        } else {
-            return ( large.peek() - small.peek() ) / 2.0;
-        }
-    }
+	// initialize your data structure here.
+	public MedianFinder() {
+		small = new PriorityQueue<Long>();
+		large = new PriorityQueue<Long>();
+	}
 
-    public static void main(String[] args) {
+	public void addNum(int num) {
+		large.add((long) num);
+		small.add(-1 * large.poll());
+		// either large and small priority queue equal size or large is one element more than small
+		// this way makes sure the array split into two halves
+		if (large.size() < small.size()) {
+			large.add(-1 * small.poll());
+		}
+	}
+	
+	public double findMedian() {
+		if (large.size() > small.size()) {
+			return large.peek();
+		} else {
+			return ( large.peek() - small.peek() ) / 2.0;
+		}
+	}
+
+	public static void main(String[] args) {
 		MedianFinder mf = new MedianFinder();
 		mf.addNum(1);
 		mf.addNum(2);

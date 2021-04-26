@@ -5,7 +5,7 @@ Find the lexicographically smallest string that starts at a leaf of this tree an
 (As a reminder, any shorter prefix of a string is lexicographically smaller:
 for example, "ab" is lexicographically smaller than "aba".  A leaf of a node is a node that has no children.)
 
- 
+
 Example 1:
 https://assets.leetcode.com/uploads/2019/01/30/tree1.png
 Input: [0,1,2,3,4,3,4]
@@ -26,7 +26,10 @@ The number of nodes in the given tree will be between 1 and 8500.
 Each node in the tree will have a value between 0 and 25.
 
 idea:
-
+dfs
+from root to leaf
+but we want string from leaf to root,
+so prepend, not append
 */
 
 // Definition for a binary tree node.
@@ -39,25 +42,29 @@ class TreeNode {
 
 
 class SmallestStringStartingFromLeaf {
-	private String ans = "~"; // dummy value '~' > 'z'
+	private String smallestStr = "~"; // dummy value '~' > 'z'
+
 	public String smallestFromLeaf(TreeNode root) {
 		return dfs(root, "");
 	}
 
-	private String dfs(TreeNode n, String str) {
-		// base case, and in case root is null.
-		if (n == null) { 
+	private String dfs(TreeNode node, String str) {
+		// base case, and in case root is null
+		if (node == null) { 
 			return str;
 		}
 
-		str = (char) (n.val + 'a') + str; // prepend current char to the path string from root.
-		if (n.left == null && n.right == null && ans.compareTo(str) > 0) { 
-			ans = str;
-		} // update ans if n is a leaf.
+		 // prepend current char to the path string from root
+		str = (char) (node.val + 'a') + str;
 
-		dfs(n.left, str); // recursion to the left branch.
-		dfs(n.right, str); // recursion to the right branch.
+		// update smallestStr if n is a leaf
+		if (node.left == null && node.right == null && smallestStr.compareTo(str) > 0) { 
+			smallestStr = str;
+		}
 
-		return ans;
+		dfs(node.left, str);
+		dfs(node.right, str);
+
+		return smallestStr;
 	}
 }

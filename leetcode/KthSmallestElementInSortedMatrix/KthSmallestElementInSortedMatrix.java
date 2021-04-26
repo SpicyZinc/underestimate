@@ -31,14 +31,33 @@ public class KthSmallestElementInSortedMatrix {
 		KthSmallestElementInSortedMatrix eg = new KthSmallestElementInSortedMatrix();
 		
 		int[][] matrix = {
-			{ 1,  5,  9},
+			{1,  5,  9},
    			{10, 11, 13},
 			{12, 13, 15}
 		};
-		int eighth = eg.kthSmallest(matrix, 8);
-		System.out.println("======");
-		System.out.println(eighth);
+		int eighthSmallest = eg.kthSmallest(matrix, 8);
+		System.out.println(eighthSmallest);
 	}
+    // Sat Feb 27 22:27:41 2021
+    public int kthSmallest(int[][] matrix, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer a, Integer b) {
+                return b.compareTo(a);
+            }
+        });
+
+        for (int[] row : matrix) {
+            for (int val : row) {
+                pq.offer(val);
+                if (pq.size() > k) {
+                    pq.poll();
+                }
+            }
+        }
+
+        return pq.peek();
+    }
 
     // why fail
     public int kthSmallest(int[][] matrix, int k) {
@@ -132,14 +151,13 @@ public class KthSmallestElementInSortedMatrix {
             for (int j = 0; j < n; j++) {
                 pq.offer(matrix[i][j]);
                 if (pq.size() > k) {
+                    // (k + 1)th 大的都在pq第一个 超过size of k 第一个扔出去
+                    // 剩下的虽然无序 但都是前k小的
+                    // kth 大的 === kth smallest
                     pq.poll();
                 }
             }
         }
-
-       	for (int num : pq) {
-       		System.out.println(num);
-       	}
         
         return pq.poll();
     }

@@ -13,8 +13,7 @@ You should return the following matrix:
 
 idea:
 http://my.oschina.net/jdflyfly/blog/284502
-based on the order as 
-top right bottom left 
+based on the order as top right bottom left
 
 while (num <= n * n) {
 	update top right bottom left
@@ -33,6 +32,7 @@ top  < bottom
 
 O(n)
 */
+
 public class SpiralMatrixII {
 	public int[][] generateMatrix(int n) {
 		int[][] matrix = new int[n][n];

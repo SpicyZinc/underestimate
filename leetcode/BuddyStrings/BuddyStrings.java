@@ -27,19 +27,20 @@ A and B consist only of lowercase letters.
 
 idea:
 this is check if two string are meta string, coding challenge from revenue pod
-self come up this idea
+self come up with this idea
 */
 
 class BuddyStrings {
+	// Mon Sep  9 01:20:08 2019
 	public boolean buddyStrings(String A, String B) {
 		if (A.length() == 0 && B.length() == 0) {
 			return false;
 		}
-		
+
 		if (A.length() != B.length()) {
 			return false;
 		}
-		
+
 		List<Character> list = new ArrayList<Character>();
 		for (int i = 0; i < A.length(); i++) {
 			if (A.charAt(i) != B.charAt(i)) {
@@ -47,7 +48,7 @@ class BuddyStrings {
 				list.add(B.charAt(i));
 			}
 		}
-		
+
 		if (!list.isEmpty()) {
 			return list.size() == 4 && list.get(0) == list.get(3) && list.get(1) == list.get(2) || list.isEmpty() && !A.equals(B);    
 		} else {
@@ -62,6 +63,6 @@ class BuddyStrings {
 			}
 
 			return A.length() == 1 || isDuplicate;
-		}        
+		}
 	}
 }
