@@ -6,19 +6,19 @@ Find two lines, which together with x-axis forms a container, such that the cont
 Note: You may not slant the container.
 
 idea: diagram
-				 |           
-				 |        |                
-|			     |        |                   
-|        		 |        |        |        	
-|        |		 |        |        |        			
-|        |		 |        |        |        	
-|        |		 |        |        |        |   			
-|        |		 |        |        |        |   	
-|        |		 |        |        |        |   	
+                  |           
+                  |        |                
+|                 |        |                  
+|                 |        |        |         
+|        |        |        |        |         
+|        |        |        |        |         
+|        |        |        |        |        |
+|        |        |        |        |        |
+|        |        |        |        |        |
 ---------------------------------------------
 
 Our final goal is to find i, j, such that
-A(i,j) = (j−i) * min(height(i), height(j)) is maximized.
+A(i, j) = (j − i) * min(height(i), height(j)) is maximized.
 At every step, if height[i] < height[j], move i up by one.
 Otherwise move j down by one, until the two pointers meet.
 
@@ -32,35 +32,36 @@ isn't this trapping water problem?
 import java.util.*;
 
 public class ContainerWithMostWater {
-	public static void main(String[] args) {
-		Random aRandom = new Random();
-		List<Integer> height = new ArrayList<>();
-		
-		for (int i = 0; i < 10; i++) {
-			height.add(aRandom.nextInt(100));
-			System.out.println(height.get(i));
-		}
-		
-		System.out.println("The max area is ");
-		System.out.print(maxArea(height));
-	}
+    public static void main(String[] args) {
+        Random aRandom = new Random();
+        List<Integer> height = new ArrayList<>();
+        
+        for (int i = 0; i < 10; i++) {
+            height.add(aRandom.nextInt(100));
+            System.out.println(height.get(i));
+        }
+        
+        System.out.println("The max area is ");
+        System.out.print(maxArea(height));
+    }
 
-	public int maxArea(int[] height) {
-		int i = 0;
-		int j = height.length - 1;
-		int maxArea = 0;
+    public int maxArea(int[] height) {
+        int maxArea = 0;
 
-		while (i < j) {
-			int area = (j - i) * Math.min(height[i], height[j]);
-			maxArea = Math.max(maxArea, area);
+        int i = 0;
+        int j = height.length - 1;
 
-			if (height[i] > height[j]) {
-				j--;
-			} else {
-				i++;
-			}
-		}
+        while (i < j) {
+            int area = (j - i) * Math.min(height[i], height[j]);
+            maxArea = Math.max(maxArea, area);
 
-		return maxArea;
-	}
+            if (height[i] > height[j]) {
+                j--;
+            } else {
+                i++;
+            }
+        }
+
+        return maxArea;
+    }
 }

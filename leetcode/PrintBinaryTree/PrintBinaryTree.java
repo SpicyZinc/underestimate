@@ -74,7 +74,7 @@ class PrintBinaryTree {
 
 		List<List<String>> result = new ArrayList<>();
 		for (int i = 0; i < height; i++) {
-			List<String> layer = new ArrayList<String>();
+			List<String> layer = new ArrayList<>();
 			for (int j = 0; j < width; j++) {
 				layer.add("");
 			}

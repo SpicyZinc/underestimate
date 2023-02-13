@@ -11,16 +11,15 @@ The swap actually does the sort
 The left and right parts of the array are determined by the index returns after each partition operation.
 the last spot of the left pointer
 
-
-Choose a pivot value.
+Choose a pivot value:
     Pick the middle element as pivot value, but it can be any value,
     which is in range of sorted values, even if it doesn't present in the array.
-Partition.
+Partition:
     Rearrange elements in such a way, that all elements which are lesser than the pivot go to the left part of the array
     and all elements greater than the pivot, go to the right part of the array.
     Values equal to the pivot can stay in any part of the array.
     Notice, that array may be divided in non-equal parts.
-Sort both parts.
+Sort both parts:
     Apply quicksort algorithm recursively to the left and the right parts.
 
 There are two indices i and j at the very beginning of the partition algorithm
@@ -65,6 +64,7 @@ public class QuickSort {
     // swap is the real thing to sort
     public int partition(int[] nums, int left, int right) {
         int pivot = nums[(left + right) / 2];
+
         int i = left;
         int j = right;
 

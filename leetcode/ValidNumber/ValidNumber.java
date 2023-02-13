@@ -68,7 +68,6 @@ public class ValidNumber {
 		boolean hasE = false;
 		boolean hasNum = false;
 
-
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 
@@ -97,7 +96,7 @@ public class ValidNumber {
 			if (i > 0 && (c == '+' || c == '-') && s.charAt(i - 1) != 'e') {
 				return false;
 			}
-
+			// any invalid character other than digit, 'e', '.' , '+', '-'
 			if (!Character.isDigit(c) && c != 'e' && c != '.' && c != '+' && c != '-') {
 				return false;
 			}

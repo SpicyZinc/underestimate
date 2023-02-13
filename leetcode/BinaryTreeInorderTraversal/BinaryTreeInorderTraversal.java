@@ -7,7 +7,6 @@ iteration
 
 */
 
-
 class TreeNode {
     int val;
     TreeNode left;
@@ -18,7 +17,7 @@ class TreeNode {
 public class BinaryTreeInorderTraversal {
 	// recursion
     public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> ret = new ArrayList<Integer>();
+        List<Integer> ret = new ArrayList<>();
         inorderTraversal(root, ret);
 
         return ret;
@@ -38,7 +37,7 @@ public class BinaryTreeInorderTraversal {
 
     // iteration
     public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> ret = new ArrayList<Integer>();
+        List<Integer> ret = new ArrayList<>();
         if (root == null) {
         	return ret;
         }
@@ -50,8 +49,7 @@ public class BinaryTreeInorderTraversal {
 			if (current != null) {
 				stack.push(current);
 				current = current.left;
-			}
-			else {
+			} else {
 				current = stack.pop();
 				ret.add(current.val);
 				current = current.right;

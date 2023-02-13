@@ -13,7 +13,6 @@ Return 6.
 
 idea:
 http://blog.csdn.net/fightforyourdream/article/details/16894069
-
 */
 
 class TreeNode {
@@ -24,6 +23,32 @@ class TreeNode {
 }
 
 public class BinaryTreeMaximumPathSum {
+	// Thu May 13 23:11:34 2021
+	int maxSum = Integer.MIN_VALUE;
+
+	public int maxPathSum(TreeNode root) {
+		getMaxSum(root);
+
+		return maxSum;
+	}
+
+	public int getMaxSum(TreeNode node) {
+		if (node == null) {
+			return 0;
+		}
+
+		int leftMax = getMaxSum(node.left);
+		int rightMax = getMaxSum(node.right);
+
+		int max = Math.max(node.val, node.val + Math.max(leftMax, rightMax));
+
+		maxSum = Math.max(maxSum, Math.max(max, leftMax + node.val + rightMax));
+
+		return max;
+	}
+
+
+
 	// Sun May 19 02:14:02 2019
 	int maxSum = Integer.MIN_VALUE;
 	

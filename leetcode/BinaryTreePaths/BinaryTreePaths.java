@@ -37,6 +37,7 @@ public class BinaryTreePaths {
             path += node.val;
             result.add(new String(path));
         }
+
         dfs(node.left, path + node.val + "->", result);
         dfs(node.right, path + node.val + "->", result);
     }

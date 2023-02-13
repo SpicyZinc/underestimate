@@ -8,7 +8,7 @@ Input: [3,9,20,null,null,15,7]
   /\
  /  \
  9  20
-	/\
+    /\
    /  \
   15   7 
 
@@ -22,8 +22,8 @@ Output:
 
 Examples 2:
 Input: [3,9,8,4,0,1,7]
-	 3
-	/\
+     3
+    /\
    /  \
    9   8
   /\  /\
@@ -41,14 +41,14 @@ Output:
 
 Examples 3:
 Input: [3,9,8,4,0,1,7,null,null,null,2,5] (0's right child is 2 and 1's left child is 5)
-	 3
-	/\
+     3
+    /\
    /  \
    9   8
   /\  /\
  /  \/  \
  4  01   7
-	/\
+    /\
    /  \
    5   2
 
@@ -72,48 +72,48 @@ min and max is the range [min, max]
 */
 
 class BinaryTreeVerticalOrderTraversal {
-	public List<List<Integer>> verticalOrder(TreeNode root) {
-		List<List<Integer>> result = new ArrayList<>();
-		if (root == null) {
-			return result;
-		}
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
 
-		Map<Integer, List<Integer>> hm = new HashMap<>();
+        Map<Integer, List<Integer>> hm = new HashMap<>();
 
-		Queue<TreeNode> queue = new LinkedList<>();
-		Queue<Integer> columns = new LinkedList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<Integer> columns = new LinkedList<>();
 
-		queue.add(root);
-		columns.add(0);
+        queue.add(root);
+        columns.add(0);
 
-		int min = 0;
-		int max = 0;
+        int min = 0;
+        int max = 0;
 
-		while (!queue.isEmpty()) {
-			TreeNode node = queue.poll();
-			Integer col = columns.poll();
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            Integer col = columns.poll();
 
-			hm.computeIfAbsent(col, x -> new ArrayList<>()).add(node.val);
-			
-			if (node.left != null) {
-				queue.add(node.left);
-				columns.add(col - 1);
+            hm.computeIfAbsent(col, x -> new ArrayList<>()).add(node.val);
+            
+            if (node.left != null) {
+                queue.add(node.left);
+                columns.add(col - 1);
 
-				min = Math.min(min, col - 1);
-			}
-			
-			if (node.right != null) {
-				queue.add(node.right);
-				columns.add(col + 1);
+                min = Math.min(min, col - 1);
+            }
+            
+            if (node.right != null) {
+                queue.add(node.right);
+                columns.add(col + 1);
 
-				max = Math.max(max, col + 1);
-			}
-		}
+                max = Math.max(max, col + 1);
+            }
+        }
 
-		for (int i = min; i <= max; i++) {
-			result.add(hm.get(i));
-		}
+        for (int i = min; i <= max; i++) {
+            result.add(hm.get(i));
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

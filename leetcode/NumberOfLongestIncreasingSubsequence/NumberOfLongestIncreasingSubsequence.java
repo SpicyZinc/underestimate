@@ -26,20 +26,28 @@ class NumberOfLongestIncreasingSubsequence {
 		int maxCnt = 0;
 		int[] len = new int[n];
 		int[] cnt = new int[n];
+
 		for (int i = 0; i < n; i++) {
 			len[i] = 1;
 			cnt[i] = 1;
+
 			for (int j = 0; j < i; j++) {
 				if (nums[i] > nums[j]) {
+					// Take this nums[i] from outer loop perspective
 					if (len[i] == len[j] + 1) {
 						cnt[i] += cnt[j];
 					}
+					// Not take this nums[i] from outer loop perspective
+					// how to tell ?
+					// (length at j) + 1 > len[i]
+					// 所以个数没有增加
 					if (len[i] < len[j] + 1) {
 						len[i] = len[j] + 1;
 						cnt[i] = cnt[j];
 					}
 				}
 			}
+
 			if (maxLen == len[i]) {
 				maxCnt += cnt[i];
 			}

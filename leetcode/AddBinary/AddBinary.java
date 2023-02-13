@@ -39,7 +39,7 @@ public class AddBinary {
         
         StringBuilder sb = new StringBuilder();
         
-        while (i >= 0  && j >= 0) {
+        while (i >= 0 && j >= 0) {
             char cA = a.charAt(i--);
             char cB = b.charAt(j--);
             

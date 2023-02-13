@@ -73,6 +73,7 @@ public class DigitCounts {
         if (k == 0) {
             cnt++;
         }
+
         return cnt;
     }
 }

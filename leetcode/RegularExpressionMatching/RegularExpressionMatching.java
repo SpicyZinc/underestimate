@@ -50,7 +50,7 @@ public class RegularExpressionMatching {
 			// return isMatch( s.substring(1), p.substring(1) );   
 		} else {
 			// i == -1 is to cover the whole s
-			// because 2nd char of p is '*', e.g. "aab", "c*a*b" 
+			// because 2nd char of p is '*', e.g. s = "aab", p = "c*a*b"
 			int i = -1;
 			
 			// while first character of p equals first character of s, p.charAt(0) == s.charAt(i) or p.charAt(0) == '.'

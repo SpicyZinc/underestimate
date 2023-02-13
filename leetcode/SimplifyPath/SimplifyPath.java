@@ -40,13 +40,13 @@ public class SimplifyPath {
 
 		for (int i = 0; i <= n; i++) {
 			char c = i == n ? '0' : path.charAt(i);
-			
+
 			if (i == n || c == '/') {
 				if (chars.equals("..")) {
 					if (!directories.isEmpty()) {
 						directories.pop();
 					}
-				} else if (chars.length() > 0 && !chars.equals(".")) { // can only be directory
+				} else if (chars.length() > 0 && !chars.equals(".")) { // can only be directory name
 					directories.push(chars);
 				}
 				chars = "";

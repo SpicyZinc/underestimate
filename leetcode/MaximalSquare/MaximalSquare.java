@@ -23,9 +23,9 @@ current = min(top to current, left to current, diagonal to current) + 1
 */
 
 public class MaximalSquare {
-	// 02/03/2019
-	// lintcode version
-	public int maxSquare(int[][] matrix) {
+    // 02/03/2019
+    // lintcode version
+    public int maxSquare(int[][] matrix) {
         int n = matrix.length;
         int m = matrix[0].length;
         int maxLen = 0;
@@ -63,40 +63,36 @@ public class MaximalSquare {
 
     public int maximalSquare(char[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-        	return 0;
+            return 0;
         }
 
         int max = 0;
         int m = matrix.length;
         int n = matrix[0].length;
         int[][] dp = new int[m][n];
+
         // update 1st column
         for (int i = 0; i < m; i++) {
-        	dp[i][0] = matrix[i][0] - '0';
-        	max = Math.max(max, dp[i][0]);
+            dp[i][0] = matrix[i][0] - '0';
+            max = Math.max(max, dp[i][0]);
         }
         // update 1st row
         for (int j = 0; j < n; j++) {
-        	dp[0][j] = matrix[0][j] - '0';
-        	max =  Math.max(max, dp[0][j]);
+            dp[0][j] = matrix[0][j] - '0';
+            max =  Math.max(max, dp[0][j]);
         }
         // update the rest of the matrix
         for (int i = 1; i < m; i++) {
-			for (int j = 1; j < n; j++) {
-				if (matrix[i][j] == '1') {
-					dp[i][j] = minOfThree(dp[i - 1][j - 1], dp[i][j - 1], dp[i - 1][j]) + 1;
-				} else {
-					dp[i][j] = 0;
-				}
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = matrix[i][j] == '1' ? minOfThree(dp[i - 1][j - 1], dp[i][j - 1], dp[i - 1][j]) + 1 : 0;
+                max = Math.max(max, dp[i][j]);      
+            }
+        }
 
-				max = Math.max(max, dp[i][j]);		
-			}
-		}
-
-		return max * max;
+        return max * max;
     }
 
     private int minOfThree(int a, int b, int c) {
-    	return Math.min(a, Math.min(b, c));
+        return Math.min(a, Math.min(b, c));
     }
 }

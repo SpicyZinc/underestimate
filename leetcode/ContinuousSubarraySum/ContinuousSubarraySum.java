@@ -1,36 +1,47 @@
 /*
-Given a list of non-negative numbers and a target integer k,
-write a function to check if the array has a continuous subarray of size at least 2 that sums up to the multiple of k,
-that is, sums up to n*k where n is also an integer.
+Given an integer array nums and an integer k, return true if nums has a continuous subarray of size at least two whose elements sum up to a multiple of k, or false otherwise.
+An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.
 
 Example 1:
-Input: [23, 2, 4, 6, 7], k=6
-Output: True
-Explanation: Because [2, 4] is a continuous subarray of size 2 and sums up to 6.
+Input: nums = [23,2,4,6,7], k = 6
+Output: true
+Explanation: [2, 4] is a continuous subarray of size 2 whose elements sum up to 6.
 
 Example 2:
-Input: [23, 2, 6, 4, 7], k=6
-Output: True
-Explanation: Because [23, 2, 6, 4, 7] is an continuous subarray of size 5 and sums up to 42.
+Input: nums = [23,2,6,4,7], k = 6
+Output: true
+Explanation: [23, 2, 6, 4, 7] is an continuous subarray of size 5 whose elements sum up to 42.
+42 is a multiple of 6 because 42 = 7 * 6 and 7 is an integer.
 
-Note:
-The length of the array won't exceed 10,000.
-You may assume the sum of all the numbers is in the range of a signed 32-bit integer.
+Example 3:
+Input: nums = [23,2,6,4,7], k = 13
+Output: false
+ 
+
+Constraints:
+1 <= nums.length <= 105
+0 <= nums[i] <= 109
+0 <= sum(nums[i]) <= 231 - 1
+1 <= k <= 231 - 1
 
 idea:
-accumulate sum to current number, note the array length should be length + 1
+1. sum[], accumulate sum to current number, note the array length should be length + 1
+2. hashmap
 */
 
 public class ContinuousSubarraySum {
+	// Tue May 25 00:39:16 2021
+	// TLE
 	public boolean checkSubarraySum(int[] nums, int k) {
-		int[] sum = new int[nums.length + 1];
+		int n = nums.length;
+		int[] sum = new int[n + 1];
 
-		for (int i = 1; i <= nums.length; i++) {
+		for (int i = 1; i <= n; i++) {
 			sum[i] = sum[i - 1] + nums[i - 1];
 		}
 		
-		for (int i = 0; i <= nums.length; i++) {
-			for (int j = i + 2; j <= nums.length; j++) {
+		for (int i = 0; i <= n; i++) {
+			for (int j = i + 2; j <= n; j++) {
 				if ((sum[j] - sum[i]) == 0 && k == 0) {
 					return true;
 				}

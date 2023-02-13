@@ -59,7 +59,7 @@ class TreeNode {
 	}
 	
 	
-	public void inorderRecursive(){
+	public void inorderRecursive() {
 		if (this != null) {
 			if (left != null) {
 				left.inorderRecursive();

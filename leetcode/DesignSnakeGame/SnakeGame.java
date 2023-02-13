@@ -94,7 +94,7 @@ class SnakeGame {
         this.over = false;
         this.snake = new LinkedList<>();
         
-        // note, not forget add 0 posotion
+        // note, not forget add 0 position
         this.snake.add(0);
     }
     
@@ -125,9 +125,6 @@ class SnakeGame {
                 headX++;
                 break;
         }
-        // to simulate snake moving
-        // move one step, first tail shrink
-        int tail = snake.removeLast();
         
         // if snake can make a move
         int newHead = headX * width + headY;
@@ -140,6 +137,9 @@ class SnakeGame {
             return -1;
         }
 
+		// to simulate snake moving
+        // move one step, first tail shrink
+        int tail = snake.removeLast();
         // then head increases,
         snake.addFirst(newHead);
         

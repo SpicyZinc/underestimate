@@ -22,17 +22,20 @@ public class TreeLevelPrintOneQueue {
 		
 		System.out.print("Only One Queue-based method is ");
 		printTreeLevelOneQueue(myTree);
+		System.out.println();
 	}
 
 	// method based one queue, but only print, no returned list
 	public static void printTreeLevelOneQueue(Tree t) {
-		Queue<Tree> queue = new LinkedList<Tree>();
+		Queue<Tree> queue = new LinkedList<>();
 		queue.add(t);
+
 		if (queue == null) {
 			return;
 		}
+
 		Tree temp = queue.poll();
-		
+
 		while (temp != null) {
 			System.out.printf("%d ", temp.value);
 			queue.add(temp.left);

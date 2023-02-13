@@ -35,44 +35,44 @@ https://zhengyang2015.gitbooks.io/lintcode/find_peak_element_ii_390.html
 */
 
 public class FindPeakElement {
-	/*
-	 * @param A: An integer matrix
-	 * @return: The index of the peak
-	 */
-	public List<Integer> findPeakII(int[][] A) {
-		List<Integer> result = new ArrayList<Integer>();
+    /*
+     * @param A: An integer matrix
+     * @return: The index of the peak
+     */
+    public List<Integer> findPeakII(int[][] A) {
+        List<Integer> result = new ArrayList<>();
 
-		int m = A.length;
-		int n = A[0].length;
+        int m = A.length;
+        int n = A[0].length;
 
-		// why 1 and m - 2, because 1st and last line cannot be peak
-		int left = 1;
-		int right = m - 2;
+        // why 1 and m - 2, because 1st and last line cannot be peak
+        int left = 1;
+        int right = m - 2;
 
-		while (left <= right) {
-			int mid = left + (right - left) / 2;
-			int col = findPeak(A[mid]);
-			if (A[mid][col] < A[mid + 1][col]) {
-				left = mid + 1;
-			} else if (A[mid][col] < A[mid - 1][col]) {
-				right = mid - 1;
-			} else {
-				result.add(mid);
-				result.add(col);
-				break;
-			}
-		}
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int col = findPeak(A[mid]);
+            if (A[mid][col] < A[mid + 1][col]) {
+                left = mid + 1;
+            } else if (A[mid][col] < A[mid - 1][col]) {
+                right = mid - 1;
+            } else {
+                result.add(mid);
+                result.add(col);
+                break;
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public int findPeak(int[] nums) {
-		for (int i = 0; i < nums.length - 1; i++) {
-			if (nums[i] > nums[i + 1]) {
-				return i;
-			}
-		}
+    public int findPeak(int[] nums) {
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] > nums[i + 1]) {
+                return i;
+            }
+        }
 
-		return nums.length - 1;
-	}
+        return nums.length - 1;
+    }
 }

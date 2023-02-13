@@ -60,7 +60,6 @@ class QueueWithStacks {
 
 
 
-
     private Stack<Integer> stack1 = new Stack<Integer>(); // back of queue
     private Stack<Integer> stack2 = new Stack<Integer>(); // front of queue
 

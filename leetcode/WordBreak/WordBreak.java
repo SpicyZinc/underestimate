@@ -13,105 +13,127 @@ idea:
 http://www.programcreek.com/2012/12/leetcode-solution-word-break/
 
 2. dp
-Define an array dp[] such that dp[i] == true => 0-(i-1) substring(0, i) in dict
+Define an array dp[] such that dp[i] == true => [0, i - 1] substring(0, i) in dict
 dp[i] i of chars in s can be breakable and found in dict or not
 Initial state dp[0] == true
 */
 
 public class WordBreak {
-	// dp
-	public boolean wordBreak(String s, List<String> wordDict) {
-		int size = s.length();
-		
-		boolean[] dp = new boolean[size + 1];
-		// initialization
-		dp[0] = true;
-		
-		for (int i = 1; i <= size; i++) {
-			for (int j = 0; j < i; j++) {
-				String word = s.substring(j, i); // actually [j + 1, i] if not array index
-				if (dp[j] && wordDict.contains(word)) {
-					dp[i] = true;
+    // Tue Sep  7 23:36:01 2021
+    public boolean wordBreak(String s, List<String> wordDict) {
+        return dfs(s, 0, wordDict);
+    }
 
-					break;
-				}
-			}
-		}
+    public boolean dfs(String s, int startPos, List<String> wordDict) {
+        int size = s.length();
+        if (startPos == size) {
+            return true;
+        }
 
-		return dp[size];
-	}
+        for (int i = startPos; i <= size; i++) {
+            String subStr = s.substring(startPos, i);
 
-	// Sun Jun 16 01:17:10 2019
-	// TLE
-	public boolean wordBreak(String s, List<String> wordDict) {
-		return dfs(s, 0, wordDict);
-	}
+            if (wordDict.contains(subStr)) {
+                return dfs(s, i, wordDict);
+            }
+        }
 
-	public boolean dfs(String s, int pos, List<String> wordDict) {
-		if (pos == s.length()) {
-			return true;
-		}
+        return false;
+    }
 
-		for (int i = pos; i <= s.length(); i++) {
-			String str = s.substring(pos, i);
+    // dp
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int size = s.length();
+        
+        boolean[] dp = new boolean[size + 1];
+        // initialization
+        dp[0] = true;
+        
+        for (int i = 1; i <= size; i++) {
+            for (int j = 0; j < i; j++) {
+                String word = s.substring(j, i); // actually [j + 1, i] if not array index
+                if (dp[j] && wordDict.contains(word)) {
+                    dp[i] = true;
 
-			if (wordDict.contains(str)) {
-				if (dfs(s, i, wordDict)) {
-					return true;
-				}
-			}
-		}
+                    break;
+                }
+            }
+        }
 
-		return false;
-	}
+        return dp[size];
+    }
 
-	// 02/07/2019 TLE, 29/36
-	public boolean wordBreak(String s, List<String> wordDict) {
-		if (s == null || s.length() == 0) {
-			return true;
-		}
+    // Sun Jun 16 01:17:10 2019
+    // TLE
+    public boolean wordBreak(String s, List<String> wordDict) {
+        return dfs(s, 0, wordDict);
+    }
 
-		for (int i = 1; i <= s.length(); i++) {
-			String sub = s.substring(0, i);
-			if (wordDict.contains(sub) && wordBreak(s.substring(i), wordDict)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	// 07/08/2018 TLE
-	public boolean wordBreak(String s, List<String> wordDict) {
-		return dfs(s, 0, wordDict);
-	}
-	
-	public boolean dfs(String s, int pos, List<String> wordDict) {
-		if (pos == s.length()) {
-			return true;
-		}
-		
-		for (int i = pos + 1; i <= s.length(); i++) {
-			String word = s.substring(pos, i);
-			if (wordDict.contains(word)) {
-				if (dfs(s, i, wordDict)) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	// recursive, TLE
-	public boolean wordBreak(String s, List<String> wordDict) {
-		for (int i = 1; i <= s.length(); i++) {
-			String word = s.substring(0, i);
-			if (wordDict.contains(word)) {
-				if ( word.length() == s.length() || wordBreak(s.substring(i), wordDict) ) {
-					return true;
-				}
-			}
-		}
+    public boolean dfs(String s, int pos, List<String> wordDict) {
+        if (pos == s.length()) {
+            return true;
+        }
 
-		return false;
-	}
+        for (int i = pos; i <= s.length(); i++) {
+            String str = s.substring(pos, i);
+
+            if (wordDict.contains(str)) {
+                if (dfs(s, i, wordDict)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // 02/07/2019 TLE, 29/36
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+
+        for (int i = 1; i <= s.length(); i++) {
+            String sub = s.substring(0, i);
+            if (wordDict.contains(sub) && wordBreak(s.substring(i), wordDict)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    // 07/08/2018 TLE
+    public boolean wordBreak(String s, List<String> wordDict) {
+        return dfs(s, 0, wordDict);
+    }
+    
+    public boolean dfs(String s, int pos, List<String> wordDict) {
+        if (pos == s.length()) {
+            return true;
+        }
+        
+        for (int i = pos + 1; i <= s.length(); i++) {
+            String word = s.substring(pos, i);
+            if (wordDict.contains(word)) {
+                if (dfs(s, i, wordDict)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    // recursive, TLE
+    public boolean wordBreak(String s, List<String> wordDict) {
+        for (int i = 1; i <= s.length(); i++) {
+            String word = s.substring(0, i);
+            if (wordDict.contains(word)) {
+                if ( word.length() == s.length() || wordBreak(s.substring(i), wordDict) ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

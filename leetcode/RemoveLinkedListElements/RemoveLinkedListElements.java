@@ -6,7 +6,7 @@ Given: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
 Return: 1 --> 2 --> 3 --> 4 --> 5
 
 idea:
-1. iterative, dummy node pointing to first element
+1. iterative, looking at the code
 2. recursive, easy to understand
 */
 
@@ -17,28 +17,30 @@ class ListNode {
 }
 
 public class RemoveLinkedListElements {
-	public ListNode removeElements(ListNode head, int val) {
-        ListNode helper = new ListNode(0);
-        helper.next = head;
-        ListNode prev = helper;
-     
-        while (prev.next != null) {
-            if (prev.next.val == val) {
-                prev.next = prev.next.next; 
-            }
-            else {
-                prev = prev.next;
+    public ListNode removeElements(ListNode head, int val) {
+        // In case head has value equal to val
+        while (head != null && head.val == val) {
+            head = head.next;
+        }
+
+        ListNode curr = head;
+        while (curr != null && curr.next != null) {
+            if (curr.next.val == val) {
+                curr.next = curr.next.next;
+            } else {
+                curr = curr.next;
             }
         }
-     
-        return helper.next;
+
+        return head;
     }
 
 
     public ListNode removeElements(ListNode head, int val) {
         if (head == null) {
-        	return null;
+            return null;
         }
+
         head.next = removeElements(head.next, val);
         return head.val == val ? head.next : head;
     }

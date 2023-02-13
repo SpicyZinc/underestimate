@@ -16,13 +16,13 @@ http://blog.csdn.net/whuwangyi/article/details/42451289#
 import java.util.*;
 
 public class LongestSubstringwithAtMostTwoDistinctCharacters {
-	public static void main(String[] args) {
-		LongestSubstringwithAtMostTwoDistinctCharacters eg = new LongestSubstringwithAtMostTwoDistinctCharacters();
-		int len = eg.lengthOfLongestSubstringTwoDistinct("eceba");
-		System.out.println(len);
-	}
+    public static void main(String[] args) {
+        LongestSubstringwithAtMostTwoDistinctCharacters eg = new LongestSubstringwithAtMostTwoDistinctCharacters();
+        int len = eg.lengthOfLongestSubstringTwoDistinct("eceba");
+        System.out.println(len);
+    }
 
-	public int lengthOfLongestSubstringTwoDistinct(String s) {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
         if (s == null || s.length() <= 1) {
             return s.length();
         }
@@ -54,7 +54,7 @@ public class LongestSubstringwithAtMostTwoDistinctCharacters {
 
             maxLen = Math.max(maxLen, right - left + 1);
         }
-        
+
         return maxLen;
     }
 }

@@ -62,6 +62,7 @@ public class FriendCircles {
     public void bfs(int[][] M, int index, boolean[] visited) {
         Queue<Integer> queue = new LinkedList<Integer>();
         queue.add(index);
+
         while (!queue.isEmpty()) {
             int directStart = queue.poll();
             for (int j = 0; j < M[directStart].length; j++) {

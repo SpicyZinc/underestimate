@@ -22,6 +22,7 @@ public class MedianOfTwoSortedArrays {
         int m = nums1.length;
         int n = nums2.length;
         int[] sorted = new int[m + n];
+
         int i = 0, j = 0, idx = 0;
         while (i < m && j < n) {
             if (nums1[i] < nums2[j]) {
@@ -44,12 +45,13 @@ public class MedianOfTwoSortedArrays {
 
         return getMedian(sorted);
     }
+
     private double getMedian(int[] nums) {
         int n = nums.length;
         if (n % 2 == 1) {
-            return (double)nums[n / 2];
+            return (double) nums[n / 2];
         } else {
-            return (double) (nums[n / 2] + nums[n / 2 - 1]) / 2;
+            return (double) (nums[n / 2 - 1] + nums[n / 2]) / 2;
         }
     }
     // easy to understand solution, O(m + n)

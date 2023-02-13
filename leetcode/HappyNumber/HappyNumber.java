@@ -29,16 +29,15 @@ otherwise, if it is the case where sum == 1, return true
 import java.util.*;
 
 public class HappyNumber {
-
-	public static void main(String[] args) {
-		HappyNumber eg = new HappyNumber();
-		boolean test = eg.isHappy(19);
-		System.out.println(test);
-	}
+    public static void main(String[] args) {
+        HappyNumber eg = new HappyNumber();
+        boolean test = eg.isHappy(19);
+        System.out.println(test);
+    }
 
     // 07/10/2018
     public boolean isHappy(int n) {
-        if ( n == 1 ) {
+        if (n == 1) {
             return true;
         }
 
@@ -46,8 +45,8 @@ public class HappyNumber {
         int happyCalculation = sumOfDigitSquare(n);
 
         // 巧妙利用 hs.add()
-        while ( hs.add(happyCalculation) ) {
-            if ( happyCalculation == 1 ) {
+        while (hs.add(happyCalculation)) {
+            if (happyCalculation == 1) {
                 return true;
             }
             happyCalculation = sumOfDigitSquare(happyCalculation);
@@ -58,11 +57,11 @@ public class HappyNumber {
 
     public int sumOfDigitSquare(int n) {
         int sum = 0;
-        if ( n == 0 ) {
+        if (n == 0) {
             return sum;
         }
 
-        while ( n > 0 ) {
+        while (n > 0) {
             sum += (n % 10) * (n % 10);
             n = n / 10;
         }
@@ -70,21 +69,21 @@ public class HappyNumber {
         return sum;
     }
 
-	public boolean isHappy(int n) {
+    public boolean isHappy(int n) {
         if (n == 1) {
-        	return true;
+            return true;
         }
 
         Set<Integer> hs = new HashSet<>();
         int happyCalculation = sumOfDigitSquare(n);
-        while ( !hs.contains(happyCalculation) ) {
-        	if ( happyCalculation == 1 ) {
-        		return true;
-        	}
-        	hs.add(happyCalculation);
-        	happyCalculation = sumOfDigitSquare(happyCalculation);
+        while (!hs.contains(happyCalculation)) {
+            if (happyCalculation == 1) {
+                return true;
+            }
+            hs.add(happyCalculation);
+            happyCalculation = sumOfDigitSquare(happyCalculation);
         }
 
-    	return false;
+        return false;
     }
 }

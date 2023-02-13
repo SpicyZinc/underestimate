@@ -54,6 +54,7 @@ public class LongestCommonPrefix {
 		String result = eg.lcp(strs);
 		System.out.println("LongestCommonPrefix == " + result);
 	}
+
 	// Sun Jun  9 19:50:26 2019
 	 public String longestCommonPrefix(String[] strs) {
         if (strs.length == 0 || strs == null) {

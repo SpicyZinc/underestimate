@@ -28,23 +28,23 @@ public class MinDepthBT {
     }
 
     // even simpler way
-    public int minDepth(TreeNode root) {
-        if (root == null)
+    public int minDepth0(TreeNode root) {
+        if (root == null) {
             return 0;
-        else {
+        } else {
             if (root.left != null && root.right != null) {
                 return 1 + Math.min(minDepth(root.left), minDepth(root.right));
-            } 
-            else {
+            } else {
                 return 1 + minDepth(root.right) + minDepth(root.left);
             }
         }
     }
     // iterative method 1
-    public int minDepth(TreeNode root) {
+    public int minDepth1(TreeNode root) {
         if (root == null) {
             return 0;
         }
+
         Queue<TreeNode> nodes = new LinkedList<TreeNode>();
         Queue<Integer> levelCnt = new LinkedList<Integer>();
 
@@ -60,34 +60,42 @@ public class MinDepthBT {
             }
             if (current.left != null) {
                 nodes.offer(current.left);
-                levelCnt.offer(level+1);
+                levelCnt.offer(level + 1);
             }
             if (current.right != null) {
                 nodes.offer(current.right);
-                levelCnt.offer(level+1);
+                levelCnt.offer(level + 1);
             }
         }
 
         return 0;
     }
     // iterative method 2
-    public int minDepth(TreeNode root) {
-       	if (root == null) } {
-    		    return 0;
+    public int minDepth2(TreeNode root) {
+        if (root == null) {
+            return 0;
         }
        
-        ArrayList<TreeNode> last = new ArrayList<TreeNode>();
-        last.add(root);
+        List<TreeNode> previousLayer = new ArrayList<>();
+        previousLayer.add(root);
         int count = 1;
-        while (!last.isEmpty()) {           
-            ArrayList<TreeNode> curr = new ArrayList<TreeNode>();
-            for (TreeNode n : last) {
-                if (n.left==null && n.right==null) return count;
-                if (n.left!=null) curr.add(n.left);
-                if (n.right!=null) curr.add(n.right);
+
+        while (!previousLayer.isEmpty()) {           
+            List<TreeNode> curr = new ArrayList<>();
+            // 没有 poll() 所以需要一个新的 new ArrayList<TreeNode>(curr);
+            for (TreeNode n : previousLayer) {
+                if (n.left == null && n.right == null) {
+                    return count;
+                }
+                if (n.left != null) {
+                    curr.add(n.left);
+                }
+                if (n.right != null) {
+                    curr.add(n.right);
+                }
             }
             count++;
-            last = new ArrayList<TreeNode>(curr);
+            previousLayer = new ArrayList<TreeNode>(curr);
         }
         
         return count;

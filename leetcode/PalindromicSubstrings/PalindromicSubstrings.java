@@ -16,28 +16,70 @@ Note:
 The input string length won't exceed 1000.
 
 idea:
-substrings 中回文的最多个数
+1. substrings 中回文的最多个数
 n char + (n - 1) spaces positions
 
+2. damn Yushu Qin xia zhi hui Niantic onsite
+https://leetcode.com/problems/palindromic-substrings/discuss/105689/Java-solution-8-lines-extendPalindrome
 */
 
 class PalindromicSubstrings {
-	public int countSubstrings(String s) {
-		int n = s.length();
-		int cnt = 0;
+    public static void main(String[] args) {
+        PalindromicSubstrings eg = new PalindromicSubstrings();
+        String s = "aaa";
+        int count = eg.getCount(s);
+        // int count = eg.countSubstrings(s);
+        System.out.println("Count == " + count);
+    }
 
-		for (int i = 0; i < n * 2 - 1; i++) {
-			// note, a good way to handle parity
-			int left = i / 2;
-			int right = (i + 1) / 2;
+    public int countSubstrings(String s) {
+        int n = s.length();
+        int cnt = 0;
 
-			while (left >= 0 && right < n && s.charAt(left) == s.charAt(right)) {
-				left--;
-				right++;
-				cnt++;
-			}
-		}
+        for (int i = 0; i < n * 2 - 1; i++) {
+            // note, a good way to handle parity
+            int left = i / 2;
+            int right = (i + 1) / 2;
 
-		return cnt;
-	}
+            while (left >= 0 && right < n && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+                cnt++;
+            }
+        }
+
+        return cnt;
+    }
+
+    // Fri Aug  6 18:25:08 2021
+    public int getCount(String s) {
+        int count = 0;
+        int size = s.length();
+
+        for (int i = 0; i < size; i++) {
+            char c = s.charAt(i);
+ 
+            int countOdd = getCountHelper(i, i, s); // imagine the sub string is odd length
+            int countEven = getCountHelper(i, i + 1, s); // imagine the sub string is odd length
+
+            count += countOdd + countEven;
+        }
+            
+        return count;
+    }
+
+    public int getCountHelper(int left, int right, String s) {
+        int size = s.length();
+        int count = 0;
+
+         while (left >= 0 && right < size) {
+            if (s.charAt(left) == s.charAt(right)) {
+                count++;
+            }
+            left--;
+            right++;
+        }
+        
+        return count;
+    }
 }

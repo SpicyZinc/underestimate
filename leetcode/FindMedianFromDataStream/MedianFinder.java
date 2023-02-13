@@ -23,7 +23,7 @@ heap, by default, is min-heap which means the top of the heap is the smallest el
 Max-heap small has the smaller half of the numbers
 Min-heap large has the larger half of the numbers
 for small heap, multiply -1 to utilize min-heap feature
-保有数大的半个部分的heap 始终有一个多的元素
+保证有数大的半个部分的heap 始终有一个多的元素
 
 note: large always has one more element than small or equal size
 */
@@ -51,7 +51,7 @@ class MedianFinder {
 
 		balance();
 	}
-	
+
 	public double findMedian() {
 		if (maxHeap.size() > minHeap.size()) {
 			return -1 * maxHeap.peek();
@@ -72,7 +72,7 @@ class MedianFinder {
 
 
 	// 12/04/2018
-	// small alway equal or 1 bigger than large
+	// small always equal or 1 bigger than large
 	Queue<Long> small = null;
 	Queue<Long> large = null;
 

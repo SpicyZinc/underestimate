@@ -44,7 +44,7 @@ https://segmentfault.com/a/1190000003903509
 [7]
  
 Each element in the queue is being inserted and then removed at most once. 
-The total number of insert and delete operations is 2n; therefore, it is an O(n) solution.
+The total number of insert and delete operations is 2 * n; therefore, it is an O(n) solution.
 
 sliding window length = (length - 1) - (k - 1) + 1 = length - k + 1
 maintain a queue less than or equal to k, this guarantees window of size k

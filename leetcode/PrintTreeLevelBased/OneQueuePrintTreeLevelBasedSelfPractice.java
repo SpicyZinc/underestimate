@@ -1,10 +1,7 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
-public class OneQueuePrintTreeLevelBasedSelfPractice
-{
-	public static void main(String[] args)
-	{	
+public class OneQueuePrintTreeLevelBasedSelfPractice {
+	public static void main(String[] args) {
 		TreeNode mytree = new TreeNode(1);
 		mytree.left = new TreeNode(2);
 		mytree.right = new TreeNode(3);
@@ -23,15 +20,16 @@ Make the use of Queue, add() each TreeNode one level by one, from left to right
 poll() or remove() each TreeNode and print its value, the result would be the 
 level by level and from left to right traversal of the binary tree.
 */	
-	public static void printTreeLevel(TreeNode root)
-	{
+	public static void printTreeLevel(TreeNode root) {
 		Queue<TreeNode> queue = new LinkedList<TreeNode>();
 		queue.add(root);
 		// which means the queue is empty at the beginning
-		if ( queue == null ) return;
+		if ( queue == null ) {
+			return;
+		}
+
 		TreeNode current = queue.remove();
-		while ( current != null )
-		{
+		while ( current != null ) {
 			System.out.print(current.value + " ");
 			queue.add(current.left);
 			queue.add(current.right);
@@ -40,28 +38,26 @@ level by level and from left to right traversal of the binary tree.
 	}
 }
 
-class TreeNode
-{
+class TreeNode {
 	public int value;
 	public TreeNode left;
 	public TreeNode right;
-	public TreeNode(int value)
-	{
+
+	public TreeNode(int value) {
 		this.value = value;
 		left = right = null;
 	}
 	
-	public void print()
-	{
-		Queue<TreeNode> aQueue = new LinkedList<TreeNode>();
-		aQueue.add(this);
-		TreeNode tmp = aQueue.remove();
-		while( tmp != null )
-		{
+	public void print() {
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		queue.add(this);
+		TreeNode tmp = queue.remove();
+
+		while (tmp != null) {
 			System.out.printf("%d ", tmp.value);
-			aQueue.add(tmp.left);
-			aQueue.add(tmp.right);
-			tmp = aQueue.remove();
+			queue.add(tmp.left);
+			queue.add(tmp.right);
+			tmp = queue.remove();
 		}
 	}
 }

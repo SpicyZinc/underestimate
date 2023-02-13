@@ -19,8 +19,57 @@ hashmap, key is alphabetically increase string
 */
 
 public class GroupAnagrams {
-	// Sun Apr 28 16:06:30 2019
-	public List<List<String>> groupAnagrams(String[] strs) {
+    // Thu Sep  9 22:12:01 2021
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> hm = new HashMap<>();
+
+        for (String str : strs) {
+            String normalized = normalize(str);
+
+            if (hm.containsKey(normalized)) {
+                hm.get(normalized).add(str);
+            } else {
+                List<String> list = new ArrayList<>();
+                list.add(str);
+                hm.put(normalized, list);
+            }
+        }
+
+        List<List<String>> result = new ArrayList<>();
+
+        for (Map.Entry<String, List<String>> entry : hm.entrySet()) {
+            List<String> value = entry.getValue();
+            result.add(value);
+        }
+
+        return result;
+    }
+
+    public String normalize(String s) {
+        int[] letters = new int[26];
+
+        for (char c : s.toCharArray()) {
+            letters[c - 'a']++;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < letters.length; i++) {
+            append(sb, (char) i, letters[i]);
+        }
+
+        return sb.toString();
+    }
+
+    public void append(StringBuilder sb, char c, int times) {
+        for (int i = 0; i < times; i++) {
+            sb.append(c);
+        }
+    }
+
+
+    // Sun Apr 28 16:06:30 2019
+    public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> hm = new HashMap<>();
         
         for (String str : strs) {
@@ -52,14 +101,14 @@ public class GroupAnagrams {
         
         return sb.toString();
     }
-    
+
     public void append(StringBuilder sb, char c, int times) {
         for (int i = 0; i < times; i++) {
             sb.append(c);
         }
     }
-	// 02/07/2019
-	public List<List<String>> groupAnagrams(String[] strs) {
+    // 02/07/2019
+    public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> hm = new HashMap<>();
 
         for (String str : strs) {
@@ -104,7 +153,7 @@ public class GroupAnagrams {
         }
     }
 
-	public List<List<String>> groupAnagrams(String[] strs) {
+    public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> hm = new HashMap<>();
 
         for (String str : strs) {

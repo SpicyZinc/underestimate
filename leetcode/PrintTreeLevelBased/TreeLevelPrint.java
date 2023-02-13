@@ -9,7 +9,8 @@ class Tree {
 	public int value;
 	public Tree left;
 	public Tree right;
-	public Tree(int x){
+
+	public Tree(int x) {
 		value = x;
 		left = right = null;
 	}
@@ -39,16 +40,15 @@ public class TreeLevelPrint{
 		}
 		if (currentLevel == desire) {
 			System.out.print(t.value + " ");
-		}
-		else {
+		} else {
 			// tree node and currentLevel increase simultaneously
-			printTreeLevel(t.left, currentLevel+1, desire);
-			printTreeLevel(t.right, currentLevel+1, desire);
+			printTreeLevel(t.left, currentLevel + 1, desire);
+			printTreeLevel(t.right, currentLevel + 1, desire);
 		}
 	}
 	
 	// method based two queues, iteration
-	public static void printTreeLevel(Tree t, int desire){
+	public static void printTreeLevel(Tree t, int desire) {
 		// first test if level desired is < 0, then invalid
 		if (desire < 0) {
 			return;
@@ -60,7 +60,7 @@ public class TreeLevelPrint{
 		trees.add(t);
 		levels.add(0);
 		// the whole "trees" queue is empty or not
-		while ( !trees.isEmpty() ) {
+		while (!trees.isEmpty()) {
 /*
 The remove() and poll() methods remove and return the head of the queue.
 The two methods differ in, if queue is empty, remove() throws an exception, while poll() returns null
@@ -79,11 +79,9 @@ use currentLevel to control so that to meet desireLevel
 			*/
 			if (temp == null) {
 				continue; // if poll() tree node is null, print nothing.
-			}
-			else if (currentLevel == desire) {
+			} else if (currentLevel == desire) {
 				System.out.print(temp.value + " ");
-			}
-			else {
+			} else {
 				trees.add(temp.left);
 				levels.add(currentLevel + 1);
 				trees.add(temp.right);

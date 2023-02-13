@@ -16,7 +16,7 @@ http://www.programcreek.com/2013/12/leetcode-solution-of-longest-palindromic-sub
 1. brute force
 2. from each char or space in-between chars to scan towards both directions
 a string of length n, the number of central points should be 2 * n - 1
-字符作为中心有n个, 间隙有n-1个 e.g., abc, 中心可以是a, b, c or ab的间隙, bc的间隙
+字符作为中心有n个, 间隙有n - 1个 e.g., abc, 中心可以是a, b, c, ab的间隙, bc的间隙
 往两边同时进行扫描, 直到不是回文串为止
 这个思路是对的 但是不是为了 中心 而是为了到达最后一个char 在string
 3. DP

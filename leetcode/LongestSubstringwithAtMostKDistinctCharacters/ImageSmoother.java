@@ -25,21 +25,21 @@ idea: simple and direct
 
 class ImageSmoother {
     public int[][] imageSmoother(int[][] M) {
-    	int m = M.length;
-    	int n = M[0].length;
-    	int[][] result = new int[m][n];
-    	for (int i = 0; i < m; i++) {
-    		for (int j = 0; j < n; j++) {
-    			result[i][j] = smooth(M, i, j);
-    		}
-    	}
+        int m = M.length;
+        int n = M[0].length;
+        int[][] result = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                result[i][j] = smooth(M, i, j);
+            }
+        }
 
-    	return result;
-	}
+        return result;
+    }
 
-	private int smooth(int[][] M, int i, int j) {
-		int[][] directions = {
-    		{1, 1},
+    private int smooth(int[][] M, int i, int j) {
+        int[][] directions = {
+            {1, 1},
             {1, -1},
             {1, 0},
             {0, 1},
@@ -48,20 +48,22 @@ class ImageSmoother {
             {-1, 1},
             {-1, -1},
             {-1, 0},
-    	};
-    	int m = M.length;
-    	int n = M[0].length;
-    	int cnt = 0;
-    	int sum = 0;
-    	for (int[] dir : directions) {
-    		int newX = i + dir[0];
-    		int newY = j + dir[1];
-    		if (newX >= 0 && newX < m && newY >= 0 && newY < n) {
-    			sum += M[newX][newY];
-    			cnt++;
-    		}
-    	}
+        };
+
+        int m = M.length;
+        int n = M[0].length;
+        int cnt = 0;
+        int sum = 0;
+
+        for (int[] dir : directions) {
+            int newX = i + dir[0];
+            int newY = j + dir[1];
+            if (newX >= 0 && newX < m && newY >= 0 && newY < n) {
+                sum += M[newX][newY];
+                cnt++;
+            }
+        }
         
         return sum / cnt;
-	}
+    }
 }

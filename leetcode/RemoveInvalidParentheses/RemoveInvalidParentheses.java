@@ -8,6 +8,7 @@ Examples:
 ")(" -> [""]
 
 idea:
+BFS
 try different combination, remove any '(' or ')' from s, and build a new string without it,
 see if the new string is valid parentheses, hashset to maintain uniqueness
 
@@ -25,6 +26,7 @@ public class RemoveInvalidParentheses {
 		
 		Set<String> hs = new HashSet<>();
 		Queue<String> queue = new LinkedList<>();
+
 		hs.add(s);
 		queue.add(s);
 		
@@ -62,7 +64,7 @@ public class RemoveInvalidParentheses {
 		
 		return list;
 	}
-	
+
 	public boolean isValidParentheses(String s) {
 		int open = 0;
 		for (int i = 0; i < s.length(); i++) {

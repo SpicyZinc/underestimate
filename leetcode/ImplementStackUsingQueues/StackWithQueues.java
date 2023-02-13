@@ -127,7 +127,6 @@ class MyStack {
 
 // self 2nd implementation
 class MyStack {
-    
     Queue<Integer> queue;
     Queue<Integer> forReverse;
 

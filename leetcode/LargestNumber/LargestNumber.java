@@ -6,7 +6,7 @@ Note: The result may be very large, so you need to return a string instead of an
 
 idea:
 http://blog.csdn.net/u013027996/article/details/42773431
-sort string array using self-defied comparator
+sort string array using self-defined Comparator
 e.g. 3 > 30 because '330' > '303'
 */
 

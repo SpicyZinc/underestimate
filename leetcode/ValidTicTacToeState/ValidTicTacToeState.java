@@ -42,6 +42,78 @@ two invalid cases
 */
 
 class ValidTicTacToeState {
+	// Thu May 13 23:51:37 2021
+	public boolean validTicTacToe(String[] board) {
+		int m = board.length;
+		int n = board[0].length();
+		char[][] charBoard = new char[m][n];
+
+		for (int i = 0; i < m; i++) {
+			String row = board[i];
+			for (int j = 0; j < n; j++) {
+				charBoard[i][j] = row.charAt(j);
+			}
+		}
+
+		int countX = 0;
+		int countO = 0;
+
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				char c = charBoard[i][j];
+				if (c == 'X') {
+					countX++;
+				} else if (c == 'O') {
+					countO++;
+				}
+			}
+		}
+		// Based on rules
+		// # of O cannot be bigger than # of X
+		// # of X cannot be 2 more than # of O
+		if (countO > countX || countX - countO > 1) {
+			return false;
+		}
+
+		if (countX == countO) {
+			if (is3ConsecutiveChars(charBoard, 'X')) {
+				return false;
+			}
+		} else if (countX - countO == 1) {
+			if (is3ConsecutiveChars(charBoard, 'O')) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public boolean is3ConsecutiveChars(char[][] board, char c) {
+		for (int i = 0; i < 3; i++) {
+			// row
+			if (c == board[i][0] && board[i][0] == board[i][1] && board[i][1] == board[i][2]) {
+				return true;
+			}
+			// column
+			if (c == board[0][i] && board[0][i] == board[1][i] && board[1][i] == board[2][i]) {
+				return true;
+			}
+		}
+		// diagonal
+		if (c == board[0][0] && board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
+			return true;
+		}
+		// antiDiagonal
+		if (c == board[0][2] && board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
+			return true;
+		}
+
+		return false;
+	}
+
+
+
+
 	public boolean validTicTacToe(String[] board) {
 		int m = board.length;
 		int n = board[0].length();

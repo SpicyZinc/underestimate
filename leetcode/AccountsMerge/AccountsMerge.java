@@ -120,6 +120,7 @@ class AccountsMerge {
 		return i;
 	}
 
+
 	class Node {
 		String email;
 		String username;

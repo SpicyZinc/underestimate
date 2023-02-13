@@ -18,7 +18,7 @@ public class ValidParentheses {
         boolean result = eg.isValid("()");
         System.out.println(result);
     }
-    // Bloomberg KYC 
+    // Bloomberg NYC
     public boolean isValid(String s) {
         if (s.length() == 0 || s == null) {
             return true;
@@ -29,12 +29,13 @@ public class ValidParentheses {
         }
 
         Stack<Character> stack = new Stack<Character>();
-        Map<Character, Character> hm = new HashMap<Character, Character>();
+        Map<Character, Character> hm = new HashMap<>();
         hm.put(')', '(');
         hm.put(']', '[');
         hm.put('}', '{');
         
         String openParts = "([{";
+
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (stack.isEmpty() && openParts.indexOf(c) == -1) {
@@ -71,8 +72,7 @@ public class ValidParentheses {
             char c = s.charAt(i);
             if (left.indexOf(c) != -1) {
                 stack.push(c);
-            }
-            else {
+            } else {
                 if (!stack.isEmpty()) {
                     char temp = stack.pop();
                     switch (temp) {
@@ -95,6 +95,7 @@ public class ValidParentheses {
                 }
             }
         }
+
         return stack.isEmpty();
     }
 
@@ -104,19 +105,16 @@ public class ValidParentheses {
             char ch = s.charAt(i);
             if (ch == '(' || ch == '{' || ch == '[') {
                 stack.push(ch);
-            } 
-            else {
+            } else {
                 if (stack.size() == 0) {
                     return false;
                 }
                 char temp = stack.pop();
                 if (ch == ')') {
                     if (temp != '(') return false;
-                }
-                else if (ch == '}') {
+                } else if (ch == '}') {
                     if (temp != '{') return false;
-                }
-                else if (ch == ']') {
+                } else if (ch == ']') {
                     if (temp != '[') return false;
                 }
             }
@@ -126,7 +124,9 @@ public class ValidParentheses {
     }
 
     // self best version
+    // Thu May 27 19:54:09 2021
     public boolean isValid(String s) {
+        // "()"
         Map<Character, Character> match = new HashMap<>();
         match.put(')', '(');
         match.put(']', '[');
@@ -144,13 +144,14 @@ public class ValidParentheses {
                     return false;
                 }
 
-                char popped = stack.pop();
                 char supposedToMatch = match.get(c);
+                char popped = stack.pop();
                 if (popped != supposedToMatch) {
                     return false;
                 }
             }
         }
+
         return stack.isEmpty();
     }
 }

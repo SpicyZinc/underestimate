@@ -21,8 +21,8 @@ sb.deleteCharAt(sb.length() - 1); after append, must delete the just appended 'c
 convert String "23" into char array digit[], level is index of digit[], 
 then get index by converting '2' to 2, use this index to find 3 or 4 letters under this index 2
 use i to walk through the 3 or 4 letters under one index
-
 */
+
 import java.util.*;
 
 public class LetterCombinationsOfAPhoneNumber {
@@ -46,7 +46,7 @@ public class LetterCombinationsOfAPhoneNumber {
 		hm.put('8', "tuv");
 		hm.put('9', "wxyz");
 		
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		if (digits.length() == 0 || digits == null) {
 			return result;
 		}
@@ -58,7 +58,6 @@ public class LetterCombinationsOfAPhoneNumber {
 	private void dfs(String digits, int index, Map<Character, String> hm, String path, List<String> result) {
 		if (path.length() == digits.length()) {
 			result.add(path);
-
 			return;
 		}
 
@@ -71,10 +70,11 @@ public class LetterCombinationsOfAPhoneNumber {
 
 	// method 2
 	public List<String> letterCombinations(String digits) {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		if (digits == null || digits.length() == 0) {
 			return result;
 		}
+
 		combine(result, digits, 0, new StringBuilder());
 
 		return result;

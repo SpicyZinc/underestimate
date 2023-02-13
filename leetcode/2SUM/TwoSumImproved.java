@@ -28,69 +28,66 @@ these two hashes are differently used
 import java.util.*;
 
 public class TwoSumImproved {
-	public static void main(String[] args) {
-		new TwoSumImproved();
-	}
-	public TwoSumImproved() {
-		int[] numbers = {722, 600, 905, 55, 55};
-		int target = 110;
-		twoSum(numbers, target);
-	}
-	// passed test
+    public static void main(String[] args) {
+        new TwoSumImproved();
+    }
+    public TwoSumImproved() {
+        int[] numbers = {722, 600, 905, 55, 55};
+        int target = 110;
+        twoSum(numbers, target);
+    }
+    // passed test
     public int[] twoSum(int[] numbers, int target) {
         int[] ret = new int[2];
-		Map<Integer, Integer> eleToIndex = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> eleToIndex = new HashMap<Integer, Integer>();
         for (int i=0; i<numbers.length; i++) {
-			if ( !eleToIndex.containsKey(numbers[i]) ) {
-				eleToIndex.put(numbers[i], i+1);
-			} else {
-			    if ( numbers[i] * 2 == target ) { 
-    				ret[0] = eleToIndex.get(numbers[i]);
-    				ret[1] = i + 1;
-    				return ret;
-    			}	
-			}		
-		}
-		Arrays.sort(numbers);
-		for (int i=0, j=numbers.length-1; i<j;) {
-			if (numbers[i] + numbers[j] > target) {
-				j--;
+            if ( !eleToIndex.containsKey(numbers[i]) ) {
+                eleToIndex.put(numbers[i], i+1);
+            } else {
+                if ( numbers[i] * 2 == target ) {
+                    ret[0] = eleToIndex.get(numbers[i]);
+                    ret[1] = i + 1;
+                    return ret;
+                }   
+            }       
+        }
+        Arrays.sort(numbers);
+        for (int i=0, j=numbers.length-1; i<j;) {
+            if (numbers[i] + numbers[j] > target) {
+                j--;
+            } else if (numbers[i] + numbers[j] < target) {
+                i++;
+            } else {
+                // after sort, index changes, get index by hashmap
+                ret[0] = eleToIndex.get(numbers[i]);
+                ret[1] = eleToIndex.get(numbers[j]);
+                if (ret[0] > ret[1]) {
+                    int tmp = ret[0];
+                    ret[0] = ret[1];
+                    ret[1] = tmp;
+                }
+                return ret;
             }
-			else if (numbers[i] + numbers[j] < target) {
-				i++;
-			}
-			else {
-				// after sort, index changes, get index by hashmap
-				ret[0] = eleToIndex.get(numbers[i]);
-				ret[1] = eleToIndex.get(numbers[j]);
-				if (ret[0] > ret[1]) {
-					int tmp = ret[0];
-					ret[0] = ret[1];
-					ret[1] = tmp;
-				}
-				return ret;
-			}
-		}
-		return ret;
+        }
+        return ret;
     }
 
     // passed test
     public int[] twoSum(int[] numbers, int target) {
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-	    int[] result = new int[2];
+        int[] result = new int[2];
  
-    	for (int i = 0; i < numbers.length; i++) {
-    		if (map.containsKey(numbers[i])) {
-    			int index = map.get(numbers[i]);
-    			result[0] = index+1 ;
-    			result[1] = i+1;
-    			break;
-    		} 
-    		else {
-    			map.put(target - numbers[i], i);
-    		}
-    	}
+        for (int i = 0; i < numbers.length; i++) {
+            if (map.containsKey(numbers[i])) {
+                int index = map.get(numbers[i]);
+                result[0] = index + 1 ;
+                result[1] = i + 1;
+                break;
+            } else {
+                map.put(target - numbers[i], i);
+            }
+        }
      
-    	return result;
+        return result;
     }
 }

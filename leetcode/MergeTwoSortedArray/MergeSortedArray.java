@@ -14,17 +14,17 @@ from the back of array to do the merge
 public class MergeSortedArray {
     public void merge(int A[], int m, int B[], int n) {
         while (m > 0 && n > 0) {
-            if (A[m-1] > B[n-1]) {
-                A[m+n-1] = A[m-1];
+            if (A[m - 1] > B[n - 1]) {
+                A[m + n - 1] = A[m - 1];
                 m--;
-            }
-            else {
-                A[m+n-1] = B[n-1];
+            } else {
+                A[m + n - 1] = B[n - 1];
                 n--;
             }
         }
+
         while (n > 0) {
-            A[m+n-1] = B[n-1];
+            A[m + n - 1] = B[n - 1];
             n--;
         }
     }
@@ -32,18 +32,17 @@ public class MergeSortedArray {
     // self written, one time passed
     public void merge(int A[], int m, int B[], int n) {
         while (m >= 1 && n >= 1) {
-            if (A[m-1] > B[n-1]) {
-                A[m-1 + n-1 + 1] = A[m-1];
+            if (A[m - 1] > B[n - 1]) {
+                A[m - 1 + n - 1 + 1] = A[m - 1];
                 m--;
-            }
-            else {
-                A[m-1 + n-1 + 1] = B[n-1];
+            } else {
+                A[m - 1 + n - 1 + 1] = B[n - 1];
                 n--;
             }
         }
         
         while (n >= 1) {
-            A[m-1 + n-1 + 1] = B[n-1];
+            A[m - 1 + n - 1 + 1] = B[n - 1];
             n--;
         }
     }

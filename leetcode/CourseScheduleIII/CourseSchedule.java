@@ -26,27 +26,27 @@ public class CourseSchedule {
     public int scheduleCourse(int[][] courses) {
         // sort the course based on deadlines, courses ending earlier are at first
         Arrays.sort(courses, new Comparator<int[]>() {
-        	@Override
-        	public int compare(int[] a, int[] b) {
-        		return a[1] - b[1];
-        	}
+            @Override
+            public int compare(int[] a, int[] b) {
+                return a[1] - b[1];
+            }
         });
         // PriorityQueue courses having longer duration are at front
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
-	        public int compare(Integer a, Integer b) {
-	            return b - a;
-	        }
-	    });
-	    int finishTime = 0;
+            public int compare(Integer a, Integer b) {
+                return b - a;
+            }
+        });
+        int finishTime = 0;
         for (int[] course : courses) {
-        	int duration = course[0];
-        	int deadline = course[1];
-        	finishTime += duration; // update finish time
-        	pq.add(duration);
-        	// if finish time exceeds deadline, drop so far the longest duration
-        	if (finishTime > deadline) {
-        		finishTime -= pq.poll();
-        	}
+            int duration = course[0];
+            int deadline = course[1];
+            finishTime += duration; // update finish time
+            pq.add(duration);
+            // if finish time exceeds deadline, drop so far the longest duration
+            if (finishTime > deadline) {
+                finishTime -= pq.poll();
+            }
         }
 
         return pq.size();

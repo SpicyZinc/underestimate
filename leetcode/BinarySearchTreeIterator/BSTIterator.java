@@ -15,95 +15,95 @@ iterator is basically make a copy of original BST
 import java.util.*;
 
 class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-	TreeNode(int x) { val = x; }
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
 }
 
 public class BSTIterator {
-	public static void main(String[] args) {
-		TreeNode root = new TreeNode(8);
-		root.left = new TreeNode(3);
-		root.right = new TreeNode(10);
-		root.left.left = new TreeNode(1);
-		root.left.right = new TreeNode(6);
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(8);
+        root.left = new TreeNode(3);
+        root.right = new TreeNode(10);
+        root.left.left = new TreeNode(1);
+        root.left.right = new TreeNode(6);
 
-		root.left.right.left = new TreeNode(4);
-		root.left.right.right = new TreeNode(7);
+        root.left.right.left = new TreeNode(4);
+        root.left.right.right = new TreeNode(7);
 
-		root.right.right = new TreeNode(14);
-		root.right.right.left = new TreeNode(13);
+        root.right.right = new TreeNode(14);
+        root.right.right.left = new TreeNode(13);
 
-		BSTIterator i = new BSTIterator(root);
-		while (i.hasNext()) {
-			System.out.print( i.next() + "  " );
-		}
+        BSTIterator i = new BSTIterator(root);
+        while (i.hasNext()) {
+            System.out.print( i.next() + "  " );
+        }
 
-		System.out.println();
-	}
+        System.out.println();
+    }
 
-	// iteration
-	Stack<TreeNode> stack;
+    // iteration
+    Stack<TreeNode> stack;
 
-	public BSTIterator(TreeNode root) {
-		this.stack = new Stack<>();
+    public BSTIterator(TreeNode root) {
+        this.stack = new Stack<>();
 
-		while (root != null) {
-			this.stack.push(root);
-			root = root.left;
-		}
-	}
-	/** @return whether we have a next smallest number */
-	public boolean hasNext() {
-		return !stack.isEmpty();
-	}
+        while (root != null) {
+            this.stack.push(root);
+            root = root.left;
+        }
+    }
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
 
-	/** @return the next smallest number */
-	public int next() {
-		TreeNode node = stack.pop();
+    /** @return the next smallest number */
+    public int next() {
+        TreeNode node = stack.pop();
 
-		int result = node.val;
+        int result = node.val;
 
-		if (node.right != null) {
-			node = node.right;
-			while (node != null) {
-				stack.push(node);
-				node = node.left;
-			}
-		}
+        if (node.right != null) {
+            node = node.right;
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	// recursion
-	int index = 0;
-	List<TreeNode> list;
-	public BSTIterator(TreeNode root) {
-		index = 0;
-		list = new ArrayList<TreeNode>();
-		dfs(root, list);
-	}
-	
-	public void dfs(TreeNode node, List<TreeNode> list) {
-		if (node == null) {
-			return;
-		}
+    // recursion
+    int index = 0;
+    List<TreeNode> list;
+    public BSTIterator(TreeNode root) {
+        index = 0;
+        list = new ArrayList<TreeNode>();
+        dfs(root, list);
+    }
+    
+    public void dfs(TreeNode node, List<TreeNode> list) {
+        if (node == null) {
+            return;
+        }
 
-		dfs(node.left, list);
-		list.add(node);
-		dfs(node.right, list);
-	}
+        dfs(node.left, list);
+        list.add(node);
+        dfs(node.right, list);
+    }
 
-	public boolean hasNext() {
-		return index < list.size();
-	}
+    public boolean hasNext() {
+        return index < list.size();
+    }
 
-	public int next() {
-		return list.get(index++).val;
-	}
+    public int next() {
+        return list.get(index++).val;
+    }
 
-	public TreeNode next() {
-		return list.get(index++);
-	}
+    public TreeNode next() {
+        return list.get(index++);
+    }
 }

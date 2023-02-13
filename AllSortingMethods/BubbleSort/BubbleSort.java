@@ -20,35 +20,30 @@ idea:
 */
 
 class BubbleSort {
-        public static void main(String[] args) {
-                new BubbleSort();
-        }
-        // constructor
-        public BubbleSort() {
-                int[] a = {54, 93, 94, 91, 22, 25, 24, 17, 10, 2, 3, 9, 8, 7, 66};
-                bubbleSort(a);
+    public static void main(String[] args) {
+        BubbleSort eg = new BubbleSort();
+        int[] a = {54, 93, 94, 91, 22, 25, 24, 17, 10, 2, 3, 9, 8, 7, 66};
+        eg.bubbleSort(a);
 
-                for (int num : a) {
-                        System.out.print(num + " ");
-                }
-                System.out.print("\n");
+        for (int num : a) {
+            System.out.print(num + " ");
         }
 
-        public void bubbleSort(int[] intArray) {     
-                int n = intArray.length;
-                int temp = 0;
-               
-                for (int i = 0; i < n; i++) {
-                        for (int j = 1; j < (n-i); j++) {
-                                if (intArray[j-1] > intArray[j]) {
-                                        // swap the elements
-                                        temp = intArray[j-1];
-                                        intArray[j-1] = intArray[j];
-                                        intArray[j] = temp;
-                                }
-                               
-                        }
+        System.out.print("\n");
+    }
+
+    public void bubbleSort(int[] nums) {
+        int n = nums.length;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < n - i; j++) {
+                if (nums[j - 1] > nums[j]) {
+                    // swap the elements
+                    int temp = nums[j - 1];
+                    nums[j - 1] = nums[j];
+                    nums[j] = temp;
                 }
-       
+            }
         }
+    }
 }
