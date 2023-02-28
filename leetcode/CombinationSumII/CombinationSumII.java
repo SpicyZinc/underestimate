@@ -20,8 +20,8 @@ http://gongxuns.blogspot.com/2012/12/leetcode-combination-sum-ii.html
 import java.util.*;
 public class CombinationSumII {
     public List<List<Integer>> combinationSum2(int[] num, int target) {
-        List<List<Integer>> ret = new ArrayList<List<Integer>>();
-        List<Integer> item = new ArrayList<Integer>();
+        List<List<Integer>> ret = new ArrayList<>();
+        List<Integer> item = new ArrayList<>();
         if (num == null || num.length == 0) {
             return ret;
         }
@@ -40,11 +40,11 @@ public class CombinationSumII {
             return ;
         }
         if (target == 0) {
-            ret.add(new ArrayList<Integer>(item));
+            ret.add(new ArrayList<>(item));
             return ;
         }
         for (int i = start; i < num.length; i++) {
-            if (i > start && num[i] == num[i-1]) {
+            if (i > start && num[i] == num[i - 1]) {
                 continue;
             }
             item.add(num[i]);

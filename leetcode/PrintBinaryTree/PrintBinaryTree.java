@@ -54,7 +54,7 @@ Note: The height of binary tree is in the range of [1, 10].
 idea:
 dfs
 getHeight() to get height first
-pow(2, h) - 1 is width for each row, odd number
+pow(2, h) - 1 is width for each row, odd number, the number which is after filling with spaces
 root.val 填在中间
 root.left.val  填在 左边的中间
 root.right.val 填在 右边的中间
@@ -85,7 +85,9 @@ class PrintBinaryTree {
 
 		return result;
 	}
-
+	// i - start index
+	// j - end index
+	// for the same row
 	public void dfs(TreeNode node, int i, int j, int level, int height, List<List<String>> result) {
 		if (node == null || level == height) {
 			return;

@@ -17,8 +17,9 @@ idea:
 对于遍历到的字符, 
 先在哈希表中将其值减一, 
 然后看visited中是否被访问过, 
-若访问过则继续循环, 
+若访问过
 说明该字母已经出现在结果中并且位置已经安排妥当
+则继续循环,
 如果没访问过, 
 我们和结果中最后一个字母比较, 
 如果该字母的ASCII码小并且结果中的最后一个字母在哈希表中的值不为0(说明后面还会出现这个字母), 
@@ -33,7 +34,7 @@ https://discuss.leetcode.com/topic/31413/easy-to-understand-iterative-java-solut
 */
 public class RemoveDuplicateLetters {
     public String removeDuplicateLetters(String s) {
-        Map<Character, Integer> hm = new HashMap<Character, Integer>();
+        Map<Character, Integer> hm = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             hm.put(c, hm.getOrDefault(c, 0) + 1);

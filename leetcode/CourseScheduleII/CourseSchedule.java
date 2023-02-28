@@ -37,6 +37,50 @@ loop self-built graph
 */
 
 public class CourseSchedule {
+    // Thu Feb 23 23:05:59 2023 prepare for eBay
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int n = numCourses;
+
+        int[] depending = new int[n];
+        for (int[] prere : prerequisites) {
+            // int first = prere[1];
+            int second = prere[0];
+            depending[second]++;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        // find the starting point
+
+        for (int i = 0; i < n; i++) {
+            if (depending[i] == 0) {
+                queue.add(i);
+            }
+        }
+        int[] order = new int[n];
+        int index = 0;
+        int finishCount = 0;
+
+        while (!queue.isEmpty()) {
+            int courseWithoutDependencies = queue.poll();
+            order[index++] = courseWithoutDependencies;
+            finishCount++;
+
+            for (int[] prere : prerequisites) {
+                int first = prere[1];
+                int second = prere[0];
+                
+                if (first == courseWithoutDependencies) {
+                    depending[second]--;
+                    if (depending[second] == 0) {
+                        queue.add(second);
+                    }
+                }
+            }
+        }
+
+        return finishCount == n ? order : new int[0];
+    }
+
 	public int[] findOrder(int numCourses, int[][] prerequisites) {
 		int[] degree = new int[numCourses];
 

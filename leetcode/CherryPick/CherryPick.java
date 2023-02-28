@@ -34,7 +34,6 @@ two persons A and B
 simultaneously pick
 x1 + y1 = x2 + y2
 memo[x1][y1][y2]
-
 */
 
 class CherryPick {

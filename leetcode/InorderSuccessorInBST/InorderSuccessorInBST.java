@@ -24,7 +24,6 @@ Output: null
 
 idea:
 convert to array by inorder traversal, find it.
-
 */
 
 class TreeNode {

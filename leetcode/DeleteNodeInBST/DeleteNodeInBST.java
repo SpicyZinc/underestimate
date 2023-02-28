@@ -68,7 +68,8 @@ public class DeleteNodeInBST {
             }
             // why
             // after deletion of root
-            // the most left in right part will be the one smallest bigger than root value
+            // the leftmost in right part will be the smallest but bigger than root value
+            // it should be the new root
             // find it and replace root value with it
             TreeNode minOfRightTree = findMinNode(root.right);
             root.val = minOfRightTree.val;

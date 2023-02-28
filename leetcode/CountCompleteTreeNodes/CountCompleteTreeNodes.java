@@ -39,7 +39,8 @@ public class CountCompleteTreeNodes  {
         }
         
         if (hl == hr) {
-            return (2 << (hl - 1)) - 1;
+            // return (2 << (hl - 1)) - 1;
+            return ((int) Math.pow(2, hl)) - 1;
         }
 
         return 1 + countNodes(root.left) + countNodes(root.right);

@@ -33,7 +33,7 @@ class TreeNode {
 public class KthSmallestInBST {
     // self 07/08/2018
     public int kthSmallest(TreeNode root, int k) {
-        List<TreeNode> queue = new LinkedList<TreeNode>();
+        List<TreeNode> queue = new LinkedList<>();
         inorder(root, queue); 
         return queue.get(k - 1).val;
     }
@@ -46,7 +46,7 @@ public class KthSmallestInBST {
     }
     // method 1
     public int kthSmallest(TreeNode root, int k) {
-        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        Queue<TreeNode> q = new LinkedList<>();
         inorder(root, q);
 
         TreeNode result = null;
@@ -66,7 +66,7 @@ public class KthSmallestInBST {
     }
     // method 2
     public int kthSmallest(TreeNode root, int k) {
-        Stack<TreeNode> stack = new Stack<TreeNode>();
+        Stack<TreeNode> stack = new Stack<>();
         TreeNode p = root;
         int result = 0;
      
@@ -74,8 +74,7 @@ public class KthSmallestInBST {
             if (p != null) {
                 stack.push(p);
                 p = p.left;
-            }
-            else {
+            } else {
                 TreeNode t = stack.pop();
                 p = t.right;
                 k--;

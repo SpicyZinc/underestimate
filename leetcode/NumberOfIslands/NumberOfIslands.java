@@ -71,7 +71,7 @@ public class NumberOfIslands {
         }
 
         if (grid[i][j] == '1') {
-        	// set to 2 to indicated visited
+        	// set to 2 to indicate visited
             grid[i][j] = '2';
 
             for (int[] dir : directions) {

@@ -47,7 +47,7 @@ public class EqualTreePartition {
         if (root == null) return false;
         if (root.left == null && root.right == null) return false;
 
-        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> hm = new HashMap<>();
         int sum = getSum(root, hm);
         return sum % 2 == 0 && hm.containsKey(sum / 2);
     }

@@ -37,6 +37,52 @@ public class MinimumWindowSubstring {
 		String minimumWindow = aTest.minWindow(S, T);
 		System.out.println("minimumWindow == " + minimumWindow);		
 	}
+	// Thu Feb 23 22:16:14 2023 prepare for eBay
+	public String minWindow(String s, String t) {
+        if (s.length() < t.length()) {
+            return "";
+        }
+
+        Map<Character, Integer> hm = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
+            hm.put(c, hm.getOrDefault(c, 0) + 1);
+        }
+
+        int cntCharInTFromS = 0;
+        int left = 0;
+        int minLen = s.length() + 1;
+        String minWindowStr = "";
+    
+
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            if (hm.containsKey(c)) {
+                hm.put(c, hm.get(c) - 1);
+                if (hm.get(c) >= 0) {
+                    cntCharInTFromS++;
+                }
+            }
+
+            while (cntCharInTFromS == t.length()) {
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;                    
+                    minWindowStr = s.substring(left, right + 1);
+                }
+
+                char charAtLeft = s.charAt(left);
+                if (hm.containsKey(charAtLeft)) {
+                    hm.put(charAtLeft, hm.get(charAtLeft) + 1);
+                    if (hm.get(charAtLeft) > 0) {
+                        cntCharInTFromS--;
+                    }
+                }
+                left++;
+            }
+        }
+
+        return minWindowStr;
+    }
 	// Sun Jun 16 16:13:57 2019
 	public String minWindow(String s, String t) {
 		int sLen = s.length();
@@ -191,9 +237,9 @@ public class MinimumWindowSubstring {
 				while (cntCharsInT == tLen) {
 					if (minLen > right - left + 1) {
 						minLen = right - left + 1;
-						if (right >= left) {
+						// if (right >= left) {
 							minWindowStr = s.substring(left, right + 1);
-						}
+						// }
 					}
 
 					// 开始移动左窗口

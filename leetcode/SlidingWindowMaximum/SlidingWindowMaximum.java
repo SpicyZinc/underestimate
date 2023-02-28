@@ -69,7 +69,7 @@ public class SlidingWindowMaximum {
         int n = nums.length;
         int[] maxs = new int[n - k + 1];
 
-        Deque<Integer> dequeue = new LinkedList<Integer>();
+        Deque<Integer> dequeue = new LinkedList<>();
         for (int i = 0; i < n; i++) {
 
             if (!dequeue.isEmpty() && dequeue.getFirst() + k == i) {
@@ -100,7 +100,7 @@ public class SlidingWindowMaximum {
         int[] maxs = new int[n - k + 1];
         // double end queue stores the indices of values in nums,
         // and corresponding values are in decreasing order. This way, the head in queue is always the max
-        List<Integer> dequeue = new LinkedList<Integer>();
+        List<Integer> dequeue = new LinkedList<>();
         for (int i = 0; i < n; i++) {
             // 1. remove left most element from queue so queue size is k
             // i - queue.get(0) + 1 = k so queue.get(0) + k > i

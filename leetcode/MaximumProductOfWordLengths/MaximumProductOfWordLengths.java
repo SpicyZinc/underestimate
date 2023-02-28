@@ -31,37 +31,38 @@ parenthesis is needed, precedence of '&' is lower than '==' seemingly
 */
 
 public class MaximumProductOfWordLengths {
-	public static void main(String[] args) {
-		MaximumProductOfWordLengths eg = new MaximumProductOfWordLengths();
-		String[] words = {"abcc", "baz", "foo", "bar", "xtft", "abcdef"};
-		System.out.println( eg.maxProduct(words) );
-	}
+    public static void main(String[] args) {
+        MaximumProductOfWordLengths eg = new MaximumProductOfWordLengths();
+        String[] words = {"abcc", "baz", "foo", "bar", "xtft", "abcdef"};
+        System.out.println( eg.maxProduct(words) );
+    }
     public int maxProduct(String[] words) {
         if ( words == null || words.length == 0 ) {
-        	return 0;
+            return 0;
         }
         int n = words.length;
         int[][] elements = new int[n][26];
         for (int i = 0; i < n; i++) {
-			for (int j = 0; j < words[i].length(); j++) {
-				elements[i][words[i].charAt(j) - 'a'] += 1;
-			}
-		}
+            for (int j = 0; j < words[i].length(); j++) {
+                elements[i][words[i].charAt(j) - 'a'] += 1;
+            }
+        }
 
         int maxProduct = 0;
         for ( int i = 0; i < n; i++ ) {
-        	for ( int j = i + 1; j < n; j++ ) {
-        		boolean flag = true;
-        		for ( int k = 0; k < 26; k++ ) {
-        			if ( elements[i][k] != 0 && elements[j][k] != 0 ) {
-        				flag = false;
-        				break;
-        			}
-        		}
-        		if ( flag && words[i].length() * words[j].length() > maxProduct ) {
-        			maxProduct = words[i].length() * words[j].length();
-        		}
-	        }
+            for ( int j = i + 1; j < n; j++ ) {
+                boolean flag = true;
+                for ( int k = 0; k < 26; k++ ) {
+                    // same k, same char, meaning there is common char, so break here
+                    if ( elements[i][k] != 0 && elements[j][k] != 0 ) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if ( flag && words[i].length() * words[j].length() > maxProduct ) {
+                    maxProduct = words[i].length() * words[j].length();
+                }
+            }
         }
 
         return maxProduct;

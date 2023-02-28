@@ -28,13 +28,16 @@ Output: 3
  
 
 Constraints:
-
 1 <= nums.length <= 105
 1 <= nums[i] <= 109
 0 <= limit <= 109
 
 idea:
-SlidingWindowMaximum 
+
+similar to
+keep so far max window which contains only index
+SlidingWindowMaximum
+SlidingWindowMinimum
 */
 
 // Tue Feb  7 12:11:56 2023
@@ -62,6 +65,7 @@ class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit {
 
             // Shrink left pointer if exceed limit
             if (maxDeque.peek() - minDeque.peek() > limit) {
+                // Before shrink, make sure max min queue should remove possible 被去掉的num
                 if (maxDeque.peek() == nums[l]) maxDeque.poll();
                 if (minDeque.peek() == nums[l]) minDeque.poll();
                 l++;  // Shrink it by increasing the left pointer

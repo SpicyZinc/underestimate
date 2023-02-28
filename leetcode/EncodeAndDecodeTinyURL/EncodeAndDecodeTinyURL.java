@@ -13,6 +13,67 @@ note elements need to referred to
 combined with Design TinyURL problem
 */
 
+// Mon Feb 27 01:12:13 2023
+public class Codec {
+    int size = 6;
+    int base = 62;
+    int counter = 0;
+    String s = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    String prefix = "http://tinyurl.com/";
+
+    Map<Integer, String> shortToLong = new HashMap<>();
+
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        String shortUrl = base10To62(counter);
+        shortToLong.put(counter, longUrl);
+        counter++;
+        return prefix + shortUrl;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        shortUrl = shortUrl.substring(prefix.length());
+        int counter = 0;
+        for (int i = 0; i < shortUrl.length(); i++) {
+            char c = shortUrl.charAt(i);
+            counter = counter * base + getCharVal(c);
+        }
+        
+        return shortToLong.get(counter);
+    }
+
+    public String base10To62(int i) {
+        StringBuilder sb = new StringBuilder();
+        while (i > 0) {
+            int index = i % base;
+            sb.insert(0, s.charAt(index));
+            i /= base;
+        }
+
+        if (sb.length() < size) {
+            sb.insert(0, '0');
+        }
+
+        return sb.toString();
+    }
+
+    public int getCharVal(char c) {
+        if (c >= '0' && c <= '9') {
+            return c - '0';
+        }
+        if (c >= 'a' && c <= 'z') {
+            return c - 'a' + 10;
+        }
+        if (c >= 'A' && c <= 'Z') {
+            return c - 'A' + 36;
+        }
+
+        return -1;
+    }
+}
+
+
 public class EncodeAndDecodeTinyURL {
     String elements = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     static int COUNTER = 1;

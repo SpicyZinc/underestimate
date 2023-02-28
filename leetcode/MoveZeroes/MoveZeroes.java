@@ -75,8 +75,7 @@ public class MoveZeroes {
 	    for (int i = 0; i < nums.length; i++) {
 	        if (nums[i] == 0) {
 	            zeroCounts++;
-	        } 
-	        else {
+	        } else {
 	            nums[i - zeroCounts] = nums[i];
 	            if (zeroCounts != 0) {
 	            	nums[i] = 0;
@@ -90,8 +89,7 @@ public class MoveZeroes {
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] == 0) {
                 zeroCounts++;
-            }
-            else if (nums[i] != 0 && zeroCounts != 0) {
+            } else if (nums[i] != 0 && zeroCounts != 0) {
                 nums[i - zeroCounts] = nums[i];
                 nums[i] = 0;    
             }
