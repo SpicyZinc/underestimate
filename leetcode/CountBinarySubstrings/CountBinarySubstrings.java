@@ -25,7 +25,6 @@ if not continuous same elements, updating prev = curr, curr = 1;
 curr >= prev, this is a qualifying substring
 */
 
-
 class CountBinarySubstrings {
 	// TLE
     public int countBinarySubstrings(String s) {

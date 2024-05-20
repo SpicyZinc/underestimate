@@ -34,7 +34,6 @@ All strings consists only of lower and upper case English letters.
 idea:
 这道题就是 isSubsequence() variation
 我把简单问题复杂化了
-
 */
 
 import java.util.*;

@@ -15,20 +15,80 @@ Example 3:
 Input: nums = [1,2,4], k = 3
 Output: 6
 Explanation: The missing numbers are [3,5,6,7,...], hence the third missing number is 6.
- 
 
 Constraints:
-1 <= nums.length <= 5 * 104
-1 <= nums[i] <= 107
+1 <= nums.length <= 5 * 10^4
+1 <= nums[i] <= 10^7
 nums is sorted in ascending order, and all the elements are unique.
-1 <= k <= 108
+1 <= k <= 10^8
 
 Follow up: Can you find a logarithmic time complexity (i.e., O(log(n))) solution?
 
 idea:
-cannot underestimate this
+similar to KthMissingPositiveNumber
+this one is starting from nums[0]
 */
 class MissingElementInSortedArray {
+    // Mon May 20 02:06:27 2024
+    // self
+    public int getMissingCount(int[] nums, int idx) {
+        return nums[idx] - nums[0] - (idx - 0);
+    }
+
+    public int missingElement(int[] nums, int k) {
+        int base = nums[0];
+        int n = nums.length;
+        int i = 1;
+        for (; i < n; i++) {
+            int missingCount = getMissingCount(nums, i);
+            if (missingCount >= k) {
+                break;
+            }
+        }
+        return nums[i - 1] + k - getMissingCount(nums, i - 1);
+    }
+
+    // Sun May 19 00:01:56 2024
+    // Elegant direct way
+    public int missingElement(int[] nums, int k) {
+        int n = nums.length;
+        for (int i = 1; i < n; i++) {
+            int missingCount = nums[i] - nums[i - 1] - (i - (i - 1));
+            if (missingCount >= k) {
+                return nums[i - 1] + k;
+            }
+
+            k -= missingCount;
+        }
+
+        return nums[n - 1] + k;
+    }
+
+    // Binary
+    public int missingElement(int[] nums, int k) {
+        if (nums.length == 0) {
+            return -1;
+        }
+
+        int offset = nums[0];
+
+        int left = 0;
+        int right = nums.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int missingCount = nums[mid] - offset - (mid - 0);
+            if (missingCount < k) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return nums[right] + k - (nums[right] - offset - (right - 0));
+        // return right + offset + k;
+    }
+
     // Return how many numbers are missing until nums[idx]
     // 这是通式 因为是连续的没有重复的 应该差 idx - 0 但是差了 nums[idx] - nums[0], 两者的difference 就是 missing count
     // nums[mid] - nums[left] - (mid - left) means the total number of missing numbers between nums[mid] and nums[left]
@@ -38,10 +98,10 @@ class MissingElementInSortedArray {
 
     public int missingElement(int[] nums, int k) {
         int n = nums.length;
-        // If kth missing number is larger than 
-        // the last element of the array
-        if (k > missing(n - 1, nums))
-          return nums[n - 1] + k - missing(n - 1, nums);
+        // If kth missing number is larger than the last element of the array
+        if (k > missing(n - 1, nums)) {
+            return nums[n - 1] + (k - missing(n - 1, nums));
+        }
 
         int idx = 1;
         // find idx such that missing(idx - 1) < k <= missing(idx)
@@ -78,45 +138,5 @@ class MissingElementInSortedArray {
         }
 
         return start;
-    }
-    // Elegant direct way
-    public int missingElement(int[] nums, int k) {
-        int n = nums.length;
-        int diff = 0;
-        for (int i = 1; i < n; i++) {
-            diff = nums[i] - nums[i - 1] - 1;
-            if (diff >= k) {
-                return nums[i - 1] + k;
-            }
-
-            k -= diff;
-        }
-
-        return nums[n - 1] + k;
-    }
-
-    // Binary
-    public int missingElement(int[] nums, int k) {
-        if (nums.length == 0) {
-            return -1;
-        }
-        
-        int offset = nums[0];
-
-        int left = 0;
-        int right = nums.length - 1;
-        
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            int missingCount = nums[mid] - offset - (mid - 0);
-            if (missingCount < k) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
-
-        return nums[right] + k - (nums[right] - offset - (right - 0));
-        // return right + offset + k;
     }
 }

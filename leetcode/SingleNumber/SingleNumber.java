@@ -5,7 +5,7 @@ Your algorithm should have a linear runtime complexity. Could you implement it w
 
 idea:
 1. 0 ^ any number == any number
-number ^ itself = 0
+2. number ^ itself = 0
 
 so if a number shows twice, after bit manipulation, it becomes 0
 the only left number will be the one appearing once
@@ -42,6 +42,24 @@ public class SingleNumber {
                 cnt = 1;
             }
         }
+
+        return nums[nums.length - 1];
+    }
+
+    // Tue Apr 23 19:00:00 2024 新方法每次移动两个 不等的话 前一个就是
+    public int singleNumber(int[] nums) {
+        Arrays.sort(nums);
+        int i = 0;
+        int size = nums.length;
+
+        while (i < size - 1) {
+            if (nums[i] == nums[i + 1]) {
+                i += 2;
+            } else {
+                return nums[i];
+            }
+        }
+
         return nums[nums.length - 1];
     }
 }

@@ -34,78 +34,77 @@ Notes:
 idea:
 */
 
-
 class FriendsOfAppropriateAges {
-	// TLE, 73 / 83 test cases passed
-	public int numFriendRequests(int[] ages) {
-		int n = ages.length;
+    // TLE, 73 / 83 test cases passed
+    public int numFriendRequests(int[] ages) {
+        int n = ages.length;
 
-		Map<Integer, Integer> hm = new HashMap<>();
+        Map<Integer, Integer> hm = new HashMap<>();
 
-		int cnt = 0;
-		for (int i = 0; i < n; i++) {
-			// avoid duplicate and save time
-			if (hm.containsKey(ages[i])) {
-				cnt += hm.get(ages[i]);
-				continue;
-			}
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            // avoid duplicate and save time
+            if (hm.containsKey(ages[i])) {
+                cnt += hm.get(ages[i]);
+                continue;
+            }
 
-			for (int j = 0; j < n; j++) {
-				if (i != j && canMakeRequest(ages[i], ages[j])) {
-					cnt++;
-				}
-			}
+            for (int j = 0; j < n; j++) {
+                if (i != j && canMakeRequest(ages[i], ages[j])) {
+                    cnt++;
+                }
+            }
 
-			map.put(ages[i], cnt);
-		}
+            map.put(ages[i], cnt);
+        }
 
-		return cnt;
-	}
+        return cnt;
+    }
 
-	// can a make friend request 
-	public boolean canMakeRequest(int a, int b) {
-		boolean caseOne = b <= 0.5 * a + 7;
-		boolean caseTwo = b > a;
-		boolean caseThree = b > 100 && a < 100;
+    // can a make friend request 
+    public boolean canMakeRequest(int a, int b) {
+        boolean caseOne = b <= 0.5 * a + 7;
+        boolean caseTwo = b > a;
+        boolean caseThree = b > 100 && a < 100;
 
-		return !caseOne && !caseTwo && !caseThree;
-	}
+        return !caseOne && !caseTwo && !caseThree;
+    }
 
-	// with hashmap
-	public int numFriendRequests(int[] ages) {
-		int n = ages.length;
+    // with hashmap
+    public int numFriendRequests(int[] ages) {
+        int n = ages.length;
+        // age<->count
+        Map<Integer, Integer> hm = new HashMap<>();
 
-		Map<Integer, Integer> hm = new HashMap<>();
+        int cnt = 0;
+        Arrays.sort(ages);
+        for (int i = 0; i < n; i++) {
+            // avoid duplicate calculation and save time because there are duplicate ages
+            if (hm.containsKey(ages[i])) {
+                cnt += hm.get(ages[i]);
+                continue;
+            }
 
-		int cnt = 0;
-		Arrays.sort(ages);
-		for (int i = 0; i < n; i++) {
-			// avoid duplicate calculation and save time
-			if (hm.containsKey(ages[i])) {
-				cnt += hm.get(ages[i]);
-				continue;
-			}
+            int sum = 0;
+            for (int j = 0; j < n; j++) {
+                if (i != j && canMakeRequest(ages[i], ages[j])) {
+                    sum++;
+                }
+            }
 
-			int sum = 0;
-			for (int j = 0; j < n; j++) {
-				if (i != j && canMakeRequest(ages[i], ages[j])) {
-					sum++;
-				}
-			}
+            hm.put(ages[i], sum);
+            cnt += sum;
+        }
 
-			hm.put(ages[i], sum);
-			cnt += sum;
-		}
+        return cnt;
+    }
 
-		return cnt;
-	}
+    // can a make friend request 
+    public boolean canMakeRequest(int a, int b) {
+        boolean caseOne = b <= 0.5 * a + 7;
+        boolean caseTwo = b > a;
+        boolean caseThree = b > 100 && a < 100;
 
-	// can a make friend request 
-	public boolean canMakeRequest(int a, int b) {
-		boolean caseOne = b <= 0.5 * a + 7;
-		boolean caseTwo = b > a;
-		boolean caseThree = b > 100 && a < 100;
-
-		return !caseOne && !caseTwo && !caseThree;
-	}
+        return !caseOne && !caseTwo && !caseThree;
+    }
 }

@@ -16,6 +16,8 @@ Note:
 The input string length won't exceed 1000.
 
 idea:
+有n + (n - 1) 个中心 以中心为准 向左右两边散发 这样符合palindrome的定义
+
 1. substrings 中回文的最多个数
 n char + (n - 1) spaces positions
 
@@ -60,7 +62,7 @@ class PalindromicSubstrings {
             char c = s.charAt(i);
  
             int countOdd = getCountHelper(i, i, s); // imagine the sub string is odd length
-            int countEven = getCountHelper(i, i + 1, s); // imagine the sub string is odd length
+            int countEven = getCountHelper(i, i + 1, s); // imagine the sub string is even length
 
             count += countOdd + countEven;
         }

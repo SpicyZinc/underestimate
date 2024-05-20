@@ -46,6 +46,7 @@ The maze contains at least 2 empty spaces, and both the width and height of the 
 
 idea:
 dfs() with visited[][]
+记得 while 到底
 */
 
 class TheMaze {
@@ -60,6 +61,49 @@ class TheMaze {
         boolean[][] visited = new boolean[m][n];
 
         return dfs(maze, visited, start[0], start[1], destination[0], destination[1]);
+    }
+    // Tue Apr 30 18:13:47 2024
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        int m = maze.length;
+        int n = maze[0].length;
+        boolean[][] visited = new boolean[m][n];
+        return dfs(maze, start[0], start[1], destination, visited);
+    }
+
+    public boolean dfs(int[][] maze, int x, int y, int[] destination, boolean[][] visited) {
+        int m = maze.length;
+        int n = maze[0].length;
+
+        if (x == destination[0] && y == destination[1]) {
+            return true;
+        }
+
+        if (visited[x][y]) {
+            return false;
+        }
+
+        int[][] directions = {{0,-1},{-1,0},{0,1},{1,0}};
+
+        visited[x][y] = true;
+
+        for (int[] dir : directions) {
+            int nextX = x;
+            int nextY = y;
+
+            while (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && maze[nextX][nextY] == 0) {
+                nextX += dir[0];
+                nextY += dir[1];
+            }
+            // while stops, backup one step to make it valid
+            nextX -= dir[0];
+            nextY -= dir[1];
+
+            if (dfs(maze, nextX, nextY, destination, visited)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean dfs(int[][] maze, boolean[][] visited, int i, int j, int di, int dj) {

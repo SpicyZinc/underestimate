@@ -118,6 +118,58 @@ class AutocompleteSystem {
         System.out.println(eg.data);
     }
 
+    // Mon Apr 17 01:35:48 2023
+    Map<String, Integer> freq;
+    String data;
+
+    public AutocompleteSystem(String[] sentences, int[] times) {
+        this.freq = new HashMap<>();
+        for (int i = 0; i < sentences.length; i++) {
+            this.freq.put(sentences[i], times[i]);
+        }
+
+        this.data = "";
+    }
+
+    public List<String> input(char c) {
+        if (c == '#') {
+            freq.put(data, freq.getOrDefault(data, 0) + 1);
+            data = "";
+
+            return new ArrayList<String>();
+        }
+
+        data += c;
+
+        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((a, b) -> a.times != b.times ? a.times - b.times : b.str.compareTo(a.str));
+
+        for (String sentence : freq.keySet()) {
+            boolean matched = true;
+            // boolean matched = sentence.contains(data); not working 
+            for (int i = 0; i < data.length(); i++) {
+                if (sentence.length() < data.length() || sentence.length() >= data.length() && data.charAt(i) != sentence.charAt(i)) {
+                    matched = false;
+                    break;
+                }
+            }
+
+            if (matched) {
+                pq.add(new Pair(sentence, freq.get(sentence)));
+
+                if (pq.size() > 3) {
+                    pq.poll();
+                }
+            }
+        }
+
+        List<String> result = new ArrayList<>();
+        while (!pq.isEmpty()) {
+            result.add(0, pq.poll().str);
+        }
+
+        return result;
+    }
+
 
     Map<String, Integer> freq;
     String data;

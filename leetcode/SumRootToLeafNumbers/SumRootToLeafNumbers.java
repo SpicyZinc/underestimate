@@ -36,13 +36,31 @@ class TreeNode {
 }
 
 public class SumRootToLeafNumbers {
-	// pass by value
-	public int sumNumbers(TreeNode root) {
+    // Wed Apr 10 01:27:02 2024
+    public int sumNumbers(TreeNode root) {
+        return dfs(root, 0);
+    }
+
+    public int dfs(TreeNode node, int val) {
+        if (node == null) {
+            return 0;
+        }
+
+        int x = val * 10 + node.val;
+        if (node.left == null && node.right == null) {
+            return x;
+        }
+
+        return dfs(node.left, x) + dfs(node.right, x);
+    }
+
+    // pass by value
+    public int sumNumbers(TreeNode root) {
         return dfs(root, 0);
     }
     
     public int dfs(TreeNode node, int sum) {
-    	// note, node == null, return 0
+        // note, node == null, return 0
         if (node == null) {
             return 0;
         }
@@ -55,32 +73,32 @@ public class SumRootToLeafNumbers {
         return dfs(node.left, sum) + dfs(node.right, sum);
     }
 
-	// method 1
-	public int sumNumbers(TreeNode root) {  
-		int[] sum = new int[1];
-		int[] path = new int[1];
-		GenerateSum(root, path, sum);
+    // method 1
+    public int sumNumbers(TreeNode root) {  
+        int[] sum = new int[1];
+        int[] path = new int[1];
+        GenerateSum(root, path, sum);
 
-		return sum[0];  
-	} 
-	
-	public void GenerateSum(TreeNode root, int[] path, int[] sum) {
-		if (root == null) {
-			return;
-		}
+        return sum[0];  
+    } 
+    
+    public void GenerateSum(TreeNode root, int[] path, int[] sum) {
+        if (root == null) {
+            return;
+        }
 
-		path[0] = path[0] * 10 + root.val;
-		if (root.left == null && root.right == null) {
-			sum[0] += path[0];
-			// restore to a state where not times 10
-			path[0] /= 10;
+        path[0] = path[0] * 10 + root.val;
+        if (root.left == null && root.right == null) {
+            sum[0] += path[0];
+            // restore to a state where not times 10
+            path[0] /= 10;
 
-			return;
-		}
+            return;
+        }
 
-		GenerateSum(root.left, path, sum);
-		GenerateSum(root.right, path, sum);
-		// restore to a state where not times 10
-		path[0] /= 10;
-	}
+        GenerateSum(root.left, path, sum);
+        GenerateSum(root.right, path, sum);
+        // restore to a state where not times 10
+        path[0] /= 10;
+    }
 }

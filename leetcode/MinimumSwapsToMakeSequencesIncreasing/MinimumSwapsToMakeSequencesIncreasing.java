@@ -26,27 +26,27 @@ keep[i] minimum swaps to keep A[i] and B[i] increasing without current i swappin
 */
 
 class MinimumSwapsToMakeSequencesIncreasing {
-	public int minSwap(int[] A, int[] B) {
-		int n = A.length;
-		int[] swap = new int[n];
-		int[] keep = new int[n];
-		// 0 index, just initialize to be 1
-		swap[0] = 1;
-		// best case for keep[0] = 0;
-		for (int i = 1; i < n; i++) {
-			// worst case for swap
-			// best case for keep
-			swap[i] = keep[i] = n;
-			if (A[i - 1] < A[i] && B[i - 1] < B[i]) {
-				keep[i] = keep[i - 1];
-				swap[i] = swap[i - 1] + 1;
-			}
-			if (A[i - 1] < B[i] && B[i - 1] < A[i]) {
-				keep[i] = Math.min(keep[i], swap[i - 1]);
-				// current step swap, so plus 1
-				swap[i] = Math.min(swap[i], keep[i - 1] + 1);
-			}
-		}
-		return Math.min(swap[n - 1], keep[n - 1]);
-	}
+    public int minSwap(int[] A, int[] B) {
+        int n = A.length;
+        int[] swap = new int[n];
+        int[] keep = new int[n];
+        // 0 index, just initialize to be 1
+        swap[0] = 1;
+        // best case for keep[0] = 0;
+        for (int i = 1; i < n; i++) {
+            // worst case for swap
+            // best case for keep
+            swap[i] = keep[i] = n;
+            if (A[i - 1] < A[i] && B[i - 1] < B[i]) {
+                keep[i] = keep[i - 1];
+                swap[i] = swap[i - 1] + 1;
+            }
+            if (A[i - 1] < B[i] && B[i - 1] < A[i]) {
+                keep[i] = Math.min(keep[i], swap[i - 1]);
+                // current step swap, so plus 1
+                swap[i] = Math.min(swap[i], keep[i - 1] + 1);
+            }
+        }
+        return Math.min(swap[n - 1], keep[n - 1]);
+    }
 }

@@ -16,65 +16,103 @@ at the end, the size of priority queue (end time) will be the number of meeting 
 2. sweep line can work too
 */
 public class MeetingRooms {
-	// Tue May 14 23:38:37 2019
-	class Point {
-		int val;
-		int flag;
+    // Sat May 18 16:51:27 2024
+    public int minMeetingRooms(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
 
-		public Point(int val, int flag) {
-			this.val = val;
-			this.flag = flag;
-		}
-	}
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.add(intervals[0][1]);
 
-	public int minMeetingRooms(int[][] intervals) {
-		List<Point> list = new ArrayList<>(intervals.length * 2);
+        for (int i = 1; i < intervals.length; i++) {
+            int[] current = intervals[i];
+            if (current[0] >= pq.peek()) {
+                pq.poll();
+            }
+            pq.offer(current[1]);
+        }
 
-		for (int[] interval : intervals) {
-			list.add(new Point(interval[0], 1));
-			list.add(new Point(interval[1], 0));
-		}
+        return pq.size();
+    }
+    // Sun Mar 19 01:13:41 2023
+    public int minMeetingRooms(int[][] intervals) {
+        Arrays.sort(intervals, (int[] a, int[] b) -> a[0] - b[0]);
 
-		Collections.sort(list, (a, b) -> a.val == b.val ? a.flag - b.flag : a.val - b.val);
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.add(intervals[0][1]);
 
-		int answer = 0;
-		int count = 0;
+        for (int i = 1; i < intervals.length; i++) {
+            int[] current = intervals[i];
+            // note, do not forget "="
+            if (current[0] >= pq.peek()) {
+                pq.poll();
+            }
+            pq.add(current[1]);
+        }
 
-		for (Point p : list) {
-			if (p.flag == 1) {
-				count++;
-			} else {
-				count--;
-			}
+        return pq.size();
+    }
 
-			answer = Math.max(answer, count);
-		}
+    // Tue May 14 23:38:37 2019
+    class Point {
+        int val;
+        int flag;
 
-		return answer;
-	}
+        public Point(int val, int flag) {
+            this.val = val;
+            this.flag = flag;
+        }
+    }
 
-	// Sun Jun  9 18:25:52 2019
-	public int minMeetingRooms(int[][] intervals) {
-		if (intervals.length == 0 || intervals ==  null) {
-			return 0;
-		}
+    public int minMeetingRooms(int[][] intervals) {
+        List<Point> list = new ArrayList<>(intervals.length * 2);
 
-		Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        for (int[] interval : intervals) {
+            list.add(new Point(interval[0], 1));
+            list.add(new Point(interval[1], 0));
+        }
 
-		PriorityQueue<Integer> endTimes = new PriorityQueue<>();
-		endTimes.add(intervals[0][1]);
-		
-		for (int i = 1; i < intervals.length; i++) {
-			int[] interval = intervals[i];
-			// 如果当前时间段的开始时间大于最早结束的时间, 则可以更新这个最早的结束时间为当前时间段的结束时间
-			// 如果小于的话, 就加入一个新的结束时间, 表示新的房间
-			if (interval[0] >= endTimes.peek()) {
-				endTimes.poll();
-			}
-			
-			endTimes.offer(interval[1]);
-		}
+        Collections.sort(list, (a, b) -> a.val == b.val ? a.flag - b.flag : a.val - b.val);
 
-		return endTimes.size();
-	}
+        int answer = 0;
+        int count = 0;
+
+        for (Point p : list) {
+            if (p.flag == 1) {
+                count++;
+            } else {
+                count--;
+            }
+
+            answer = Math.max(answer, count);
+        }
+
+        return answer;
+    }
+
+    // Sun Jun  9 18:25:52 2019
+    public int minMeetingRooms(int[][] intervals) {
+        if (intervals.length == 0 || intervals ==  null) {
+            return 0;
+        }
+
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        PriorityQueue<Integer> endTimes = new PriorityQueue<>();
+        endTimes.add(intervals[0][1]);
+        
+        for (int i = 1; i < intervals.length; i++) {
+            int[] interval = intervals[i];
+            // 如果当前时间段的开始时间大于最早结束的时间,
+            // 则可以更新这个最早的结束时间为当前时间段的结束时间
+            // 如何更新 就是说 当前时间段 可以无缝连接 加入后 就是相当于 最早结束时间 延伸了 到了 当前时间段 的结束时间
+            // 如果小于的话, 就加入一个新的结束时间, 表示新的房间
+            if (interval[0] >= endTimes.peek()) {
+                endTimes.poll();
+            }
+            
+            endTimes.offer(interval[1]);
+        }
+
+        return endTimes.size();
+    }
 }

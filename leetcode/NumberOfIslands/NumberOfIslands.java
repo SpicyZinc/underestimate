@@ -32,7 +32,7 @@ so the count of 1 will be the number of islands
 */
 
 public class NumberOfIslands {
-	// Sun Jun  9 17:45:08 2019
+    // Sun Jun  9 17:45:08 2019
     public int[][] directions = {
         {0, -1},
         {0, 1},
@@ -71,7 +71,7 @@ public class NumberOfIslands {
         }
 
         if (grid[i][j] == '1') {
-        	// set to 2 to indicate visited
+            // set to 2 to indicate visited
             grid[i][j] = '2';
 
             for (int[] dir : directions) {
@@ -80,5 +80,81 @@ public class NumberOfIslands {
                 dfs(grid, newX, newY);    
             }
         }
+    }
+}
+
+class Solution {
+    int count = 0;
+    public int numIslands(char[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        count = m * n;
+        int[] nums = new int[count];
+        for (int k = 0; k < count; k++) {
+            // Initializing union find with its own index
+            // Each element is its own disjoint set
+            nums[k] = k;
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    if (i - 1 >= 0 && grid[i - 1][j] == '1') {
+                        union(nums, i * n + j, (i - 1) * n + j);
+                    }
+                    if (j - 1 >= 0 && grid[i][j - 1] == '1') {
+                        union(nums, i * n + j, i * n + j - 1);
+                    }
+                } else {
+                    // not an island
+                    count--;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public void union(int[] nums, int i, int j) {
+        int x = find(nums, i);
+        int y = find(nums, j);
+        if (x != y) {
+            nums[x] = y;
+            count--; // Reduce count since grid[i][j] is not a new separate island but just a connected part of existing island (grid[i-1][j] or grid[i][j-1])
+        }
+    }
+
+    public int find(int[] nums, int i) {
+        int finalTarget = i;
+
+        while (finalTarget != nums[finalTarget]) {
+            finalTarget = nums[finalTarget];
+        }
+        // path compress
+        while (i != finalTarget) {
+            int fi = nums[i];
+            // 把路上的每一个点都指向 finalTarget which is the final father
+            nums[i] = finalTarget;
+            // 继续沿着 path 走
+            i = fi;
+        }
+        
+        return finalTarget;
+    }
+
+    // both working
+    public int find(int[] nums, int k) {
+        int root = k;
+        while (nums[root] != root) {
+            root = nums[root];
+        }
+        // path compression 
+        while (nums[k] != k) {
+            int temp = nums[k];
+            nums[k] = root;
+            k = temp;
+        }
+
+        return root;
     }
 }

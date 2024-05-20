@@ -20,7 +20,7 @@ public class PalindromeNumber {
 		
 		int copy = x;
 		int reverse = 0;
-		
+
 		while (copy != 0) {
 			reverse = reverse * 10 + copy % 10;
 			copy /= 10;

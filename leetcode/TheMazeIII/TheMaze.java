@@ -48,36 +48,36 @@ The maze contains at least 2 empty spaces, and the width and the height of the m
 
 idea:
 dfs()
-hashmap to save position i * n + j to path (ulrd) map
+hashmap to save position i * n + j to path (up left right down) map
 update with shorter distance's path
 */
 
 import java.util.*;
 
 class TheMaze {
-	public static void main(String[] args) {
-		TheMaze eg = new TheMaze();
-		int[][] maze = {
-			{0,0,0,0,0},
-			{1,1,0,0,1},
-			{0,0,0,0,0},
-			{0,1,0,0,1},
-			{0,1,0,0,0}	
-		};
+    public static void main(String[] args) {
+        TheMaze eg = new TheMaze();
+        int[][] maze = {
+            {0,0,0,0,0},
+            {1,1,0,0,1},
+            {0,0,0,0,0},
+            {0,1,0,0,1},
+            {0,1,0,0,0} 
+        };
 
-		int[] ball = {4, 3};
-		int[] hole = {0, 1};
+        int[] ball = {4, 3};
+        int[] hole = {0, 1};
 
-		String result = eg.findShortestWay(maze, ball, hole);
+        String result = eg.findShortestWay(maze, ball, hole);
 
-		System.out.println(result);
-	}
+        System.out.println(result);
+    }
 
-	public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
-		int m = maze.length;
-		int n = maze[0].length;
+    public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
+        int m = maze.length;
+        int n = maze[0].length;
 
-		int[][] distance = new int[m][n];
+        int[][] distance = new int[m][n];
         for (int[] row : distance) {
             Arrays.fill(row, Integer.MAX_VALUE);
         }
@@ -88,18 +88,18 @@ class TheMaze {
 
         String result = hm.get(hole[0] * n + hole[1]);
         return result == null ? "impossible" : result;
-	}
+    }
 
-	public void dfs(int[][] maze, int i, int j, int[] hole, int[][] distance, Map<Integer, String> hm) {
-		char[] ways = {'l','u','r','d'};
-		int[][] directions = {{0,-1},{-1,0},{0,1},{1,0}};
+    public void dfs(int[][] maze, int i, int j, int[] hole, int[][] distance, Map<Integer, String> hm) {
+        char[] ways = {'l','u','r','d'};
+        int[][] directions = {{0,-1},{-1,0},{0,1},{1,0}};
 
-		int m = maze.length;
-		int n = maze[0].length;
+        int m = maze.length;
+        int n = maze[0].length;
 
-		if (i == hole[0] && j == hole[1]) {
-			return;
-		}
+        if (i == hole[0] && j == hole[1]) {
+            return;
+        }
 
         for (int k = 0; k < 4; k++) {
             int x = i;
@@ -108,11 +108,11 @@ class TheMaze {
             int dist = distance[x][y];
             String path = hm.getOrDefault(x * n + y, "");
 
-			while (x >= 0 && x < m && y >= 0 && y < n && maze[x][y] == 0 && (x != hole[0] || y != hole[1])) {
-				x += dir[0];
-				y += dir[1];
-				dist++;
-			}
+            while (x >= 0 && x < m && y >= 0 && y < n && maze[x][y] == 0 && (x != hole[0] || y != hole[1])) {
+                x += dir[0];
+                y += dir[1];
+                dist++;
+            }
 
             if (x != hole[0] || y != hole[1]) {
                 x -= dir[0];
@@ -127,7 +127,7 @@ class TheMaze {
                 hm.put(x * n + y, path);
                 dfs(maze, x, y, hole, distance, hm);
             } else if (distance[x][y] == dist && hm.getOrDefault(x * n + y, "").compareTo(path) > 0) {
-                // save even shorter (lexicographically) path
+                // save even shorter (lexicographical) path
                 hm.put(x * n + y, path);
                 dfs(maze, x, y, hole, distance, hm);
             }

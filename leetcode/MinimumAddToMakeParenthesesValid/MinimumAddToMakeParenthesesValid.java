@@ -51,7 +51,7 @@ class MinimumAddToMakeParenthesesValid {
 			if (c == '(') {
 				stack.push(c);
 			} else if (stack.isEmpty()) {
-				// 缺少matching的 )
+				// 缺少matching的 ')'
 				count++;
 			} else {
 				stack.pop();

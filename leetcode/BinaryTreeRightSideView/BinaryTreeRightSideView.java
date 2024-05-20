@@ -45,6 +45,31 @@ public class BinaryTreeRightSideView {
         }
         System.out.println();
     }
+    // Fri Apr  5 21:58:30 2024
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;            
+        }
+
+        dfs(root, 0, result);
+
+        return result;
+    }
+
+    public void dfs(TreeNode node, int level, List<Integer> result) {
+        if (result.size() <= level) {
+            result.add(node.val);
+        }
+
+        if (node.right != null) {
+            dfs(node.right, level  + 1, result);
+        }
+
+        if (node.left != null) {
+            dfs(node.left, level  + 1, result);
+        }
+    }
 
     public List<Integer> rightSideViewRecursion(TreeNode root) {
         List<Integer> result = new ArrayList<Integer>();
@@ -100,4 +125,3 @@ public class BinaryTreeRightSideView {
         return result;
     }
 }
-

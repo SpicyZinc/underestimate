@@ -4,7 +4,6 @@ A duplicate removal consists of choosing two adjacent and equal letters and remo
 We repeatedly make duplicate removals on s until we no longer can.
 Return the final string after all such duplicate removals have been made. It can be proven that the answer is unique.
 
-
 Example 1:
 Input: s = "abbaca"
 Output: "ca"
@@ -14,12 +13,10 @@ For example, in "abbaca" we could remove "bb" since the letters are adjacent and
 Example 2:
 Input: s = "azxxzy"
 Output: "ay"
- 
 
 Constraints:
 1 <= s.length <= 105
 s consists of lowercase English letters.
-
 
 idea: use stack
 2. 直接用 StringBuilder 可以从后面操作

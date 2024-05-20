@@ -5,7 +5,7 @@ class FirstAndLastIndex {
     public int[] searchRange(int[] nums, int target) {
         int left = binarySearch(nums, target);
         if (left >= nums.length || nums[left] != target) {
-            return new int[] {-1,-1};
+            return new int[] {-1, -1};
         }
 
         return new int[] {left, binarySearch(nums, target + 1) - 1};

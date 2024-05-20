@@ -59,7 +59,7 @@ public class BasicCalculator {
                         break;
                     }
                 }
-                
+
                 num = calculate(s.substring(i + 1, j));
                 i = j;
             }
@@ -116,20 +116,20 @@ public class BasicCalculator {
                 num = num * 10 + c - '0';
             } else if (c == '(') {
                 int j = i;
-				int parenthesesCnt = 0; // find balanced () and retrieve the inside part, recurse on it
-				for (; i < n; i++) {
-					if (s.charAt(i) == '(') {
-						parenthesesCnt++;
-					}
-					if (s.charAt(i) == ')') {
-						parenthesesCnt--;
-					}
-					if (parenthesesCnt == 0) {
-						break;
-					}
-				}
+                int parenthesesCnt = 0; // find balanced () and retrieve the inside part, recurse on it
+                for (; i < n; i++) {
+                    if (s.charAt(i) == '(') {
+                        parenthesesCnt++;
+                    }
+                    if (s.charAt(i) == ')') {
+                        parenthesesCnt--;
+                    }
+                    if (parenthesesCnt == 0) {
+                        break;
+                    }
+                }
 
-				num = calculate(s.substring(j + 1, i));
+                num = calculate(s.substring(j + 1, i));
             }
 
             if (isOperator(c) || i == n - 1) {
@@ -239,54 +239,54 @@ public class BasicCalculator {
     }
     // must remember how convert infix expression to postfix expression
     // this is simple, only + - ( ) no * /
-	public String toRPN(String input) {
-		Stack<Character> stack = new Stack<>();
-		StringBuilder sb = new StringBuilder();
+    public String toRPN(String input) {
+        Stack<Character> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
 
-		for (int i = 0; i < input.length(); i++) {
-			char c = input.charAt(i);
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
 
-			switch (c) {
-				case '+':
-				case '-':
-					while (!stack.isEmpty() && stack.peek() != '(') {
-						sb.append(' ');
-						sb.append(stack.pop());
-					}
-					sb.append(' ');
+            switch (c) {
+                case '+':
+                case '-':
+                    while (!stack.isEmpty() && stack.peek() != '(') {
+                        sb.append(' ');
+                        sb.append(stack.pop());
+                    }
+                    sb.append(' ');
 
-					stack.push(c);
+                    stack.push(c);
 
-					break;
+                    break;
 
-				case '(':
-					stack.push(c);
-					break;
+                case '(':
+                    stack.push(c);
+                    break;
 
-				case ')':
-					while (!stack.isEmpty() && stack.peek() != '(') {
-						sb.append(' ');
-						sb.append(stack.pop());
-					}
-					// pop the '('
-					stack.pop();
+                case ')':
+                    while (!stack.isEmpty() && stack.peek() != '(') {
+                        sb.append(' ');
+                        sb.append(stack.pop());
+                    }
+                    // pop the '('
+                    stack.pop();
 
-					break;
+                    break;
 
-				case ' ':
-					break;
+                case ' ':
+                    break;
 
-				default:
-					sb.append(c);
-					break;
-			}
-		}
-		// 看最后还有剩下的么
-		while (!stack.isEmpty()) {
-			sb.append(' ');
-			sb.append(stack.pop());
-		}
+                default:
+                    sb.append(c);
+                    break;
+            }
+        }
+        // 看最后还有剩下的么
+        while (!stack.isEmpty()) {
+            sb.append(' ');
+            sb.append(stack.pop());
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 }

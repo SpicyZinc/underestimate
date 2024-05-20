@@ -69,6 +69,7 @@ public class InsertNodeInABinarySearchTree {
 
 		TreeNode curr = root;
 		TreeNode prev = null;
+
 		while (curr != null) {
 			prev = curr;
 			if (curr.val > node.val) {

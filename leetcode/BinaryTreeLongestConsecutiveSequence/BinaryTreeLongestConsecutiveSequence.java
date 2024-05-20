@@ -6,12 +6,12 @@ The longest consecutive path need to be from parent to child (cannot be the reve
 Example 1:
 Input:
    1
-	\
-	 3
-	/ \
+    \
+     3
+    / \
    2   4
-		\
-		 5
+        \
+         5
 
 Output: 3
 Explanation: Longest consecutive sequence path is 3-4-5, so return 3.
@@ -19,9 +19,9 @@ Explanation: Longest consecutive sequence path is 3-4-5, so return 3.
 Example 2:
 Input:
    2
-	\
-	 3
-	/ 
+    \
+     3
+    / 
    2    
   / 
  1
@@ -35,31 +35,31 @@ idea:
 dfs()
 */
 class BinaryTreeLongestConsecutiveSequence {
-	public int longestConsecutive(TreeNode root) {
-		if (root == null) {
-			return 0;
-		}
+    public int longestConsecutive(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
 
-		int[] max = new int[1];
-		dfs(root, root.val, 0, max);
+        int[] max = new int[1];
+        dfs(root, root.val, 0, max);
 
-		return max[0];
-	}
-	
-	public void dfs(TreeNode node, int val, int len, int[] max) {
-		if (node == null) {
-			return;
-		}
-		
-		if (node.val == val + 1) {
-			len += 1;
-		} else {
-			len = 1;
-		}
-		
-		max[0] = Math.max(max[0], len);
+        return max[0];
+    }
+    
+    public void dfs(TreeNode node, int val, int len, int[] max) {
+        if (node == null) {
+            return;
+        }
+        
+        if (node.val == val + 1) {
+            len += 1;
+        } else {
+            len = 1;
+        }
+        
+        max[0] = Math.max(max[0], len);
 
-		dfs(node.left, node.val, len, max);
-		dfs(node.right, node.val, len, max);
-	}
+        dfs(node.left, node.val, len, max);
+        dfs(node.right, node.val, len, max);
+    }
 }

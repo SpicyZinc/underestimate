@@ -47,7 +47,7 @@ public class Permutations {
         
         return result;
     }
-    
+    // 是通过 swap() 来实现 permute 不断地 (for loop) 把 所有数字 换到某个位置 对剩余的数字继续做同样的事
     public void dfs(int[] nums, int pos, List<List<Integer>> result) {
         int size = nums.length;
         
@@ -100,15 +100,15 @@ public class Permutations {
         }
     }
 
-    // method 3, iteration
+    // method 3, iteration, not follow yet
     public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<List<Integer>> result = new ArrayList<>();
         // start from an empty list
-        result.add(new ArrayList<Integer>());
-     
+        result.add(new ArrayList<>());
+
         for (int i = 0; i < nums.length; i++) {
             // list of list in current iteration of the array nums
-            List<List<Integer>> current = new ArrayList<List<Integer>>();
+            List<List<Integer>> current = new ArrayList<>();
      
             for (List<Integer> path : result) {
                 // # of locations to insert is largest index + 1
@@ -127,3 +127,23 @@ public class Permutations {
         return result;
     }
 }
+
+// js code
+const dfs = (path, remaining, result) => {
+    if (remaining.length === 0) {
+        result.push([...path]);
+    }
+
+    for (let i = 0; i < remaining.length; i++) {
+        path.push(remaining[i]);
+        dfs(path, [...remaining.slice(0, i), ...remaining.slice(i + 1)], result);
+        path.pop(remaining[i])
+    }
+}
+
+var permute = function(nums) {
+    const result = [];
+    dfs([], nums, result)
+    return result;
+};
+

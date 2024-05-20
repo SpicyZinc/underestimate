@@ -2,11 +2,11 @@
 Divide two integers without using multiplication, division and mod operator. 
 
 idea:
-http://www.lifeincode.net/programming/leetcode-divide-two-integers-java/
+https://leetcode.com/problems/divide-two-integers/solutions/1516367/complete-thinking-process-intuitive-explanation-all-rules-followed-c-code
 bit manipulation
 think of 178 / 2
-
 */
+
 import java.util.*;
 
 public class DivideTwoIntegers {
@@ -39,6 +39,7 @@ public class DivideTwoIntegers {
             // then minus 1
             int littleLessThanCounter = counter - 1;
             quotient += 1 << littleLessThanCounter;
+            // 5<<3 = 5 * 2^3 = 40
             p -= q << littleLessThanCounter;
         }
         // 同号

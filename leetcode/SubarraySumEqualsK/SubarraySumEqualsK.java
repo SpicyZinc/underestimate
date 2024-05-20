@@ -18,62 +18,104 @@ hashmap sum -> frequency, how many sum, how many possibilities
 the same as PathSum III memo
 need to connect to think
 */
+
 public class SubarraySumEqualsK {
-	// 262 ms
-	public int subarraySum(int[] nums, int k) {
-		if (nums.length == 0 || nums == null) {
-			return 0;
-		}
-		int n = nums.length;
-		int[] sum = new int[n + 1];
-		for (int i = 1; i < sum.length; i++) {
-			sum[i] = sum[i - 1] + nums[i - 1];
-		}
-		int cnt = 0;
-		for (int i = 0; i <= n; i++) {
-			for (int j = i + 1; j <= n; j++) {
-				if ( sum[j] - sum[i] == k ) {
-					cnt++;
-				}
-			}
-		}
+    public int subarraySum(int[] nums, int k) {
+        // hm
+        // sum <-> appearance times
+        Map<Integer, Integer> hm = new HashMap<>();
 
-		return cnt;
-	}
-	// 198 ms
-	public int subarraySum(int[] nums, int k) {
-		int cnt = 0;
-		for (int i = 0; i < nums.length; i++) {
-			int idx = i;
-			int sum = 0;
-			while (idx < nums.length) {
-				sum += nums[idx++];
-				if (sum == k) {
-					cnt++;
-				}
-			}
-		}
+        int count = 0;
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+            if (sum == k) {
+                count++;
+            }
 
-		return cnt;
-	}
-	// 37 ms
-	public int subarraySum(int[] nums, int k) {
-		int cnt = 0;
-		int sum = 0;
-		// sum : appearance frequency hash
-		Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
-		// note, don't forget initialization
-		hm.put(0, 1);
+            if (hm.containsKey(sum - k)) {
+                count += hm.get(sum - k);
+            }
+            hm.put(sum, hm.getOrDefault(sum, 0) + 1);
+        }
 
-		for (int num : nums) {
-			sum += num;
-			// sum - (sum - k) == k
-			if (hm.containsKey(sum - k)) {
-				cnt += hm.get(sum - k);
-			}
-			hm.put(sum, hm.getOrDefault(sum, 0) + 1);
-		}
+        return count;
+    }
 
-		return cnt;
-	}
+    // Sat Apr  6 03:00:44 2024
+    public int subarraySum(int[] nums, int k) {
+        // hm
+        // sum <-> appearance times
+        Map<Integer, Integer> hm = new HashMap<>();
+        hm.put(0, 1);
+
+        int count = 0;
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+            if (hm.containsKey(sum - k)) {
+                count += hm.get(sum - k);
+            }
+            hm.put(sum, hm.getOrDefault(sum, 0) + 1);
+        }
+
+        return count;
+    }
+    // 262 ms
+    public int subarraySum(int[] nums, int k) {
+        if (nums.length == 0 || nums == null) {
+            return 0;
+        }
+        int n = nums.length;
+        int[] sum = new int[n + 1];
+        for (int i = 1; i < sum.length; i++) {
+            sum[i] = sum[i - 1] + nums[i - 1];
+        }
+        int cnt = 0;
+        for (int i = 0; i <= n; i++) {
+            for (int j = i + 1; j <= n; j++) {
+                if (sum[j] - sum[i] == k) {
+                    cnt++;
+                }
+            }
+        }
+
+        return cnt;
+    }
+    // 198 ms
+    public int subarraySum(int[] nums, int k) {
+        int cnt = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int idx = i;
+            int sum = 0;
+            while (idx < nums.length) {
+                sum += nums[idx++];
+                if (sum == k) {
+                    cnt++;
+                }
+            }
+        }
+
+        return cnt;
+    }
+    // 37 ms
+    public int subarraySum(int[] nums, int k) {
+        int cnt = 0;
+        int sum = 0;
+        // sum : appearance frequency hash
+        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        // note, don't forget initialization
+        hm.put(0, 1);
+
+        for (int num : nums) {
+            sum += num;
+            // sum - (sum - k) == k
+            if (hm.containsKey(sum - k)) {
+                cnt += hm.get(sum - k);
+            }
+            hm.put(sum, hm.getOrDefault(sum, 0) + 1);
+        }
+
+        return cnt;
+    }
 }

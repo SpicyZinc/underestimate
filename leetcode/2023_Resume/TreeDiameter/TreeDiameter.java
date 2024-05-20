@@ -17,7 +17,7 @@ Explanation: The longest path of the tree is the path 3 - 2 - 1 - 4 - 5.
 
 Constraints:
 n == edges.length + 1
-1 <= n <= 104
+1 <= n <= 10^4
 0 <= ai, bi < n
 ai != bi
 
@@ -29,6 +29,53 @@ DiameterOfBinaryTree 求一个到底的深度
 */
 
 class TreeDiameter {
+    // Tue Apr  9 00:29:21 2024
+    int max = 0;
+
+    public int treeDiameter(int[][] edges) {
+        // edge case, not forget
+        if (edges.length == 0) {
+            return 0;
+        }
+
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+
+            graph.computeIfAbsent(a, x -> new ArrayList<>()).add(b);
+            graph.computeIfAbsent(b, x -> new ArrayList<>()).add(a);
+        }
+
+        dfs(0, -1, graph);
+        return max;
+    }
+
+    public int dfs(int node, int prev, Map<Integer, List<Integer>> graph) {
+        int m1 = 0;
+        int m2 = 0;
+
+        for (int child : graph.get(node)) {
+            if (child != prev) {
+                int d = dfs(child, node, graph) + 1;
+                if (d > m1) {
+                    // note sequence
+                    m2 = m1;
+                    m1 = d;
+                } else if (d > m2) {
+                    m2 = d;
+                }
+            }
+        }
+        max = Math.max(max, m1 + m2);
+
+        return m1;
+    }
+
+
+
+
     int maxDiameter = 0;
 
     public int treeDiameter(int[][] edges) {

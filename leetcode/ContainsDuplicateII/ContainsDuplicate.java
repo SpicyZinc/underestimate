@@ -8,11 +8,12 @@ use hash table for sure
 not matter contains the element or not, always push to hash table,
 the hash table is to keep record of value <-> position relation and value could be duplicate
 
+of course it can be direct linear search
 */
 
 public class ContainsDuplicate  {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
-        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> hm = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
         	int current = nums[i];
         	if (hm.containsKey(current)) {

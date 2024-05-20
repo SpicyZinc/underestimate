@@ -29,35 +29,35 @@ public class ReorderArrayToConstructTheMinimumNumber {
      * @return: A string
      */
     public String minNumber(int[] nums) {
-    	if (nums.length == 0 || nums == null) {
-    		return "";
-    	}
-    	int n = nums.length;
-    	String[] numsStr = new String[n];
-    	int i = 0;
-    	for (int num : nums) {
-    		numsStr[i++] = String.valueOf(num);
-    	}
+        if (nums.length == 0 || nums == null) {
+            return "";
+        }
+        int n = nums.length;
+        String[] numsStr = new String[n];
+        int i = 0;
+        for (int num : nums) {
+            numsStr[i++] = String.valueOf(num);
+        }
 
         Arrays.sort(numsStr, new Comparator<String>() {
-        	@Override
-        	public int compare(String a, String b) {
-        		return (a + b).compareTo(b + a);
-        	}
+            @Override
+            public int compare(String a, String b) {
+                return (a + b).compareTo(b + a);
+            }
         });
 
         // ascending sort, generate from the behind
         String answer = "";
         for (String str : numsStr) {
-        	answer += str;
+            answer += str;
         }
         // remove all leading 0s
         int j = 0;
         while (j < n && answer.charAt(j) == '0') {
-        	j++;
+            j++;
         }
         if (j == n) {
-        	return "0";
+            return "0";
         }
 
         return answer.substring(j);

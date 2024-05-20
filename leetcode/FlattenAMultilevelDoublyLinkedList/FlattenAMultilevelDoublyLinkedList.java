@@ -10,10 +10,10 @@ You are given the head of the first level of the list.
 Example:
 Input:
 1---2---3---4---5---6--NULL
-		|
-		7---8---9---10--NULL
-			|
-			11--12--NULL
+        |
+        7---8---9---10--NULL
+            |
+            11--12--NULL
 
 Output:
 1-2-3-7-8-11-12-9-10-4-5-6-NULL
@@ -33,45 +33,46 @@ dfs() 先把child都traverse 然后再连接起来 记着next prev
 
 // Definition for a Node.
 class Node {
-	public int val;
-	public Node prev;
-	public Node next;
-	public Node child;
+    public int val;
+    public Node prev;
+    public Node next;
+    public Node child;
 
-	public Node() {}
+    public Node() {}
 
-	public Node(int _val,Node _prev,Node _next,Node _child) {
-		val = _val;
-		prev = _prev;
-		next = _next;
-		child = _child;
-	}
-};
+    public Node(int _val,Node _prev,Node _next,Node _child) {
+        val = _val;
+        prev = _prev;
+        next = _next;
+        child = _child;
+    }
+}
 
 class FlattenAMultilevelDoublyLinkedList {
-	public Node flatten(Node head) {
-		Node curr = head;
-		while (curr != null) {
-			if (curr.child != null) {
-				// save next as right
-				Node right = curr.next;
-				// process child
-				curr.next = flatten(curr.child);
-				curr.next.prev = curr;
-				curr.child = null;
-				// continue going
-				while (curr.next != null) {
-					curr = curr.next;
-				}
-				// reconnect next
-				if (right != null) {
-					curr.next = right;
-					curr.next.prev = curr;    
-				}
-			}
-			curr = curr.next;
-		}
+    public Node flatten(Node head) {
+        Node curr = head;
+        while (curr != null) {
+            if (curr.child != null) {
+                // save next as right
+                Node right = curr.next;
+                // process child
+                curr.next = flatten(curr.child);
+                curr.next.prev = curr;
+                curr.child = null;
+                // continue going and finish the latest current
+                // so that it can connect to others
+                while (curr.next != null) {
+                    curr = curr.next;
+                }
+                // reconnect next
+                if (right != null) {
+                    curr.next = right;
+                    curr.next.prev = curr;    
+                }
+            }
+            curr = curr.next;
+        }
 
-		return head;
-	}
+        return head;
+    }
 }

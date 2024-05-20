@@ -10,10 +10,13 @@ Note:
 Your solution should be in logarithmic complexity.
 
 idea:
+某个数字小于前面那个数字, 说明前面数字就是一个局部峰值, 返回位置即可
 https://www.cnblogs.com/grandyang/p/4217175.html
+
 typical binary search
+只是需要找到任意一个峰值, 则在确定二分查找折半后中间那个元素后, 和紧跟的那个元素比较下大小, 如果大于, 则说明峰值在前面, 如果小于则在后面
 if (nums[mid] < nums[mid + 1])
-只要 > (mid + 1) 里 小于 nums[mid + 1]) 就找到一个 peak
+只要 > (mid + 1) 里找到 小于 nums[mid + 1]) 就找到一个 peak
 所以 start = mid + 1
 
       |
@@ -42,9 +45,10 @@ public class FindPeakElement {
         
         while (start < end) {
             int mid = start + (end - start) / 2;
+            // peak 一定在后半部分
             if (nums[mid] < nums[mid + 1]) {
                 start = mid + 1;
-            } else {
+            } else { // peak 在前半部分
                 end = mid;
             }
         }
@@ -58,7 +62,7 @@ public class FindPeakElement {
                 return i;
             }
         }
-
+        // 如果一直没有找到 说明是递增数列 最后一个就是peak
         return nums.length - 1;
     }
 }

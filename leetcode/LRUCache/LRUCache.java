@@ -110,12 +110,13 @@ class LRUCache {
         DLLNode prev = node.prev;
         DLLNode next = node.next;
         
+        // node is head edge case
         if (prev != null) {
             prev.next = next;
         } else {
             head = next;
         }
-        
+        // node is tail edge case
         if (next != null) {
             next.prev = prev;
         } else {

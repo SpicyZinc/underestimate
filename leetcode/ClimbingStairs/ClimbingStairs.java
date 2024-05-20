@@ -3,7 +3,8 @@ You are climbing a stair case. It takes n steps to reach to the top.
 Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
 Note: Given n will be a positive integer.
 
-idea: transformation of Fibonacci 
+idea: transformation of Fibonacci
+dp[i] 到i所需步数是到i-1的步数+到i-2的步数 到了i-1之后加一步就行
 1. 1D DP
 2. recursion
 */

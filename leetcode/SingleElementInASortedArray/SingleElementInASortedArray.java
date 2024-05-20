@@ -43,6 +43,34 @@ public class SingleElementInASortedArray {
 
 		return unique;
 	}
+	// Fri May 10 03:32:57 2024
+	public int singleNonDuplicate(int[] nums) {
+        int i = 0;
+        int j = nums.length - 1;
+
+        while (i < j) {
+            int mid = i + (j - i) / 2;
+            if (nums[mid - 1] < nums[mid] && nums[mid] < nums[mid + 1]) {
+                return nums[mid];
+            } else if (mid > 0 && nums[mid] == nums[mid - 1]) {
+                int leftCnt = mid - 2 + 1;
+                if (leftCnt % 2 == 0) {
+                    i = mid + 1;
+                } else {
+                    j = mid - 2;
+                }
+            } else if (nums[mid] == nums[mid + 1]) {
+                int leftCount = mid - 1 + 1;
+                if (leftCount % 2 == 0) {
+                    i = mid + 2;
+                } else {
+                    j = mid - 1;
+                }
+            }
+        }
+
+        return nums[i];
+    }
 
 	// binary search, the only one should be in the odd number length part
 	public int singleNonDuplicate(int[] nums) {

@@ -26,7 +26,7 @@ child (left, right)
 parent
 
 node == null
-offer(null) why in oder to count dist
+offer(null) why in order to count dist
 用null作为mark 一个距离的mark
 */
 
@@ -38,6 +38,70 @@ public class TreeNode {
 }
 
 class AllNodesDistanceKInBinaryTree {
+    // Thu May  2 02:29:47 2024
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        Map<TreeNode, TreeNode> hm = new HashMap<>();
+        dfs(root, null, hm);
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        Set<TreeNode> visited = new HashSet<>();
+        // 找和target 距离k的node 所以 以target为基准 先加入target
+        queue.offer(null);
+        queue.offer(target);
+
+        visited.add(null);
+        visited.add(target);
+
+        int dist = 0;
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node == null) {
+                if (dist == k) {
+                    // poll 到空
+                    List<Integer> result = new ArrayList<>();
+                    int size = queue.size();
+                    for (int i = 0; i < size; i++) {
+                        result.add(queue.poll().val);
+                    }
+                    return result;
+                }
+                dist++;
+                // 之后的都是下一个同样的步
+                queue.offer(null);
+            } else {
+                // add all distance +1 node to queue
+                // which are left , right, and parent node
+                
+                if (!visited.contains(node.left)) {
+                    queue.offer(node.left);
+                    visited.add(node.left);
+                }
+
+                if (!visited.contains(node.right)) {
+                    queue.offer(node.right);
+                    visited.add(node.right);
+                }
+
+                TreeNode parent = hm.get(node);
+
+                if (!visited.contains(parent)) {
+                    queue.offer(parent);
+                    visited.add(parent);
+                }
+            }
+        }
+
+        return new ArrayList<>();
+    }
+
+    public void dfs(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode> hm) {
+        if (node != null) {
+            hm.put(node, parent);
+            dfs(node.left, node, hm);
+            dfs(node.right, node, hm);
+        }
+    }
+
 
     public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
         Map<TreeNode, TreeNode> hm = new HashMap();

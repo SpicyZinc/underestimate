@@ -34,10 +34,10 @@ idea:
 http://blog.csdn.net/fightforyourdream/article/details/17497883
 
 A queue is used to do breath first traversal (BFS).
-a map is used to store the visited nodes. It is the map between original node and copied node.
+a map is used to store the visited nodes.
+It is the map between original node and copied node.
 
 or dfs
-
 */
 
 // Definition for undirected graph.

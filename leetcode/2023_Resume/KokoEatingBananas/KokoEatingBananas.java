@@ -6,7 +6,6 @@ Koko likes to eat slowly but still wants to finish eating all the bananas before
 
 Return the minimum integer k such that she can eat all the bananas within h hours.
 
-
 Example 1:
 Input: piles = [3,6,7,11], h = 8
 Output: 4
@@ -20,9 +19,9 @@ Input: piles = [30,11,23,4,20], h = 6
 Output: 23
 
 Constraints:
-1 <= piles.length <= 104
-piles.length <= h <= 109
-1 <= piles[i] <= 109
+1 <= piles.length <= 10^4
+piles.length <= h <= 10^9
+1 <= piles[i] <= 10^9
 
 idea:
 binary search application

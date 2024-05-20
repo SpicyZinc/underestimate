@@ -100,8 +100,9 @@ class VerticalOrderTraversalOfABinaryTree {
 					hm.put(key, new ArrayList<Integer>());
 				}
 				List<Integer> list = tmp.get(key);
-				Collections.sort(list, (a, b) -> a - b);
 				// 只是当前这一层的排序 其他之前排好的 不予理会
+				// 没有什么特别原因要sort 就是排下序
+				Collections.sort(list, (a, b) -> a - b);
 				hm.get(key).addAll(list);
 			}
 		}

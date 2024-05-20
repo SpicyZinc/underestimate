@@ -29,8 +29,8 @@ https://yeqiuquan.blogspot.com/2017/04/lintcode-599-insert-into-cyclic-sorted.ht
 要么插入的insertVal 恰好在 某两个数值之间
 要么是最小 或 最大值
 
-	3---->4---->5---->6---->9---->12
-	<------------------------------
+    3---->4---->5---->6---->9---->12
+    <------------------------------
 
 insert 15 or 2
 
@@ -42,50 +42,86 @@ while (curr != head)
 */
 
 class Node {
-	public int val;
-	public Node next;
+    public int val;
+    public Node next;
 
-	public Node() {}
+    public Node() {}
 
-	public Node(int _val,Node _next) {
-		val = _val;
-		next = _next;
-	}
+    public Node(int _val,Node _next) {
+        val = _val;
+        next = _next;
+    }
 };
 
 class InsertIntoACyclicSortedList {
-	// Sat Jul 13 20:53:43 2019
-	public Node insert(Node head, int insertVal) {
-		Node node = new Node(insertVal, null);
+    // Sun May 19 17:23:20 2024
+    public Node insert(Node head, int insertVal) {
+        Node node = new Node(insertVal);
+        
+        if (head == null) {
+            // make a cycle if it has one node of insertVal 
+            node.next = node;
+            return node;
+        }
 
-		if (head == null) {
-			// because it is cyclic list
-			node.next = node;
+        Node curr = head;
+        Node next = head.next;
 
-			return node;
-		}
+        // 因为cycle 所以没有一圈 就继续循环
+        while (next != head) {
+            // 3 cases to insert into current -> next
+            // 1. val大小在中间
+            // 2. inserted (大于等于) -> current -> next
+            // 3. current -> next -> inserted (小于等于)
+            if (next.val > insertVal && curr.val <= insertVal
+                || insertVal >= curr.val && curr.val > next.val
+                || curr.val > next.val && next.val >= insertVal
+            ) {
+                break;
+            }
+            curr = next;
+            next = next.next;
+        }
 
-		Node prev = head;
-		Node curr = head.next;
+        // found the place, weld
+        curr.next = node;
+        node.next = next;
 
-		while (curr != head) {
-			int prevVal = prev.val;
-			int currVal = curr.val;
-			// 正常的插入
-			// 在首尾中间的插入 要么大于 尾 要么小于 头
-			if (prevVal <= insertVal && currVal >= insertVal ||
-				prevVal > currVal && (prevVal <= insertVal || currVal >= insertVal)
-			) {
-				break;
-			}
+        return head;
+    }
 
-			prev = curr;
-			curr = curr.next;
-		}
+    // Sat Jul 13 20:53:43 2019
+    public Node insert(Node head, int insertVal) {
+        Node node = new Node(insertVal, null);
 
-		prev.next = node;
-		node.next = curr;
+        if (head == null) {
+            // because it is cyclic list
+            node.next = node;
 
-		return head;
-	}
+            return node;
+        }
+
+        Node prev = head;
+        Node curr = head.next;
+
+        while (curr != head) {
+            int prevVal = prev.val;
+            int currVal = curr.val;
+            // 正常的插入
+            // 在首尾中间的插入 要么大于 尾 要么小于 头
+            if (prevVal <= insertVal && insertVal <= currVal ||
+                prevVal > currVal && (prevVal <= insertVal || currVal >= insertVal)
+            ) {
+                break;
+            }
+
+            prev = curr;
+            curr = curr.next;
+        }
+
+        prev.next = node;
+        node.next = curr;
+
+        return head;
+    }
 }

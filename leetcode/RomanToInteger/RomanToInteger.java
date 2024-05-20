@@ -34,10 +34,10 @@ public class RomanToInteger {
         String roman4 = "MCMXC"; // 1990
         String thisYear = "MMXIII"; // 2013
         
-        System.out.println("roman1 == " + aTest.romanToInt(roman1));
-        System.out.println("roman2 == " + aTest.romanToInt(roman2));
-        System.out.println("roman3 == " + aTest.romanToInt(roman3));
-        System.out.println("roman4 == " + aTest.romanToInt(roman4));
+        System.out.println("roman 1 == " + aTest.romanToInt(roman1));
+        System.out.println("roman 2 == " + aTest.romanToInt(roman2));
+        System.out.println("roman 3 == " + aTest.romanToInt(roman3));
+        System.out.println("roman 4 == " + aTest.romanToInt(roman4));
         System.out.println("This year == " + aTest.romanToInt(thisYear));
     }
     // 07/18/2018

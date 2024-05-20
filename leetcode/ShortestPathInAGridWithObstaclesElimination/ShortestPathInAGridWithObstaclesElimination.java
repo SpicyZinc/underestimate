@@ -4,7 +4,6 @@ Given a m * n grid, where each cell is either 0 (empty) or 1 (obstacle). In one 
 Return the minimum number of steps to walk from the upper left corner (0, 0) to the lower right corner (m-1, n-1) given that you can eliminate at most k obstacles.
 If it is not possible to find such walk return -1.
 
-
 Example 1:
 Input: 
 grid = 
@@ -29,7 +28,6 @@ k = 1
 Output: -1
 Explanation: 
 We need to eliminate at least two obstacles to find such a walk.
- 
 
 Constraints:
 grid.length == m
@@ -38,7 +36,6 @@ grid[0].length == n
 1 <= k <= m*n
 grid[i][j] == 0 or 1
 grid[0][0] == grid[m-1][n-1] == 0
-
 
 idea:
 BFS

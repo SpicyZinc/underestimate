@@ -44,11 +44,14 @@ Note:
 
 idea:
 binary search
+need to check the ship's capacity from the largest weight to the sum of all elements in weights
 用重量作为left and right
 */
 
 class CapacityToShipPackagesWithinDDays {
 	public int shipWithinDays(int[] weights, int D) {
+		// left is the max weight of the weights
+		// right is the sum of all weights
 		int left = 0;
 		int right = 0;
 

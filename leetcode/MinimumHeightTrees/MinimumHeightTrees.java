@@ -36,11 +36,13 @@ Hint:
 How many MHTs can a graph have at most?
 
 Note:
-(1) According to the definition of tree on Wikipedia: “a tree is an undirected graph in which any two vertices are connected by exactly one path. 
-In other words, any connected graph without simple cycles is a tree.”
+(1) According to the definition of tree on Wikipedia: "a tree is an undirected graph in which any two vertices are connected by exactly one path. 
+In other words, any connected graph without simple cycles is a tree.""
 (2) The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.
 
 idea:
+最后剩余的一个或者两个点 最多 两个点
+不断地删除 Leaf 就剩余
 https://buttercola.blogspot.com/2016/01/leetcode-minimum-height-trees.html
 
 n nodes, n-1 edges, two pointers from both ends, depending on the parity of n
@@ -62,7 +64,7 @@ public class MinimumHeightTrees {
             result.add(0);
             return result;
         }
-        // construct the graph using adjancent list
+        // construct the graph using adjacent list
         List<Set<Integer>> adjList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             adjList.add(new HashSet<Integer>());
@@ -102,25 +104,26 @@ public class MinimumHeightTrees {
     // method 2
     // note: similar to BFS, queue.size() is changing, so have to save to a variable count first
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        List<Integer> res = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<Integer>();
         if (n <= 0) {
-            return res;
+            return result;
         }
         if (n == 1 && edges.length == 0) {
-            res.add(0);
-            return res;
+            result.add(0);
+            return result;
         }
-        List<List<Integer>> map = new ArrayList<List<Integer>>();
-        for (int i = 0; i < n; i++) {
-            map.add(new ArrayList<Integer>());
-        }
+
+        Map<Integer, List<Integer>> hm = new HashMap<>();
         int[] degree = new int[n];
+
         for (int i = 0; i < edges.length; i++) {
             int[] edge = edges[i];
             int from = edge[0];
             int to = edge[1];
-            map.get(from).add(to);
-            map.get(to).add(from);
+
+            hm.computeIfAbsent(from, x -> new ArrayList<>()).add(to);
+            hm.computeIfAbsent(to, x -> new ArrayList<>()).add(from);
+
             degree[from]++;
             degree[to]++;
         }
@@ -128,23 +131,23 @@ public class MinimumHeightTrees {
         Queue<Integer> queue = new LinkedList<Integer>();
         for (int i = 0; i < n; i++) {
             if (degree[i] == 0) {
-                return res;
-            }
-            else if (degree[i] == 1) {
+                // 有个单独的点 就不是graph 所以return
+                return result;
+            } else if (degree[i] == 1) {
                 queue.offer(i);
             }
         }
 
         while (!queue.isEmpty()) {
-            res = new ArrayList<Integer>();
+            result = new ArrayList<>();
             int count = queue.size();
             for (int i = 0; i < count; i++) {
                 int leaf = queue.poll();
                 degree[leaf]--;
-                res.add(leaf);
-                List<Integer> adjList = map.get(leaf);
-                for (int j = 0; j < adjList.size(); j++) {
-                    int next = adjList.get(j);
+                result.add(leaf);
+                List<Integer> neighbors = hm.get(leaf);
+                for (int j = 0; j < neighbors.size(); j++) {
+                    int next = neighbors.get(j);
                     if (--degree[next] == 1) {
                         queue.offer(next);
                     } 
@@ -152,6 +155,6 @@ public class MinimumHeightTrees {
             }
         }
 
-        return res;
+        return result;
     }
 }

@@ -35,6 +35,7 @@ public class CoinChange {
 			// try all coin values in coins[]
 			for (int coin : coins) {
 				if (i >= coin) {
+					// 关键是 dp[i] = dp[0] (which is 0) + 1
 					dp[i] = Math.min(dp[i], dp[i - coin] + 1);
 				}
 			}

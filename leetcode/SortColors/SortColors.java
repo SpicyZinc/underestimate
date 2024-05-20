@@ -28,6 +28,32 @@ public class SortColors {
         System.out.print("\n");
     }
 
+    // Mon Apr 10 14:07:55 2023
+    public void sortColors(int[] nums) {
+        int size = nums.length;
+        int left = 0;
+        int right = size - 1;
+
+        int i = 0;
+        // key point, i <= right   
+        while (i <= right) {
+            int color = nums[i];
+            if (color == 0) {
+                swap(nums, i++, left++);
+            } else if (color == 2) {
+                swap(nums, i, right--);
+            } else {
+                i++;
+            }
+        }
+    }
+
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
     // sort method, in-place, time complexity O(n)
     public void sortColors(int[] nums) {
         int left = 0;

@@ -54,10 +54,11 @@ class LongestUnivaluePath {
 	public int longestUnivaluePath(TreeNode root) {
         int[] max = new int[1];
         edgeLength(root, max);
-        
+
         return max[0];
     }
-    
+    // find the count of the longest edges from a node
+    // condition is node.val == node.left.val, then +1
     public int edgeLength(TreeNode node, int[] max) {
         if (node == null) {
 			return 0;

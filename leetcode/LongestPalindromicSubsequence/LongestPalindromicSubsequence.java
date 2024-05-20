@@ -15,6 +15,9 @@ One possible longest palindromic subsequence is "bb".
 idea:
 dp[i][j] represents the length of longest palindrome in substring [i, j]
 dp, populate from the end to start of the array
+
+closely related to ValidPalindrome III 
+
 */
 
 public class LongestPalindromicSubsequence {

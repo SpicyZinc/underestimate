@@ -30,8 +30,7 @@ public class Solution {
         for (int i = 0; i < n; i++) {
             if (citations[i] > n) {
                 hs[n]++;
-            }
-            else {
+            } else {
                 hs[citations[i]]++;
             }
         }

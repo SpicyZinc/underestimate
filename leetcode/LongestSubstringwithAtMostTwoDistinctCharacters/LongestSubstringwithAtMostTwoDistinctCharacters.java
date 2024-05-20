@@ -11,6 +11,8 @@ then find the max
 the default is that 2 distinct characters will be longer than 1 distinct character
 
 http://blog.csdn.net/whuwangyi/article/details/42451289#
+
+damn tiktok failed me this question
 */
 
 import java.util.*;
@@ -20,6 +22,38 @@ public class LongestSubstringwithAtMostTwoDistinctCharacters {
         LongestSubstringwithAtMostTwoDistinctCharacters eg = new LongestSubstringwithAtMostTwoDistinctCharacters();
         int len = eg.lengthOfLongestSubstringTwoDistinct("eceba");
         System.out.println(len);
+    }
+    // Tue Mar 28 15:48:48 2023
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        Map<Character, Integer> hm = new HashMap<>();
+
+        int left = 0;
+
+        int k = 2;
+
+        int maxLen = 1;
+
+        int right;
+        for (right = 0; right < s.length(); right ++) {
+            char c = s.charAt(right);
+            hm.put(c, hm.getOrDefault(c, 0) + 1);
+
+            while (hm.size() > k) {
+                maxLen = Math.max(maxLen, right - left);
+
+                char leftChar = s.charAt(left);
+                if (hm.get(leftChar) == 1) {
+                    hm.remove(leftChar);
+                } else {
+                    hm.put(leftChar, hm.get(leftChar) - 1);
+                }
+                left++;
+            }
+        }
+
+        maxLen = Math.max(maxLen, right - left);
+
+        return maxLen;
     }
 
     public int lengthOfLongestSubstringTwoDistinct(String s) {

@@ -51,14 +51,15 @@ public class NonOverlappingIntervals {
         	public int compare(Interval a, Interval b) {
         	    if (a.end == b.end) {
                    return Integer.compare(a.start, b.start);
-                }
-                else {
+                } else {
                    return Integer.compare(a.end, b.end);
                 }
         	}
         });
+
         int end = Integer.MIN_VALUE;
         int cntNonOverlapping = 0;
+
         for (Interval interval : intervals) {
         	if (interval.start >= end) {
         		end = interval.end;

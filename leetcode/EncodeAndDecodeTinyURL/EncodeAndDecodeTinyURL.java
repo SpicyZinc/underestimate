@@ -51,7 +51,7 @@ public class Codec {
             i /= base;
         }
 
-        if (sb.length() < size) {
+        while (sb.length() < size) {
             sb.insert(0, '0');
         }
 

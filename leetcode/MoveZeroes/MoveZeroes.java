@@ -95,7 +95,7 @@ public class MoveZeroes {
             }
         }
     }
-	// Javascript
+	// JavaScript
 	var moveZeroes = function(nums) {
 	    var length = nums.length;
 	    for ( let i = 0; i < length; i++ ) {

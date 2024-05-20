@@ -36,7 +36,7 @@ class MinStack {
 		min = Integer.MAX_VALUE;
 		stack = new Stack<>();
 	}
-	
+
 	public void push(int x) {
 		// prepare for the pop()
 		// push extra 2nd min

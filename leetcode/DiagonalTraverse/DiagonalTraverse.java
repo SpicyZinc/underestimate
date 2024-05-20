@@ -11,6 +11,12 @@ Input:
 Output:  [1,2,4,7,5,3,6,8,9]
 Explanation:
 
+[0,0]
+[0,1] [1,0]
+[2,0] [1,1] [0,2]
+[1,2] [2,1]
+[2,2]
+
 Note:
 The total number of elements of the given matrix will not exceed 10,000.
 
@@ -22,6 +28,9 @@ sum is some constant looping from 0 to totalRow + totalCol
 
 Second, the boundary of row and col is either sum or four edges.
 Four edges correspond to row == 0 || row == totalRow - 1 || col == 0 || col == totalCol - 1
+
+i = Math.min(sum, m - 1);
+j = Math.min(sum, n - 1);
 */
 public class DiagonalTraverse {
 	// [0,0] -> [0,1],[1,0] -> [2,0],[1,1],[0,2] -> [1,2],[2,1] -> [2,2]

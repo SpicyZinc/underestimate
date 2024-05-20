@@ -10,7 +10,6 @@ After flipping, the maximum number of consecutive 1s is 4.
 Note:
 The input array will only contain 0 and 1.
 The length of input array is a positive integer and will not exceed 10,000
- 
 
 Follow up:
 What if the input numbers come in one by one as an infinite stream?
@@ -40,16 +39,16 @@ public class MaxConsecutiveOnes {
 
     public int findMaxConsecutiveOnes(int[] nums) {
         int k = 1;
-        
+
         int maxCnt = 0;
         int zeroCnt = 0;
-        
+
         int left = 0;
         for (int right = 0; right < nums.length; right++) {
             if (nums[right] == 0) {
                 zeroCnt++;
             }
-            
+
             while (zeroCnt > k) {
                 if (nums[left] == 0) {
                     // shrink 0 holding window
@@ -60,7 +59,7 @@ public class MaxConsecutiveOnes {
 
             maxCnt = Math.max(maxCnt, right - left + 1);
         }
-        
+
         return maxCnt;
     }
 

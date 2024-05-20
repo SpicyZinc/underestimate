@@ -67,6 +67,7 @@ class AlienDictionary {
         
         int size = words.length;
         
+        // initialize indegree
         for (String word : words) {
             for (int i = 0; i < word.length(); i++) {
                 indegree.put(word.charAt(i), 0);
@@ -87,6 +88,7 @@ class AlienDictionary {
                     Set<Character> hs = graph.computeIfAbsent(a, x -> new HashSet<>());
                     if (!hs.contains(b)) {
                         hs.add(b);
+                        // b 在 a 后面, b的入度 +1
                         indegree.put(b, indegree.getOrDefault(b, 0) + 1);
                     }
                     // 别忘了 break to save time

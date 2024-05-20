@@ -34,7 +34,6 @@ class TreeNode {
 }
 
 class InorderSuccessorInBST {
-
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
         List<TreeNode> list = new ArrayList<>();
         inorder(root, list);

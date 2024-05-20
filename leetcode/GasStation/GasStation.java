@@ -12,6 +12,7 @@ which means the i can not been an start point.
 (1) is the total remaining gas > 0
 (2) for each start point, is it possible to start from there by checking gas[i] - cost[i] > 0
 */
+
 public class GasStation {
     public int canCompleteCircuit(int[] gas, int[] cost) {
         // so called greedy, find the gas station which can start
@@ -27,12 +28,12 @@ public class GasStation {
                 startIndex = i + 1;
             }
         }
-        
         // one loop finished
         // if it is not possible just not possible
         if (totalDelta < 0) {
             return -1;
         }
+
         return startIndex;
     }
 
@@ -54,8 +55,7 @@ public class GasStation {
         while (nextDest != start) {
             if (gasRemaining < cost[currDest]) {
                 return false;
-            } 
-            else {
+            } else {
                 gasRemaining -= cost[currDest];
                 currDest = nextDest;
                 nextDest = (nextDest + 1) % gas.length;

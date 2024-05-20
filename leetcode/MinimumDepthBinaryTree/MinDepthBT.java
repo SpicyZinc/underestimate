@@ -13,6 +13,21 @@ class TreeNode {
 }
 
 public class MinDepthBT {
+    // Tue Apr  9 01:45:32 2024
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+
+        if (left == 0 || right == 0) {
+            return left + right + 1;
+        } else {
+            return Math.min(left, right) + 1;
+        }
+    }
+
     public int minDepth(TreeNode root) {
         if (root == null) {
             return 0;
@@ -99,5 +114,28 @@ public class MinDepthBT {
         }
         
         return count;
+    }
+
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        int d = 1;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            while (size-- > 0) {
+                TreeNode node = q.poll();
+                // reached leaves
+                if (node.left == null && node.right == null) {
+                    return d;
+                }
+                if (node.left != null) q.offer(node.left);
+                if (node.right != null) q.offer(node.right);
+            }
+            d++;
+        }
+
+        return d;
     }
 }

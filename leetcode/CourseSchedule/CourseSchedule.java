@@ -26,6 +26,7 @@ http://www.programcreek.com/2014/05/leetcode-course-schedule-java/
 http://blog.csdn.net/menglinaoxiang/article/details/45623713
 
 1. DFS
+// 只要没有形成闭环 就是能完成 0->n-1 courses
 note, dfs() visited[] needs 3 status, 0表示还未访问过, 1表示已经访问了, -1表示无冲突
 build graph by edge notation
 construct a visit array to know which node has been visited
@@ -77,7 +78,7 @@ public class CourseSchedule {
         if (visited[course] == 1) {
             return false;
         }
-        
+        // 只要没有形成闭环 就是能完成
         if (visited[course] == -1) {
             return true;
         }

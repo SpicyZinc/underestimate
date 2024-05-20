@@ -4,7 +4,6 @@ Binary Tree Inorder Traversal
 idea:
 recursion
 iteration
-
 */
 
 class TreeNode {

@@ -18,6 +18,34 @@ public class ValidParentheses {
         boolean result = eg.isValid("()");
         System.out.println(result);
     }
+    // Mon Apr 10 13:38:37 2023
+    public boolean isValid(String s) {
+        Map<Character, Character> hm = new HashMap<>();
+        hm.put('[', ']');
+        hm.put('(', ')');
+        hm.put('{', '}');
+
+        Stack<Character> stack =new Stack<>();
+
+        String leftParts = "({[";
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (leftParts.indexOf(c) != -1) {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                } else {
+                    char popped = stack.pop();
+                    if (hm.get(popped) != c) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return stack.isEmpty();
+    }
     // Bloomberg NYC
     public boolean isValid(String s) {
         if (s.length() == 0 || s == null) {

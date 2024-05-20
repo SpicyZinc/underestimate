@@ -16,7 +16,6 @@ Explanation: [23, 2, 6, 4, 7] is an continuous subarray of size 5 whose elements
 Example 3:
 Input: nums = [23,2,6,4,7], k = 13
 Output: false
- 
 
 Constraints:
 1 <= nums.length <= 105

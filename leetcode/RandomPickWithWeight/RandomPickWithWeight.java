@@ -24,8 +24,13 @@ The input is two lists: the subroutines called and their arguments. Solution's c
 Arguments are always wrapped with a list, even if there aren't any.
 
 idea:
+就跟说谁赢的面大一样
+Think that if we had an array [1,2,3,4,3].
+Normal random pickIndex would pick any index from 0 to 4 with equal probability. But we want that index=1 is picked by 2/13 probability, index=0 with 1/13 probability and so on. (13 is sum of weights).
+
+randomization in 所有数之后
 https://www.cnblogs.com/grandyang/p/9784690.html
-the rest is search insert index
+the rest is search insert index by binary search
 */
 
 class RandomPickWithWeight {

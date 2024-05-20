@@ -27,17 +27,17 @@ http://www.jiuzhang.com/solutions/kth-smallest-number-in-sorted-matrix/
 import java.util.*;
 
 public class KthSmallestElementInSortedMatrix {
-	public static void main(String[] args) {
-		KthSmallestElementInSortedMatrix eg = new KthSmallestElementInSortedMatrix();
-		
-		int[][] matrix = {
-			{1,  5,  9},
-   			{10, 11, 13},
-			{12, 13, 15}
-		};
-		int eighthSmallest = eg.kthSmallest(matrix, 8);
-		System.out.println(eighthSmallest);
-	}
+    public static void main(String[] args) {
+        KthSmallestElementInSortedMatrix eg = new KthSmallestElementInSortedMatrix();
+        
+        int[][] matrix = {
+            {1,  5,  9},
+            {10, 11, 13},
+            {12, 13, 15}
+        };
+        int eighthSmallest = eg.kthSmallest(matrix, 8);
+        System.out.println(eighthSmallest);
+    }
     // Sat Feb 27 22:27:41 2021
     public int kthSmallest(int[][] matrix, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
@@ -58,6 +58,44 @@ public class KthSmallestElementInSortedMatrix {
 
         return pq.peek();
     }
+
+    // binary search
+    public int kthSmallest(int[][] matrix, int k) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int left = matrix[0][0];
+        int right = matrix[m-1][n-1];
+        int ans = -1;
+
+        while (left <= right) {
+            int mid = (left + right) >> 1;
+            if (countLessOrEqual(matrix, mid) >= k) {
+                right = mid - 1; // try to looking for a smaller value in the left side
+                ans = mid;
+            } else {
+                left = mid + 1; // try to looking for a bigger value in the right side    
+            }
+        }
+
+        return ans;
+    }
+
+    public int countLessOrEqual(int[][] matrix, int x) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int cnt = 0, c = n - 1; // start with the rightmost column
+        for (int r = 0; r < m; r++) {
+            while (c >= 0 && matrix[r][c] > x) {
+                // decrease column until matrix[r][c] <= x    
+                c--;
+            }
+
+            cnt += (c + 1);
+        }
+
+        return cnt;
+    }
+
 
     // why fail
     public int kthSmallest(int[][] matrix, int k) {
@@ -104,24 +142,23 @@ public class KthSmallestElementInSortedMatrix {
         int max = matrix[n - 1][matrix[0].length - 1];
 
         while (min < max) {
-        	int midPosition = 0;
+            int midPosition = 0;
             int midVal = min + (max - min) / 2;
-        	for (int i = 0; i < n; i++) {
-        		midPosition += binarySearch(matrix[i], midVal);
-        	}
-        	if (midPosition < k) {
-        		min = midVal + 1;
-        	}
-        	else {
-        		max = midVal;
-        	}
+            for (int i = 0; i < n; i++) {
+                midPosition += binarySearch(matrix[i], midVal);
+            }
+            if (midPosition < k) {
+                min = midVal + 1;
+            } else {
+                max = midVal;
+            }
         }
 
         return min;
     }
     // slightly different from search insertion position
     public int binarySearch(int[] nums, int target) {
-    	int left = 0;
+        int left = 0;
         int right = nums.length;
         while (left < right) {
             int mid = left + (right - left) / 2;

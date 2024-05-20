@@ -16,9 +16,9 @@ odd length, K is total / 2
 even length, K is total / 2, total / 2 + 1
 */
 public class MedianOfTwoSortedArrays {
-	// direct method, merge two sorted array, then find the median of the array
+    // direct method, merge two sorted array, then find the median of the array
     // space cost (m + n)
-	public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int m = nums1.length;
         int n = nums2.length;
         int[] sorted = new int[m + n];

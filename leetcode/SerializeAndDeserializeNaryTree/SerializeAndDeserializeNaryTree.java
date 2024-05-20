@@ -38,8 +38,8 @@ class Node {
 };
 
 class SerializeAndDeserializeNaryTree {
-	// Wed May  1 00:16:07 2019
-	String delimiter = ",";
+    // Wed May  1 00:16:07 2019
+    String delimiter = ",";
     // Encodes a tree to a single string.
     public String serialize(Node root) {
         StringBuilder sb = new StringBuilder();
@@ -65,9 +65,9 @@ class SerializeAndDeserializeNaryTree {
 
     // Decodes your encoded data to tree.
     public Node deserialize(String data) {
-		if (data.isEmpty()) {
-			return null;
-		}
+        if (data.isEmpty()) {
+            return null;
+        }
 
         String[] matches = data.split(delimiter);
         List<String> nodes = new ArrayList<>(Arrays.asList(matches));
@@ -81,15 +81,16 @@ class SerializeAndDeserializeNaryTree {
 
         Node root = new Node(val, new ArrayList<Node>());
         for (int i = 0; i < size; i++) {
-            root.children.add(deserialize(nodes));   
+            // root.children.add(deserialize(nodes));
+            root.children.set(i, deserialize(nodes));
         }
         
         return root;
     }
 
-	// 12/04/2018
-	private static final String delimiter = ",";
-	// Encodes a tree to a single string.
+    // 12/04/2018
+    private static final String delimiter = ",";
+    // Encodes a tree to a single string.
     public String serialize(Node root) {
         StringBuilder sb = new StringBuilder();
         serialize(root, sb);
@@ -115,9 +116,9 @@ class SerializeAndDeserializeNaryTree {
 
     // Decodes your encoded data to tree.
     public Node deserialize(String data) {
-		if (data.isEmpty()) {
-			return null;
-		}
+        if (data.isEmpty()) {
+            return null;
+        }
         
         String[] matches = data.split(delimiter);
         Queue<String> queue = new LinkedList<>(Arrays.asList(matches));
@@ -140,53 +141,53 @@ class SerializeAndDeserializeNaryTree {
         return root;
     }
 
-	public static final String delimiter = ",";
+    public static final String delimiter = ",";
 
-	// Encodes a tree to a single string.
-	public String serialize(Node root) {
-		StringBuilder sb = new StringBuilder();
-		buildString(root, sb);
+    // Encodes a tree to a single string.
+    public String serialize(Node root) {
+        StringBuilder sb = new StringBuilder();
+        buildString(root, sb);
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	public void buildString(Node node, StringBuilder sb) {
-		if (node == null) {
-			return;
-		} else {
-			sb.append(node.val).append(delimiter);
-			sb.append(node.children.size()).append(delimiter);
+    public void buildString(Node node, StringBuilder sb) {
+        if (node == null) {
+            return;
+        } else {
+            sb.append(node.val).append(delimiter);
+            sb.append(node.children.size()).append(delimiter);
 
-			for (Node child : node.children) {
-				buildString(child, sb);
-			}
-		}
-	}
+            for (Node child : node.children) {
+                buildString(child, sb);
+            }
+        }
+    }
 
-	// Decodes your encoded data to tree.
-	public Node deserialize(String data) {
-		if (data.isEmpty()) {
-			return null;
-		}
+    // Decodes your encoded data to tree.
+    public Node deserialize(String data) {
+        if (data.isEmpty()) {
+            return null;
+        }
 
-		String[] parts = data.split(delimiter);
-		Queue<String> queue = new LinkedList<>(Arrays.asList(parts));
+        String[] parts = data.split(delimiter);
+        Queue<String> queue = new LinkedList<>(Arrays.asList(parts));
 
-		return buildTree(queue);
-	}
+        return buildTree(queue);
+    }
 
-	public Node buildTree(Queue<String> queue) {
-		String val = queue.poll();
-		Node root = new Node(Integer.parseInt(val));
-		int size = Integer.parseInt(queue.poll());
+    public Node buildTree(Queue<String> queue) {
+        String val = queue.poll();
+        Node root = new Node(Integer.parseInt(val));
+        int size = Integer.parseInt(queue.poll());
 
-		root.children = new ArrayList<Node>();
-		for (int i = 0; i < size; i++) {
-			root.children.add(buildTree(queue));
-		}
+        root.children = new ArrayList<Node>();
+        for (int i = 0; i < size; i++) {
+            root.children.add(buildTree(queue));
+        }
 
-		return root;
-	}
+        return root;
+    }
 }
 
 // Your SerializeAndDeserializeNaryTree object will be instantiated and called as such:

@@ -76,7 +76,7 @@ example:
 找找找
 找到一个下降点
 说明在这个下降点之前 数列是 升序的 这就为以后 直接 reverse()  而可以变为降序的 埋下了 充分的理由
-但是先要交换 这个下降点 和 比他它的第一数
+但是先要交换 这个下降点 和 比它大的第一数
 交换后
 sort 后面所有的 这是仍然是 升序的 只需要 reverse()
 
@@ -84,136 +84,183 @@ sort 后面所有的 这是仍然是 升序的 只需要 reverse()
 
 */
 public class NextPermutation {
-	// Wed Jun 19 00:45:03 2019
-	public void nextPermutation(int[] nums) {
-		int size = nums.length;
-		
-		int i = size - 1;
-		
-		while (i >= 1) {
-			if (nums[i] > nums[i - 1]) {
-				break;
-			}
-			i--;
-		}
+    // Fri May 10 04:42:23 2024
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
 
-		// not forget to check
-		if (i >= 1) {
-			int decreaseVal = nums[i - 1];
-			int right = size - 1;
+        int i = n - 1;
 
-			while (right > i - 1 && nums[right] <= decreaseVal) {
-				right--;
-			}
+        while (i >= 1) {
+            if (nums[i - 1] < nums[i]) {
+                break;
+            }
+            i--;
+        }
+        int decreasedPos = i - 1;
+        // find the 1st one from the back greater than nums[i - 1]
 
-			swap(nums, i - 1, right);    
-		}
-		
-		reverse(nums, i, size - 1);
-	}
+        // 至少第一元素 下降
+        if (decreasedPos >= 0) {
+            i = n - 1;
+            // 重新从后面扫描 找到第一个大于nums[decreasedPos]的pos
+            while (i >= 0) {
+                if (nums[i] > nums[decreasedPos]) {
+                    break;
+                }
+                i--;
+            }
 
-	public void swap(int[] nums, int i, int j) {
-		int temp = nums[i];
-		nums[i] = nums[j];
-		nums[j] = temp;
-	}
+            swap(nums, decreasedPos, i);
+        }
 
-	private void reverse(int[] nums, int start, int end) {
-		if (start > end) {
-			return;
-		}
+        reverse(nums, decreasedPos + 1, n - 1);
+    }
 
-		if (end > nums.length) {
-			return;
-		}
+    public void reverse(int[] nums, int i, int j) {
+        int mid = i + (j - i) / 2;
 
-		int mid = start + (end - start) / 2;
+        while (i <= mid) {
+            swap(nums, i, j);
+            i++;
+            j--;
+        }
+    }
 
-		while (start <= mid) {
-			int tmp = nums[start];
-			nums[start] = nums[end];
-			nums[end] = tmp;
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+    // Wed Jun 19 00:45:03 2019
+    public void nextPermutation(int[] nums) {
+        int size = nums.length;
+        
+        int i = size - 1;
+        
+        while (i >= 1) {
+            if (nums[i] > nums[i - 1]) {
+                break;
+            }
+            i--;
+        }
 
-			start++;
-			end--;
-		}
-	}
+        // not forget to check
+        if (i >= 1) {
+            int decreaseVal = nums[i - 1];
+            int right = size - 1;
+
+            while (right > i - 1 && nums[right] <= decreaseVal) {
+                right--;
+            }
+
+            swap(nums, i - 1, right);    
+        }
+        
+        reverse(nums, i, size - 1);
+    }
+
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    private void reverse(int[] nums, int start, int end) {
+        if (start > end) {
+            return;
+        }
+
+        if (end > nums.length) {
+            return;
+        }
+
+        int mid = start + (end - start) / 2;
+
+        while (start <= mid) {
+            int tmp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = tmp;
+
+            start++;
+            end--;
+        }
+    }
 
 
-	// easy understand
-	public void nextPermutation(int[] nums) {
-		int n = nums.length;
-		int i = n - 2;
-		// 先找到下降点
-		while (i >= 0) {
-			if (nums[i + 1] > nums[i]) {
-				break;
-			}
-			i--;
-		}
+    // easy understand
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        int i = n - 2;
+        // 先找到下降点
+        while (i >= 0) {
+            if (nums[i + 1] > nums[i]) {
+                break;
+            }
+            i--;
+        }
 
-		// if i still in nums[], partially descending
-		// 再找比下降点高一点的value
-		if (i >= 0) {
-			int j = n - 1;
-			// 找到比下降点 value 增加一点点的 value
-			// 才符合 next permutation
-			while (j > i && nums[j] <= nums[i]) {
-				j--;
-			}
-			swap(nums, i, j);
-		}
-		// actually make it ascending by reverse()
-		// 从后往前看 ascending
-		// 从前往后看 descending
-		// if want to sort it to be ascending
-		// just reverse() is enough
-		reverse(nums, i + 1, n - 1);
-	}
+        // if i still in nums[], partially descending
+        // 再找比下降点高一点的value
+        if (i >= 0) {
+            int j = n - 1;
+            // 找到比下降点 value 增加一点点的 value
+            // 才符合 next permutation
+            while (j > i && nums[j] <= nums[i]) {
+                j--;
+            }
+            swap(nums, i, j);
+        }
+        // actually make it ascending by reverse()
+        // 从后往前看 ascending
+        // 从前往后看 descending
+        // if want to sort it to be ascending
+        // just reverse() is enough
+        reverse(nums, i + 1, n - 1);
+    }
 
-	public void nextPermutation(int[] num) {
-		for (int i = num.length - 2; i >= 0; i--) {
-			if (num[i + 1] > num[i]) {
-				for (int j = num.length - 1; j > i; j--) {
-					if (num[j] > num[i]) {
-						swap(num, i, j);
-						break;
-					}
-				}
-				// reverse the items from i + 1 to num.size() - 1
-				reverse(num, i + 1, num.length - 1);
-				return;
-			}
-		}
-		// no ascending order found, reverse all the numbers
-		reverse(num, 0, num.length - 1);
-	}
-	// method to reverse an array
-	// just remember, this is classic
-	private void reverse(int[] nums, int start, int end) {
-		if (start > end) {
-			return;
-		}
+    public void nextPermutation(int[] num) {
+        for (int i = num.length - 2; i >= 0; i--) {
+            if (num[i + 1] > num[i]) {
+                for (int j = num.length - 1; j > i; j--) {
+                    if (num[j] > num[i]) {
+                        swap(num, i, j);
+                        break;
+                    }
+                }
+                // reverse the items from i + 1 to num.size() - 1
+                reverse(num, i + 1, num.length - 1);
+                return;
+            }
+        }
+        // no ascending order found, reverse all the numbers
+        reverse(num, 0, num.length - 1);
+    }
+    // method to reverse an array
+    // just remember, this is classic
+    private void reverse(int[] nums, int start, int end) {
+        if (start > end) {
+            return;
+        }
 
-		if (end > nums.length) {
-			return;
-		}
+        if (end > nums.length) {
+            return;
+        }
 
-		int mid = start + (end - start) / 2;
+        int mid = start + (end - start) / 2;
 
-		while (start <= mid) {
-			int tmp = nums[start];
-			nums[start] = nums[end];
-			nums[end] = tmp;
+        while (start <= mid) {
+            int tmp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = tmp;
 
-			start++;
-			end--;
-		}
-	}
+            start++;
+            end--;
+        }
+    }
 
-	private void swap(int[] a, int x, int y) {
-		int tmp = a[x];
-		a[x] = a[y];
-		a[y] = tmp;
-	}
+    private void swap(int[] a, int x, int y) {
+        int tmp = a[x];
+        a[x] = a[y];
+        a[y] = tmp;
+    }
 }

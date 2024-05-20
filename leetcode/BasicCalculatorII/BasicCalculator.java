@@ -25,94 +25,100 @@ for * /, pop to calculate and push back
 */
 
 public class BasicCalculator {
-	// Wed May  8 22:14:40 2019
-	public int calculate(String s) {
-		int n = s.length();
-		char prevOperator = '+';
-		int prevResult = 0;
-		int result = 0;
+    public static void main(String[] args) {
+        BasicCalculator bc = new BasicCalculator();
+        String s = "3+2*2";
+        int result = bc.calculate(s);
+    }
+    // Wed May  8 22:14:40 2019
+    public int calculate(String s) {
+        int n = s.length();
+        char prevOperator = '+';
+        int prevResult = 0;
+        int result = 0;
 
-		int num = 0;
+        int num = 0;
 
-		for (int i = 0; i < n; i++) {
-			char c = s.charAt(i);
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            System.out.println(c + ", " + prevResult);
 
-			if (Character.isDigit(c)) {
-				num = num * 10 + c - '0';
-			}
+            if (Character.isDigit(c)) {
+                num = num * 10 + c - '0';
+            }
 
-			if (isOperator(c) || i == n - 1) {
-				switch (prevOperator) {
-					case '+':
-						prevResult += num;
-						break;
+            if (isOperator(c) || i == n - 1) {
+                switch (prevOperator) {
+                    case '+':
+                        prevResult += num;
+                        break;
 
-					case '-':
-						prevResult -= num;
-						break;
+                    case '-':
+                        prevResult -= num;
+                        break;
 
-					case '*':
-						prevResult *= num;
-						break;
+                    case '*':
+                        prevResult *= num;
+                        break;
 
-					case '/':
-						prevResult /= num;
-						break;
-				}
+                    case '/':
+                        prevResult /= num;
+                        break;
+                }
 
-				if (c == '+' || c == '-' || i == n - 1) {
-					result += prevResult;
-					prevResult = 0;
-				}
+                if (c == '+' || c == '-' || i == n - 1) {
+                    result += prevResult;
+                    prevResult = 0;
+                }
 
-				prevOperator = c;
-				num = 0;
-			}
-		}
+                prevOperator = c;
+                num = 0;
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public int calculate(String s) {
-		int result = 0;
+    public int calculate(String s) {
+     int result = 0;
 
-		int n = s.length();
-		int number = 0;
-		int prevOperator = '+';
-		Stack<Integer> stack = new Stack<Integer>();
+     int n = s.length();
+     int number = 0;
+     int prevOperator = '+';
+     Stack<Integer> stack = new Stack<Integer>();
 
-		for (int i = 0; i < n; i++) {
-			char c = s.charAt(i);
-			if (Character.isDigit(c)) {
-			    number = number * 10 + c - '0';
-			}
-			// current char is operator or last digit, need to calculate previous
-			if (isOperator(c) || i == n - 1) {
-				if (prevOperator == '+') {
-					stack.push(number);
-				}
-				if (prevOperator == '-') {
-					stack.push(-number);
-				}
-				if (prevOperator == '*' || prevOperator == '/') {
-					int tmp = prevOperator == '*' ? stack.pop() * number : stack.pop() / number;
-					stack.push(tmp);
-				}
+     for (int i = 0; i < n; i++) {
+         char c = s.charAt(i);
+         if (Character.isDigit(c)) {
+             number = number * 10 + c - '0';
+         }
+         // current char is operator or last digit, need to calculate previous
+         if (isOperator(c) || i == n - 1) {
+             if (prevOperator == '+') {
+                 stack.push(number);
+             }
+             if (prevOperator == '-') {
+                 stack.push(-number);
+             }
+             if (prevOperator == '*' || prevOperator == '/') {
+                 int tmp = prevOperator == '*' ? stack.pop() * number : stack.pop() / number;
+                 stack.push(tmp);
+             }
 
-				prevOperator = c;
-				number = 0;
-			}
-		}
+             prevOperator = c;
+             number = 0;
+         }
+     }
 
-		while (!stack.empty()) {
-			result += stack.pop();
-		}
+    //  while (!stack.empty()) {
+    //      result += stack.pop();
+    //  }
 
-		return result;
-	}
+    //  return result;
+    // }
 
-	public boolean isOperator(char operator) {
-		String s = "+-*/";
-		return s.indexOf(operator) != -1;
-	}
+    public boolean isOperator(char operator) {
+        String s = "+-*/";
+        return s.indexOf(operator) != -1;
+    }
 }

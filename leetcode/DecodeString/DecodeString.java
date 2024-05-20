@@ -20,6 +20,79 @@ note: when getting the repeat times, need to s.charAt(i++), if assign to a varia
 2. recursion
 */
 public class DecodeString {
+    // Tue May  9 01:05:10 2023
+    public String decodeString(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+
+        Stack<Integer> count = new Stack<>();
+        Stack<String> str = new Stack<>();
+        str.push("");
+
+        int size = s.length();
+
+        int value = 0;
+
+        for (int i = 0; i < size; i++) {
+            char c = s.charAt(i);
+
+            if (c >= '0' && c <= '9') {
+                value = value * 10 + c - '0';
+            } else if (c == '[') {
+                count.push(value);
+                value = 0;
+                // when ], str stack pop twice, in order to match, here must push("")
+                str.push("");
+            } else if (c == ']') {
+                String part = str.pop();
+                int times = count.pop();
+                String newStr = getStringByTimes(times, part);
+                str.push(str.pop() + newStr);
+            } else {
+                str.push(str.pop() + c);
+            }
+        }
+
+        return str.pop();
+    }
+
+    public String getStringByTimes(int times, String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < times; i++) {
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+
+    // Mon Apr 17 00:51:26 2023
+    var decodeString = function(s) {
+        const stack = [];
+        const count = [];
+        stack.push("");
+
+        let value = 0;
+
+        s.split("").forEach((c, i) => {
+            if (c >= '0' && c <= '9') {
+                value = value * 10 + parseInt(c, 10);
+            } else if (c === '[') {
+                count.push(value);
+                value = 0;
+
+                stack.push("");
+            } else if (c === ']') {
+                const str = stack.pop();
+                const times = count.pop();
+                stack.push(stack.pop() + [...Array(times)].map((_) => str).join(""));
+            } else {
+                stack.push(stack.pop() + c);
+            }
+        });
+
+        return stack.pop();
+    };
+
     // 01/30/2019
     public String expressionExpand(String s) {
         if (s == null || s.length() == 0) {

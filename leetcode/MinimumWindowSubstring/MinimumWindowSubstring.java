@@ -37,6 +37,52 @@ public class MinimumWindowSubstring {
 		String minimumWindow = aTest.minWindow(S, T);
 		System.out.println("minimumWindow == " + minimumWindow);		
 	}
+	// Sat May 18 17:18:53 2024
+	public String minWindow(String s, String t) {
+        Map<Character, Integer> hm = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            hm.put(t.charAt(i), hm.getOrDefault(t.charAt(i), 0) + 1);
+        }
+
+        int left = 0;
+        int n = s.length();
+        String minStr = "";
+        int minLen = n + 1;
+
+        for (int right = 0; right < n; right++) {
+            char c = s.charAt(right);
+            if (hm.containsKey(c)) {
+                hm.put(c, hm.get(c) - 1);
+            }
+            
+            while (doesIncludeT(hm)) {
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    minStr = s.substring(left, right + 1);
+                }
+                // shrink left
+                char charAtLeft = s.charAt(left);
+                left++;
+                if (hm.containsKey(charAtLeft)) {
+                    hm.put(charAtLeft, hm.get(charAtLeft) + 1);
+                }
+            }
+        }
+
+        return minStr;
+    }
+    // 这个作用就是 cntCharInTFromS == t.length()
+    public boolean doesIncludeT(Map<Character, Integer> hm) {
+        for (Map.Entry<Character, Integer> entry : hm.entrySet()) {
+            int val = entry.getValue();
+            if (val > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 	// Thu Feb 23 22:16:14 2023 prepare for eBay
 	public String minWindow(String s, String t) {
         if (s.length() < t.length()) {
@@ -53,7 +99,6 @@ public class MinimumWindowSubstring {
         int left = 0;
         int minLen = s.length() + 1;
         String minWindowStr = "";
-    
 
         for (int right = 0; right < s.length(); right++) {
             char c = s.charAt(right);

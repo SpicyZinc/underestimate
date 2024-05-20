@@ -31,46 +31,77 @@ http://www.noteanddata.com/leetcode-1004-Max-Consecutive-Ones-III-java-solution-
 */
 
 class MaxConsecutiveOnes {
-	public int longestOnes(int[] A, int K) {
-		int left = 0;
-		int right = 0;
+    // not understand mono increasing
+    public int longestOnes(int[] A, int K) {
+        int left = 0;
+        int right = 0;
 
-		for (; right < A.length; right++) {
-			if (A[right] == 0) {
-				// convert 0 to 1
-				K--;
-			}
-			// K used up, 用光了
-			if (K < 0 && A[left++] == 0) {
-				K++;
-			}
-		}
+        for (; right < A.length; right++) {
+            if (A[right] == 0) {
+                // convert 0 to 1
+                K--;
+            }
+            // K used up, 用光了
+            if (K < 0 && A[left++] == 0) {
+                K++;
+            }
+        }
 
-		return right - left;
-	}
+        return right - left;
+    }
+    // sliding window
+    public int longestOnes(int[] A, int K) {
+        if (A == null || A.length == 0) {
+            return 0;
+        }
 
-	public int longestOnes(int[] A, int K) {
-		int size = A.length;
-		int[] dp = new int[K + 1];
+        int left = 0;
+        int max = 0;
+        int zeroCount = 0;
 
-		int max = Integer.MIN_VALUE;
+        for (int i = 0 ; i < A.length ; i++) {
+            // Increase count of zero whenever you see one
+            if (A[i] == 0) {
+                zeroCount++;
+            }
 
-		for (int i = 0; i < size; i++) {
-			for (int j = K; j >= 0; j--) {
-				if (A[i] == 1) {
-					dp[j]++;
-				} else {
-					if (j == 0) {
-						dp[j] = 0;
-					} else {
-						dp[j] = dp[j - 1] + 1;
-					}
-				}
+            // Shrink the window until zeros are equal less than required k
+            while (left <= i && zeroCount > K) {
+                if (A[left] == 0) {
+                    zeroCount--;
+                }
+                left++;
+            }
 
-				max = Math.max(max, dp[j]);
-			}
-		}
+            // At every step record the length of the window
+            max = Math.max(max, i - left + 1);
+        }
+        
+        return max;
+    }
 
-		return max;
-	}
+    public int longestOnes(int[] A, int K) {
+        int size = A.length;
+        int[] dp = new int[K + 1];
+
+        int max = Integer.MIN_VALUE;
+
+        for (int i = 0; i < size; i++) {
+            for (int j = K; j >= 0; j--) {
+                if (A[i] == 1) {
+                    dp[j]++;
+                } else {
+                    if (j == 0) {
+                        dp[j] = 0;
+                    } else {
+                        dp[j] = dp[j - 1] + 1;
+                    }
+                }
+
+                max = Math.max(max, dp[j]);
+            }
+        }
+
+        return max;
+    }
 }

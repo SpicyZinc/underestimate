@@ -44,6 +44,60 @@ leetcode 381
 */
 
 class RandomizedCollection {
+    // Thu Apr  6 13:18:18 2023
+    List<Integer> list;
+    Map<Integer, Set<Integer>> hm;
+    Random random;
+
+    public RandomizedCollection() {
+        list = new ArrayList<>();
+        hm = new HashMap<>();
+        random = new Random();
+    }
+    
+    public boolean insert(int val) {
+        list.add(val);
+
+        hm.computeIfAbsent(val, x -> new HashSet<>()).add(list.size() - 1);
+
+        return hm.get(val).size() == 1;
+    }
+    
+    public boolean remove(int val) {
+        if (hm.containsKey(val)) {
+            Set<Integer> positions = hm.get(val);
+            int posToRemove = positions.iterator().next();
+
+            // update hm
+            positions.remove(posToRemove);
+            if (positions.size() == 0) {
+                hm.remove(val);
+            }
+
+            // update list
+            int posForLastElement = list.size() - 1;
+            if (posToRemove < posForLastElement) {
+                int lastElement = list.get(posForLastElement);
+                list.set(posToRemove, lastElement);
+
+                Set<Integer> positionsForLastElement = hm.get(lastElement);
+                positionsForLastElement.remove(posForLastElement);
+                positionsForLastElement.add(posToRemove);;
+            }
+
+            list.remove(posForLastElement);
+
+            return true;
+        }
+
+        return false;
+    }
+    
+    public int getRandom() {
+        int index = random.nextInt(list.size());
+        return list.get(index);
+    }
+
     // Mon Jul 15 00:33:31 2019
     List<Integer> list;
     Map<Integer, Set<Integer>> hm;

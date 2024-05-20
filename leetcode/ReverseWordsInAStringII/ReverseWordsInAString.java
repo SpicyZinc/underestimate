@@ -38,7 +38,7 @@ public class ReverseWordsInAString {
 		// reverse each word in place
 		for (int i = 0; i < s.length; i++) {
 			if (s[i] == ' ') {
-				reverse(s, start, i-1);
+				reverse(s, start, i - 1);
 				start = i + 1;
 			}
 		}

@@ -40,4 +40,23 @@ public class MaximumSubarray  {
 
         return maxSum;
     }
+
+    // Mon Mar 27 21:16:17 2023
+    public int maxSubArray(int[] nums) {
+        int sum = 0;
+        int max = Integer.MIN_VALUE;
+
+        int i = 0, j = 0;
+        while (j < nums.length) {
+            if (sum < 0 && nums[j] >= sum) {
+                sum = 0;
+                i = j;
+            }
+            sum += nums[j];
+            max = Math.max(max, sum);
+            j++;
+        }
+
+        return max;
+    }
 }

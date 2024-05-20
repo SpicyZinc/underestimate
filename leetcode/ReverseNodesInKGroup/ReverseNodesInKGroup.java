@@ -71,9 +71,9 @@ public class ReverseNodesInKGroup {
             prev = curr;
             curr = next;
         }
-        
-        head.next = prev;
-        reversedPartLastNode.next = tail;
+        // 把reversed的部分 连接excluded的头尾
+        head.next = prev; // prev: reversed的头
+        reversedPartLastNode.next = tail; // reversedPartLastNode: reversed的尾
         
         return reversedPartLastNode;
     }

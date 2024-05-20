@@ -10,6 +10,8 @@ For example, if there are 4 stones in the heap, then you will never win the game
 no matter 1, 2, or 3 stones you remove, the last stone will always be removed by your friend.
 
 idea:
+remove stones to win
+
 very simple, check if this number can be exactly divided by 4.
 if can, impossible to win the game
 if not, possible to win the game. Note, it only means you can possible win, but how many stones you remove matters

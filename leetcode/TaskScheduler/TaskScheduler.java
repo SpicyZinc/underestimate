@@ -53,5 +53,4 @@ public class TaskScheduler {
 
 		return Math.max(size, (letters[mostTask] - 1) * (n + 1) + (mostTask - i));
 	}
-
 }

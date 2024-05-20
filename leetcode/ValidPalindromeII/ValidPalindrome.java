@@ -19,9 +19,40 @@ start from both head and tail of the string
 if char at i and j not equal, break while
 try to skip the character by i + 1 or j - 1
 as long as return true, it is true
+
+Time complexity: O(N)
 */
 
 class ValidPalindromeII {
+	// Tue May 14 02:36:30 2024
+	public boolean validPalindrome(String s) {
+        int n = s.length();
+        int i = 0;
+        int j = n - 1;
+        
+        while (i < j) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return validPalindrome(s, i + 1, j) || validPalindrome(s, i, j - 1);
+            }
+            i++;
+            j--;
+        }
+
+        return i >= j;
+    }
+
+    public boolean validPalindrome(String s, int i, int j) {
+        while (i < j) {
+            if (s.charAt(i) != s.charAt(j)) {
+                break;
+            }
+            i++;
+            j--;
+        }
+
+        return i >= j;
+    }
+
 	public boolean validPalindrome(String s) {
 		int i = 0;
 		int j = s.length() - 1;
@@ -73,7 +104,7 @@ class ValidPalindromeII {
 		int n = s.length();
 		int i = 0;
 		while (i < n / 2) {
-			if (s.charAt(i) != s.charAt(n-1-i)) {
+			if (s.charAt(i) != s.charAt(n - 1 - i)) {
 				return false;
 			}
 			i++;

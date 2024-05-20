@@ -27,6 +27,35 @@ public class FirstMissingPositive {
         int[] nums = {3, 2, 0, 2, 4, -1, 1};
         System.out.println("1st missing positive number == " + eg.firstMissingPositive(nums));
     }
+    // Sat Apr 27 17:46:10 2024
+    // self
+    public int firstMissingPositive(int[] nums) {
+        int a = 1;
+        int i = 0;
+
+        Arrays.sort(nums);
+
+        while (i < nums.length && nums[i] <= 0) {
+            i++;
+        }
+        if (i == nums.length) {
+            return a;
+        }
+
+        while (i < nums.length) {
+            while (i + 1 < nums.length && nums[i + 1] == nums[i]) {
+                i++;
+            }
+    
+            if (nums[i] != a) {
+                return a;
+            } else {
+                a = nums[i++] + 1;
+            }
+        }
+
+        return a;
+    }
 
     // note, use while
     // 01/22/2019
@@ -107,7 +136,7 @@ public class FirstMissingPositive {
         Arrays.sort(nums);
         int i = 0;
         while (i < nums.length && nums[i] <= 0) {
-            i++;                        
+            i++;
         }
         // missing positive, starting from 1 inclusive
         int result = 0;

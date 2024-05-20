@@ -23,48 +23,47 @@ idea:
 
 // method 1
 public class RandomPickIndex {
-	// Sun May  5 23:35:25 2019
-	Map<Integer, List<Integer>> hm;
-	Random random;
+    // Sun May  5 23:35:25 2019
+    Map<Integer, List<Integer>> hm;
+    Random random;
 
-	public Solution(int[] nums) {
-		this.hm = new HashMap<>();
-		this.random = new Random();
+    public Solution(int[] nums) {
+        this.hm = new HashMap<>();
+        this.random = new Random();
 
-		for (int i = 0; i < nums.length; i++) {
-			hm.computeIfAbsent(nums[i], x -> new ArrayList<>()).add(i);
-		}
-		
-	}
+        for (int i = 0; i < nums.length; i++) {
+            hm.computeIfAbsent(nums[i], x -> new ArrayList<>()).add(i);
+        }
+    }
 
-	public int pick(int target) {
-		List<Integer> list = hm.get(target);
-		int randomIndex = random.nextInt(list.size());
+    public int pick(int target) {
+        List<Integer> list = hm.get(target);
+        int randomIndex = random.nextInt(list.size());
 
-		return list.get(randomIndex);
-	}
+        return list.get(randomIndex);
+    }
 }
 
 // method 2
 public class RandomPickIndex {
-	int[] nums;
-	Random random;
+    int[] nums;
+    Random random;
 
-	public Solution(int[] nums) {
-		this.nums = nums;
-		this.random = new Random();
-	}
-	
-	public int pick(int target) {
-		List<Integer> targets = new ArrayList<>();
-		for (int i = 0; i < this.nums.length; i++) {
-			if (nums[i] == target) {
-				targets.add(i);
-			}
-		}
+    public Solution(int[] nums) {
+        this.nums = nums;
+        this.random = new Random();
+    }
+    
+    public int pick(int target) {
+        List<Integer> targets = new ArrayList<>();
+        for (int i = 0; i < this.nums.length; i++) {
+            if (nums[i] == target) {
+                targets.add(i);
+            }
+        }
 
-		return targets.get(random.nextInt(targets.size()));
-	}
+        return targets.get(random.nextInt(targets.size()));
+    }
 }
 
 // method 3

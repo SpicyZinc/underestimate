@@ -50,6 +50,7 @@ class MaxAreaOfIsland {
     }
     
     public int dfs(int[][] grid, int i, int j) {
+    	// 这个cell 就是1 island 面积为1
         int area = 1;
         
         int m = grid.length;

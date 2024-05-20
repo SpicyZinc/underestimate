@@ -73,7 +73,7 @@ public class MinimumFactorization {
         	return a;
         }
 	
-		List<Integer> result = new ArrayList<Integer>();
+		List<Integer> result = new ArrayList<>();
         for (int i = 9; i > 1; i--) {
         	while (a % i == 0) {
         		result.add(i);

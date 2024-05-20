@@ -22,9 +22,40 @@ use swap to do the shuffle
 note: every i shuffle with the elements after it, randomly pick one after i
 
 Random.nextInt(target) the specified value (exclusive)
+
+Fisher-Yates Algorithm
 */
 
 public class ShuffleAnArray {
+    // Sun May  5 04:04:32 2024
+    Random random = new Random();
+    int[] nums;
+    int[] copy;
+
+    public Solution(int[] nums) {
+        this.nums = nums;
+        this.copy = Arrays.copyOf(nums, nums.length);
+    }
+    
+    public int[] reset() {
+        return this.nums;
+    }
+    
+    public int[] shuffle() {
+        for (int i = 0; i < this.copy.length; i++) {
+            int idx = i + random.nextInt(this.copy.length - i);
+            swap(this.copy, i, idx);
+        }
+        return this.copy;
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+
     int[] nums;
     int[] copy;
     Random random;

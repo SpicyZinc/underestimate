@@ -105,13 +105,13 @@ public class PathSum {
 				// Removes the element at the specified position in this list.
 				// no matter find sumPath or not
 				// both needs to empty the path for other round adding
-				path.remove(path.size()-1); 
+				path.remove(path.size() - 1); 
 				// if not remove beforehand for once, the num of nodes in the list of "path" not matching
 				// why path.peekLast().right != nodes.peek() ?
 				// I guess this corresponds to add right before adding left
 				// completely empty because it is root-to-leaf
 				while (!nodes.isEmpty() && !path.isEmpty() && path.peekLast().left != nodes.peek()) {
-					path.remove(path.size()-1);
+					path.remove(path.size() - 1);
 				}
 			}
 			

@@ -29,7 +29,7 @@ five  -> v, 5 - 7 or five -> f, 5 - 4
 seven -> s, 7 - 6
 nine  -> i, 9 - 6 - 8 - 5
 
-Coincidently, odd number has a unique number to identify
+Coincidentally, even number has a unique number to identify
 */
 public class ReconstructOriginalDigitsFromEnglish {
     public String originalDigits(String s) {

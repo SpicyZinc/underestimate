@@ -32,6 +32,16 @@ class TreeNode {
 }
 
 public class DiameterOfBinaryTree {
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+
+        DiameterOfBinaryTree eg = new DiameterOfBinaryTree();
+        int depth = eg.getMaxDepth(root);
+        System.out.println(depth);
+    }
+
 	// method 1
 	public int diameterOfBinaryTree(TreeNode root) {
 		if (root == null) {

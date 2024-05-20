@@ -10,13 +10,15 @@ province ids 1, 2, 3, 5, 10, 11, 15, 19 in MZ
 
 public class SummaryRanges {
     public List<String> summaryRanges(int[] nums) {
-        List<String> result = new ArrayList<String>();
-        if (nums.length == 0 || nums == null) {
+        List<String> result = new ArrayList<>();
+        int size = nums.length;
+
+        if (size == 0 || nums == null) {
             return result;
         }
 
         int start = nums[0];
-        for (int i = 1; i < nums.length; i++) {
+        for (int i = 1; i < size; i++) {
             int prev = nums[i - 1];
             int curr = nums[i];
             if (curr - prev == 1) {
@@ -26,7 +28,7 @@ public class SummaryRanges {
                 start = curr;
             }
         }
-        result.add(getRange(start, nums[nums.length - 1]));
+        result.add(getRange(start, nums[size - 1]));
         
         return result;
     }

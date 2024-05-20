@@ -78,6 +78,20 @@ public class URLService {
         return prefix + shorturl;
     }
 
+    public String base10ToBase62(int n) {
+        StringBuilder sb = new StringBuilder();
+        while (n != 0) {
+            sb.insert(0, elements.charAt(n % 62));
+            n /= 62;
+        }
+        // make sure tiny url at least 6-letter long
+        while (sb.length() < 6) {
+            sb.insert(0, '0');
+        }
+
+        return sb.toString();
+    }
+
     public String shortToLong(String url) {
         url = url.substring(prefix.length());
         int n = base62ToBase10(url);
@@ -109,19 +123,5 @@ public class URLService {
         }
 
         return -1;
-    }
-
-    public String base10ToBase62(int n) {
-        StringBuilder sb = new StringBuilder();
-        while (n != 0) {
-            sb.insert(0, elements.charAt(n % 62));
-            n /= 62;
-        }
-        // make sure tiny url at least 6-letter long
-        while (sb.length() < 6) {
-            sb.insert(0, '0');
-        }
-
-        return sb.toString();
     }
 }

@@ -26,7 +26,7 @@ public class FindMinimumInSortedArray {
             if (left + 1 == right) {
                 return nums[right];
             }
-            
+
             int mid = left + (right - left) / 2;
             // left part is sorted
             if (nums[left] < nums[mid]) {

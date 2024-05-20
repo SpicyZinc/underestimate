@@ -17,6 +17,7 @@ ArrayList is container for all values
 HashMap is for value <-> position in the list
 
 Note: how to remove element from array:
+that is BECAUSE remove() Shifts any subsequent elements to the left (subtracts one from their indices).
 1. set last element to currently removed element's position
 2. remove last element from array
 
@@ -27,6 +28,53 @@ only using List also works, but time complexity increases
 */
 
 public class RandomizedSet {
+    // Sun May 19 03:30:07 2024
+    List<Integer> list;
+    Map<Integer, Integer> hm;
+
+    public RandomizedSet() {
+        this.list = new ArrayList<>();
+        this.hm = new HashMap<>();
+    }
+    
+    public boolean insert(int val) {
+        if (hm.containsKey(val)) {
+            return false;
+        } else {
+            list.add(val);
+            hm.put(val, list.size() - 1);
+            return true;
+        }
+    }
+    
+    public boolean remove(int val) {
+        if (hm.containsKey(val)) {
+            int pos = hm.get(val);
+            hm.remove(val);
+
+            int last = list.size() - 1;
+            int lastVal = list.get(last);
+
+            list.set(pos, lastVal);
+            list.remove(last);
+
+            if (pos < last) {
+                hm.put(lastVal, pos);
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public int getRandom() {
+        int size = list.size();
+        Random r = new Random();
+        int idx = r.nextInt(size);
+        return list.get(idx);
+    }
+
     // Tue Jun  8 23:59:01 2021
     // Runtime: 134 ms
     Random r;
@@ -61,7 +109,7 @@ public class RandomizedSet {
             int lastElement = list.get(lastPosition);
             list.set(posToRemove, lastElement);
             list.remove(lastPosition);
-
+            // update hashmap element's value and position
             if (posToRemove < lastPosition) {
                 hm.put(lastElement, posToRemove);
             }

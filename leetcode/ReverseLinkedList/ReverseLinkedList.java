@@ -61,4 +61,23 @@ public class ReverseLinkedList {
 
         return remaining;
     }
+    // Sat May  6 19:49:11 2023
+    public ListNode reverseList(ListNode head) {        
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode rest = head.next;
+        // Here to cut head.next, and reverse it to null
+        head.next = null;
+
+        if (rest != null) {
+            ListNode newList = reverseList(rest);
+            // Here to point rest.next to head
+            rest.next = head;
+            return newList;
+        } else {
+            return head;
+        }
+    }
 }

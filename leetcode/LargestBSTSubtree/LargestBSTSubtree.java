@@ -29,44 +29,40 @@ a lot of dfs() in count(), isValidBST(), largestBSTSubtree()
 */
 
 class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-	TreeNode(int x) { val = x; }
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
 }
 
 class LargestBSTSubtree {
-	public int largestBSTSubtree(TreeNode root) {
-		if (root == null) {
-			return 0;
-		}
-		if (isValidBST(root)) {
-			return count(root);
-		}
+    public int largestBSTSubtree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        if (isValidBST(root,  nteger.MIN_VALUE, Integer.MAX_VALUE)) {
+            return count(root);
+        }
 
-		return Math.max(largestBSTSubtree(root.left), largestBSTSubtree(root.right));
-	}
+        return Math.max(largestBSTSubtree(root.left), largestBSTSubtree(root.right));
+    }
 
-	public boolean isValidBST(TreeNode root) {
-		return dfs(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-	}
+    public boolean isValidBST(TreeNode node, int min, int max) {
+        if (node == null) {
+            return true;
+        }
 
-	public boolean dfs(TreeNode node, int min, int max) {
-		if (node == null) {
-			return true;
-		}
+        boolean isLeftValid = isValidBST(node.left, min, node.val);
+        boolean isRightValid = isValidBST(node.right, node.val, max);
 
-		boolean isLeftValid = dfs(node.left, min, node.val);
-		boolean isRightValid = dfs(node.right, node.val, max);
+        return min < node.val && node.val < max && isLeftValid && isRightValid;
+    }
 
-		return min < node.val && node.val < max && isLeftValid && isRightValid;
-	}
+    public int count(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
 
-	public int count(TreeNode node) {
-		if (node == null) {
-			return 0;
-		}
-
-		return 1 + count(node.left) + count(node.right);
-	}
+        return 1 + count(node.left) + count(node.right);
+    }
 }

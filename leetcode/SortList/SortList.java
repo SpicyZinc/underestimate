@@ -30,6 +30,7 @@ ListNode {
 }
 
 public class SortList {
+    // Thu Apr 25 03:24:04 2024
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) {
             return head;
@@ -45,7 +46,60 @@ public class SortList {
 
         ListNode first = head;
         ListNode second = slow.next;
-        slow.next = null; // cut the list two halves
+        // cut the list two halves
+        slow.next = null;
+
+        first = sortList(first);
+        second = sortList(second);
+
+        return merge(first, second);
+    }
+    // merge two sorted list
+    public ListNode merge(ListNode first, ListNode second) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+
+        while (first != null && second != null) {
+            if (first.val < second.val) {
+                current.next = first;
+                first = first.next;
+                current.next.next = null;
+            } else {
+                current.next = second;
+                second = second.next;
+                current.next.next = null;
+            }
+
+            current = current.next;
+        }
+
+        if (first != null) {
+            current.next = first;
+        } else {
+            current.next = second;
+        }
+
+        return dummy.next;
+    }
+
+
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // 找到中间点
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode first = head;
+        ListNode second = slow.next;
+        // cut the list two halves
+        slow.next = null;
 
         first = sortList(first);
         second = sortList(second);

@@ -137,7 +137,7 @@ public class HitCounter {
 	}
 
 	/**
-	 * Record a hit. 
+	 * Record a hit.
 	 * @param timestamp [description]
 	 */
 	public void hit(int timestamp) {

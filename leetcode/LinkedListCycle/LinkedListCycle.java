@@ -6,8 +6,8 @@ Can you solve it without using extra space?
 idea:
 make use of Floyd's cycle-finding algorithm, also know as tortoise and hare algorithm.
 
-The idea is to have two references to the list 
-and move them at different speeds. Move one forward by 1 node and the other by 2 nodes.
+The idea is to have two references to the list and move them at different speeds.
+Move one forward by 1 node and the other by 2 nodes.
 
 If the linked list has a loop they will definitely meet.
 Else either of the two references(or their next) will become null.
@@ -40,6 +40,7 @@ public class LinkedListCycle {
         
         return false;
     }
+
     // fast walks 3 steps while slow walks 1 step, works
    	public boolean hasCycle(ListNode head) {
         if (head == null) return false;

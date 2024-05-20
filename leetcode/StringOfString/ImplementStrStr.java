@@ -9,6 +9,27 @@ https://www.programcreek.com/2012/12/leetcode-implement-strstr-java/
 */
 
 public class ImplementStrStr {
+    // Thu Feb  1 15:58:26 2024
+    public int strStr(String haystack, String needle) {
+        int hsLen = haystack.length();
+        int nLen = needle.length();
+        if (hsLen < nLen) {
+            return -1;
+        }
+
+        for (int i = 0; i <= hsLen - nLen; i++) {
+            int j = 0;
+            while (j < nLen && haystack.charAt(i + j) == needle.charAt(j)) {
+                j++;
+            }
+            if (j == nLen) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
 	// Tue May 21 23:23:08 2019
 	public int strStr(String haystack, String needle) {
         if (haystack.length() == 0 && needle.length() == 0) {

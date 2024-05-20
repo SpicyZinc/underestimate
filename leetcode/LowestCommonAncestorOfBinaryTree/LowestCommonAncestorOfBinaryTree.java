@@ -30,6 +30,26 @@ class TreeNode {
 }
 
 public class LowestCommonAncestorOfBinaryTree {
+    // Tue Mar 26 19:14:22 2024
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // 恰巧 p 或 q 就是root, root 就是永远的祖先
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+        TreeNode leftCommonAncestor = lowestCommonAncestor(root.left, p, q); 
+        TreeNode rightCommonAncestor = lowestCommonAncestor(root.right, p, q); 
+        // 在左子树中没有找到, 那一定在右子树中
+        if (leftCommonAncestor == null) {
+            return rightCommonAncestor;
+        }
+        // 在右子树中没有找到, 那一定在左子树中
+        if (rightCommonAncestor == null) {
+            return leftCommonAncestor;
+        }
+        // 不在左子树, 也不在右子树, 那说明是根节点
+        return root;
+    }
+
 	// method 1
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null || root == p || root == q) {
@@ -54,8 +74,8 @@ public class LowestCommonAncestorOfBinaryTree {
             return root;
         }
 
-        List<TreeNode> pathToP = new ArrayList<TreeNode>();
-        List<TreeNode> pathToQ = new ArrayList<TreeNode>();
+        List<TreeNode> pathToP = new ArrayList<>();
+        List<TreeNode> pathToQ = new ArrayList<>();
         path(root, p, pathToP);
         path(root, q, pathToQ);
 

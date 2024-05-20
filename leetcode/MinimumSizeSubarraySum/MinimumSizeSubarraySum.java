@@ -41,6 +41,27 @@ public class MinimumSizeSubarraySum {
 		
 		return min == Integer.MAX_VALUE ? -1 : min;
 	}
+	// Tue Mar 28 15:33:35 2023
+	public int minSubArrayLen(int target, int[] nums) {
+        int size = nums.length;
+        int left = 0;
+        
+        int sum = 0;
+
+        int minLen = size + 1;
+
+        for (int right = 0; right < size; right++) {
+            sum += nums[right];
+
+            while (sum >= target) {
+                minLen = Math.min(minLen, right - left + 1);
+                sum -= nums[left++];
+            }
+        }
+
+        return minLen == size + 1 ? 0 : minLen;
+    }
+
 	// sliding window
 	// 01/26/2019
 	public int minSubArrayLen(int s, int[] nums) {

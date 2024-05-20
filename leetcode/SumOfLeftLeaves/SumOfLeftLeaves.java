@@ -14,7 +14,8 @@ There are two left leaves in the binary tree, with values 9 and 15 respectively.
 idea:
 1. recursion
 2. iteration
-
+note: node.left != null && node.left.left == null && node.left.right == null
+sum += node.left.val;
 */
 public class SumOfLeftLeaves {
     // recursion
@@ -23,16 +24,16 @@ public class SumOfLeftLeaves {
         if (root == null) {
             return sum;
         }
+
         if (root.left != null && root.left.left == null && root.left.right == null) {
             sum += root.left.val;
-        }
-        else {
+        } else {
             sum += sumOfLeftLeaves(root.left);
         }
         if (root.right != null) {
             sum += sumOfLeftLeaves(root.right);
         }
-        
+
         return sum;
     }
     // iteration
@@ -42,7 +43,7 @@ public class SumOfLeftLeaves {
             return sum;
         }
         
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
         while (!queue.isEmpty()) {
             TreeNode current = queue.poll();

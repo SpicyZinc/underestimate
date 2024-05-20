@@ -40,8 +40,7 @@ public class Anagrams {
 				ArrayList<String> values = new ArrayList<String>();				
 				values.add(strs[i]);
 				ascendingStringToList.put(key, values);
-			}
-			else {
+			} else {
 				ArrayList<String> values = ascendingStringToList.get(key);
 				values.add(strs[i]);
 				ascendingStringToList.put(key, values);
@@ -77,8 +76,7 @@ public class Anagrams {
                 ArrayList<String> values = new ArrayList<String>();
                 values.add(temp);
                 stringToListStrings.put(ascendingString, values);
-            }
-            else {
+            } else {
                 ArrayList<String> values = stringToListStrings.get(ascendingString);
                 values.add(temp);
                 stringToListStrings.put(ascendingString, values);

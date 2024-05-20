@@ -22,29 +22,49 @@ then advance i, and backward j
 */
 
 class SortArrayByParity {
-	public int[] sortArrayByParity(int[] A) {
-		int i = 0;
-		int j = A.length - 1;
+    // Sat Mar 18 14:22:26 2023
+    public int[] sortArrayByParity(int[] nums) {
+        int size = nums.length;
 
-		while (i < j) {
-			if (A[i] % 2 > A[j] % 2) {
-				swap(A, i, j);
-			}
+        int left = 0;
+        int right = size - 1;
 
-			if (A[i] % 2 == 0) {
-				i++;
-			}
-			if (A[j] % 2 == 1) {
-				j--;
-			}
-		}
+        while (left < right) {
+            if (nums[left] % 2 == 1 && nums[right] % 2 == 0) {
+                swap(nums, left++, right--);
+            } else if (nums[left] % 2 == 0) {
+                left++;
+            } else {
+                right--;
+            }                    
+        }
 
-		return A;
-	}
+        return nums;
+    }
 
-	private void swap(int[] a, int i, int j) {
-		int temp = a[i];
-		a[i] = a[j];
-		a[j] = temp;
-	}
+    public int[] sortArrayByParity(int[] A) {
+        int i = 0;
+        int j = A.length - 1;
+
+        while (i < j) {
+            if (A[i] % 2 > A[j] % 2) {
+                swap(A, i, j);
+            }
+
+            if (A[i] % 2 == 0) {
+                i++;
+            }
+            if (A[j] % 2 == 1) {
+                j--;
+            }
+        }
+
+        return A;
+    }
+
+    private void swap(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
 }

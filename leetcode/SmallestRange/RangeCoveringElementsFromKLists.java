@@ -31,7 +31,7 @@ idea:
 minimum window that satisfies some criteria
 */
 
-class SmallestRange {
+class Smallest RangeCoveringElementsFromKLists {
 	// Thu May  9 22:36:43 2019
 	public int[] smallestRange(List<List<Integer>> nums) {
 		// 把所有的nums 都整合到一块 每个 element 包含 value 和 它原来所在的位置
@@ -59,7 +59,7 @@ class SmallestRange {
 			int val = pair[0];
 			// the position in original nums
 			int pos = pair[1];
-
+			// list中的任何一个元素出现了 就代表这个list 代表凑够了 原来list.length 就可以找最小range了
 			allPositions.put(pos, allPositions.getOrDefault(pos, 0) + 1);
 			if (allPositions.get(pos) == 1) {
 				cntPos++;

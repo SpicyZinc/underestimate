@@ -28,12 +28,17 @@ P     I
 idea:
 第一行
 最后一行
+步长 base (zigzag size) 就是 多少行 * 2 然后 再加上 折回来的部分剪去两个
 numRows + numRows - 1 - 1
-差距就是 多少行 然后 再加上 折回来的部分 少两个
+0,8
+1,9
+3,11
 
-对于其他的中间行 j + base - 2 * i
 
-http://www.lifeincode.net/programming/leetcode-zigzag-conversion-java/
+对于其他的中间行 还要多一个元素
+还不到下一个 所以 j+base - i * 2
+j + base - 2 * i (row_index)
+
 
 0       8        16 ...
 1     7 9      15
@@ -44,18 +49,12 @@ http://www.lifeincode.net/programming/leetcode-zigzag-conversion-java/
 line by line
 get index and use charAt() to get char, then append to the return result
 
-based on row number, zigzag size is 2 * nRows - 2
-zigzag step length is always 2 * nRows - 2
-except for first row and last row, 
-rows in between first and last rows 
-numbers' index between 4-number or 5-number or nRows-number column == (index + base - 2 * row_index)
-index += step length
 */
 
 public class ZigZagConversion {
 	public static void main(String[] args) {
 		ZigZagConversion eg = new ZigZagConversion();
-		String s = eg.convert("PAYPALISHIRING", 3);		
+		String s = eg.convert("PAYPALISHIRING", 3);
 		System.out.println("After ZigZag Conversion: " + s);
 	}
 
@@ -74,7 +73,7 @@ public class ZigZagConversion {
 		for (int i = 0; i < nRows; i++) {
 			for (int j = i; j < n; j += base) {
 				result += s.charAt(j);
-				// 在中间的row 还要多加一个
+				// 在中间的row 还要多加一个char
 				if (i > 0 && i < nRows - 1 && j + base - 2 * i < n) {
 					result += s.charAt(j + base - 2 * i);
 				}

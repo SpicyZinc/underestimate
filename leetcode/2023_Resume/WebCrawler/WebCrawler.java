@@ -17,6 +17,30 @@ class WebCrawler {
         return new ArrayList<String>(visited);
     }
 
+    // Tue Mar 14 23:47:57 2023 BFS
+    public List<String> bfs(String startUrl, HtmlParser htmlParser) {
+        String hostname = getHostName(startUrl);
+
+        Set<String> visited = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+
+        queue.add(startUrl);
+
+        while (!queue.isEmpty()) {
+            String currentUrl = queue.poll();
+            
+            visited.add(currentUrl);
+
+            for (String url : htmlParser.getUrls(currentUrl)) {
+                if (getHostName(url).equals(hostname) && !visited.contains(url)) {
+                    queue.add(url);
+                }
+            }
+        }
+
+        return new ArrayList<String>(visited);
+    }
+
     public void dfs(String startUrl, String hostname, HtmlParser htmlParser) {
         if (!getHostName(startUrl).equals(hostname) || visited.contains(startUrl)) {
             return ;

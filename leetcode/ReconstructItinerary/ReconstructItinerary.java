@@ -103,8 +103,8 @@ public class ReconstructItinerary {
 		// can use stack as well, but not very understand this
 		// String now = "JFK";
 		// Stack<String> s = new Stack<String>();
-		// for(int i = 0; i < tickets.length; i++) {
-		//     while(!myMap.containsKey(now) || myMap.get(now).isEmpty()) {
+		// for (int i = 0; i < tickets.length; i++) {
+		//     while (!myMap.containsKey(now) || myMap.get(now).isEmpty()) {
 		//         s.push(now);
 		//         now = ans.remove(ans.size()-1);
 		//     }
@@ -112,7 +112,7 @@ public class ReconstructItinerary {
 		//     now = myMap.get(now).poll();
 		// }
 		// ans.add(now);
-		// while(!s.isEmpty()) ans.add(s.pop());
+		// while (!s.isEmpty()) ans.add(s.pop());
 		// return ans;
 	}
 }

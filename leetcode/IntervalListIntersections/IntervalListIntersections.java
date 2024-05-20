@@ -18,7 +18,7 @@ Note:
 0 <= A[i].start, A[i].end, B[i].start, B[i].end < 10^9
 NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
 
-idea
+idea:
 sweep line
 多少架飞机在天上
 两人的共同有空时间段

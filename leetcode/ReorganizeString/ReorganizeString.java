@@ -20,38 +20,38 @@ idea:
 */
 
 class ReorganizeString {
-	public String reorganizeString(String S) {
-		int size = S.length();
-		int[] chars = new int[26];
+    public String reorganizeString(String S) {
+        int size = S.length();
+        int[] chars = new int[26];
 
-		for (int i = 0; i < size; i++) {
-			char c = S.charAt(i);
-			chars[c - 'a']++;
-		}
+        for (int i = 0; i < size; i++) {
+            char c = S.charAt(i);
+            chars[c - 'a']++;
+        }
 
-		// populate the new reorganized string
-		char[] result = new char[size];
+        // populate the new reorganized string
+        char[] result = new char[size];
 
-		for (int i = 0; i < size; i++) {
-			int index = -1;
-			int max = 0;
-			// for each position try against each letter
-			for (int j = 0; j < 26; j++) {
-				if (chars[j] > max && (i == 0 || result[i - 1] - 'a' != j)) {
-					max = chars[j];
-					index = j;
-				}
-			}
-			// 如果没有符合情况的 early return
-			if (max == 0) {
-				return "";
-			}
-			// find index, since it is 26, means found char letter
-			result[i] = (char) (index + 'a');
-			// used once, decrease the count
-			chars[index]--;
-		}
+        for (int i = 0; i < size; i++) {
+            int index = -1;
+            int max = 0;
+            // for each position try against each letter
+            for (int j = 0; j < 26; j++) {
+                if (chars[j] > max && (i == 0 || result[i - 1] - 'a' != j)) {
+                    max = chars[j];
+                    index = j;
+                }
+            }
+            // 如果没有符合情况的 early return
+            if (max == 0) {
+                return "";
+            }
+            // find index, since it is 26, means found char letter
+            result[i] = (char) (index + 'a');
+            // used once, decrease the count
+            chars[index]--;
+        }
 
-		return new String(result);
-	}
+        return new String(result);
+    }
 }

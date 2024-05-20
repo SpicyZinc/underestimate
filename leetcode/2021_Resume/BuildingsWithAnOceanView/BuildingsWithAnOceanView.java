@@ -25,8 +25,8 @@ Output: [3]
 Explanation: Buildings cannot see the ocean if there are buildings of the same height to its right.
 
 Constraints:
-1 <= heights.length <= 105
-1 <= heights[i] <= 109
+1 <= heights.length <= 10^5
+1 <= heights[i] <= 10^9
 
 idea:
 directly from end of array, keep the so far highest, > soFarHighest update soFarHighest and put index into the ocean view
@@ -41,6 +41,27 @@ class BuildingsWithAnOceanView {
         for (int pos : result) {
             System.out.println(pos);
         }
+    }
+    // Fri Apr  5 01:59:57 2024
+    public int[] findBuildings(int[] heights) {
+        List<Integer> oceanView = new ArrayList<>();
+        int size = heights.length;
+        int soFarHighest = heights[size - 1];
+        oceanView.add(size - 1);
+        for (int i = size - 2; i >= 0; i--) {
+            if (heights[i] > soFarHighest) {
+                soFarHighest = heights[i];
+                oceanView.add(i);
+            }
+        }
+        int n = oceanView.size();
+        int[] result = new int[n];
+        // 就是倒过来
+        for (int i = 0; i < n; i++) {
+            result[i] = oceanView.get(n - 1 - i);
+        }
+
+        return result;
     }
 
     public int[] findBuildings(int[] heights) {
@@ -60,7 +81,6 @@ class BuildingsWithAnOceanView {
         for (int i = oceanView.size() - 1; i >= 0; i--) {
             result[oceanView.size() - 1 - i] = oceanView.get(i);
         }
-
 
         return result;
     }

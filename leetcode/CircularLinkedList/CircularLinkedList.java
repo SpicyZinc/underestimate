@@ -7,7 +7,6 @@ class Node {
 	}
 }
 
-
 public class CircularLinkedList {
 	public int size = 0;
 	public Node head = null;
@@ -73,7 +72,7 @@ public class CircularLinkedList {
         return curr.data;
     }
 
-    public void print(){
+    public void print() {
         System.out.print("Circular Linked List:");
         Node curr = head;
 

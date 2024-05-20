@@ -64,7 +64,7 @@ public class WordAbbreviation {
                 if (set.isEmpty()) break;
                 set.add(i);
                 for (int wordPos : set) {
-                	prefix[wordPos] += 1; // increase the prefix position
+                	prefix[wordPos] += 1; // increase the prefix position, a longer prefix is used 
                     abbreviations[wordPos] = makeAbbr(dict.get(wordPos), prefix[wordPos]); 
                 }
             }

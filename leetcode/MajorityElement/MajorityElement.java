@@ -38,6 +38,7 @@ public class MajorityElement  {
 	}
 
 	// best method
+	// 一个元素超过一半的数量 那么减少的次数cnt--不会抵消到0
 	public int majorityElement(int[] nums) {
 		int major = 0;
 		int cnt = 0;

@@ -40,29 +40,28 @@ idea: recurse on (node.left, node) 到底
 node.right = recursion(node.right, parent)
 */
 
-
 class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-	TreeNode(int x) { val = x; }
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
 }
 
 class IncreasingOrderSearchTree {
-	public TreeNode increasingBST(TreeNode root) {
-		return increasingBST(root, null);
-	}
+    public TreeNode increasingBST(TreeNode root) {
+        return increasingBST(root, null);
+    }
 
-	public TreeNode increasingBST(TreeNode node, TreeNode parent) {
-		if (node == null) {
-			return parent;
-		}
+    public TreeNode increasingBST(TreeNode node, TreeNode parent) {
+        if (node == null) {
+            return parent;
+        }
 
-		TreeNode leftmost = increasingBST(node.left, node);
+        TreeNode leftmost = increasingBST(node.left, node);
 
-		node.left = null;
-		node.right = increasingBST(node.right, parent);
+        node.left = null;
+        node.right = increasingBST(node.right, parent);
 
-		return leftmost;
-	}
+        return leftmost;
+    }
 }

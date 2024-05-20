@@ -14,7 +14,7 @@ Given [5, 4, 3, 2, 1],
 return false.
 
 idea:
-continually decrease min and secondMin
+continually increase min and secondMin
 see if there is a third number greater than secondMin;
 if there is, min < secondMin < 3rd min num
 then we get the answer

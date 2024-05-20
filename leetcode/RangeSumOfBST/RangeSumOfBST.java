@@ -44,17 +44,17 @@ class RangeSumOfBST {
 	}
 
 	// method 2
-	int cnt = 0;
+	int sum = 0;
 	public int rangeSumBST(TreeNode root, int L, int R) {
 		dfs(root, L, R);
 
-		return cnt;
+		return sum;
 	}
 
 	public void dfs(TreeNode node, int L, int R) {
 		if (node != null) {
 			if (L <= node.val && node.val <= R) {
-				cnt += node.val;
+				sum += node.val;
 			}
 			if (node.val > L) {
 				dfs(node.left, L, R);

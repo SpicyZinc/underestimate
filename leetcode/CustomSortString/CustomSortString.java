@@ -1,46 +1,49 @@
 /*
-S and T are strings composed of lowercase letters. In S, no letter occurs more than once.
-S was sorted in some custom order previously.
-We want to permute the characters of T so that they match the order that S was sorted.
-More specifically, if x occurs before y in S, then x should occur before y in the returned string.
+You are given two strings order and s. All the characters of order are unique and were sorted in some custom order previously.
+Permute the characters of s so that they match the order that order was sorted. More specifically, if a character x occurs before a character y in order, then x should occur before y in the permuted string.
+Return any permutation of s that satisfies this property.
 
-Return any permutation of T (as a string) that satisfies this property.
-
-Example :
-Input: 
-S = "cba"
-T = "abcd"
+Example 1:
+Input: order = "cba", s = "abcd"
 Output: "cbad"
-Explanation: 
-"a", "b", "c" appear in S, so the order of "a", "b", "c" should be "c", "b", and "a". 
-Since "d" does not appear in S, it can be at any position in T. "dcba", "cdba", "cbda" are also valid outputs.
- 
-Note:
-S has length at most 26, and no character is repeated in S.
-T has length at most 200.
-S and T consist of lowercase letters only.
+Explanation: "a", "b", "c" appear in order, so the order of "a", "b", "c" should be "c", "b", and "a".
+Since "d" does not appear in order, it can be at any position in the returned string. "dcba", "cdba", "cbda" are also valid outputs.
+
+Example 2:
+Input: order = "bcafg", s = "abcd"
+Output: "bcad"
+Explanation: The characters "b", "c", and "a" from order dictate the order for the characters in s. The character "d" in s does not appear in order, so its position is flexible.
+Following the order of appearance in order, "b", "c", and "a" from s should be arranged as "b", "c", "a". "d" can be placed at any position since it's not in order.
+The output "bcad" correctly follows this rule. Other arrangements like "bacd" or "bcda" would also be valid, as long as "b", "c", "a" maintain their order.
+
+Constraints:
+1 <= order.length <= 26
+1 <= s.length <= 200
+order and s consist of lowercase English letters.
+All the characters of order are unique.
 
 idea:
+主要是考察map的实现?
 for each char how many times appear in T,
 then based on sequence in S
 generate it and then append the remaining
 */
 
 class  CustomSortString {
-    public String customSortString(String S, String T) {
-        // letters[char] = the number of occurrences of 'char' in T.
+    public String customSortString(String order, String s) {
+        // letters[char] = the number of occurrences of 'char' in 'S'.
         int[] letters = new int[26];
-        for (int i = 0; i < T.length(); i++) {
-            char c = T.charAt(i);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
             letters[c - 'a']++;
         }
 
         StringBuilder result = new StringBuilder();
-        // based on chars' sequence in S
-        for (int i = 0; i < S.length(); i++) {
-            char c = S.charAt(i);
+        // based on chars' sequence in 'order'
+        for (int i = 0; i < order.length(); i++) {
+            char c = order.charAt(i);
             int times = letters[c - 'a'];
-            // c appeared such times in T
+            // c appeared such times in 'S'
             // note, need to consider times of appearance
             for (int j = 0; j < times; j++) {
                 result.append(c);

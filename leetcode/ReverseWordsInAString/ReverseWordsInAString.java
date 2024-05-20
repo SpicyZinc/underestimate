@@ -21,6 +21,36 @@ public class ReverseWordsInAString  {
 
 		System.out.println("|" + result + "|");
 	}
+	// Tue May  9 00:20:28 2023
+    public String reverseWords(String s) {
+        s = s.trim();
+        int size = s.length();
+
+        int i = 0;
+
+        Stack<String> stack = new Stack<>();
+        int left = i;
+        while (i < size) {
+            left = i;
+            while (i < size && s.charAt(i) != ' ') {
+                i++;   
+            }
+
+            stack.push(s.substring(left, i));
+
+            while (i < size && s.charAt(i) == ' ') {
+                i++;
+            }
+        }
+
+        String result = "";
+        while (!stack.isEmpty()) {
+            result += " " + stack.pop();
+        }
+
+        return result.substring(1);
+    }
+
 	// Fri Jul 12 22:28:53 2019
 	public String reverseWords(String s) {
 		s = s.trim();
