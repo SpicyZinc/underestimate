@@ -1,8 +1,8 @@
 /*
 There are n people standing in a queue, and they numbered from 0 to n - 1 in left to right order. You are given an array heights of distinct integers where heights[i] represents the height of the ith person.
-A person can see another person to their right in the queue if everybody in between is shorter than both of them. More formally, the ith person can see the jth person if i < j and min(heights[i], heights[j]) > max(heights[i+1], heights[i+2], ..., heights[j-1]).
+A person can see another person to their right in the queue if everybody in between is shorter than both of them.
+More formally, the ith person can see the jth person if i < j and min(heights[i], heights[j]) > max(heights[i+1], heights[i+2], ..., heights[j-1]).
 Return an array answer of length n where answer[i] is the number of people the ith person can see to their right in the queue.
-
 
 Example 1:
 https://assets.leetcode.com/uploads/2021/05/29/queue-plane.jpg
@@ -32,6 +32,28 @@ need to come back
 */
 
 class NumberOfVisiblePeopleInAQueue {
+    // Tue May 28 18:36:43 2024
+    public int[] canSeePersonsCount(int[] heights) {
+        Stack<Integer> stack = new Stack<>();
+        int n = heights.length;
+        int[] result = new int[n];
+        for (int i = n - 1; i >= 0; i--) {
+            int visibility = 0;
+            int height = heights[i];
+            while (!stack.isEmpty() && height > stack.peek()) {
+                stack.pop();
+                visibility++;
+            }
+            if (!stack.isEmpty()) {
+                visibility++;
+            }
+            stack.push(height);
+
+            result[i] = visibility;
+        }
+
+        return result;
+    }
     // TLE
     public int[] canSeePersonsCount(int[] heights) {
         int n = heights.length;
@@ -78,7 +100,7 @@ class NumberOfVisiblePeopleInAQueue {
                 stack.pop();
                 visibility++;
             }
-            // always see neighbor
+            // always see stack里那个比自己高的
             if (!stack.isEmpty()) {
                 visibility++;
             }

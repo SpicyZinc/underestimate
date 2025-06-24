@@ -15,6 +15,8 @@ see if the new string is valid parentheses, hashset to maintain uniqueness
 note: if the first s in the queue is valid,
 any other actions of removing '(' or ')' would NOT generate valid parentheses,
 so it is redundant, so better return first.
+
+T(n) = n x C(n, n) + (n-1) x C(n, n-1) + ... + 1 x C(n, 1) = n x 2^(n-1).
 */
 
 import java.util.*;

@@ -65,6 +65,7 @@ class LowestCommonAncestorOfABinaryTree {
             path.add(node);
             node = node.parent;
         }
+
         return path;
     }
 

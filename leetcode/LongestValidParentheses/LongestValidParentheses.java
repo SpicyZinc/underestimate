@@ -35,72 +35,72 @@ we can calculate it through stack.pop(), then i - stack.peek() and check the len
 prevLeft represents current valid parentheses opening side starting position
 */
 class LongestValidParentheses {
-	// Fri Jul  5 15:42:49 2019
-	public int longestValidParentheses(String s) {
-		int size = s.length();
-		int[] dp = new int[size];
+    // Fri Jul  5 15:42:49 2019
+    public int longestValidParentheses(String s) {
+        int size = s.length();
+        int[] dp = new int[size];
 
-		int leftCnt = 0;
-		int maxLen = 0;
+        int leftCnt = 0;
+        int maxLen = 0;
 
-		for (int i = 0; i < size; i++) {
-			char c = s.charAt(i);
+        for (int i = 0; i < size; i++) {
+            char c = s.charAt(i);
 
-			if (c == '(') {
-				leftCnt++;
-			}
+            if (c == '(') {
+                leftCnt++;
+            }
 
-			if (c == ')' && leftCnt > 0) {
-				dp[i] = dp[i - 1] + 2;
+            if (c == ')' && leftCnt > 0) {
+                dp[i] = dp[i - 1] + 2;
 
-				dp[i] += i - dp[i] >= 0 ? dp[i - dp[i]] : 0;
-				// if (i - 2 - dp[i - 1] > 0) {
-				// 	dp[i] = dp[i - 2 - dp[i - 1]] + dp[i - 1] + 2;
-				// }
+                dp[i] += i - dp[i] >= 0 ? dp[i - dp[i]] : 0;
+                // if (i - 2 - dp[i - 1] > 0) {
+                //  dp[i] = dp[i - 2 - dp[i - 1]] + dp[i - 1] + 2;
+                // }
 
-				// 减少左括号的数量
-				leftCnt--;
-			}
+                // 减少左括号的数量
+                leftCnt--;
+            }
 
-			maxLen = Math.max(maxLen, dp[i]);
-		}
+            maxLen = Math.max(maxLen, dp[i]);
+        }
 
-		return maxLen;
-	}
+        return maxLen;
+    }
 
-	// stack
-	public int longestValidParentheses(String s) {
-		if (s.length() < 2 || s == null) {
-			return 0;
-		}
+    // stack
+    public int longestValidParentheses(String s) {
+        if (s.length() < 2 || s == null) {
+            return 0;
+        }
 
-		int maxLen = 0;
-		int left = 0;
-		
-		Stack<Integer> stack = new Stack<>();
-		int size = s.length();
-		
-		for (int i = 0; i < size; i++) {
-			char c = s.charAt(i);
-			
-			if (c == '(') {
-				stack.push(i);
-			} else {
-				// always consider if stack isEmpty()
-				if (stack.isEmpty()) {
-					left = i + 1;
-				} else {
-					stack.pop();
+        int maxLen = 0;
+        int left = 0;
+        
+        Stack<Integer> stack = new Stack<>();
+        int size = s.length();
+        
+        for (int i = 0; i < size; i++) {
+            char c = s.charAt(i);
+            
+            if (c == '(') {
+                stack.push(i);
+            } else {
+                // always consider if stack isEmpty()
+                if (stack.isEmpty()) {
+                    left = i + 1;
+                } else {
+                    stack.pop();
 
-					if (stack.isEmpty()) {
-						maxLen = Math.max(maxLen, i - left + 1);
-					} else {
-						maxLen = Math.max(maxLen, i - stack.peek());
-					}
-				}
-			}
-		}
-		
-		return maxLen;
-	}
+                    if (stack.isEmpty()) {
+                        maxLen = Math.max(maxLen, i - left + 1);
+                    } else {
+                        maxLen = Math.max(maxLen, i - stack.peek());
+                    }
+                }
+            }
+        }
+        
+        return maxLen;
+    }
 }

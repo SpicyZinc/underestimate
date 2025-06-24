@@ -32,36 +32,73 @@ direct
 */
 
 class GoatLatin {
-	public String toGoatLatin(String S) {
-		String[] matches = S.split("\\s+");
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < matches.length; i++) {
-			String s = matches[i];
-			String newStr = "";
-			if (isVowel(s.charAt(0))) {
-				newStr = s + "ma";
-			} else {
-				newStr = s.substring(1) + s.substring(0, 1) + "ma";
-			}
+    public String toGoatLatin(String S) {
+        String[] matches = S.split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < matches.length; i++) {
+            String s = matches[i];
+            String newStr = "";
+            if (isVowel(s.charAt(0))) {
+                newStr = s + "ma";
+            } else {
+                newStr = s.substring(1) + s.substring(0, 1) + "ma";
+            }
 
-			sb.append(newStr + repeatA(i + 1) + (i == matches.length - 1 ? "" : " "));
-		}
+            sb.append(newStr + repeatA(i + 1) + (i == matches.length - 1 ? "" : " "));
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
+    // 2025
+    public String toGoatLatin(String sentence) {
+        String[] words = sentence.split("\\s");
+        StringBuilder sb = new StringBuilder();
 
-	public boolean isVowel(char ch) {
-		String vowels = "aeiouAEIOU";
-		String c = String.valueOf(ch);
-		return vowels.contains(c);
-	}
+        for (int i = 0; i < words.length; i++) {
+            String newStr = transform(words[i]);
+            sb.append(newStr + repeatA(i + 1) + (i == words.length - 1 ? "" : " "));
+        }
 
-	public String repeatA(int num) {
-		String s = "";
-		for (int i = 0; i < num; i++) {
-			s += 'a';
-		}
+        return sb.toString();
+    }
 
-		return s;
-	}
+    public String transform(String s) {
+        char[] chars = s.toCharArray();
+        if (isVowel(chars[0])) {
+            return s + "ma";
+        } else {
+            return s.substring(1) + chars[0] + "ma";
+        }
+    }
+
+
+    public boolean isVowel(char ch) {
+        String vowels = "aeiouAEIOU";
+        String c = String.valueOf(ch);
+        return vowels.contains(c);
+    }
+
+    public String repeatA(int num) {
+        String s = "";
+        for (int i = 0; i < num; i++) {
+            s += 'a';
+        }
+
+        return s;
+    }
+
+    public boolean isVowel(char ch) {
+        String vowels = "aeiouAEIOU";
+        String c = String.valueOf(ch);
+        return vowels.contains(c);
+    }
+
+    public String repeatA(int num) {
+        String s = "";
+        for (int i = 0; i < num; i++) {
+            s += 'a';
+        }
+
+        return s;
+    }
 }

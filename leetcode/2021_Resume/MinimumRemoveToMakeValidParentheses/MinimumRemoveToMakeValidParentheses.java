@@ -68,6 +68,13 @@ class MinimumRemoveToMakeValidParentheses {
         }
 
         // add those extra unmatched left open parentheses
+        // openCnt is not empty, but it does not know which index to remove,
+        // need to use power of stack to know
+        /**
+         * also works
+         * while (openCnt != 0) {
+         *  openCnt--;
+         */
         while (!stack.isEmpty()) {
             indexesToRemove.add(stack.pop());
         }

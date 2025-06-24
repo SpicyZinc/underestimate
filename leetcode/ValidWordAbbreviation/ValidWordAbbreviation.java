@@ -29,7 +29,9 @@ w02d
 false
 
 千万别搞错 i j 指向谁
-The worst case time complexity is O(n)O(n)O(n) to the length of the abbreviation string
+The worst case time complexity is O(n) to the length of the abbreviation string
+
+double pointers
 */
 
 import java.util.*;

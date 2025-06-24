@@ -47,6 +47,23 @@ need come back
 
 class NumberOfWonderfulSubstrings {
     public long wonderfulSubstrings(String word) {
+        int[] count = new int[1024];
+        int mask = 0;
+        count[0] = 1;
+        long result = 0;
+        for (char c : word.toCharArray()) {
+            mask ^= 1 << (c - 'a');
+            result += count[mask];
+            for (int i = 0; i < 10; i++) {
+                result += count[mask ^ (1 << i)];
+            }
+            count[mask]++;
+        }
+        return result;
+    }
+
+
+    public long wonderfulSubstrings(String word) {
         int N = word.length();
 
         // Create the frequency map
@@ -74,9 +91,10 @@ class NumberOfWonderfulSubstrings {
 
             // Loop through every possible letter that can appear an odd number of times in a substring
             for (int oddC = 0; oddC < 10; oddC++) {
-                result += freq.getOrDefault(mask ^ (1 << oddC),0);
+                result += freq.getOrDefault(mask ^ (1 << oddC), 0);
             }
         }
+
         return result;
     }
 }

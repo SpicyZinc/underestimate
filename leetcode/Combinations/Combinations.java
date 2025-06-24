@@ -32,7 +32,6 @@ public class Combinations {
     public void dfs(int n, int k, int val, List<Integer> path, List<List<Integer>> result) {
         if (path.size() == k) {
             result.add(new ArrayList<Integer>(path));
-
             return;
         }
 

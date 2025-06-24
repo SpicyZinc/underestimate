@@ -10,6 +10,9 @@ https://www.programcreek.com/2014/04/leetcode-binary-search-tree-iterator-java/
 
 using stack, inorder traversal of BST iteratively
 iterator is basically make a copy of original BST
+
+到了最左端 有右边的 马上把它放入stack 然后继续左到底
+in fact Inorder Traversal with stack
 */
 
 import java.util.*;
@@ -42,6 +45,70 @@ public class BSTIterator {
 
         System.out.println();
     }
+
+    // 2025
+    Stack<TreeNode> stack;
+
+    public BSTIterator(TreeNode root) {
+        this.stack = new Stack<>();
+
+        TreeNode node = root;
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }      
+    }
+    
+    public int next() {
+        TreeNode node = stack.pop();
+        int val = node.val;
+        if (node.right != null) {
+            node = node.right;
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+        }
+
+        return val;
+    }
+    
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+
+    // Wed May 22 00:53:07 2024
+    Stack<TreeNode> stack;
+
+    public BSTIterator(TreeNode root) {
+        this.stack = new Stack<>();
+
+        TreeNode node = root;
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }      
+    }
+    
+    public int next() {
+        TreeNode node = stack.pop();
+        int val = node.val;
+        if (node.right != null) {
+            node = node.right;
+        } else {
+            return val;
+        }
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+        return val;
+    }
+    
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+
 
     // iteration
     Stack<TreeNode> stack;

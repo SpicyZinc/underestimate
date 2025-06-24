@@ -81,14 +81,75 @@ public class NumberOfIslands {
             }
         }
     }
-}
 
-class Solution {
+
+    // Thu May 23 19:46:10 2024
+    int count = 0;
+    int[][] directions = {
+        {0, -1},
+        {0, 1},
+        {-1, 0},
+        {1, 0},
+    };
+
+    public int numIslands(char[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        count = m * n;
+        int[] nums = new int[count];
+        boolean[] visited = new boolean[count];
+
+        for (int k = 0; k < count; k++) {
+            // Initializing union find with its own index
+            // Each element is its own disjoint set
+            nums[k] = k;
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    visited[i * n + j] = true;
+                    for (int[] dir : directions) {
+                        int newX = i + dir[0];
+                        int newY = j + dir[1];
+
+                        if (newX >= 0 && newX < m && newY >= 0 && newY < n && grid[newX][newY] == '1' && !visited[newX * n + newY]) {
+                            union(nums, i * n + j, newX * n + newY);
+                        }
+                    }
+                } else {
+                    // not an island
+                    count--;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public void union(int[] nums, int i, int j) {
+        int x = find(nums, i);
+        int y = find(nums, j);
+        if (x != y) {
+            nums[x] = y;
+            count--; // Reducing count since grid[i][j] is not a new separate island but just a connected part of existing island (grid[i-1][j] or grid[i][j-1])
+        }
+    }
+    // note, i == nums[i] 谁在前
+    public int find(int[] nums, int i) {
+        while (i != nums[i]) {
+            i = nums[i];
+        }
+        return i;
+    }
+
+
     int count = 0;
     public int numIslands(char[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
         count = m * n;
+
         int[] nums = new int[count];
         for (int k = 0; k < count; k++) {
             // Initializing union find with its own index
@@ -120,26 +181,15 @@ class Solution {
         int y = find(nums, j);
         if (x != y) {
             nums[x] = y;
-            count--; // Reduce count since grid[i][j] is not a new separate island but just a connected part of existing island (grid[i-1][j] or grid[i][j-1])
+            count--; // Reducing count since grid[i][j] is not a new separate island but just a connected part of existing island (grid[i-1][j] or grid[i][j-1])
         }
     }
 
     public int find(int[] nums, int i) {
-        int finalTarget = i;
-
-        while (finalTarget != nums[finalTarget]) {
-            finalTarget = nums[finalTarget];
+        while (i != nums[i]) {
+            i = nums[i];
         }
-        // path compress
-        while (i != finalTarget) {
-            int fi = nums[i];
-            // 把路上的每一个点都指向 finalTarget which is the final father
-            nums[i] = finalTarget;
-            // 继续沿着 path 走
-            i = fi;
-        }
-        
-        return finalTarget;
+        return i;
     }
 
     // both working

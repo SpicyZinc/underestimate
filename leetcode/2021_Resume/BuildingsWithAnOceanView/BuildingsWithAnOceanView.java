@@ -42,6 +42,74 @@ class BuildingsWithAnOceanView {
             System.out.println(pos);
         }
     }
+
+    public int[] findBuildings(int[] heights) {
+        // 就是建一个 decreased 的stack
+        // 从左边看过去 就是下降的 不是的POP出来 留下的都是能看到右边海的
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < heights.length; i++) {
+            while (!stack.isEmpty() && heights[i] >= heights[stack.peek()]) {
+                stack.pop();
+            }
+            stack.push(i);
+        }
+        int[] result = new int[stack.size()];
+        for (int i = result.length - 1; i >= 0; i--) {
+            result[i] = stack.pop();
+        }
+
+        return result;
+    }
+
+    public int[] findBuildings(int[] heights) {
+        int n = heights.length;
+        List<Integer> list = new ArrayList<>();
+        
+        // Monotonically decreasing stack.
+        Stack<Integer> stack = new Stack<>();  
+        for (int current = n - 1; current >= 0; current--) {
+            // If the building to the right is smaller, we can pop it.
+            while (!stack.isEmpty() && heights[current] > heights[stack.peek()]) {
+                stack.pop();
+            }
+            
+            // If the stack is empty, it means there is no building to the right 
+            // that can block the view of the current building.
+            if (stack.isEmpty()) { 
+                list.add(current);
+            }
+            
+            // Push the current building in the stack.
+            stack.push(current);
+        }
+ 
+        // Push elements from list to answer array in reverse order.
+        int[] answer = new int[list.size()];
+        for (int i = 0; i < list.size(); ++i) {
+            answer[i] = list.get(list.size() - 1 - i);
+        }
+        
+        return answer;
+    }
+
+    public int[] findBuildings(int[] heights) {
+        int n = heights.length;
+        int heightSoFar = heights[n - 1];
+        List<Integer> list = new ArrayList<>();
+        list.add(n - 1);
+        for (int i = n - 2; i >= 0; i--) {
+            if (heights[i] > heightSoFar) {
+                heightSoFar = heights[i];
+                list.add(i);
+            }
+        }
+
+        int[] result = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            result[i] = list.get(list.size() - i  - 1);
+        }
+        return result;
+    }
     // Fri Apr  5 01:59:57 2024
     public int[] findBuildings(int[] heights) {
         List<Integer> oceanView = new ArrayList<>();

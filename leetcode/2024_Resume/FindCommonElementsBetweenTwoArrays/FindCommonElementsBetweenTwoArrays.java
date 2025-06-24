@@ -31,7 +31,6 @@ idea:
 brute force with Set
 */
 
-
 class FindCommonElementsBetweenTwoArrays {
     public int[] findIntersectionValues(int[] nums1, int[] nums2) {
         Set<Integer> s1 = new HashSet<>();

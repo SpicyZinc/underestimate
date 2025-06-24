@@ -43,119 +43,168 @@ for ()
 
 // Definition for a binary tree node.
 class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-	TreeNode(int x) { val = x; }
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
 }
 
 class VerticalOrderTraversalOfABinaryTree {
-	public List<List<Integer>> verticalTraversal(TreeNode root) {
-		List<List<Integer>> result = new ArrayList<>();
-		if (root == null) {
-			return result;
-		}
+    // 2025 new version , no need to sort
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Map<Integer, List<Integer>> hm = new HashMap<>();
 
-		Map<Integer, List<Integer>> hm = new HashMap<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<Integer> columns = new LinkedList<>();
 
-		Queue<TreeNode> queue = new LinkedList<>();
-		Queue<Integer> columns = new LinkedList<>();
+        queue.add(root);
+        columns.add(0);
 
-		queue.add(root);
-		columns.add(0);
+        int leftBoundary = 0;
+        int rightBoundary = 0;
 
-		int min = 0;
-		int max = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
 
-		while (!queue.isEmpty()) {
-			int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                Integer column = columns.poll();
 
-			// 当前这一层 单独一个 hashmap
-			Map<Integer, List<Integer>> tmp = new HashMap<>();
+                hm.computeIfAbsent(column, x -> new ArrayList<>()).add(node.val);
 
-			for (int i = 0; i < size; i++) {
+                if (node.left != null) {
+                    queue.add(node.left);
+                    columns.add(column - 1);
 
-				TreeNode node = queue.poll();
-				Integer col = columns.poll();
+                    leftBoundary = Math.min(leftBoundary, column - 1);
+                }
 
-				tmp.computeIfAbsent(col, x -> new ArrayList<>()).add(node.val);
-				
-				if (node.left != null) {
-					queue.add(node.left);
-					columns.add(col - 1);
+                if (node.right != null) {
+                    queue.add(node.right);
+                    columns.add(column + 1);
 
-					min = Math.min(min, col - 1);
-				}
-				
-				if (node.right != null) {
-					queue.add(node.right);
-					columns.add(col + 1);
+                    rightBoundary = Math.max(rightBoundary, column + 1);
+                }
+            }
+        }
 
-					max = Math.max(max, col + 1);
-				}
-			}
+        for (int i = leftBoundary; i <= rightBoundary; i++) {
+            result.add(hm.get(i));
+        }
 
-			for (int key : tmp.keySet()) {
-				if (!hm.containsKey(key)) {
-					hm.put(key, new ArrayList<Integer>());
-				}
-				List<Integer> list = tmp.get(key);
-				// 只是当前这一层的排序 其他之前排好的 不予理会
-				// 没有什么特别原因要sort 就是排下序
-				Collections.sort(list, (a, b) -> a - b);
-				hm.get(key).addAll(list);
-			}
-		}
+        return result;
+    }
 
-		for (int i = min; i <= max; i++) {
-			result.add(hm.get(i));
-		}
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
 
-		return result;
-	}
+        Map<Integer, List<Integer>> hm = new HashMap<>();
 
-	class Node {
-		int order;
-		TreeNode node;
+        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<Integer> columns = new LinkedList<>();
 
-		public Node(int order, TreeNode node) {
-			this.order = order;
-			this.node = node;
-		}
-	}
-	
-	public List<List<Integer>> verticalTraversal(TreeNode root) {
+        queue.add(root);
+        columns.add(0);
 
-		List<List<Integer>> result = new ArrayList<>();
+        int min = 0;
+        int max = 0;
 
-		if (root == null) {
-			return result;
-		}
+        while (!queue.isEmpty()) {
+            int size = queue.size();
 
-		Map<Integer, List<Integer>> tm = new TreeMap<>();
+            // 当前这一层 单独一个 hashmap
+            Map<Integer, List<Integer>> tmp = new HashMap<>();
 
-		Queue<Node> queue = new LinkedList<>();
-		queue.offer(new Node(0, root));
+            for (int i = 0; i < size; i++) {
 
-		while (!queue.isEmpty()) {
-			Node node = queue.poll();
+                TreeNode node = queue.poll();
+                Integer col = columns.poll();
 
-			int order = node.order;
-			TreeNode tn = node.node;
+                tmp.computeIfAbsent(col, x -> new ArrayList<>()).add(node.val);
+                
+                if (node.left != null) {
+                    queue.add(node.left);
+                    columns.add(col - 1);
 
-			tm.computeIfAbsent(order, x -> new ArrayList<>()).add(tn.val);
+                    min = Math.min(min, col - 1);
+                }
+                
+                if (node.right != null) {
+                    queue.add(node.right);
+                    columns.add(col + 1);
 
-			if (tn.left != null) {
-				queue.offer(new Node(order - 1, tn.left));
-			}
+                    max = Math.max(max, col + 1);
+                }
+            }
 
-			if (tn.right != null) {
-				queue.offer(new Node(order + 1, tn.right));
-			}
-		}
-		
-		result.addAll(tm.values());
+            for (int key : tmp.keySet()) {
+                if (!hm.containsKey(key)) {
+                    hm.put(key, new ArrayList<Integer>());
+                }
+                List<Integer> list = tmp.get(key);
+                // 只是当前这一层的排序 其他之前排好的 不予理会
+                // 没有什么特别原因要sort 就是排下序
+                Collections.sort(list, (a, b) -> a - b);
+                hm.get(key).addAll(list);
+            }
+        }
 
-		return result;
-	}
+        for (int i = min; i <= max; i++) {
+            result.add(hm.get(i));
+        }
+
+        return result;
+    }
+
+    class Node {
+        int order;
+        TreeNode node;
+
+        public Node(int order, TreeNode node) {
+            this.order = order;
+            this.node = node;
+        }
+    }
+    
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        if (root == null) {
+            return result;
+        }
+
+        Map<Integer, List<Integer>> tm = new TreeMap<>();
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(new Node(0, root));
+
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+
+            int order = node.order;
+            TreeNode tn = node.node;
+
+            tm.computeIfAbsent(order, x -> new ArrayList<>()).add(tn.val);
+
+            if (tn.left != null) {
+                queue.offer(new Node(order - 1, tn.left));
+            }
+
+            if (tn.right != null) {
+                queue.offer(new Node(order + 1, tn.right));
+            }
+        }
+        
+        result.addAll(tm.values());
+
+        return result;
+    }
 }

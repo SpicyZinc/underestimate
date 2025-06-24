@@ -60,7 +60,7 @@ class LowestCommonAncestorOfDeepestLeaves {
 
         if (leftHeight == rightHeight) {
             return root;
-        } else if (leftHeight > rightHeight) {
+        } else if (leftHeight > rightHeight) { // 左边深 所以求左边
             return lcaDeepestLeaves(root.left);
         } else {
             return lcaDeepestLeaves(root.right);

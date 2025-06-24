@@ -21,47 +21,68 @@ idea: not quite understand dfs()
 
 // Definition for a binary tree node.
 public class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-	TreeNode(int x) { val = x; }
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
 }
 
 class RangeSumOfBST {
-	public int rangeSumBST(TreeNode root, int L, int R) {
-		if (root == null) {
-			return 0;
-		}
+    // 2025
+    // general but slower than DFS for BST
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int sum = 0;
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node.val >= low && node.val <= high) {
+                sum += node.val;
+            }
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
 
-		if (root.val > R) {
-			return rangeSumBST(root.left, L, R);
-		}
-		if (root.val < L) {
-			return rangeSumBST(root.right, L, R);
-		}
+        return sum;
+    }
+    public int rangeSumBST(TreeNode root, int L, int R) {
+        if (root == null) {
+            return 0;
+        }
 
-		return root.val + rangeSumBST(root.left, L, R) + rangeSumBST(root.right, L, R);
-	}
+        if (root.val > R) {
+            return rangeSumBST(root.left, L, R);
+        }
+        if (root.val < L) {
+            return rangeSumBST(root.right, L, R);
+        }
 
-	// method 2
-	int sum = 0;
-	public int rangeSumBST(TreeNode root, int L, int R) {
-		dfs(root, L, R);
+        return root.val + rangeSumBST(root.left, L, R) + rangeSumBST(root.right, L, R);
+    }
 
-		return sum;
-	}
+    // method 2
+    int sum = 0;
+    public int rangeSumBST(TreeNode root, int L, int R) {
+        dfs(root, L, R);
 
-	public void dfs(TreeNode node, int L, int R) {
-		if (node != null) {
-			if (L <= node.val && node.val <= R) {
-				sum += node.val;
-			}
-			if (node.val > L) {
-				dfs(node.left, L, R);
-			}
-			if (node.val < R) {
-				dfs(node.right, L, R);
-			}
-		}
-	}
+        return sum;
+    }
+
+    public void dfs(TreeNode node, int L, int R) {
+        if (node != null) {
+            if (L <= node.val && node.val <= R) {
+                sum += node.val;
+            }
+            if (node.val > L) {
+                dfs(node.left, L, R);
+            }
+            if (node.val < R) {
+                dfs(node.right, L, R);
+            }
+        }
+    }
 }

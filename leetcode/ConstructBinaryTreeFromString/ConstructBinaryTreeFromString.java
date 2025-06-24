@@ -15,7 +15,6 @@ Output: return the tree root node representing the following tree:
     2     6
    / \   / 
   3   1 5   
- 
 
 Note:
 There will only be '(', ')', '-' and '0' ~ '9' in the input string.
@@ -27,69 +26,69 @@ note, recursion pass in A()() format, substring position matter
 https://discuss.leetcode.com/topic/82572/java-recursive-solution
 */
 class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-	TreeNode(int x) { val = x; }
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
 
-	@Override
-	public String toString() {
-		String res = "";
-		if (this.left != null) {
-			res += this.left.toString();
-		}
-		res += this.val;
-		if (this.right != null) {
-			res += this.right.toString();
-		}
-		return res;
-	}
+    @Override
+    public String toString() {
+        String res = "";
+        if (this.left != null) {
+            res += this.left.toString();
+        }
+        res += this.val;
+        if (this.right != null) {
+            res += this.right.toString();
+        }
+        return res;
+    }
 }
 
 public class ConstructBinaryTreeFromString {
-	public static void main(String[] args) {
-		ConstructBinaryTreeFromString eg = new ConstructBinaryTreeFromString();
-		TreeNode result = eg.str2tree("4(2(3)(1))(6(5))");
-		System.out.println(result.toString());
-	}
+    public static void main(String[] args) {
+        ConstructBinaryTreeFromString eg = new ConstructBinaryTreeFromString();
+        TreeNode result = eg.str2tree("4(2(3)(1))(6(5))");
+        System.out.println(result.toString());
+    }
 
-	public TreeNode str2tree(String s) {
-		if (s.length() == 0 || s == null) {
-			return null;
-		}
+    public TreeNode str2tree(String s) {
+        if (s.length() == 0 || s == null) {
+            return null;
+        }
 
-		int start = s.indexOf("(");
-		int val = start == -1 ? Integer.parseInt(s) : Integer.parseInt(s.substring(0, start));
-		TreeNode root = new TreeNode(val);
-		if (start == -1) {
-			return root;
-		}
+        int start = s.indexOf("(");
+        int val = start == -1 ? Integer.parseInt(s) : Integer.parseInt(s.substring(0, start));
+        TreeNode root = new TreeNode(val);
+        if (start == -1) {
+            return root;
+        }
         
         int cnt = 1;
-		for (int i = start + 1; i < s.length(); i++) {
-			char c = s.charAt(i);
-			if (c == '(') {
+        for (int i = start + 1; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
                 cnt++;
-			} else if (c == ')') {
+            } else if (c == ')') {
                 cnt--;
-			}
+            }
 
-			if (cnt == 0) {
-				String left = s.substring(start + 1, i);
-				String right = "";
-				if (i + 2 < s.length() - 1) {
-					right = s.substring(i + 2, s.length() - 1);
-				}
-				TreeNode leftPart = str2tree(left);
-				TreeNode rightPart = str2tree(right);
+            if (cnt == 0) {
+                String left = s.substring(start + 1, i);
+                String right = "";
+                if (i + 2 < s.length() - 1) {
+                    right = s.substring(i + 2, s.length() - 1);
+                }
+                TreeNode leftPart = str2tree(left);
+                TreeNode rightPart = str2tree(right);
 
-				root.left = leftPart;
-				root.right = rightPart;
+                root.left = leftPart;
+                root.right = rightPart;
 
-				break;
-			}
-		}
+                break;
+            }
+        }
 
-		return root;
-	}
+        return root;
+    }
 }

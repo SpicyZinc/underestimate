@@ -20,7 +20,6 @@ Explanation: The Largest BST Subtree in this case is the highlighted one.
 Follow up:
 Can you figure out ways to solve it with O(n) time complexity?
 
-
 idea:
 https://www.cnblogs.com/grandyang/p/5188938.html
 不断check root, root.left, root.right 是否是bst
@@ -40,7 +39,7 @@ class LargestBSTSubtree {
         if (root == null) {
             return 0;
         }
-        if (isValidBST(root,  nteger.MIN_VALUE, Integer.MAX_VALUE)) {
+        if (isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE)) {
             return count(root);
         }
 

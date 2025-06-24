@@ -54,7 +54,7 @@ public class MinimumWindowSubstring {
             if (hm.containsKey(c)) {
                 hm.put(c, hm.get(c) - 1);
             }
-            
+
             while (doesIncludeT(hm)) {
                 if (right - left + 1 < minLen) {
                     minLen = right - left + 1;

@@ -1,7 +1,6 @@
 
 import java.util.*;
 
-
 class AllPathsInAMatrix {
     public static void main(String[] args) {
         AllPathsInAMatrix eg = new AllPathsInAMatrix();
@@ -63,8 +62,8 @@ class AllPathsInAMatrix {
                 dfs(grid, nextX, nextY, visited, path, result);
             }
 
-            visited[i][j] = false;
             path.remove(path.size() - 1);
+            visited[i][j] = false;
         }
     }
 }

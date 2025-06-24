@@ -25,103 +25,103 @@ https://www.cnblogs.com/grandyang/p/4464476.html
 */
 
 class LongestPalindromicSubstring {
-	public static void main(String[] args) {
-		LongestPalindromicSubstring eg = new LongestPalindromicSubstring();
-		String s = "abracadabra";
-		System.out.println(s + " isPalindromicString == " + eg.isPalindromic(s));
-		System.out.println(s + " getLongestPalindromicSubstring == " + eg.longestPalindrome(s));
-	}
+    public static void main(String[] args) {
+        LongestPalindromicSubstring eg = new LongestPalindromicSubstring();
+        String s = "abracadabra";
+        System.out.println(s + " isPalindromicString == " + eg.isPalindromic(s));
+        System.out.println(s + " getLongestPalindromicSubstring == " + eg.longestPalindrome(s));
+    }
 
-	// dp
-	// Thu May 16 23:42:37 2019
-	public String longestPalindrome(String s) {
-		String result = "";
+    // dp
+    // Thu May 16 23:42:37 2019
+    public String longestPalindrome(String s) {
+        String result = "";
 
-		if (s == null || s.length() == 0) {
-			return result;
-		}
+        if (s == null || s.length() == 0) {
+            return result;
+        }
 
-		int maxLength = 0;
-		int size = s.length();
-		boolean[][] palindromic = new boolean[size][size];
+        int maxLength = 0;
+        int size = s.length();
+        boolean[][] palindromic = new boolean[size][size];
 
-		for (int j = 0; j < size; j++) {
-			// note, equal
-			for (int i = 0; i <= j; i++) {
-				// 前一层里的两边的 char 相等
-				if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i + 1][j - 1]) ) {
-					palindromic[i][j] = true;
-					if (maxLength < j - i + 1) {
-						maxLength = j - i + 1;
-						result = s.substring(i, j + 1);
-					}
-				}
-			}
-		}
+        for (int j = 0; j < size; j++) {
+            // note, equal
+            for (int i = 0; i <= j; i++) {
+                // 前一层里的两边的 char 相等
+                if ( s.charAt(i) == s.charAt(j) && (j - i <= 2 || palindromic[i + 1][j - 1]) ) {
+                    palindromic[i][j] = true;
+                    if (maxLength < j - i + 1) {
+                        maxLength = j - i + 1;
+                        result = s.substring(i, j + 1);
+                    }
+                }
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public String longestPalindrome(String s) {
-		int size = s.length();
-	
-		int maxLen = 0;
-		String longest = "";
-		
-		for (int i = 0; i < size + size - 1; i++) {
-			// note, a good way to handle parity
-			int left = i / 2;
-			int right = (i + 1) / 2;
-			
-			String longestPalindrome = getLongestPalindrome(s, left, right);
-			
-			if (longestPalindrome.length() > maxLen) {
-				maxLen = longestPalindrome.length();
-				longest = longestPalindrome;
-			}
-		}
-		
-		return longest;
-	}
-	
-	public String getLongestPalindrome(String s, int left, int right) {
-		while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-			left--;
-			right++;
-		}
-		
-		return s.substring(left + 1, right);
-	}
+    public String longestPalindrome(String s) {
+        int size = s.length();
+    
+        int maxLen = 0;
+        String longest = "";
+        
+        for (int i = 0; i < size + size - 1; i++) {
+            // note, a good way to handle parity
+            int left = i / 2;
+            int right = (i + 1) / 2;
+            
+            String longestPalindrome = getLongestPalindrome(s, left, right);
+            
+            if (longestPalindrome.length() > maxLen) {
+                maxLen = longestPalindrome.length();
+                longest = longestPalindrome;
+            }
+        }
+        
+        return longest;
+    }
+    
+    public String getLongestPalindrome(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
 
-	// direct method
-	public String longestPalindrome(String s) {
-		String palindrome = "";
-		int maxSubPalindromeLength = 0;
+        return s.substring(left + 1, right);
+    }
 
-		for (int i = 0; i < s.length(); i++) {
-			for (int j = i + 1; j <= s.length(); j++) {
-				String temp = s.substring(i, j);
-				int len = j - i + 1;
-				if (isPalindromic(temp)) {
-					if (len > maxSubPalindromeLength) {
-						palindrome = temp;
-						maxSubPalindromeLength = len;
-					}
-				}
-			}
-		}
+    // direct method
+    public String longestPalindrome(String s) {
+        String palindrome = "";
+        int maxSubPalindromeLength = 0;
 
-		return palindrome;
-	}
-	
-	private boolean isPalindromic(String s) {
-		int size = s.length();
-		for (int i = 0; i < size / 2; i++) {
-			if (s.charAt(i) != s.charAt(size - 1 - i)) {
-				return false;
-			}
-		}
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i + 1; j <= s.length(); j++) {
+                String temp = s.substring(i, j);
+                int len = j - i + 1;
+                if (isPalindromic(temp)) {
+                    if (len > maxSubPalindromeLength) {
+                        palindrome = temp;
+                        maxSubPalindromeLength = len;
+                    }
+                }
+            }
+        }
 
-		return true;
-	}
+        return palindrome;
+    }
+    
+    private boolean isPalindromic(String s) {
+        int size = s.length();
+        for (int i = 0; i < size / 2; i++) {
+            if (s.charAt(i) != s.charAt(size - 1 - i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

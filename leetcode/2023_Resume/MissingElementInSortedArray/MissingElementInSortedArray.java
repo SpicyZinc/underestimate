@@ -84,7 +84,7 @@ class MissingElementInSortedArray {
                 right = mid - 1;
             }
         }
-
+        // pointer 来到了right
         return nums[right] + k - (nums[right] - offset - (right - 0));
         // return right + offset + k;
     }

@@ -83,7 +83,7 @@ class SparseVector {
     }
 }
 
-// if not using map, when data is too big, hashmap is not efficient
+// if using map, when data is too big, hashmap is not efficient
 class SparseVector {
     List<int[]> list;
     SparseVector(int[] nums) {

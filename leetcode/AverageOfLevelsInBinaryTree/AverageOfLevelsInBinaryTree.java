@@ -17,7 +17,6 @@ The range of node's value is in the range of 32-bit signed integer.
 
 idea:
 variation of level print binary tree
-
 */
 
 class TreeNode {
@@ -32,25 +31,26 @@ public class AverageOfLevelsInBinaryTree {
     public List<Double> averageOfLevels(TreeNode root) {
         List<Double> result = new ArrayList<Double>();
         if (root == null) {
-        	return result;
+            return result;
         }
+
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         queue.offer(root);
         long sum = 0;
         while (!queue.isEmpty()) {
-        	int size = queue.size();
-        	sum = 0;
-        	for (int i = 0; i < size; i++) {
-        		TreeNode node = queue.poll();
-        		sum += node.val;
-        		if (node.left != null) {
-        			queue.offer(node.left);
-        		}
-        		if (node.right != null) {
-        			queue.offer(node.right);
-        		}
-        	}
-        	result.add( (double) sum / size );
+            int size = queue.size();
+            sum = 0;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            result.add( (double) sum / size );
         }
 
         return result;

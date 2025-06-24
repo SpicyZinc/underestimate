@@ -37,65 +37,65 @@ idea: BFS
 */
 
 class SwimInRisingWater {
-	class Pair {
-		int index;
-		int height;
+    class Pair {
+        int index;
+        int height;
 
-		public Pair(int index, int height) {
-			this.index = index;
-			this.height = height;
-		}
-	}
+        public Pair(int index, int height) {
+            this.index = index;
+            this.height = height;
+        }
+    }
 
-	public int swimInWater(int[][] grid) {
+    public int swimInWater(int[][] grid) {
         if (grid.length == 0 || grid == null) {
             return 0;
         }
         
-		int result = 0;
-		int n = grid.length;
-		Set<Integer> visited = new HashSet<Integer>();
+        int result = 0;
+        int n = grid.length;
+        Set<Integer> visited = new HashSet<Integer>();
 
-		int[][] directions = new int[][] {
-			{0, -1}, {-1, 0}, {0, 1}, {1, 0}
-		};
+        int[][] directions = new int[][] {
+            {0, -1}, {-1, 0}, {0, 1}, {1, 0}
+        };
 
-		PriorityQueue<Pair> pq = new PriorityQueue<Pair>(new Comparator<Pair>() {
-			@Override
-			public int compare(Pair a, Pair b) {
-				return a.height - b.height;
-			}
-		});
+        PriorityQueue<Pair> pq = new PriorityQueue<Pair>(new Comparator<Pair>() {
+            @Override
+            public int compare(Pair a, Pair b) {
+                return a.height - b.height;
+            }
+        });
 
-		pq.add(new Pair(0, grid[0][0]));
+        pq.add(new Pair(0, grid[0][0]));
         visited.add(0);
 
-		while (!pq.isEmpty()) {
-			Pair lowest = pq.poll();
-			int i = lowest.index / n;
-			int j = lowest.index % n;
-			int height = lowest.height;
+        while (!pq.isEmpty()) {
+            Pair lowest = pq.poll();
+            int i = lowest.index / n;
+            int j = lowest.index % n;
+            int height = lowest.height;
 
-			result = Math.max(result, height);
-			// if reached bottom right, return
-			if (i == n - 1 && j == n - 1) {
-				return result;
-			}
+            result = Math.max(result, height);
+            // if reached bottom right, return
+            if (i == n - 1 && j == n - 1) {
+                return result;
+            }
 
-			for (int[] dir : directions) {
-				int nextX = i + dir[0];
-				int nextY = j + dir[1];
-				int idx = nextX * n + nextY;
+            for (int[] dir : directions) {
+                int nextX = i + dir[0];
+                int nextY = j + dir[1];
+                int idx = nextX * n + nextY;
 
-				if (nextX < 0 || nextX >= n || nextY < 0 || nextY >= n || visited.contains(idx)) {
-					continue;
-				}
-				pq.add(new Pair(idx, grid[nextX][nextY]));
-				// add idx to visited set
-				visited.add(idx);
-			}
-		}
+                if (nextX < 0 || nextX >= n || nextY < 0 || nextY >= n || visited.contains(idx)) {
+                    continue;
+                }
+                pq.add(new Pair(idx, grid[nextX][nextY]));
+                // add idx to visited set
+                visited.add(idx);
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

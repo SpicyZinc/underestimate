@@ -11,15 +11,15 @@ Attention: == has higher priority than &
 
 public class PowerOfTwo {
     public boolean isPowerOfTwo(int n) {
-		if ( n <= 0 ) {
-			return false;
-		}
+        if ( n <= 0 ) {
+            return false;
+        }
 
-		return (n & (n - 1)) == 0;
+        return (n & (n - 1)) == 0;
     }
 
     // general method
-	public boolean isPowerOfTwo(int n) {
+    public boolean isPowerOfTwo(int n) {
         return isPowerOfBase(n, 2);
     }
     

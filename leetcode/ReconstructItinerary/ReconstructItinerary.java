@@ -28,91 +28,91 @@ import java.util.*;
 
 public class ReconstructItinerary {
 
-	public static final String START = "JFK";
+    public static final String START = "JFK";
 
-	public static void main(String[] args) {
-		ReconstructItinerary eg = new ReconstructItinerary();
-		String[][] ticketsOne = {{"MUC", "LHR"}, {"JFK", "MUC"}, {"SFO", "SJC"}, {"LHR", "SFO"}};
-		String[][] ticketsTwo = {{"JFK", "SFO"}, {"JFK","ATL"}, {"SFO","ATL"}, {"ATL","JFK"}, {"ATL","SFO"}};
+    public static void main(String[] args) {
+        ReconstructItinerary eg = new ReconstructItinerary();
+        String[][] ticketsOne = {{"MUC", "LHR"}, {"JFK", "MUC"}, {"SFO", "SJC"}, {"LHR", "SFO"}};
+        String[][] ticketsTwo = {{"JFK", "SFO"}, {"JFK","ATL"}, {"SFO","ATL"}, {"ATL","JFK"}, {"ATL","SFO"}};
 
-		List<String> resultOne = eg.findItinerary(ticketsOne);
-		List<String> resultTwo = eg.findItinerary(ticketsTwo);
+        List<String> resultOne = eg.findItinerary(ticketsOne);
+        List<String> resultTwo = eg.findItinerary(ticketsTwo);
 
-		System.out.println(resultOne);
-		System.out.println(resultTwo);
-	}
-	// Sun Apr 28 18:25:49 2019
-	public List<String> findItinerary(List<List<String>> tickets) {
-		List<String> result = new ArrayList<>();
-		Map<String, PriorityQueue<String>> hm = new HashMap<>();
+        System.out.println(resultOne);
+        System.out.println(resultTwo);
+    }
+    // Sun Apr 28 18:25:49 2019
+    public List<String> findItinerary(List<List<String>> tickets) {
+        List<String> result = new ArrayList<>();
+        Map<String, PriorityQueue<String>> hm = new HashMap<>();
 
-		if (tickets == null  || tickets.size() == 0) {
-			return result;
-		}
+        if (tickets == null || tickets.size() == 0) {
+            return result;
+        }
 
-		for (List<String> ticket : tickets) {
-			String from = ticket.get(0);
-			String to = ticket.get(1);
+        for (List<String> ticket : tickets) {
+            String from = ticket.get(0);
+            String to = ticket.get(1);
 
-			hm.computeIfAbsent(from, p -> new PriorityQueue<String>()).offer(to);
-		}
+            hm.computeIfAbsent(from, p -> new PriorityQueue<String>()).offer(to);
+        }
 
-		dfs(START, hm, result);
+        dfs(START, hm, result);
 
-		return result;
-	}
+        return result;
+    }
 
-	public void dfs(String start, Map<String, PriorityQueue<String>> hm, List<String> result) {
-		while (hm.containsKey(start) && !hm.get(start).isEmpty()) {
-			// note, have to poll()
-			dfs(hm.get(start).poll(), hm, result);
-		}
+    public void dfs(String start, Map<String, PriorityQueue<String>> hm, List<String> result) {
+        while (hm.containsKey(start) && !hm.get(start).isEmpty()) {
+            // note, have to poll()
+            dfs(hm.get(start).poll(), hm, result);
+        }
 
-		result.add(0, start);
-	}
+        result.add(0, start);
+    }
 
-	public List<String> findItinerary(String[][] tickets) {
-		LinkedList<String> result = new LinkedList<String>();
-		Map<String, PriorityQueue<String>> map = new HashMap<String, PriorityQueue<String>>();
+    public List<String> findItinerary(String[][] tickets) {
+        LinkedList<String> result = new LinkedList<String>();
+        Map<String, PriorityQueue<String>> map = new HashMap<String, PriorityQueue<String>>();
 
-		if (tickets == null || tickets.length == 0) {
-			return result;
-		}
+        if (tickets == null || tickets.length == 0) {
+            return result;
+        }
 
-		for (String[] ticket : tickets) {
-			String from = ticket[0];
-			String to = ticket[1];
+        for (String[] ticket : tickets) {
+            String from = ticket[0];
+            String to = ticket[1];
 
-			if (!map.containsKey(from)) {
-				map.put(from, new PriorityQueue<String>());
-			}
-			map.get(from).offer(to);
-		}
+            if (!map.containsKey(from)) {
+                map.put(from, new PriorityQueue<String>());
+            }
+            map.get(from).offer(to);
+        }
 
-		dfs(START, map, result);
+        dfs(START, map, result);
 
-		return result;
-	}
+        return result;
+    }
 
-	public void dfs(String start, Map<String, PriorityQueue<String>> map, LinkedList<String> result) {
-		while (map.containsKey(start) && !map.get(start).isEmpty()) {
-			dfs(map.get(start).poll(), map, result);
-		}
-		result.addFirst(start);
+    public void dfs(String start, Map<String, PriorityQueue<String>> map, LinkedList<String> result) {
+        while (map.containsKey(start) && !map.get(start).isEmpty()) {
+            dfs(map.get(start).poll(), map, result);
+        }
+        result.addFirst(start);
 
-		// can use stack as well, but not very understand this
-		// String now = "JFK";
-		// Stack<String> s = new Stack<String>();
-		// for (int i = 0; i < tickets.length; i++) {
-		//     while (!myMap.containsKey(now) || myMap.get(now).isEmpty()) {
-		//         s.push(now);
-		//         now = ans.remove(ans.size()-1);
-		//     }
-		//     ans.add(now);
-		//     now = myMap.get(now).poll();
-		// }
-		// ans.add(now);
-		// while (!s.isEmpty()) ans.add(s.pop());
-		// return ans;
-	}
+        // can use stack as well, but not very understand this
+        // String now = "JFK";
+        // Stack<String> s = new Stack<String>();
+        // for (int i = 0; i < tickets.length; i++) {
+        //     while (!myMap.containsKey(now) || myMap.get(now).isEmpty()) {
+        //         s.push(now);
+        //         now = ans.remove(ans.size()-1);
+        //     }
+        //     ans.add(now);
+        //     now = myMap.get(now).poll();
+        // }
+        // ans.add(now);
+        // while (!s.isEmpty()) ans.add(s.pop());
+        // return ans;
+    }
 }

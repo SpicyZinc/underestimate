@@ -30,8 +30,8 @@ productOfNumbers.getProduct(2); // return 32. The product of the last 2 numbers 
 
 Constraints:
 0 <= num <= 100
-1 <= k <= 4 * 104
-At most 4 * 104 calls will be made to add and getProduct.
+1 <= k <= 4 * 10^4
+At most 4 * 10^4 calls will be made to add and getProduct.
 The product of the stream at any point in time will fit in a 32-bit integer.
 
 idea:

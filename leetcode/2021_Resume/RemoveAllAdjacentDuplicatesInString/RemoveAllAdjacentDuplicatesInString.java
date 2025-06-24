@@ -20,10 +20,9 @@ s consists of lowercase English letters.
 
 idea: use stack
 2. 直接用 StringBuilder 可以从后面操作
-
 */
-import java.util.*;
 
+import java.util.*;
 
 class RemoveAllAdjacentDuplicatesInString {
     public static void main(String[] args) {

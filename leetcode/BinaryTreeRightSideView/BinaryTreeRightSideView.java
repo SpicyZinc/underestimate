@@ -63,11 +63,11 @@ public class BinaryTreeRightSideView {
         }
 
         if (node.right != null) {
-            dfs(node.right, level  + 1, result);
+            dfs(node.right, level + 1, result);
         }
 
         if (node.left != null) {
-            dfs(node.left, level  + 1, result);
+            dfs(node.left, level + 1, result);
         }
     }
 
@@ -102,7 +102,7 @@ public class BinaryTreeRightSideView {
             return result;
         }
 
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
 
         while (!queue.isEmpty()) {

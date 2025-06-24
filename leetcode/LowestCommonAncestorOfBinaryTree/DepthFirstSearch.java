@@ -7,7 +7,6 @@ import java.util.*;
 public class DepthFirstSearch {
     /** Checks if the specified value exists in the binary <strong class="StrictlyAutoTagBold">tree</strong> */
     public static boolean search( Node node, int value ) {
-
     	// Check if it's an empty <strong class="StrictlyAutoTagBold">tree</strong>.
         if( node == null ) {
             return false;

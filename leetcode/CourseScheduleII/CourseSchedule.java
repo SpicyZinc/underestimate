@@ -50,12 +50,13 @@ public class CourseSchedule {
 
         Queue<Integer> queue = new LinkedList<>();
         // find the starting point
-
+        // add to queue
         for (int i = 0; i < n; i++) {
             if (depending[i] == 0) {
                 queue.add(i);
             }
         }
+
         int[] order = new int[n];
         int index = 0;
         int finishCount = 0;
@@ -70,6 +71,7 @@ public class CourseSchedule {
                 int second = prere[0];
                 
                 if (first == courseWithoutDependencies) {
+                    // 完成一门课的依赖 减掉
                     depending[second]--;
                     if (depending[second] == 0) {
                         queue.add(second);

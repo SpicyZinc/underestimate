@@ -16,49 +16,73 @@ remove it, and return head
 */
 
 class ListNode {
-	int val;
-	ListNode next;
-	ListNode(int x) {
-		val = x;
-		next = null;
-	}
+    int val;
+    ListNode next;
+    ListNode(int x) {
+        val = x;
+        next = null;
+    }
 
-	public void printList(Node aNode){
-		Node current = aNode;
-		while (current != null) {
-			System.out.printf("%d -> ", current.val);
-			current = current.next;
-		}
-		if (current == null) {
-			System.out.print("Null");
-		}
-	}
+    public void printList(Node aNode){
+        Node current = aNode;
+        while (current != null) {
+            System.out.printf("%d -> ", current.val);
+            current = current.next;
+        }
+        if (current == null) {
+            System.out.print("Null");
+        }
+    }
 }
 
 public class RemoveNthNodeFromEndOfList {
-	public static void main(String[] args) {
-		Node head = new Node(1);
-		head.next = new Node(2);
-		head.next.next = new Node(3);
-		head.next.next.next = new Node(4);
-		head.next.next.next.next = new Node(5);
-		head.next.next.next.next.next = new Node(6);
-		
-		head.printList(head);
-		System.out.println();
-		
-		Node newH = remove(head, 6);
-		newH.printList(newH);
-	}
+    public static void main(String[] args) {
+        Node head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.next.next.next = new Node(4);
+        head.next.next.next.next = new Node(5);
+        head.next.next.next.next.next = new Node(6);
+        
+        head.printList(head);
+        System.out.println();
+        
+        Node newH = remove(head, 6);
+        newH.printList(newH);
+    }
+    // 2025
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode fast = dummy;
+        ListNode slow = dummy;
+
+        // Move fast n + 1 steps ahead so slow ends up before the target
+        for (int i = 0; i <= n; i++) {
+            fast = fast.next;
+        }
+
+        // Move both pointers together until fast hits the end
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        // Skip the target node
+        slow.next = slow.next.next;
+
+        return dummy.next;
+    }
 
 
-	public ListNode removeNthFromEnd(ListNode head, int n) {
-		if (n == 0 || head == null) {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if (n == 0 || head == null) {
             return head;
         }
     
         ListNode slow = head;
-		ListNode fast = head;
+        ListNode fast = head;
         // make the slow and fast have n difference gap
         while (n > 0) {
             fast = fast.next;
@@ -79,10 +103,10 @@ public class RemoveNthNodeFromEndOfList {
         slow.next = slow.next.next;
         
         return head;
-	}
+    }
 
-	// self come up resolution
-	public ListNode removeNthFromEnd(ListNode head, int n) {
+    // self come up resolution
+    public ListNode removeNthFromEnd(ListNode head, int n) {
         int index = 0;
         int length = 0;
         ListNode curr = head;

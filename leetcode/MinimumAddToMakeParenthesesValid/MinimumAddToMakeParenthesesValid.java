@@ -41,23 +41,23 @@ after the loop, count in the un-matched characters remaining in the stack.
 */
 
 class MinimumAddToMakeParenthesesValid {
-	public int minAddToMakeValid(String S) {
-		int count = 0;
-		Stack<Character> stack = new Stack<>();
+    public int minAddToMakeValid(String S) {
+        int count = 0;
+        Stack<Character> stack = new Stack<>();
 
-		for (int i = 0; i < S.length(); i++) {
-			char c = S.charAt(i);
+        for (int i = 0; i < S.length(); i++) {
+            char c = S.charAt(i);
 
-			if (c == '(') {
-				stack.push(c);
-			} else if (stack.isEmpty()) {
-				// 缺少matching的 ')'
-				count++;
-			} else {
-				stack.pop();
-			}
-		}
+            if (c == '(') {
+                stack.push(c);
+            } else if (stack.isEmpty()) {
+                // 缺少matching的 ')'
+                count++;
+            } else {
+                stack.pop();
+            }
+        }
 
-		return stack.size() + count;
-	}
+        return stack.size() + count;
+    }
 }

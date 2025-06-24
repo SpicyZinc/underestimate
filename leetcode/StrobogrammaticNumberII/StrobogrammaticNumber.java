@@ -15,91 +15,92 @@ convert string to stringbuilder, pass it to append(), then toString() to recursi
 import java.util.*;
 
 public class StrobogrammaticNumber {
-	public static void main(String[] args) {
-		StrobogrammaticNumber eg = new StrobogrammaticNumber();
-		List<String> result = eg.findStrobogrammatic(4);
-		System.out.println(result);
-	}
-	// 12/26/2018
-	// 应该考虑到 empty string
-	// 1“”1, 6“”9 ...
-	// m < n 能两边加 0
-	public List<String> findStrobogrammatic(int n) {
-		return build(n, n);
-	}
+    public static void main(String[] args) {
+        StrobogrammaticNumber eg = new StrobogrammaticNumber();
+        List<String> result = eg.findStrobogrammatic(4);
+        System.out.println(result);
+    }
+    // 12/26/2018
+    // 应该考虑到 empty string
+    // 1“”1, 6“”9 ...
+    // m < n 能两边加 0
+    public List<String> findStrobogrammatic(int n) {
+        return build(n, n);
+    }
 
-	public List<String> build(int m, int n) {
-		List<String> result = new ArrayList<>();
+    public List<String> build(int m, int n) {
+        List<String> result = new ArrayList<>();
 
-		if (m == 0) {
-			result.add("");
+        if (m == 0) {
+            result.add("");
 
-			return result;
-		}
+            return result;
+        }
 
-		if (m == 1) {
-			result.add("0");
-			result.add("1");
-			result.add("8");
+        if (m == 1) {
+            result.add("0");
+            result.add("1");
+            result.add("8");
 
-			return result;
-		}
+            return result;
+        }
 
-		List<String> list = build(m - 2, n);
+        // why minus 2, because insert one before and one after
+        List<String> list = build(m - 2, n);
 
-		for (String num : list) {
-			if (m < n) {
-				result.add("0" + num + "0");
-			}
+        for (String num : list) {
+            if (m < n) {
+                result.add("0" + num + "0");
+            }
 
-			result.add("1" + num + "1");
-			result.add("6" + num + "9");
-			result.add("8" + num + "8");
-			result.add("9" + num + "6");
-		}
+            result.add("1" + num + "1");
+            result.add("6" + num + "9");
+            result.add("8" + num + "8");
+            result.add("9" + num + "6");
+        }
 
-		return result;
-	}
+        return result;
+    }
 
 
-	public List<String> findStrobogrammatic(int n) {
-		List<String> result = new ArrayList<>();
-		build(n, "", result);
+    public List<String> findStrobogrammatic(int n) {
+        List<String> result = new ArrayList<>();
+        build(n, "", result);
 
-		return result;
-	}
+        return result;
+    }
 
-	public void build(int n, String sNumber, List<String> result) {
-		char[] table = {'0', '1', '8', '6', '9'};
+    public void build(int n, String sNumber, List<String> result) {
+        char[] table = {'0', '1', '8', '6', '9'};
 
-		if (sNumber.length() == n) {
-			result.add(sNumber);
-			return;
-		}
+        if (sNumber.length() == n) {
+            result.add(sNumber);
+            return;
+        }
 
-		boolean isLast = n - sNumber.length() == 1;
+        boolean isLast = n - sNumber.length() == 1;
 
-		for (int i = 0; i < table.length; i++) {
-			char c = table[i];
-			// two cases no need to append c
-			// first character cannot be '0', how to detect? sNumber.length() == 0 && c == '0', n == 1 no need to satisfy these
-			// last character cannot be 6 or 9, because no matching part
-			if ( (sNumber.length() == 0 && c == '0' && n != 1) || isLast && (c == '6' || c == '9') ) {
-				continue;
-			}
-			StringBuilder sb = new StringBuilder(sNumber);
-			append(isLast, c, sb);
-			build(n, sb.toString(), result);
-		}
-	}
-	
-	public void append(boolean isLast, char c, StringBuilder sb) {
-		if (c == '6') {
-			sb.insert(sb.length() / 2, "69");
-		} else if (c == '9') {
-			sb.insert(sb.length() / 2, "96");
-		} else {
-			sb.insert(sb.length() / 2, isLast ? c : "" + c + c);
-		}
-	}
+        for (int i = 0; i < table.length; i++) {
+            char c = table[i];
+            // two cases no need to append c
+            // first character cannot be '0', how to detect? sNumber.length() == 0 && c == '0', n == 1 no need to satisfy these
+            // last character cannot be 6 or 9, because no matching part
+            if ( (sNumber.length() == 0 && c == '0' && n != 1) || isLast && (c == '6' || c == '9') ) {
+                continue;
+            }
+            StringBuilder sb = new StringBuilder(sNumber);
+            append(isLast, c, sb);
+            build(n, sb.toString(), result);
+        }
+    }
+    
+    public void append(boolean isLast, char c, StringBuilder sb) {
+        if (c == '6') {
+            sb.insert(sb.length() / 2, "69");
+        } else if (c == '9') {
+            sb.insert(sb.length() / 2, "96");
+        } else {
+            sb.insert(sb.length() / 2, isLast ? c : "" + c + c);
+        }
+    }
 }

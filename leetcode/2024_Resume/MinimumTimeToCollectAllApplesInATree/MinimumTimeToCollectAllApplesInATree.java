@@ -3,8 +3,8 @@ Given an undirected tree consisting of n vertices numbered from 0 to n-1, which 
 You spend 1 second to walk over one edge of the tree.
 Return the minimum time in seconds you have to spend to collect all apples in the tree, starting at vertex 0 and coming back to this vertex.
 
-The edges of the undirected tree are given in the array edges, where edges[i] = [ai, bi] means that exists an edge connecting the vertices ai and bi. Additionally, there is a boolean array hasApple, where hasApple[i] = true means that vertex i has an apple; otherwise, it does not have any apple.
-
+The edges of the undirected tree are given in the array edges, where edges[i] = [ai, bi] means that exists an edge connecting the vertices ai and bi.
+Additionally, there is a boolean array hasApple, where hasApple[i] = true means that vertex i has an apple; otherwise, it does not have any apple.
 
 Example 1:
 Input: n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]], hasApple = [false,false,true,false,true,true,false]
@@ -28,7 +28,7 @@ edges[i].length == 2
 hasApple.length == n
 
 idea:
-dfs
+dfs graph
 哪里体现出最少时间了?
 description is misleading, no sense of minimum time, just visit all nodes having apple, nodes without apple just time = 0;
 */
@@ -40,7 +40,7 @@ class MinimumTimeToCollectAllApplesInATree {
         // populate the graph
         List<List<Integer>> graph = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            graph.add(new ArrayList<Integer>(0));
+            graph.add(new ArrayList<Integer>());
         }
 
         for (int[] edge : edges) {
@@ -51,24 +51,24 @@ class MinimumTimeToCollectAllApplesInATree {
             graph.get(end).add(start);
         }
 
-        return dfs(graph, visited, hasApple, 0);
+        return dfs(graph, hasApple, visited, 0);
     }
 
-    public int dfs(List<List<Integer>> graph, boolean[] visited, List<Boolean> hasApple, int appleId) {
+    public int dfs(List<List<Integer>> graph, List<Boolean> hasApple, boolean[] visited, int appleId) {
         int time = 0;
         visited[appleId] = true;
 
         List<Integer> neighbors = graph.get(appleId);
         for (int neighbor : neighbors) {
             if (!visited[neighbor]) {
-                time += dfs(graph, visited, hasApple, neighbor);
+                time += dfs(graph, hasApple, visited, neighbor);
             }
         }
         // go back to root
         if (appleId == 0) {
             return time;
         }
-
+        // 一来一回时间两倍
         time += (hasApple.get(appleId) || time > 0) ? 2 : 0;
         return time;
     }

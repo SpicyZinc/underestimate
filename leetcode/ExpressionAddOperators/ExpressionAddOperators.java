@@ -28,6 +28,43 @@ public class ExpressionAddOperators {
             System.out.println(s);
         }
     }
+    // Wed May 22 01:49:08 2024
+    public List<String> addOperators(String num, int target) {
+        List<String> result = new ArrayList<>();
+        dfs(num, target, 0, 0, "", result);
+        return result;
+    }
+    // note, prevOperand, 上一个运算数
+    public void dfs(String s, int target, long current, long prev, String path, List<String> result) {
+        int n = s.length();
+        if (n == 0 && current == target) {
+            result.add(new String(path));
+            return;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            String left = s.substring(0, i);
+            // 一个0行 但是有0开头的不行
+            if (left.length() > 1 && left.charAt(0) == '0') {
+                return;
+            }
+            long currentVal = Long.parseLong(left);
+            String right = s.substring(i);
+
+            if (path.isEmpty()) {
+                // dont forget update path
+                dfs(right, target, currentVal, currentVal, path + left, result);
+            } else {
+                // +
+                dfs(right, target, current + currentVal, currentVal, path + "+" + left, result);
+                // -
+                dfs(right, target, current - currentVal, -currentVal, path + "-" + left, result);
+                // *
+                dfs(right, target, current - prev + prev * currentVal, prev * currentVal, path + "*" + left, result);
+            }
+        }
+    }
+
     // Sat Jul  6 17:01:13 2019
     public List<String> addOperators(String num, int target) {
         List<String> result = new ArrayList<>();

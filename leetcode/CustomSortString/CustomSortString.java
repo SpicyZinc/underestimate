@@ -30,6 +30,37 @@ generate it and then append the remaining
 */
 
 class  CustomSortString {
+    // 2025
+    public String customSortString(String order, String s) {
+        int[] counts = new int[26];
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            counts[c - 'a']++;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < order.length(); i++) {
+            char c = order.charAt(i);
+
+            int times = counts[c - 'a'];
+            for (int j = 0; j < times; j++) {
+                sb.append(c);
+            }
+            // not forget those covered, do not write again
+            counts[c - 'a'] = 0;
+        }
+
+        // for those chars not in order
+        for (char c = 'a'; c <= 'z'; c++) {
+            for (int i = 0; i < counts[c - 'a']; i++) {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
+    }
+
     public String customSortString(String order, String s) {
         // letters[char] = the number of occurrences of 'char' in 'S'.
         int[] letters = new int[26];

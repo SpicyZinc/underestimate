@@ -3,7 +3,7 @@ Given a set of non-overlapping & sorted intervals, insert a new interval into th
 
 idea:
 summarize 3 cases. Whenever there is intersection, update the new interval.
-                            |----currnet----|
+                            |----current----|
 
 case1:  |------new------|
 case2:                                              |------new------|

@@ -54,6 +54,67 @@ class Node {
 }
 
 public class CloneGraph {
+	// Tue May 14 02:05:07 2024
+    public Node cloneGraph(Node node) {
+        if (node == null) {
+            return node;
+        }
+        Map<Node, Node> hm = new HashMap<>();
+        Node cloned = new Node(node.val);
+        hm.put(node, cloned);
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(node);
+
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+            List<Node> neighborsCloned = new ArrayList<>();
+
+            for (Node neighbor : current.neighbors) {
+                Node clonedNeighbor = null;
+                if (hm.containsKey(neighbor)) {
+                    clonedNeighbor = hm.get(neighbor);
+                } else {
+                    queue.offer(neighbor);
+                    clonedNeighbor = new Node(neighbor.val);
+                }
+                neighborsCloned.add(clonedNeighbor);
+
+                hm.put(neighbor, clonedNeighbor);
+            }
+
+            Node currentCloned = hm.get(current);
+            currentCloned.neighbors = neighborsCloned;
+        }
+
+        return cloned;
+    }
+    // Tue May 21 19:11:15 2024
+    public Node cloneGraph(Node node) {
+        Map<Node, Node> hm = new HashMap<>();
+        return dfs(node, hm);
+    }
+
+    public Node dfs(Node node, Map<Node, Node> visited) {
+        if (node == null) {
+            return null;
+        }
+        if (visited.containsKey(node)) {
+            return visited.get(node);
+        }
+        Node cloned = new Node(node.val);
+        visited.put(node, cloned);
+
+        List<Node> neighbors = node.neighbors;
+        List<Node> clonedNeighbors = new ArrayList<>();
+        for (Node neighbor : neighbors) {
+            clonedNeighbors.add(dfs(neighbor, visited));
+        }
+        cloned.neighbors = clonedNeighbors;
+
+        return cloned;
+    }
+
 	// DFS easier
 	// Sun Jun 16 00:58:57 2019
 	public Node cloneGraph(Node node) {

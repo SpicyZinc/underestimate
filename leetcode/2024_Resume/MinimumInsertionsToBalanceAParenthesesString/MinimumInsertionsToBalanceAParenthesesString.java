@@ -10,7 +10,6 @@ You can insert the characters '(' and ')' at any position of the string to balan
 
 Return the minimum number of insertions needed to make s balanced.
 
-
 Example 1:
 Input: s = "(()))"
 Output: 1
@@ -68,7 +67,7 @@ class MinimumInsertionsToBalanceAParenthesesString {
                         openCount--;
                         closeCount++;
                     } else { // else we might have to add both open and close hence adding 2 here
-                      closeCount = closeCount + 2;  
+                        closeCount = closeCount + 2;  
                     }
                 }
             }

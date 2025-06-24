@@ -35,7 +35,7 @@ class ReplaceElementsWithGreatestElementOnRightSide {
         for (int i = size - 1; i >= 0; i--) {
             if (arr[i] > maxSoFar) {
                 int prevMax = maxSoFar;
-                maxSoFar =  arr[i];
+                maxSoFar = arr[i];
                 arr[i] = prevMax;
             } else {
                 arr[i] = maxSoFar;

@@ -40,7 +40,7 @@ public class MergeSortedArray {
                 n--;
             }
         }
-        
+
         while (n >= 1) {
             A[m - 1 + n - 1 + 1] = B[n - 1];
             n--;

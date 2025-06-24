@@ -1,18 +1,20 @@
 /*
-Given a binary tree
-    struct TreeLinkNode {
-		TreeLinkNode *left;
-		TreeLinkNode *right;
-		TreeLinkNode *next;
-    }
+You are given a perfect binary tree where all leaves are on the same level, and every parent has two children.
+The binary tree has the following definition:
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
 
 Populate each next pointer to point to its next right node. 
 If there is no next right node, the next pointer should be set to NULL.
 Initially, all next pointers are set to NULL.
 
 Note:
-    You may only use constant extra space.
-    You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children).
+You may only use constant extra space.
+You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children).
 
 For example,
 Given the following perfect binary tree,
@@ -56,16 +58,15 @@ class TreeLinkNode {
 }
 
 public class PopulateNextRightPointer {
-    // self recent
-    public void connect(TreeLinkNode root) {
-
-        Queue<TreeLinkNode> queue = new LinkedList<>();
+    // Wed May 29 01:23:09 2024
+    public Node connect(Node root) {
+        Queue<Node> queue = new LinkedList<>();
         queue.offer(root);
-        
+
         while (!queue.isEmpty()) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
-                TreeLinkNode node = queue.poll();
+                Node node = queue.poll();
                 if (node == null) {
                     continue;
                 }
@@ -74,11 +75,12 @@ public class PopulateNextRightPointer {
                 } else {
                     node.next = queue.peek();
                 }
-                
+
                 queue.add(node.left);
                 queue.add(node.right);
             }
         }
+        return root;
     }
 
 	// method 1
@@ -195,31 +197,28 @@ public class PopulateNextRightPointer {
         TreeLinkNode current = root;
         TreeLinkNode nextLevelHead = null;
         TreeLinkNode nextLevelEnd = null;
-        
+
         while (current != null) {
             if (current.left != null) {
                 if (nextLevelHead == null) {
                     nextLevelHead = current.left;
                     nextLevelEnd = nextLevelHead;
-                }
-                else {
+                } else {
                     nextLevelEnd.next = current.left;
                     nextLevelEnd = nextLevelEnd.next;
-                
                 }
             }
-            
+
             if (current.right != null) {
                 if (nextLevelHead == null) {
                    nextLevelHead = current.right;
                    nextLevelEnd = nextLevelHead;
-                }
-                else {
+                } else {
                    nextLevelEnd.next = current.right;
                    nextLevelEnd = nextLevelEnd.next;
                 }
             }
-            
+
             current = current.next;
             if (current == null) {
                 current = nextLevelHead;

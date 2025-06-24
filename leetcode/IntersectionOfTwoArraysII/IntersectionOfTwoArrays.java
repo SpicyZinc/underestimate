@@ -21,34 +21,34 @@ idea:
 
 public class IntersectionOfTwoArrays {
     public int[] intersect(int[] nums1, int[] nums2) {
-    	if (nums1.length == 0 || nums1 == null || nums2.length == 0 || nums2 == null) {
-    		return new int[0];
-    	}
+        if (nums1.length == 0 || nums1 == null || nums2.length == 0 || nums2 == null) {
+            return new int[0];
+        }
 
-    	Arrays.sort(nums1);
-    	Arrays.sort(nums2);
-    	List<Integer> intersection = new ArrayList<Integer>();
-    	
-    	int p1 = 0;
-    	int p2 = 0;
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        List<Integer> intersection = new ArrayList<>();
+        
+        int p1 = 0;
+        int p2 = 0;
 
-    	while (p1 < nums1.length && p2 < nums2.length) {
-    		if (nums1[p1] == nums2[p2]) {
-    			intersection.add(nums1[p1]);
-    			p1++;
-    			p2++;
-    		} else if (nums1[p1] < nums2[p2]) {
-    			p1++;
-    		} else {
-    			p2++;
-    		}
-    	}
+        while (p1 < nums1.length && p2 < nums2.length) {
+            if (nums1[p1] == nums2[p2]) {
+                intersection.add(nums1[p1]);
+                p1++;
+                p2++;
+            } else if (nums1[p1] < nums2[p2]) {
+                p1++;
+            } else {
+                p2++;
+            }
+        }
 
-    	int[] result = new int[intersection.size()];
-    	for (int i = 0; i < result.length; i++) {
-    		result[i] = intersection.get(i);
-    	}
+        int[] result = new int[intersection.size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = intersection.get(i);
+        }
 
-    	return result;
-	}
+        return result;
+    }
 }

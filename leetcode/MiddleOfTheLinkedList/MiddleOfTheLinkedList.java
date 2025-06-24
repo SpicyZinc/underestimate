@@ -22,21 +22,38 @@ slow and fast pointer
 */
 
 class ListNode {
-	int val;
-	ListNode next;
-	ListNode(int x) { val = x; }
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
 }
 
 class MiddleOfTheLinkedList {
-	public ListNode middleNode(ListNode head) {
-		ListNode slow = head;
-		ListNode fast = head;
+    // 2025
+    public ListNode middleNode(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
 
-		while (fast != null && fast.next != null) {
-			slow = slow.next;
-			fast = fast.next.next;
-		}
+        ListNode slow = head;
+        ListNode fast = head;
 
-		return slow;
-	}
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
+    }
+
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
+    }
 }

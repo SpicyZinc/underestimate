@@ -12,6 +12,9 @@ Output: 1
 Constraints:
 1 <= arr.length <= 10^4
 0 <= arr[i] <= 10^5
+
+idea:
+binary search to right most
 */
 
 class ElementAppearingMoreThan25InSortedArray {
@@ -73,5 +76,24 @@ class ElementAppearingMoreThan25InSortedArray {
         }
 
         return lastIdx;
+    }
+
+    public int binarySearchForRightMost(int A[], int target) {
+        int l = 0;
+        int r = A.length - 1;
+        int idx = -1;
+
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+
+            if (A[m] > target) {
+                r = m - 1;
+            } else {
+                idx = m;
+                l = m + 1;
+            }
+        }
+
+        return idx;
     }
 }

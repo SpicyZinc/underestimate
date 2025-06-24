@@ -38,6 +38,24 @@ public class KthSmallestElementInSortedMatrix {
         int eighthSmallest = eg.kthSmallest(matrix, 8);
         System.out.println(eighthSmallest);
     }
+    // Wed May 29 00:04:24 2024
+    public int kthSmallest(int[][] matrix, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+
+        for (int[] row : matrix) {
+            for (int val : row) {
+                pq.offer(val);
+                if (pq.size() > k) {
+                    pq.poll();
+                }
+            }
+        }
+
+        System.out.println(pq);
+
+        return pq.peek();
+    }
+
     // Sat Feb 27 22:27:41 2021
     public int kthSmallest(int[][] matrix, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
@@ -64,7 +82,7 @@ public class KthSmallestElementInSortedMatrix {
         int m = matrix.length;
         int n = matrix[0].length;
         int left = matrix[0][0];
-        int right = matrix[m-1][n-1];
+        int right = matrix[m - 1][n - 1];
         int ans = -1;
 
         while (left <= right) {
@@ -89,7 +107,7 @@ public class KthSmallestElementInSortedMatrix {
                 // decrease column until matrix[r][c] <= x    
                 c--;
             }
-
+            // 加一层 加 这些个column count
             cnt += (c + 1);
         }
 

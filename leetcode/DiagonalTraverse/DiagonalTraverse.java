@@ -33,94 +33,94 @@ i = Math.min(sum, m - 1);
 j = Math.min(sum, n - 1);
 */
 public class DiagonalTraverse {
-	// [0,0] -> [0,1],[1,0] -> [2,0],[1,1],[0,2] -> [1,2],[2,1] -> [2,2]
-	// 找规律 注意 利用sum parity to find 交替变换的方向
+    // [0,0] -> [0,1],[1,0] -> [2,0],[1,1],[0,2] -> [1,2],[2,1] -> [2,2]
+    // 找规律 注意 利用sum parity to find 交替变换的方向
 
-	public int[] findDiagonalOrder(int[][] matrix) {
-		if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-			return new int[0];
-		}
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return new int[0];
+        }
 
-		int m = matrix.length;
-		int n = matrix[0].length;
+        int m = matrix.length;
+        int n = matrix[0].length;
 
-		int[] diagnoal = new int[m * n];
-		int idx = 0;
+        int[] diagnoal = new int[m * n];
+        int idx = 0;
 
-		for (int sum = 0; sum <= m - 1 + n - 1; sum++) {
-			int i, j;
+        for (int sum = 0; sum <= m - 1 + n - 1; sum++) {
+            int i, j;
 
-			if (sum % 2 == 0) {
-				i = Math.min(sum, m - 1);
-				j = sum - i;
+            if (sum % 2 == 0) {
+                i = Math.min(sum, m - 1);
+                j = sum - i;
 
-				while (i >= 0 && j < n) {
-					diagnoal[idx++] = matrix[i--][j++];
-				}
-			} else {
-				j = Math.min(sum, n - 1);
-				i = sum - j;
+                while (i >= 0 && j < n) {
+                    diagnoal[idx++] = matrix[i--][j++];
+                }
+            } else {
+                j = Math.min(sum, n - 1);
+                i = sum - j;
 
-				while (j >= 0 && i < m) {
-					diagnoal[idx++] = matrix[i++][j--];
-				}
-			}
-		}
+                while (j >= 0 && i < m) {
+                    diagnoal[idx++] = matrix[i++][j--];
+                }
+            }
+        }
 
-		return diagnoal;
-	}
+        return diagnoal;
+    }
 
-	public int[] findDiagonalOrder(int[][] matrix) {
-		if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-			return new int[0];
-		}
-		
-		int m = matrix.length;
-		int n = matrix[0].length;
-		
-		int[] diagnoal = new int[m * n];
-		int idx = 0;
-		for (int i = 0; i < m + n - 1; i++) {
-			int low = Math.max(0, i - n + 1);
-			int high = Math.min(m - 1, i);
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return new int[0];
+        }
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        int[] diagnoal = new int[m * n];
+        int idx = 0;
+        for (int i = 0; i < m + n - 1; i++) {
+            int low = Math.max(0, i - n + 1);
+            int high = Math.min(m - 1, i);
 
-			if (i % 2 == 0) {
-				for (int j = high; j >= low; j--) {
-					diagnoal[idx++] = matrix[j][i - j];
-				}
-			} else {
-				for (int j = low; j <= high; j++) {
-					diagnoal[idx++] = matrix[j][i - j];   
-				}
-			}
-		}
-		
-		return diagnoal;
-	}
+            if (i % 2 == 0) {
+                for (int j = high; j >= low; j--) {
+                    diagnoal[idx++] = matrix[j][i - j];
+                }
+            } else {
+                for (int j = low; j <= high; j++) {
+                    diagnoal[idx++] = matrix[j][i - j];   
+                }
+            }
+        }
+        
+        return diagnoal;
+    }
 
-	public int[] findDiagonalOrder(int[][] matrix) {
-		if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-			return new int[0];
-		}
-		
-		int m = matrix.length;
-		int n = matrix[0].length;
-		
-		int[] diagnoal = new int[m * n];
-		int idx = 0;
-		for (int k = 0; k < m + n - 1; k++) {
-			int step = 1 - 2 * (k % 2 == 0 ? 1 : 0);
-			int ii = (m - 1) * (k % 2 == 0 ? 1 : 0);
-			int jj = (n - 1) * (k % 2 == 0 ? 1 : 0);
-			for (int i = ii; i >= 0 && i < m; i += step) {
-				for (int j = jj; j >= 0 && j < n; j += step) {
-					if (i + j == k) {
-						diagnoal[idx++] = matrix[i][j];
-					}
-				}
-			}
-		}
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return new int[0];
+        }
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        int[] diagnoal = new int[m * n];
+        int idx = 0;
+        for (int k = 0; k < m + n - 1; k++) {
+            int step = 1 - 2 * (k % 2 == 0 ? 1 : 0);
+            int ii = (m - 1) * (k % 2 == 0 ? 1 : 0);
+            int jj = (n - 1) * (k % 2 == 0 ? 1 : 0);
+            for (int i = ii; i >= 0 && i < m; i += step) {
+                for (int j = jj; j >= 0 && j < n; j += step) {
+                    if (i + j == k) {
+                        diagnoal[idx++] = matrix[i][j];
+                    }
+                }
+            }
+        }
 
-		return diagnoal;
-	}
+        return diagnoal;
+    }
 }

@@ -36,6 +36,10 @@ you simply get the same list of balanced parenthesis but in reverse order!
 
 Because concatenating one character to an immutable String of length N is an O(N) operation
 use a fixed-size char[] and an index variable to replace String
+
+
+O(4^n / n*sqrt(n))
+(2)^2n 每个位置 两种可能 Catalan number
 */
 
 import java.util.*;

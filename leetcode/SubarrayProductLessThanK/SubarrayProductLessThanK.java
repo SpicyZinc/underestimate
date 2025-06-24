@@ -27,31 +27,31 @@ for window (5, 2), when 6 is introduced, it add 3 new subarray: (5, (2, (6)))
 */
 
 class SubarrayProductLessThanK {
-	public static void main(String[] args) {
-		SubarrayProductLessThanK eg = new SubarrayProductLessThanK();
-		int[] nums = {10, 5, 2, 6};
-		int k = 100;
+    public static void main(String[] args) {
+        SubarrayProductLessThanK eg = new SubarrayProductLessThanK();
+        int[] nums = {10, 5, 2, 6};
+        int k = 100;
 
-		int cnt = eg.numSubarrayProductLessThanK(nums, k);
-		System.out.println(cnt);
-	}
+        int cnt = eg.numSubarrayProductLessThanK(nums, k);
+        System.out.println(cnt);
+    }
 
-	public int numSubarrayProductLessThanK(int[] nums, int k) {
-		int cnt = 0;
-		int product = 1;
-		int left = 0;
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        int cnt = 0;
+        int product = 1;
+        int left = 0;
 
-		for (int right = 0; right < nums.length; right++) {
-			product *= nums[right];
+        for (int right = 0; right < nums.length; right++) {
+            product *= nums[right];
 
-			while (right >= left && product >= k) {
-				product /= nums[left];
-				left++;
-			}
+            while (right >= left && product >= k) {
+                product /= nums[left];
+                left++;
+            }
 
-			cnt += right - left + 1;
-		}
+            cnt += right - left + 1;
+        }
 
-		return cnt;
-	}
+        return cnt;
+    }
 }

@@ -46,6 +46,7 @@ public class TopKFrequentElements {
         
         int[] ans = new int[k];
         int pos = 0;
+        // 从后往前 保证了 最frequent
         for (int i = n; i >= 0; i--) {
             if (count[i] != null) {
                 // 比如说 出现过三次的 5 和 7

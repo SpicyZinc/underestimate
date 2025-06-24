@@ -23,15 +23,15 @@ public class DivideTwoIntegers {
         if (dividend == Integer.MIN_VALUE && divisor == -1) {
             return Integer.MAX_VALUE;
         }
-        
+
         long p = Math.abs((long) dividend);
         long q = Math.abs((long) divisor);
-        
+
         int quotient = 0;
-        
+
         while (p >= q) {
             int counter = 0;
-                        
+
             while (p >= (q << counter)) {
                 counter++;
             }

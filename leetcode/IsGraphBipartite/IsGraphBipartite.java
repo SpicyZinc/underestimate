@@ -43,34 +43,34 @@ http://www.cnblogs.com/grandyang/p/8519566.html
 */
 
 class IsGraphBipartite {
-	public boolean isBipartite(int[][] graph) {
-		int size = graph.length;
-		int[] vertexColors = new int[size];
+    public boolean isBipartite(int[][] graph) {
+        int size = graph.length;
+        int[] vertexColors = new int[size];
 
-		for (int i = 0; i < size; i++) {
-			// if not dyed before, dye vertex i
-			if (vertexColors[i] == 0 && !isValidAfterDye(graph, i, 1, vertexColors)) {
-				return false;
-			}
-		}
+        for (int i = 0; i < size; i++) {
+            // if not dyed before, dye vertex i
+            if (vertexColors[i] == 0 && !isValidAfterDye(graph, i, 1, vertexColors)) {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	private boolean isValidAfterDye(int[][] graph, int pos, int colorToDye, int[] vertexColors) {
-		if (vertexColors[pos] != 0) {
-			return vertexColors[pos] == colorToDye;
-		}
+    private boolean isValidAfterDye(int[][] graph, int pos, int colorToDye, int[] vertexColors) {
+        if (vertexColors[pos] != 0) {
+            return vertexColors[pos] == colorToDye;
+        }
 
-		vertexColors[pos] = colorToDye;
+        vertexColors[pos] = colorToDye;
 
-		for (int connected : graph[pos]) {
-			// connected two points dye to different colors
-			if (!isValidAfterDye(graph, connected, -1 * colorToDye, vertexColors)) {
-				return false;
-			}
-		}
+        for (int connected : graph[pos]) {
+            // connected two points dye to different colors
+            if (!isValidAfterDye(graph, connected, -1 * colorToDye, vertexColors)) {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

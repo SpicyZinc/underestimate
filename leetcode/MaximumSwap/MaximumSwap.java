@@ -31,7 +31,7 @@ class MaximumSwap {
 			// for each digit, get right most and greatest digit bigger than it
 			// rightmost, 由 rightmost rightmostPositions 保证
 			// greatest, so starting from 9 由 从 9 开始 保证
-			// bigger then current index, 由 rightmost index > i 保证
+			// bigger than current index, 由 rightmost index > i 保证
 			char current = number.charAt(i);
 			// 这样保证了 在 i 后 最大的一个 比 num.charAt(i)
 			for (int j = 9; j > current - '0'; j--) {

@@ -33,15 +33,15 @@ idea:
 */
 
 class MonotonicArray {
-	public boolean isMonotonic(int[] A) {
-		boolean ascending = true;
-		boolean descending = true;
+    public boolean isMonotonic(int[] A) {
+        boolean ascending = true;
+        boolean descending = true;
 
-		for (int i = 1; i < A.length; i++) {
-			ascending &= A[i - 1] <= A[i];
-			descending &= A[i - 1] >= A[i];
-		}
-		
-		return ascending || descending;
-	}
+        for (int i = 1; i < A.length; i++) {
+            ascending &= A[i - 1] <= A[i];
+            descending &= A[i - 1] >= A[i];
+        }
+
+        return ascending || descending;
+    }
 }

@@ -65,7 +65,7 @@ public class SlidingWindowMaximum {
         if (nums.length == 0 || nums == null) {
             return nums;
         }
-        
+
         int n = nums.length;
         int[] maxs = new int[n - k + 1];
 
@@ -98,20 +98,22 @@ public class SlidingWindowMaximum {
         
         int n = nums.length;
         int[] maxs = new int[n - k + 1];
-        // double end queue stores the indices of values in nums,
-        // and corresponding values are in decreasing order. This way, the head in queue is always the max
+        // double end queue stores the indices of values in nums, and corresponding values are in decreasing order.
+        // This way, the head in queue is always the max
         List<Integer> dequeue = new LinkedList<>();
         for (int i = 0; i < n; i++) {
             // 1. remove left most element from queue so queue size is k
             // i - queue.get(0) + 1 = k so queue.get(0) + k > i
+            // 0+3 = 3 ==k, 要开始剪枝
+            // 保证了第一个就是window的左端
             if (!dequeue.isEmpty() && dequeue.get(0) + k == i) {
                 dequeue.remove(0);
             }
-            // 2. before inserting i into queue, remove indices pointing to value smaller than nums[i] from queue tail
-            // to guarantee descending order
-            while (!dequeue.isEmpty() && nums[dequeue.get(dequeue.size() - 1)] < nums[i]) {
+            // 2. before inserting i into queue, remove indices pointing to value smaller than nums[i] from queue tail to guarantee descending order
+            while (!dequeue.isEmpty() && nums[i] > nums[dequeue.get(dequeue.size() - 1)]) {
                 dequeue.remove(dequeue.size() - 1);
             }
+
             dequeue.add(i);
             // length of sliding window >= k, start collecting max
             if (i + 1 >= k) {
@@ -124,35 +126,27 @@ public class SlidingWindowMaximum {
 
     // priority queue version
     public int[] maxSlidingWindow(int[] nums, int k) {
-        if (nums.length == 0 || nums == null) {
-            return new int[] {};
-        }
-
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer a, Integer b) {
-                return b - a;
-            }
-        });
-
-        int[] result = new int[nums.length - k + 1];
+        int n = nums.length;
+        int[] maxs = new int[n - k + 1];
         int idx = 0;
 
-        for (int i = 0; i < nums.length; i++) {
-            int num = nums[i];
- 
-            if (pq.size() >= k) {
-                pq.remove(nums[i - k]);                
-            }
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
 
-            pq.add(num);
-            // 一定是这里先达到 k
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
             if (pq.size() >= k) {
-                result[idx++] = pq.peek();
+                // 注意是删除的谁
+                // 既不是poll() 也不是最后一个
+                // 而是精准定位到i-k 窗口最左端
+                pq.remove(nums[i - k]);
+            }
+            pq.add(num);
+            if (pq.size() >= k) {
+                maxs[idx++] = pq.peek();
             }
         }
-        
-        return result;
+
+        return maxs;
     }
 
     // direct solution

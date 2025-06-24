@@ -11,7 +11,6 @@ Example 2:
 Input: arr = [1,2,3,4], k = 2
 Output: 6
 Explanation: The missing positive integers are [5,6,7,...]. The 2nd missing positive integer is 6.
- 
 
 Constraints:
 1 <= arr.length <= 1000
@@ -89,6 +88,8 @@ class KthMissingPositiveNumber {
             }
         }
         // The number of integers missing between 0 and right is arr[right] - arr[0] - (right - 0)
+        // k - (arr[right] - offset - (right - 0)) is till right, how many missing
+        // then add by arr[right] will be kth missing number 
         return arr[right] + k - (arr[right] - offset - (right - 0));
     }
 

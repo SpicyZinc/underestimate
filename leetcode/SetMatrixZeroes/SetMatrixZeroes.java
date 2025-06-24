@@ -1,20 +1,30 @@
 /*
 Set Matrix Zeroes
 Given a m x n matrix, if an element is 0, set its entire row and column to 0. 
-Do it in place
-
-some English knowledge, words with 'o', plural format:
-"videos", "tattoos", "kangaroos", "studios", and "zoos"
+Do it in place.
 
 idea:
 The general idea is to use first row and col as storage, 6 for loops
+不费 空间
 
 1. search for zeros in first row and col to determine it's own status
 2. search for zeros in other position to sign the first row and col
 3. set zeroes in other positions according to first col and row
 4. set zeroes for first row and col
+
+利用1st row and column 先存下来最初状态
+然后就是用它们标记
+做完后 再看 最初状态 是不是 第一行和列也要set zero
+
+费空间
+
+1. find all cells which are zeros
+2. loop through these cells
+3. set repetitively whole row or whole column to be zero
+
 */
 public class SetMatrixZeroes {
+	// Fri May 24 16:27:08 2024
     public void setZeroes(int[][] matrix) {
 		int m = matrix.length;
 		int n = matrix[0].length;
@@ -65,18 +75,9 @@ public class SetMatrixZeroes {
 			}
 		}
     }
-}
 
-/*
-self version passed test directly
 
-idea:
-1. find all cells which are zeros
-2. loop through these cells
-3. set repetitively whole row or whole column to be zero
-*/
-public class Solution {
-    public void setZeroes(int[][] matrix) {
+	public void setZeroes(int[][] matrix) {
         int m = matrix.length;
         int n = matrix[0].length;
         List<List<Integer>> positions = new ArrayList<>();

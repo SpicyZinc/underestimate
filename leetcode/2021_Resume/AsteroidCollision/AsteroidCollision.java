@@ -28,7 +28,6 @@ Example 4:
 Input: asteroids = [-2,-1,1,2]
 Output: [-2,-1,1,2]
 Explanation: The -2 and -1 are moving left, while the 1 and 2 are moving right. Asteroids moving the same direction never meet, so no asteroids will meet each other.
- 
 
 Constraints:
 2 <= asteroids.length <= 104
@@ -36,8 +35,7 @@ Constraints:
 asteroids[i] != 0
 
 idea:
-brute force
-
+brute force with stack
 */
 
 class AsteroidCollision {

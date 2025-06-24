@@ -19,7 +19,7 @@ Note:
 You may assume k is always valid, 1 ≤ k ≤ array's length.
 
 idea:
-meta 2024 phone tested
+important meta 2024 phone tested
 
 1. borrow quick sort idea
 2. By default the Priority Queue works as min-Heap, which is min at the top
@@ -29,15 +29,16 @@ meta 2024 phone tested
 import java.util.*;
 
 public class FindKthLargest {
-	public static void main(String[] args) {
-		int[] nums = {4, 2, 6, 5, 3, 9};
-		FindKthLargest eg = new FindKthLargest();
-		// 3rd largest
-		System.out.println(eg.findKthLargest(nums, 3));
-	}
-	// Mon Apr 29 01:33:00 2024
-	// self go deeper to quick sort
-	public int findKthLargest(int[] nums, int k) {
+    public static void main(String[] args) {
+        // int[] nums = {4, 2, 6, 5, 3, 9};
+        int[] nums = {7, 2, 1, 6, 8, 5, 3, 4};
+        FindKthLargest eg = new FindKthLargest();
+        // 3rd largest
+        System.out.println(eg.findKthLargest(nums, 3));
+    }
+    // Mon Apr 29 01:33:00 2024
+    // self go deeper to quick sort
+    public int findKthLargest(int[] nums, int k) {
         return findKth(nums, nums.length - k + 1, 0, nums.length - 1);
     }
 
@@ -60,9 +61,8 @@ public class FindKthLargest {
                 swap(nums, i, j);
             }
         }
-
+        System.out.println("Before swap pivotIdx, j" + Arrays.toString(nums));
         swap(nums, pivotIdx, j);
-
         if (k > j + 1) {
             return findKth(nums, k, j + 1, right);
         } else if (k < j + 1) {
@@ -107,9 +107,9 @@ public class FindKthLargest {
 
         return -1;
     }
-    
-	// Sun Apr  7 03:55:54 2024
-	public int findKthLargest(int[] nums, int k) {
+
+    // Sun Apr  7 03:55:54 2024
+    public int findKthLargest(int[] nums, int k) {
         int n = nums.length;
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         for (int num : nums) {
@@ -122,50 +122,50 @@ public class FindKthLargest {
         return pq.peek();
     }
 
-	// Sun Mar 31 14:24:07 2019
-	public int findKthLargest(int[] nums, int k) {
-		if (k <= 0 || nums.length == 0 || nums == null) {
-			return 0;
-		}
+    // Sun Mar 31 14:24:07 2019
+    public int findKthLargest(int[] nums, int k) {
+        if (k <= 0 || nums.length == 0 || nums == null) {
+            return 0;
+        }
 
-		int n = nums.length;
+        int n = nums.length;
 
-		return findKthSmallest(nums, n - k + 1, 0, n - 1);
-	}
+        return findKthSmallest(nums, n - k + 1, 0, n - 1);
+    }
 
-	public int findKthSmallest(int[] nums, int k, int start, int end) {
-		int pivot = start;
-		int pivotVal = nums[start];
+    public int findKthSmallest(int[] nums, int k, int start, int end) {
+        int pivot = start;
+        int pivotVal = nums[start];
 
-		int i = start;
-		int j = end;
-		
-		while (i <= j) {
-			while (i <= j && nums[i] <= pivotVal) {
-				i++;
-			}
-			while (i <= j && nums[j] >= pivotVal) {
-				j--;
-			}
+        int i = start;
+        int j = end;
+        
+        while (i <= j) {
+            while (i <= j && nums[i] <= pivotVal) {
+                i++;
+            }
+            while (i <= j && nums[j] >= pivotVal) {
+                j--;
+            }
 
-			if (i <= j) {
-				swap(nums, i, j);
-			}
-		}
+            if (i <= j) {
+                swap(nums, i, j);
+            }
+        }
 
-		swap(nums, pivot, j);
+        swap(nums, pivot, j);
 
-		if (k > j + 1) {
-			return findKthSmallest(nums, k, j + 1, end);
-		} else if (k < j + 1) {
-			return findKthSmallest(nums, k, start, j - 1);
-		} else {
-			return nums[j];
-		}
-	}
+        if (k > j + 1) {
+            return findKthSmallest(nums, k, j + 1, end);
+        } else if (k < j + 1) {
+            return findKthSmallest(nums, k, start, j - 1);
+        } else {
+            return nums[j];
+        }
+    }
 
-	// 1. best quick sort
-	public int findKthLargest(int[] nums, int k) {
+    // 1. best quick sort
+    public int findKthLargest(int[] nums, int k) {
         if (k <= 0 || nums.length == 0 || nums == null) {
             return 0;
         }
@@ -207,32 +207,32 @@ public class FindKthLargest {
     }
 
     public int getKth(int[] nums, int k, int start, int end) {
-		int pivot = nums[end];
-		int left = start;
-		int right = end;
+        int pivot = nums[end];
+        int left = start;
+        int right = end;
 
-		while (true) {
-			while (left < right && nums[left] < pivot) {
-				left++;
-			}
-			while (right > left && nums[right] >= pivot) {
-				right--;
-			}
-			if (left == right) {
-				break;
-			}
-			swap(nums, left, right);
-		}
-		swap(nums, left, end);
-	 
-		if (k == left + 1) {
-			return pivot;
-		} else if (k < left + 1) {
-			return getKth(nums, k, start, left - 1);
-		} else {
-			return getKth(nums, k, left + 1, end);
-		}
-	}
+        while (true) {
+            while (left < right && nums[left] < pivot) {
+                left++;
+            }
+            while (right > left && nums[right] >= pivot) {
+                right--;
+            }
+            if (left == right) {
+                break;
+            }
+            swap(nums, left, right);
+        }
+        swap(nums, left, end);
+     
+        if (k == left + 1) {
+            return pivot;
+        } else if (k < left + 1) {
+            return getKth(nums, k, start, left - 1);
+        } else {
+            return getKth(nums, k, left + 1, end);
+        }
+    }
     
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
@@ -240,8 +240,8 @@ public class FindKthLargest {
         nums[j] = temp;
     }
 
-	// 2. priority queue
-	public int findKthLargest(int[] nums, int k) {
+    // 2. priority queue
+    public int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
         for (int val : nums) {
             pq.offer(val);
@@ -251,7 +251,7 @@ public class FindKthLargest {
         }
 
         return pq.peek();
-	}
+    }
     // 3. sort the array first
     public int findKthLargest(int[] nums, int k) {
         Arrays.sort(nums);

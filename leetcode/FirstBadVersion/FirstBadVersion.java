@@ -28,42 +28,42 @@ left + 1 < right
  */
 
 public class FirstBadVersion extends VersionControl {
-	// Mon Jul  1 01:52:38 2019
-	public int firstBadVersion(int n) {
-		int left = 1;
-		int right = n;
-		 
-		while (left < right) {
-			int mid = left + (right - left) / 2;
+    // Mon Jul  1 01:52:38 2019
+    public int firstBadVersion(int n) {
+        int left = 1;
+        int right = n;
+         
+        while (left < right) {
+            int mid = left + (right - left) / 2;
 
-			if (isBadVersion(mid)) {
-				right = mid;
-			} else {
-				left = mid + 1;
-			}
-		}
-		 
-		return left;
-		// return right; both passed
-	}
+            if (isBadVersion(mid)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+         
+        return left;
+        // return right; both passed
+    }
 
-	public int firstBadVersion(int n) {
-		int left = 1;
-		int right = n;
+    public int firstBadVersion(int n) {
+        int left = 1;
+        int right = n;
 
-		while ( left <= right ) {
-			int mid = left + (right - left) / 2;
+        while ( left <= right ) {
+            int mid = left + (right - left) / 2;
 
-			if (isBadVersion(mid)) {
-				if ( !isBadVersion(mid - 1) ) {
-					return mid;
-				}
-				right = mid;
-			} else {
-				left = mid + 1;
-			}
-		}
+            if (isBadVersion(mid)) {
+                if (!isBadVersion(mid - 1)) {
+                    return mid;
+                }
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
 
-		return -1;
-	}
+        return -1;
+    }
 }

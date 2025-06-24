@@ -1,4 +1,3 @@
-
 /*
 idea:
 moves 
@@ -8,6 +7,8 @@ backtrack 用
 first DFS to populate grid
 then BFS to find the shortest path
 
+从中间走?
+come back
 */
 
 /**
@@ -36,15 +37,16 @@ class ShortestPathInAHiddenGrid {
         int sourceY = 500;
         Queue<int[]> queue = new LinkedList<>();
 
-        // Build grid
+        // Build grid, mainly to find destX, destY
         traverse(sourceX, sourceY, visited, master);
 
         if (destX == -1 && destY == -1) {
             return -1;
         }
-
+        // reset visited map
         visited = new boolean[length][length];
-        queue.offer(new int[]{sourceX, sourceY, 0});
+        // 目前走了distance = 0
+        queue.offer(new int[] {sourceX, sourceY, 0});
 
         while (!queue.isEmpty()) {
             int[] node = queue.poll();
@@ -62,7 +64,7 @@ class ShortestPathInAHiddenGrid {
                 }
 
                 visited[r][c] = true;
-                queue.offer(new int[]{r, c, node[2] + 1});
+                queue.offer(new int[] {r, c, node[2] + 1});
             }
 
         }

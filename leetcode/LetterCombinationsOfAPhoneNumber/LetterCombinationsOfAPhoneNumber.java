@@ -21,6 +21,10 @@ sb.deleteCharAt(sb.length() - 1); after append, must delete the just appended 'c
 convert String "23" into char array digit[], level is index of digit[], 
 then get index by converting '2' to 2, use this index to find 3 or 4 letters under this index 2
 use i to walk through the 3 or 4 letters under one index
+
+第一种 点积
+n * 3^n
+n * (3^1 + 3^2 + .. + 3^n)
 */
 
 import java.util.*;
@@ -69,6 +73,7 @@ public class LetterCombinationsOfAPhoneNumber {
                 result[idx++] = product;
             }
         }
+
         return result;
     }
 

@@ -91,7 +91,7 @@ public class SearchInRotatedSortedArray {
     public int search(int[] A, int target) {
         int start = 0;
         int end = A.length - 1;
-        
+
         while (start <= end) {
             int mid = start + (end - start) / 2;
 

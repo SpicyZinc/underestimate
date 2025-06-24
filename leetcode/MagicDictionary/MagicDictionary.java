@@ -60,6 +60,7 @@ class MagicDictionary {
 				}
 			}
 		}
+
 		return false;
     }
 }

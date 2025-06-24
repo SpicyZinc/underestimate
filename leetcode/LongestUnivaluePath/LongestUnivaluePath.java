@@ -43,15 +43,15 @@ similar to consecutive path in tree
 */
 
 class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-	TreeNode(int x) { val = x; }
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
 }
 
-class LongestUnivaluePath {	
-	// 12/03/2018
-	public int longestUnivaluePath(TreeNode root) {
+class LongestUnivaluePath { 
+    // 12/03/2018
+    public int longestUnivaluePath(TreeNode root) {
         int[] max = new int[1];
         edgeLength(root, max);
 
@@ -61,66 +61,65 @@ class LongestUnivaluePath {
     // condition is node.val == node.left.val, then +1
     public int edgeLength(TreeNode node, int[] max) {
         if (node == null) {
-			return 0;
-		}
+            return 0;
+        }
 
         int longestLeft = edgeLength(node.left, max);
         int longestRight = edgeLength(node.right, max);
-        
+
         int leftEdges = 0;
         int rightEdges = 0;
         
         if (node.left != null) {
             if (node.val == node.left.val) {
                 leftEdges = longestLeft + 1;
-            }            
+            }
         }
-        
+
         if (node.right != null) {
             if (node.val == node.right.val) {
                 rightEdges = longestRight + 1;
             }            
         }
-        
+
         max[0] = Math.max(max[0], leftEdges + rightEdges);
         
         return Math.max(leftEdges, rightEdges);
     }
 
+    public int longestUnivaluePath(TreeNode root) {
+        int[] max = new int[1];
+        edgeLength(root, max);
 
-	public int longestUnivaluePath(TreeNode root) {
-		int[] max = new int[1];
-		edgeLength(root, max);
+        return max[0];
+    }
+    // not include node, the longest edge length under 'node'
+    public int edgeLength(TreeNode node, int[] max) {
+        if (node == null) {
+            return 0;
+        }
 
-		return max[0];
-	}
-	// not include node, the longest edge length under 'node'
-	public int edgeLength(TreeNode node, int[] max) {
-		if (node == null) {
-			return 0;
-		}
+        int leftUniValuePathLen = edgeLength(node.left, max);
+        int rightUniValuePathLen = edgeLength(node.right, max);
+        
+        // 一旦不是univalue, 就是0
+        int leftEdges = 0;
+        int rightEdges = 0;
 
-		int leftUniValuePathLen = edgeLength(node.left, max);
-		int rightUniValuePathLen = edgeLength(node.right, max);
-		
-		// 一旦不是univalue, 就是0
-		int leftEdges = 0;
-		int rightEdges = 0;
+        if (node.left != null) {
+            if (node.val == node.left.val) {
+                leftEdges = leftUniValuePathLen + 1;
+            }
+        }
 
-		if (node.left != null) {
-			if (node.val == node.left.val) {
-				leftEdges = leftUniValuePathLen + 1;
-			}
-		}
+        if (node.right != null) {
+            if (node.val == node.right.val) {
+                rightEdges = rightUniValuePathLen + 1;
+            }
+        }
+        // note, this is addition, not Math.max()
+        max[0] = Math.max(max[0], leftEdges + rightEdges);
 
-		if (node.right != null) {
-			if (node.val == node.right.val) {
-				rightEdges = rightUniValuePathLen + 1;
-			}
-		}
-		// note, this is addition, not Math.max()
-		max[0] = Math.max(max[0], leftEdges + rightEdges);
-
-		return Math.max(leftEdges, rightEdges);
-	}
+        return Math.max(leftEdges, rightEdges);
+    }
 }
