@@ -25,6 +25,40 @@ top k, must create the length of nums.length + 1
 */
 
 public class TopKFrequentElements {
+    // 2025
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> hm = new HashMap<>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            hm.put(nums[i], hm.getOrDefault(nums[i], 0) + 1);
+        }
+
+        List<Integer>[] counts = new List[n + 1];
+
+        for (Map.Entry<Integer, Integer> entry : hm.entrySet()) {
+            int num = entry.getKey();
+            int times = entry.getValue();
+
+            counts[times] = counts[times] == null ? new ArrayList<>() : counts[times];
+            counts[times].add(num);
+        }
+
+        int[] result = new int[k];
+        int idx = 0;
+        for (int i = n; i >= 0; i--) {
+            if (counts[i] != null) {
+                for (int j = 0; j < counts[i].size(); j++) {
+                    if (idx >= k) {
+                        break;
+                    }
+                    result[idx++] = counts[i].get(j);
+
+                }
+            }
+        }
+
+        return result;
+    }
     // Tue Apr 30 00:29:19 2024
     public int[] topKFrequent(int[] nums, int k) {
         int n = nums.length;
