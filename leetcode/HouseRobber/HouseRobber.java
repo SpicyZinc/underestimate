@@ -28,6 +28,20 @@ e.g. current even position could be previous even + current even
 or previous odd in between previous even and current even
 */
 public class HouseRobber {
+    // 2025
+    public int rob(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n + 1];
+
+        dp[0] = 0;
+        dp[1] = nums[0];
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i - 1]);
+        }
+
+        return dp[n];
+    }
     // 02/03/2019
     // lintcode version
      public long houseRobber(int[] A) {

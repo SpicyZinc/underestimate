@@ -17,133 +17,169 @@ dfs return List<String> instead of void
 import java.util.*;
 
 public class WordBreak {
-	public static void main(String[] args) {
-		WordBreak eg = new WordBreak();
-		String s = "catsanddog";
-		List<String> dict = new ArrayList<String>();
-		dict.add("cat");
-		dict.add("cats");
-		dict.add("and");
-		dict.add("sand");
-		dict.add("dog");
-		
-		List<String> result = eg.wordBreak(s, dict);
-		for (String sentence : result) {
-			System.out.println(sentence);
-		}
-	}
-	// Sun Jun 16 01:38:40 2019
-	public List<String> wordBreak(String s, List<String> wordDict) {
-		Map<String, List<String>> hm = new HashMap<>();
+    public static void main(String[] args) {
+        WordBreak eg = new WordBreak();
+        String s = "catsanddog";
+        List<String> dict = new ArrayList<String>();
+        dict.add("cat");
+        dict.add("cats");
+        dict.add("and");
+        dict.add("sand");
+        dict.add("dog");
+        
+        List<String> result = eg.wordBreak(s, dict);
+        for (String sentence : result) {
+            System.out.println(sentence);
+        }
+    }
+    //2025
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Map<String, List<String>> hm = new HashMap<>();
+        return dfs(s, wordDict, hm);
+    }
 
-		return dfs(s, wordDict, hm);
-	}
+    public List<String> dfs(String s, List<String> wordDict, Map<String, List<String>> hm ) {
 
-	public List<String> dfs(String s, List<String> wordDict, Map<String, List<String>> hm) {
-		if (hm.containsKey(s)) {
-			return hm.get(s);
-		}
+        if (hm.containsKey(s)) {
+            return hm.get(s);
+        }
 
-		List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<>();
 
-		for (int i = 0; i <= s.length(); i++) {
-			String left = s.substring(0, i);
+        for (int i = 0; i <= s.length(); i++) {
+            String left = s.substring(0, i);
 
-			if (wordDict.contains(left)) {
-				// note, not forget i == s.length()
-				if (i == s.length()) {
-					result.add(left);
-				} else {
-					String right = s.substring(i, s.length());
-					List<String> rightWordBreak = dfs(right, wordDict, hm);
+            if (wordDict.contains(left)) {
+                if (i == s.length()) {
+                    result.add(left);
+                } else {
+                    String remaining = s.substring(i);
+                    List<String> rightWordBreak = dfs(remaining, wordDict, hm);
 
-					for (String path : rightWordBreak) {
-						result.add(left + " " + path);
-					}
-				}
-			}
-		}
+                    for (String path : rightWordBreak) {
+                        result.add(left + " " + path);
+                    }
+                }
+            }
+        }
 
-		hm.put(s, result);
+        hm.put(s, result);
 
-		return result;
-	}
+        return result;
+    }
 
-	// 03/19/2019
-	public List<String> wordBreak(String s, List<String> wordDict) {
-		Map<String, List<String>> hm = new HashMap<>();
-		
-		return dfs(s, wordDict, hm);
-	}
-	
-	public List<String> dfs(String s, List<String> wordDict, Map<String, List<String>> hm) {
-		if (hm.containsKey(s)) {
-			return hm.get(s);
-		}
-		
-		List<String> result = new ArrayList<>();
-		if (s.length() == 0) {
-			return result;
-		}
-		
-		for (int i = 0; i <= s.length(); i++) {
-			String left = s.substring(0, i);
-			
-			if (wordDict.contains(left)) {
-				if (i == s.length()) {
-					result.add(left);
-				} else {
-					String right = s.substring(i);
-					List<String> rightWordBreak = dfs(right, wordDict, hm);
-					for (String path : rightWordBreak) {
-						String newPath = left + " " + path;
-						result.add(newPath);
-					}
-				}
-			}
-		}
-		// memoization to save time
-		hm.put(s, result);
-		
-		return result;
-	}
+    // Sun Jun 16 01:38:40 2019
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Map<String, List<String>> hm = new HashMap<>();
 
-	// self written version, TLE, 31 / 39 test cases passed
-	public List<String> wordBreak(String s, List<String> wordDict) {
-		List<String> result = new ArrayList<String>();
-		if (s == null || s.length() == 0) {
-			return result;
-		}
+        return dfs(s, wordDict, hm);
+    }
 
-		dfs(s, wordDict, new ArrayList<String>(), result);
+    public List<String> dfs(String s, List<String> wordDict, Map<String, List<String>> hm) {
+        if (hm.containsKey(s)) {
+            return hm.get(s);
+        }
 
-		return result;
-	}
-	
-	public void dfs(String s, List<String> dict, List<String> sentence, List<String> result) {
-		if (s.length() == 0) {
-			result.add(convertToString(sentence));
-			return;
-		}
-		
-		for (int i = 0; i <= s.length(); i++) {
-			String left = s.substring(0, i);
+        List<String> result = new ArrayList<>();
 
-			if (dict.contains(left)) {
-				sentence.add(left);
-				dfs(s.substring(i), dict, sentence, result);
-				sentence.remove(sentence.size() - 1);
-			}
-		}
-	}
-	
-	public String convertToString(List<String> list) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < list.size(); i++) {
-			String str = list.get(i) + (i == list.size() - 1 ? "" : " ");
-			sb.append(str);
-		}
+        for (int i = 0; i <= s.length(); i++) {
+            String left = s.substring(0, i);
 
-		return sb.toString();
-	}
+            if (wordDict.contains(left)) {
+                // note, not forget i == s.length()
+                if (i == s.length()) {
+                    result.add(left);
+                } else {
+                    String right = s.substring(i, s.length());
+                    List<String> rightWordBreak = dfs(right, wordDict, hm);
+
+                    for (String path : rightWordBreak) {
+                        result.add(left + " " + path);
+                    }
+                }
+            }
+        }
+
+        hm.put(s, result);
+
+        return result;
+    }
+
+    // 03/19/2019
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Map<String, List<String>> hm = new HashMap<>();
+        
+        return dfs(s, wordDict, hm);
+    }
+    
+    public List<String> dfs(String s, List<String> wordDict, Map<String, List<String>> hm) {
+        if (hm.containsKey(s)) {
+            return hm.get(s);
+        }
+        
+        List<String> result = new ArrayList<>();
+        if (s.length() == 0) {
+            return result;
+        }
+        
+        for (int i = 0; i <= s.length(); i++) {
+            String left = s.substring(0, i);
+            
+            if (wordDict.contains(left)) {
+                if (i == s.length()) {
+                    result.add(left);
+                } else {
+                    String right = s.substring(i);
+                    List<String> rightWordBreak = dfs(right, wordDict, hm);
+                    for (String path : rightWordBreak) {
+                        String newPath = left + " " + path;
+                        result.add(newPath);
+                    }
+                }
+            }
+        }
+        // memoization to save time
+        hm.put(s, result);
+        
+        return result;
+    }
+
+    // self written version, TLE, 31 / 39 test cases passed
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        List<String> result = new ArrayList<String>();
+        if (s == null || s.length() == 0) {
+            return result;
+        }
+
+        dfs(s, wordDict, new ArrayList<String>(), result);
+
+        return result;
+    }
+    
+    public void dfs(String s, List<String> dict, List<String> sentence, List<String> result) {
+        if (s.length() == 0) {
+            result.add(convertToString(sentence));
+            return;
+        }
+        
+        for (int i = 0; i <= s.length(); i++) {
+            String left = s.substring(0, i);
+
+            if (dict.contains(left)) {
+                sentence.add(left);
+                dfs(s.substring(i), dict, sentence, result);
+                sentence.remove(sentence.size() - 1);
+            }
+        }
+    }
+    
+    public String convertToString(List<String> list) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            String str = list.get(i) + (i == list.size() - 1 ? "" : " ");
+            sb.append(str);
+        }
+
+        return sb.toString();
+    }
 }

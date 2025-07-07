@@ -26,85 +26,127 @@ https://www.cnblogs.com/grandyang/p/4539768.html
 */
 
 public class WordLadder {
+    // 2025
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> hs = new HashSet<>(wordList);
+        if (!hs.contains(endWord)) {
+            return 0;
+        }
+
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        int steps = 1;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                String word = queue.poll();
+                char[] chars = word.toCharArray();
+
+                for (int j = 0; j < chars.length; j++) {
+                    char origin = chars[j];
+
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        chars[j] = c;
+                        String nextWord = new String(chars);
+                        if (nextWord.equals(endWord)) {
+                            return steps + 1;
+                        }
+                        if (hs.contains(nextWord)) {
+                            queue.offer(nextWord);
+                            hs.remove(nextWord);
+                        }
+                    }
+
+                    chars[j] = origin;
+                }
+            }
+
+            steps++;
+        }
+
+        return 0;
+    }
     // 03/11/2019
-	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-		// use set to save time when looking up
-		Set<String> hs = new HashSet<>();
-		for (String word : wordList) {
-			hs.add(word);
-		}
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // use set to save time when looking up
+        Set<String> hs = new HashSet<>();
+        for (String word : wordList) {
+            hs.add(word);
+        }
 
-		Set<String> wordsReached = new HashSet<>();
-		wordsReached.add(beginWord);
-		int distance = 1;
+        Set<String> wordsReached = new HashSet<>();
+        wordsReached.add(beginWord);
+        int distance = 1;
 
-		while (!wordsReached.contains(endWord)) {
-			Set<String> wordsToReach = new HashSet<>();
+        while (!wordsReached.contains(endWord)) {
+            Set<String> wordsToReach = new HashSet<>();
 
-			for (String wordReached : wordsReached) {
-				for (int i = 0; i < wordReached.length(); i++) {
-					char ch = wordReached.charAt(i);
-					for (char c = 'a'; c <= 'z'; c++) {
-						String possibleWord = wordReached.substring(0, i) + c + wordReached.substring(i + 1);
+            for (String wordReached : wordsReached) {
+                for (int i = 0; i < wordReached.length(); i++) {
+                    char ch = wordReached.charAt(i);
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        String possibleWord = wordReached.substring(0, i) + c + wordReached.substring(i + 1);
 
-						if (hs.contains(possibleWord)) {
-							wordsToReach.add(possibleWord);
-							hs.remove(possibleWord);
-						}
-					}
-				}
-			}
-			// if no wordsToReach generated, meaning no word ladder path found
-			if (wordsToReach.size() == 0) {
-				return 0;
-			}
+                        if (hs.contains(possibleWord)) {
+                            wordsToReach.add(possibleWord);
+                            hs.remove(possibleWord);
+                        }
+                    }
+                }
+            }
+            // if no wordsToReach generated, meaning no word ladder path found
+            if (wordsToReach.size() == 0) {
+                return 0;
+            }
 
-			wordsReached = wordsToReach;
-			distance += 1;
-		}
+            wordsReached = wordsToReach;
+            distance += 1;
+        }
 
-		return distance;
-	}
+        return distance;
+    }
     // 03/10/2019
     // 01/10/2019
-	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-		Set<String> hs = new HashSet<>();
-		for (String word : wordList) {
-			hs.add(word);
-		}
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> hs = new HashSet<>();
+        for (String word : wordList) {
+            hs.add(word);
+        }
 
-		Set<String> wordsReached = new HashSet<>();
-		wordsReached.add(beginWord);
-		int distance = 1;
+        Set<String> wordsReached = new HashSet<>();
+        wordsReached.add(beginWord);
+        int distance = 1;
 
-		while (!wordsReached.contains(endWord)) {
-			Set<String> wordsToReach = new HashSet<>();
+        while (!wordsReached.contains(endWord)) {
+            Set<String> wordsToReach = new HashSet<>();
 
-			for (String wordReached : wordsReached) {
-				for (int i = 0; i < wordReached.length(); i++) {
-					for (char c = 'a'; c <= 'z'; c++) {
-						String next = wordReached.substring(0, i) + c + wordReached.substring(i + 1);
-						if (hs.contains(next)) {
-							wordsToReach.add(next);
-							hs.remove(next);
-						}
-					}
-				}
-			}
-			if (wordsToReach.size() == 0) {
-				return 0;
-			}
+            for (String wordReached : wordsReached) {
+                for (int i = 0; i < wordReached.length(); i++) {
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        String next = wordReached.substring(0, i) + c + wordReached.substring(i + 1);
+                        if (hs.contains(next)) {
+                            wordsToReach.add(next);
+                            hs.remove(next);
+                        }
+                    }
+                }
+            }
+            if (wordsToReach.size() == 0) {
+                return 0;
+            }
 
-			distance++;
-			wordsReached = wordsToReach;
-		}
+            distance++;
+            wordsReached = wordsToReach;
+        }
 
-		return distance;
-	}
+        return distance;
+    }
 
-	// method 1, easy to understand
-	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-		Set<String> dict = new HashSet<String>();
+    // method 1, easy to understand
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> dict = new HashSet<String>();
         for (String word : wordList) {
             dict.add(word);
         }
@@ -141,5 +183,5 @@ public class WordLadder {
         }
         
         return distance;
-	}
+    }
 }

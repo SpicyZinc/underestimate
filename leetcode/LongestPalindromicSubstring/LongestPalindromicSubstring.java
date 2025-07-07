@@ -31,6 +31,36 @@ class LongestPalindromicSubstring {
         System.out.println(s + " isPalindromicString == " + eg.isPalindromic(s));
         System.out.println(s + " getLongestPalindromicSubstring == " + eg.longestPalindrome(s));
     }
+    // 2025
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        String result = "";
+
+        for (int i = 0; i < n + n - 1; i++) {
+            int left = i / 2;
+            int right = (i + 1) / 2;
+
+            String ss = getPalindrom(s, left, right);
+            if (ss.length() > result.length()) {
+                result = ss;
+            }
+        }
+
+        return result;
+    }
+
+    public String getPalindrom(String s, int i, int j) {
+        while (i >= 0 && j <= s.length()-1) {
+            if (s.charAt(i) == s.charAt(j)) {
+                i--;
+                j++;
+            } else {
+                break;
+            }
+        }
+
+        return s.substring(i + 1, j);
+    }
 
     // dp
     // Thu May 16 23:42:37 2019

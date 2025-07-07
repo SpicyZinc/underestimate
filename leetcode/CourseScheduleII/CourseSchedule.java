@@ -37,6 +37,53 @@ loop self-built graph
 */
 
 public class CourseSchedule {
+    // 2025
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int n = numCourses;
+        int[] depending = new int[n];
+
+        for (int[] pre : prerequisites) {
+            int toFinish = pre[0];
+            int dependOn = pre[1];
+            depending[toFinish]++;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (depending[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        List<Integer> list = new ArrayList<>();
+        int finishedCount = 0;
+
+        while (!queue.isEmpty()) {
+            int finished = queue.poll();
+            list.add(finished);
+            finishedCount++;
+
+
+            for (int[] pre : prerequisites) {
+                int toFinish = pre[0];
+                int dependOn = pre[1];
+                
+                if (dependOn == finished) {
+                    depending[toFinish]--;
+                    if (depending[toFinish] == 0) {
+                        queue.add(toFinish);
+                    }
+                }
+            }
+        }
+
+        int[] orders = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            orders[i] = list.get(i);
+        }
+
+        return finishedCount == n ? orders : new int[0];
+    }
     // Thu Feb 23 23:05:59 2023 prepare for eBay
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         int n = numCourses;
@@ -45,6 +92,7 @@ public class CourseSchedule {
         for (int[] prere : prerequisites) {
             // int first = prere[1];
             int second = prere[0];
+            // depending to finish a course i, how many needed is the value
             depending[second]++;
         }
 

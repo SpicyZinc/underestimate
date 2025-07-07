@@ -18,6 +18,62 @@ public class ValidParentheses {
         boolean result = eg.isValid("()");
         System.out.println(result);
     }
+    // 2025
+    public boolean isValid(String s) {
+        int n = s.length();
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+
+            if (c == '[' || c == '(' || c == '{') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                } else {
+                    if (c == ']' && stack.peek() == '[' ||
+                    c == ')' && stack.peek() == '(' ||
+                    c == '}' && stack.peek() == '{'
+                    ) {
+                        stack.pop();
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return stack.isEmpty();
+    }
+    // 2025
+    public boolean isValid(String s) {
+        int n = s.length();
+        Stack<Character> stack = new Stack<>();
+        int openCount = 0;
+
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+
+            if (c == '[' || c == '(' || c == '{') {
+                stack.push(c);
+                openCount++;
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                } else {
+                    if (c == ']' && stack.peek() == '[' ||
+                    c == ')' && stack.peek() == '(' ||
+                    c == '}' && stack.peek() == '{'
+                    ) {
+                        stack.pop();
+                    }
+                }
+            }
+        }
+
+        return openCount * 2 == n && stack.isEmpty();
+    }
     // Mon Apr 10 13:38:37 2023
     public boolean isValid(String s) {
         Map<Character, Character> hm = new HashMap<>();

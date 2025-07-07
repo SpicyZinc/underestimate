@@ -81,7 +81,7 @@ public class FindAllAnagramsInAString {
         for (int i = 0; i <= s.length() - len; i++) {
             String str = s.substring(i, i + len);
             String normalizedStr = normalize(str);
-            
+
             if (normalizedStr.equals(normalized)) {
                 list.add(i);
             }

@@ -25,6 +25,24 @@ don't forget the empty one []
 */
 
 public class Subsets {
+    // 2025
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        // Dont forget this base case
+        result.add(new ArrayList<>());
+        dfs(nums, 0, new ArrayList<>(), result);
+
+        return result;
+    }
+
+    public void dfs(int[] nums, int pos, List<Integer> path, List<List<Integer>> result) {
+        for (int i = pos; i < nums.length; i++) {
+            path.add(nums[i]);
+            result.add(new ArrayList<>(path));
+            dfs(nums, i + 1, path, result);
+            path.remove(path.size() - 1);
+        }
+    }
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         dfs(result, new ArrayList<Integer>(), nums, 0);

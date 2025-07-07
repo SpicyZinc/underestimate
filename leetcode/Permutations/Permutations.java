@@ -39,6 +39,37 @@ public class Permutations {
             System.out.println(path.toString());
         }
     }
+    // 2025
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+
+        dfs(nums, 0, result);
+        return result;
+    }
+
+    public void dfs(int[] nums, int pos, List<List<Integer>> result) {
+        if (pos == nums.length - 1) {
+            List<Integer> path = new ArrayList<>();
+            for (int num : nums) {
+                path.add(num);
+            }
+            result.add(path);
+            return;
+        }
+
+        for (int i = pos; i < nums.length; i++) {
+            swap(nums, pos, i);
+            dfs(nums, pos + 1, result);
+            swap(nums, pos, i);
+        }
+    }
+
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
     // correct method
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
@@ -50,24 +81,24 @@ public class Permutations {
     // 是通过 swap() 来实现 permute 不断地 (for loop) 把 所有数字 换到某个位置 对剩余的数字继续做同样的事
     public void dfs(int[] nums, int pos, List<List<Integer>> result) {
         int size = nums.length;
-        
+
         if (pos == size - 1) {
             List<Integer> path = new ArrayList<>();
             for (int num : nums) {
                 path.add(num);
             }
             result.add(path);
-            
+
             return;
         }
-        
+
         for (int i = pos; i < size; i++) {
             swap(nums, pos, i);
             dfs(nums, pos + 1, result);
             swap(nums, pos, i);
         }
     }
-    
+
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
         nums[i] = nums[j];

@@ -29,6 +29,7 @@ public class LongestIncreasingSubsequence {
         System.out.println(result);
     }
     // 02/03/2019
+    // longest palindrome similar
     public int longestIncreasingSubsequence(int[] nums) {
         if (nums.length == 0 || nums == null) {
             return 0;
