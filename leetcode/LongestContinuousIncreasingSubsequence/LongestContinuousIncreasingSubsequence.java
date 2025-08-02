@@ -20,20 +20,40 @@ idea:
 */
 
 class LongestContinuousIncreasingSubsequence {
-	public int findLengthOfLCIS(int[] nums) {
-		int n = nums.length;
-		int maxLen = 0;
-		int len = 0;
+    // 2025
+    public int findLengthOfLCIS(int[] nums) {
+        int n = nums.length;
+        int maxLen = 0;
+        int len = 0;
+        int i = 0;
 
-		for (int i = 0; i < n; i++) {
-			if (i == 0 || nums[i - 1] < nums[i]) {
-				len++;
-				maxLen = Math.max(maxLen, len);
-			} else {
-				len = 1;
-			}
-		}
+        while (i < n) {
+            if (i == 0 || nums[i - 1] < nums[i]) {
+                len++;
+                maxLen = Math.max(maxLen, len);
+            } else {
+                len = 1;
+            }
+            i++;
+        }
+        
+        return maxLen;
+    }
 
-		return maxLen;
-	}
+    public int findLengthOfLCIS(int[] nums) {
+        int n = nums.length;
+        int maxLen = 0;
+        int len = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (i == 0 || nums[i - 1] < nums[i]) {
+                len++;
+                maxLen = Math.max(maxLen, len);
+            } else {
+                len = 1;
+            }
+        }
+
+        return maxLen;
+    }
 }

@@ -18,6 +18,37 @@ addLast()
 */ 
 
 public class MovingAverage {
+    // 2025
+    int left = 0;
+    int right = 0;
+    int leftValue = 0;
+
+    int[] list;
+    // real time counter
+    int count = 0;
+
+    int sum = 0;
+
+    public MovingAverage(int size) {
+        this.list = new int[size];
+    }
+    
+    public double next(int val) {
+        int size = list.length;
+        if (count >= size) {
+            sum -= list[left];
+            left = (left + 1) % size;
+            count--;
+        }
+
+        sum += val;
+        list[right] = val;
+        right = (right + 1) % size;
+        count++;
+        // note, real count, not the size
+        return sum * 1.0 / count;
+    }
+
     // Tue May 14 21:51:20 2024
     int head = 0;
     int tail = 0;

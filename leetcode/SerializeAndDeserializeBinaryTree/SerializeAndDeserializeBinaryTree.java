@@ -76,6 +76,51 @@ public class SerializeAndDeserializeBinaryTree {
         t.print();
         System.out.println();
     }
+    //2025
+    String delimiter = ",";
+    String empty = "#";
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        
+        return sb.toString();
+
+    }
+    
+    public void serialize(TreeNode node, StringBuilder sb) {
+        if (node == null) {
+            sb.append(empty).append(delimiter);
+            return;
+        }
+        
+        sb.append(node.val).append(delimiter);
+
+        serialize(node.left, sb)        ;
+        serialize(node.right, sb)        ;
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] matches = data.split(delimiter);
+        
+        List<String> nodes = new LinkedList<>();
+        nodes.addAll(Arrays.asList(matches));
+        return deserialize(nodes);
+    }
+    
+    public TreeNode deserialize(List<String> nodes) {
+        String val = nodes.remove(0);
+        if (val.equals(empty)) {
+            return null;
+        } else {
+            TreeNode root = new TreeNode(Integer.parseInt(val));
+            root.left = deserialize(nodes);
+            root.right = deserialize(nodes);
+            
+            return root;
+        }
+    }
     // Sun Apr 28 23:45:17 2019
     String empty = "#";
     String delimiter = ",";

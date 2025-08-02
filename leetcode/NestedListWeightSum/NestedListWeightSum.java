@@ -16,9 +16,9 @@ idea:
 1. recursion
 2. iteration
 queue is used
-	two queues
-	one queue to keep each NestedInteger
-	one queue to keep depth for each NestedInteger
+    two queues
+    one queue to keep each NestedInteger
+    one queue to keep depth for each NestedInteger
 */
 
 // This is the interface that allows for creating nested lists.
@@ -49,58 +49,78 @@ public interface NestedInteger {
 }
 
 public class NestedListWeightSum {
-	// method 1
-	public int depthSum(List<NestedInteger> nestedList) {
-		return dfs(nestedList, 1);
-	}
+    // 2025
+    public int depthSum(List<NestedInteger> nestedList) {
+        return depthSum(nestedList, 1);
+    }
 
-	public int dfs(List<NestedInteger> nestedList, int depth) {
-		if (nestedList == null || nestedList.size() == 0) {
-			return 0;
-		}
+    public int depthSum(List<NestedInteger> nestedList, int depth) {
+        int sum = 0;
+        if (nestedList == null || nestedList.size() == 0) {
+            return sum;
+        }
+        for (NestedInteger ni : nestedList) {
+            if (ni.isInteger()) {
+                sum += ni.getInteger() * depth;
+            } else {
+                sum += depthSum(ni.getList(), depth + 1);
+            }
+        }
 
-		int sum = 0;
-		for (NestedInteger ni : nestedList) {
-			if (ni.isInteger()) {
-				sum += ni.getInteger() * depth;
-			} else {
-				sum += dfs(ni.getList(), depth + 1);
-			}
-		}
+        return sum;
+    }
+    // method 1
+    public int depthSum(List<NestedInteger> nestedList) {
+        return dfs(nestedList, 1);
+    }
 
-		return sum;
-	}
+    public int dfs(List<NestedInteger> nestedList, int depth) {
+        if (nestedList == null || nestedList.size() == 0) {
+            return 0;
+        }
 
-	// method 2
-	public int depthSum(List<NestedInteger> nestedList) {
-		int sum = 0;
+        int sum = 0;
+        for (NestedInteger ni : nestedList) {
+            if (ni.isInteger()) {
+                sum += ni.getInteger() * depth;
+            } else {
+                sum += dfs(ni.getList(), depth + 1);
+            }
+        }
 
-		Queue<NestedInteger> niQueue = new LinkedList<NestedInteger>();
-		Queue<Integer> depthQueue = new LinkedList<Integer>();
+        return sum;
+    }
 
-		for (NestedInteger ni : nestedList) {
-			niQueue.offer(ni);
-			// in beginning, depth is 1
-			// then gradually add +1
-			depthQueue.offer(1);
-		}
+    // method 2
+    public int depthSum(List<NestedInteger> nestedList) {
+        int sum = 0;
 
-		while (!niQueue.isEmpty()) {
-			// make sure each NestedInteger (if Integer) is associated correct depth
-			// have poll() at the same time
-			NestedInteger current = niQueue.poll();
-			int depth = depthQueue.poll();
+        Queue<NestedInteger> niQueue = new LinkedList<NestedInteger>();
+        Queue<Integer> depthQueue = new LinkedList<Integer>();
 
-			if (current.isInteger()) {
-				sum += current.getInteger() * depth;
-			} else {
-				for (NestedInteger ni : current.getList()) {
-					niQueue.offer(ni);
-					depthQueue.offer(depth + 1);
-				}
-			}
-		}
+        for (NestedInteger ni : nestedList) {
+            niQueue.offer(ni);
+            // in beginning, depth is 1
+            // then gradually add +1
+            depthQueue.offer(1);
+        }
 
-		return sum;
-	}
+        while (!niQueue.isEmpty()) {
+            // make sure each NestedInteger (if Integer) is associated correct depth
+            // have poll() at the same time
+            NestedInteger current = niQueue.poll();
+            int depth = depthQueue.poll();
+
+            if (current.isInteger()) {
+                sum += current.getInteger() * depth;
+            } else {
+                for (NestedInteger ni : current.getList()) {
+                    niQueue.offer(ni);
+                    depthQueue.offer(depth + 1);
+                }
+            }
+        }
+
+        return sum;
+    }
 }

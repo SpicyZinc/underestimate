@@ -48,6 +48,37 @@ public class ValidWordAbbreviation {
         abbr = "a2e";
         System.out.println(s + ", " + abbr + ", correct abbr? == " + eg.validWordAbbreviation(s, abbr));
     }
+    // 2025
+    public boolean validWordAbbreviation(String word, String abbr) {
+        int m = word.length();
+        int n = abbr.length();
+
+        int i = 0;
+        int j = 0;
+
+        while (i < m && j < n) {
+            if (Character.isDigit(abbr.charAt(j))) {
+                if (abbr.charAt(j) == '0') {
+                    return false;
+                }
+                int count = 0;
+                while (j < n && Character.isDigit(abbr.charAt(j))) {
+                    count = count * 10 + abbr.charAt(j) - '0';
+                    j++;
+                }
+                i += count;
+            } else {
+                if (word.charAt(i) == abbr.charAt(j)) {
+                    i++;
+                    j++;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return i == m && j == n;
+    }
     // Tue May 14 00:47:00 2024
     public boolean validWordAbbreviation(String word, String abbr) {
         int n = word.length();
@@ -89,7 +120,7 @@ public class ValidWordAbbreviation {
         if (abbr.length() > word.length()) {
             return false;
         }
-        
+
         int i = 0;
         int j = 0;
 

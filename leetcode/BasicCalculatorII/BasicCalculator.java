@@ -30,6 +30,67 @@ public class BasicCalculator {
         String s = "3+2*2";
         int result = bc.calculate(s);
     }
+    // 2025
+    public int calculate(String s) {
+        Stack<Integer> stack = new Stack<>();
+        char prevOperator = '+';
+
+        int i = 0;
+        int n = s.length();
+
+        int result  = 0;
+
+        int num = 0;
+        while (i < n) {
+            char c = s.charAt(i);
+
+            if (Character.isDigit(c)) {
+                num = num * 10 + c - '0';
+            }
+
+            if (isOperator(c) || i == n - 1) {
+                switch (prevOperator) {
+                    case '+':
+                        stack.push(num);
+                        break;
+                    
+                    case '-':
+                        stack.push(-num);
+                        break;
+
+                    case '*': {
+                        int first = stack.pop();
+                        stack.push(first * num);
+                        break;
+                    }
+
+                    case '/': {
+                        int first = stack.pop();
+                        stack.push(first / num);
+                        break;
+                    }
+                    
+                    default:
+                        break;
+                }
+
+                prevOperator = c;
+                num = 0;
+            }
+            i++;
+        }
+
+        while (!stack.isEmpty()) {
+            result += stack.pop();
+        }
+
+        return result;
+    }
+
+    public boolean isOperator(char c) {
+        String s = "+-*/";
+        return s.indexOf(c) != -1;
+    }
     // Wed May  8 22:14:40 2019
     public int calculate(String s) {
         int n = s.length();

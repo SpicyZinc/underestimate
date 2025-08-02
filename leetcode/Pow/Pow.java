@@ -44,6 +44,34 @@ public class Pow {
         System.out.println("power(2, 4) == " + myPow(2, 4));
         System.out.println("power(0, 1) == " + myPow(0, 1));
     }
+    // 2025
+    public double myPow(double x, int n) {
+        if (x == 1 || x == 0) {
+            return x;
+        }
+        if (x == -1) {
+            return n % 2 == 0 ? 1 : -1;
+        }
+        if (n == 0) {
+            return 1.0;
+        }
+
+        if (x > 1 && n == Integer.MIN_VALUE) {
+            return 0.0;
+        }
+
+        if (n < 0) {
+            x = 1 / x;
+            n = -n;
+        }
+
+        double half = myPow(x, n / 2);
+        if (n % 2 == 0) {
+            return half * half;
+        } else {
+            return half * half * x;
+        }
+    }
 
     // Sun Mar 31 18:39:51 2024
     // the new way to pass the test, old way not working

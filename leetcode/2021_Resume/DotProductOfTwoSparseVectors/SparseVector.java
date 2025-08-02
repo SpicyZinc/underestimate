@@ -35,6 +35,46 @@ use index-value map to store non-zero values
 
 // naive method
 class SparseVector{
+    // 2025
+    List<int[]> list = new ArrayList<>();
+
+    SparseVector(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            // this improves time complexity a lot
+            if (nums[i] != 0) {
+                int[] item = new int[] {i, nums[i]};
+                list.add(item);
+            }
+        }
+    }
+    
+    // Return the dotProduct of two sparse vectors
+    public int dotProduct(SparseVector vec) {
+        List<int[]> l1 = list;
+        List<int[]> l2 = vec.list;
+
+        int i = 0;
+        int j = 0;
+
+        int result = 0;
+
+        while (i < l1.size() && j < l2.size()) {
+            int[] a = l1.get(i);
+            int[] b = l2.get(j);
+            if (a[0] < b[0]) {
+                i++;
+            } else if (a[0] > b[0]) {
+                j++;
+            } else {
+                result += a[1] * b[1];
+                i++;
+                j++;
+            }
+        }
+
+        return result;
+    }
+
     int[] list;
     SparseVector(int[] nums) {
         list = new int[nums.length];

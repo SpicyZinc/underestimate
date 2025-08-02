@@ -44,6 +44,31 @@ https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discus
 */
 
 class LowestCommonAncestorOfABinaryTree {
+    // 2025
+    public Node lowestCommonAncestor(Node p, Node q) {
+        List<Node> path = findPath(q);
+        
+        while (p != null) {
+            if (path.contains(p)) {
+                return p;
+            }
+            p = p.parent;
+        }
+        
+        return p;
+    }
+    
+    public List<Node> findPath(Node node) {
+        List<Node> path = new ArrayList<>();
+
+        while (node != null) {
+            path.add(node);
+            node = node.parent;
+        }
+        
+        return path;
+    }
+
     public Node lowestCommonAncestor(Node p, Node q) {
         List<Node> path = findPath(p);
         while (q != null) {
@@ -52,6 +77,7 @@ class LowestCommonAncestorOfABinaryTree {
                     return q;
                 }
             }
+            // because 这是找parent 所以node = node.parent
             q = q.parent;
         }
 

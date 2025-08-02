@@ -26,10 +26,73 @@ use visited to mark all connected elements
 in dfs() check if visited, if, skip
 so all not visited 说明被以前某个起始点通过dfs都visit了
 所以能dfs 几次就是几个group
-
+very same to the connected islands
 */
 
 class SimilarStringGroups {
+    // 2025
+    public int numSimilarGroups(String[] strs) {
+        int n = strs.length;
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (isSimilar(strs[i], strs[j])) {
+                    graph.get(i).add(j);
+                    graph.get(j).add(i);
+                }
+            }
+        }
+
+        int count = 0;        
+        boolean[] visited = new boolean[n];
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                dfs(graph, visited, i);
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public void dfs(List<List<Integer>> graph, boolean[] visited, int node) {
+        if (visited[node]) {
+            return;
+        }
+
+        visited[node] = true;
+        for (int next : graph.get(node)) {
+            if (node != next && !visited[next]) {
+                dfs(graph, visited, next);
+            }
+        }
+    }
+
+    public boolean isSimilar(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+
+        if (s.equals(t)) {
+            return true;
+        }
+
+        int diff = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != t.charAt(i)) {
+                diff++;
+            }
+        }
+
+        return diff <= 2;
+    }
+
     public int numSimilarGroups(String[] A) {
         int n = A.length;
         List<List<Integer>> group = new ArrayList<>();
@@ -76,9 +139,12 @@ class SimilarStringGroups {
     // almost the same as meta string, buddy string
     public boolean isSimilar(String word1, String word2) {
         int diff = 0;
-        for (int i = 0; i < word1.length(); ++i)
-            if (word1.charAt(i) != word2.charAt(i))
+        for (int i = 0; i < word1.length(); i++) {
+            if (word1.charAt(i) != word2.charAt(i)) {
                 diff++;
+            }
+        }
+
         return diff <= 2;
     }
 }

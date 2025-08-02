@@ -23,41 +23,43 @@ nums is sorted in non-decreasing order.
 idea:
 binary search
 binary find the 1st occurrence index of the target
+find leftMost
 */
 
 class CheckIfANumberIsMajorityElementInASortedArray {
+    public boolean isMajorityElement(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+
+        int n = nums.length;
+        int first = binarySearchLeftmost(nums, target);
+
+        // If target is not found or not enough space for majority
+        if (first == -1 || first + n / 2 >= n) return false;
+
+        return nums[first + n / 2] == target;
+    }
+
     // binary find the 1st occurrence index of the target
-    private int binarySearchFirstIndex(int[] nums, int target) {
-        if (nums == null || nums.length == 0)
+    private int binarySearchLeftmost(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
             return -1;
-        
-        int low = 0;
-        int high = nums.length - 1;
-        
-        while (low < high) {
-            int mid = low + (high - low)/2;
-            
-            if (nums[mid] >= target)
-                high = mid;
-            else
-                low = mid+1;
         }
         
-        return nums[low] == target ? low : -1;
-    }
-    
-    
-    public boolean isMajorityElement(int[] nums, int target) {
-        if (nums == null || nums.length == 0)
-            return false;
-        
-        int first = binarySearchFirstIndex(nums, target);
-        // Target not in nums
-        if (first == -1)
-            return false;
-        
-        int lastPos = first + nums.length / 2;
-        
-        return lastPos < nums.length && nums[lastPos] == target;
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+            int mid = left + (right - left)/2;
+            
+            if (nums[mid] >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return nums[left] == target ? left : -1;
     }
 }

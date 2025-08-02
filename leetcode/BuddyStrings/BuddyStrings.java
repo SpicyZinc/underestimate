@@ -31,38 +31,68 @@ self come up with this idea
 */
 
 class BuddyStrings {
-	// Mon Sep  9 01:20:08 2019
-	public boolean buddyStrings(String A, String B) {
-		if (A.length() == 0 && B.length() == 0) {
-			return false;
-		}
+    // 2025
+    public boolean buddyStrings(String s, String goal) {
+        if (s.length() != goal.length()) {
+            return false;
+        }
 
-		if (A.length() != B.length()) {
-			return false;
-		}
+        if (s.equals(goal)) {
+            // Check if there's a duplicate character
+            Set<Character> seen = new HashSet<>();
+            for (char c : s.toCharArray()) {
+                if (!seen.add(c)) {
+                    return true; // duplicate found
+                }
+            }
+            return false; // no duplicates → can't swap and keep string the same
+        }
 
-		List<Character> list = new ArrayList<Character>();
-		for (int i = 0; i < A.length(); i++) {
-			if (A.charAt(i) != B.charAt(i)) {
-				list.add(A.charAt(i));
-				list.add(B.charAt(i));
-			}
-		}
+        List<Integer> diff = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != goal.charAt(i)) {
+                diff.add(i);
+                if (diff.size() > 2) return false;
+            }
+        }
+        
+        return diff.size() == 2 &&
+               s.charAt(diff.get(0)) == goal.charAt(diff.get(1)) &&
+               s.charAt(diff.get(1)) == goal.charAt(diff.get(0));
+    }
 
-		if (!list.isEmpty()) {
-			return list.size() == 4 && list.get(0) == list.get(3) && list.get(1) == list.get(2) || list.isEmpty() && !A.equals(B);    
-		} else {
-			boolean isDuplicate = false;
-			char[] chars = A.toCharArray();
-			Arrays.sort(chars);
+    // Mon Sep  9 01:20:08 2019
+    public boolean buddyStrings(String A, String B) {
+        if (A.length() == 0 && B.length() == 0) {
+            return false;
+        }
 
-			for (int i = 1; i < chars.length; i++) {
-				if (chars[i - 1] == chars[i]) {
-					isDuplicate = true;
-				}
-			}
+        if (A.length() != B.length()) {
+            return false;
+        }
 
-			return A.length() == 1 || isDuplicate;
-		}
-	}
+        List<Character> list = new ArrayList<Character>();
+        for (int i = 0; i < A.length(); i++) {
+            if (A.charAt(i) != B.charAt(i)) {
+                list.add(A.charAt(i));
+                list.add(B.charAt(i));
+            }
+        }
+
+        if (!list.isEmpty()) {
+            return list.size() == 4 && list.get(0) == list.get(3) && list.get(1) == list.get(2) || list.isEmpty() && !A.equals(B);    
+        } else {
+            boolean isDuplicate = false;
+            char[] chars = A.toCharArray();
+            Arrays.sort(chars);
+
+            for (int i = 1; i < chars.length; i++) {
+                if (chars[i - 1] == chars[i]) {
+                    isDuplicate = true;
+                }
+            }
+
+            return A.length() == 1 || isDuplicate;
+        }
+    }
 }

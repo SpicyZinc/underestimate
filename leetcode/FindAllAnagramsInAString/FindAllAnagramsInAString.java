@@ -30,8 +30,8 @@ https://leetcode.com/problems/find-all-anagrams-in-a-string/discuss/
 */
 
 public class FindAllAnagramsInAString {
-	// Sun Apr 16 23:15:34 2023
-	public List<Integer> findAnagrams(String s, String p) {
+    // Sun Apr 16 23:15:34 2023
+    public List<Integer> findAnagrams(String s, String p) {
         int[] hash = new int[256];
 
         for (int i = 0; i < p.length(); i++) {
@@ -71,8 +71,8 @@ public class FindAllAnagramsInAString {
         return result;
     }
 
-	// Sun Jun  2 20:13:16 2019
-	public List<Integer> findAnagrams(String s, String p) {
+    // Sun Jun  2 20:13:16 2019
+    public List<Integer> findAnagrams(String s, String p) {
         int len = p.length();
         String normalized = normalize(p);
         
@@ -97,76 +97,76 @@ public class FindAllAnagramsInAString {
         return new String(chars);
     }
 
-	// Wed May 22 00:56:42 2019
-	public List<Integer> findAnagrams(String s, String p) {
-		List<Integer> list = new ArrayList<>(); 
-		int pLen = p.length();
-		if (pLen > s.length()) {
-			return list;
-		}
+    // Wed May 22 00:56:42 2019
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> list = new ArrayList<>(); 
+        int pLen = p.length();
+        if (pLen > s.length()) {
+            return list;
+        }
 
-		for (int i = 0; i <= s.length() - pLen; i++) {
-			String subStr = s.substring(i, i + pLen);
-			if (isAnagram(subStr, p)) {
-				list.add(i);
-			}
-		}
+        for (int i = 0; i <= s.length() - pLen; i++) {
+            String subStr = s.substring(i, i + pLen);
+            if (isAnagram(subStr, p)) {
+                list.add(i);
+            }
+        }
 
-		return list;
-	}
+        return list;
+    }
 
-	public boolean isAnagram(String s, String t) {
-		int[] letters = new int[26];
+    public boolean isAnagram(String s, String t) {
+        int[] letters = new int[26];
 
-		for (int i = 0; i < s.length(); i++) {
-			char sc = s.charAt(i);
-			char tc = t.charAt(i);
-			letters[sc - 'a']++;
-			letters[tc - 'a']--;
-		}
-		for (int letter : letters) {
-			if (letter != 0) {
-				return false;
-			}
-		}
+        for (int i = 0; i < s.length(); i++) {
+            char sc = s.charAt(i);
+            char tc = t.charAt(i);
+            letters[sc - 'a']++;
+            letters[tc - 'a']--;
+        }
+        for (int letter : letters) {
+            if (letter != 0) {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	// method 2
-	public List<Integer> findAnagrams(String s, String p) {
-	    List<Integer> list = new ArrayList<>();
-	    if (s == null || s.length() == 0 || p == null || p.length() == 0) {
-	    	return list;
-	    }
-	    int[] hash = new int[256];
-	    for (int i = 0; i < p.length(); i++) {
-	        char c = p.charAt(i);
-	        hash[c]++;
-	    }
+    // method 2
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> list = new ArrayList<>();
+        if (s == null || s.length() == 0 || p == null || p.length() == 0) {
+            return list;
+        }
+        int[] hash = new int[256];
+        for (int i = 0; i < p.length(); i++) {
+            char c = p.charAt(i);
+            hash[c]++;
+        }
 
-	    int left = 0;
-	    int right = 0;
-	    int count = p.length();
+        int left = 0;
+        int right = 0;
+        int count = p.length();
 
-	    while (right < s.length()) {
-	        if (hash[s.charAt(right++)]-- >= 1) {
-	        	count--; 
-	        }
-	        // Find an anagram
-	        if (count == 0) {
-	        	list.add(left);
-	        }
-	        if (right - left == p.length() && hash[s.charAt(left++)]++ >= 0) {
-	        	count++;
-	        }
-	    }
+        while (right < s.length()) {
+            if (hash[s.charAt(right++)]-- >= 1) {
+                count--; 
+            }
+            // Find an anagram
+            if (count == 0) {
+                list.add(left);
+            }
+            if (right - left == p.length() && hash[s.charAt(left++)]++ >= 0) {
+                count++;
+            }
+        }
 
-	    return list;
-	}
+        return list;
+    }
 
-	// this case, always maintain a window of size p length
-	public List<Integer> findAnagrams(String s, String p) {
+    // this case, always maintain a window of size p length
+    public List<Integer> findAnagrams(String s, String p) {
         List<Integer> result = new ArrayList<Integer>();
         if (s.length() == 0 || s == null || p.length() == 0 || p == null) {
             return result;
@@ -181,18 +181,18 @@ public class FindAllAnagramsInAString {
         int count = p.length();
         while (right < s.length()) {
             if (hash[s.charAt(right)] >= 1) count--;
-        	// decrease the hash
-			hash[s.charAt(right)]--;
+            // decrease the hash
+            hash[s.charAt(right)]--;
             right++;
 
             if (count == 0) result.add(left);
-	        // maintain the fixed sized window
-	        if (right - left == p.length()) {
+            // maintain the fixed sized window
+            if (right - left == p.length()) {
                 if (hash[s.charAt(left)] >= 0) count++;
-            	// refill the hash
+                // refill the hash
                 hash[s.charAt(left)]++;
                 left++;
-	        }
+            }
         }
 
         return result;

@@ -20,14 +20,41 @@ BTW, '0' == 48
 */
 
 public class AddBinary {
-	public static void main(String[] args) {
-		AddBinary eg = new AddBinary();
-		String result = eg.addBinary("100", "1100");
-		System.out.println(result);
-	}
+    public static void main(String[] args) {
+        AddBinary eg = new AddBinary();
+        String result = eg.addBinary("100", "1100");
+        System.out.println(result);
+    }
+    // 2025
+    public String addBinary(String a, String b) {
+        int m = a.length();
+        int n = b.length();
+        
+        int i = m - 1;
+        int j = n - 1;
 
-	// Wed Jun 19 01:24:36 2019
-	public String addBinary(String a, String b) {
+        StringBuilder sb = new StringBuilder();
+        
+        int carry = 0;
+        int val = carry;
+
+        while (i >= 0 || j >= 0) {
+            int v1 = i < 0 ? 0 : (a.charAt(i--) - '0');
+            int v2 = j < 0 ? 0 : (b.charAt(j--) - '0');
+
+            val = v1 + v2 + carry;
+            sb.append(val % 2);
+            carry = val / 2;
+        }
+
+        if (carry > 0) {
+            sb.append(carry);
+        }
+
+        return sb.reverse().toString();
+    }
+    // Wed Jun 19 01:24:36 2019
+    public String addBinary(String a, String b) {
         int sizeA = a.length();
         int sizeB = b.length();
         
@@ -71,43 +98,43 @@ public class AddBinary {
         return sb.reverse().toString();
     }
 
-	public String addBinary(String a, String b) {
-		char[] aa = new StringBuilder(a).reverse().toString().toCharArray();
-		char[] bb = new StringBuilder(b).reverse().toString().toCharArray();
-		
-		int A = a.length();
-		int B = b.length();
-		
-		// bigger length + 1
-		int length = A >= B ? A : B;
-		int[] result = new int[length + 1];
-		
-		for (int i = 0; i < length + 1; i++) {
-			int currentA = i >= A ? 0 : (aa[i] - '0');
-			int currentB = i >= B ? 0 : (bb[i] - '0');
+    public String addBinary(String a, String b) {
+        char[] aa = new StringBuilder(a).reverse().toString().toCharArray();
+        char[] bb = new StringBuilder(b).reverse().toString().toCharArray();
+        
+        int A = a.length();
+        int B = b.length();
+        
+        // bigger length + 1
+        int length = A >= B ? A : B;
+        int[] result = new int[length + 1];
+        
+        for (int i = 0; i < length + 1; i++) {
+            int currentA = i >= A ? 0 : (aa[i] - '0');
+            int currentB = i >= B ? 0 : (bb[i] - '0');
 
-			result[i] = currentA + currentB;
-		}
+            result[i] = currentA + currentB;
+        }
 
-		// recalculate
-		for (int i = 0; i < length; i++) {
-			if (result[i] >= 2) {
-				result[i + 1] += result[i] / 2;
-				result[i] %= 2;
-			}
-		}
+        // recalculate
+        for (int i = 0; i < length; i++) {
+            if (result[i] >= 2) {
+                result[i + 1] += result[i] / 2;
+                result[i] %= 2;
+            }
+        }
 
-		// omit first "0" if there is
-		// only starting from "1"
-		StringBuilder sum = new StringBuilder();
-		for (int i = length; i >= 0; i--) {
-			if (i == length && result[i] == 0) {
-				continue;
-			}
+        // omit first "0" if there is
+        // only starting from "1"
+        StringBuilder sum = new StringBuilder();
+        for (int i = length; i >= 0; i--) {
+            if (i == length && result[i] == 0) {
+                continue;
+            }
 
-			sum.append(result[i]);
-		}
+            sum.append(result[i]);
+        }
 
-		return sum.toString();
-	}
+        return sum.toString();
+    }
 }

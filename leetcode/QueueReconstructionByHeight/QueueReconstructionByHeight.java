@@ -28,19 +28,15 @@ list.add(index, element)
 import java.util.*;
 
 public class QueueReconstructionByHeight {
-	public static void main(String[] args) {
-		QueueReconstructionByHeight eg = new QueueReconstructionByHeight();
-		int[][] people = {{7,0}, {4,4}, {7,1}, {5,0}, {6,1}, {5,2}};
-		eg.reconstructQueue(people);
-	}
-	// using Comparator
+    public static void main(String[] args) {
+        QueueReconstructionByHeight eg = new QueueReconstructionByHeight();
+        int[][] people = {{7,0}, {4,4}, {7,1}, {5,0}, {6,1}, {5,2}};
+        eg.reconstructQueue(people);
+    }
+    // 2025
+    // using Comparator
     public int[][] reconstructQueue(int[][] people) {
-        Arrays.sort(people, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] p1, int[] p2) {
-                return p1[0] != p2[0] ? Integer.compare(p2[0], p1[0]) : Integer.compare(p1[1], p2[1]);
-            }
-        });
+        Arrays.sort(people, (p1, p2) -> p1[0] != p2[0] ? p2[0] - p1[0] : p1[1] - p2[1]);
 
         List<int[]> result = new ArrayList<int[]>();
         for (int[] person : people) {
@@ -52,39 +48,39 @@ public class QueueReconstructionByHeight {
     }
     // using bubble sort
     public int[][] reconstructQueue(int[][] people) {
-    	if (people == null || people.length == 0 || people[0].length == 0) {
+        if (people == null || people.length == 0 || people[0].length == 0) {
             return new int[0][0];
         }
 
-    	int n = people.length;
+        int n = people.length;
         for (int i = 0; i < n; i++) {
-        	for (int j = 1; j < n; j++) {
-        		int preHeight = people[j-1][0];
-        		int preNumber = people[j-1][1];
-        		int height = people[j][0];
-        		int number = people[j][1];
+            for (int j = 1; j < n; j++) {
+                int preHeight = people[j-1][0];
+                int preNumber = people[j-1][1];
+                int height = people[j][0];
+                int number = people[j][1];
 
-        		if (preHeight < height) {
-        			swap(people, j-1, j);
-        		} else if (preHeight == height) {
-        			if (preNumber > number) {
-        				swap(people, j-1, j);
-        			}
-        		}
-        	}
+                if (preHeight < height) {
+                    swap(people, j-1, j);
+                } else if (preHeight == height) {
+                    if (preNumber > number) {
+                        swap(people, j-1, j);
+                    }
+                }
+            }
         }
 
         List<int[]> list = new ArrayList<int[]>();
         for (int[] ppl : people) {
-        	list.add(ppl[1], ppl);
+            list.add(ppl[1], ppl);
         }
         
         return list.toArray(new int[people.length][]);
     }
     // helper function to swap 2D array
     public void swap(int[][] a, int x, int y) {
-    	int[] temp = a[x];
-    	a[x] = a[y];
-    	a[y] = temp;
+        int[] temp = a[x];
+        a[x] = a[y];
+        a[y] = temp;
     }
 }

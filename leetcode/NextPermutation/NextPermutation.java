@@ -84,6 +84,50 @@ sort 后面所有的 这是仍然是 升序的 只需要 reverse()
 
 */
 public class NextPermutation {
+    // 2025
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        if (n <= 1) {
+            return;
+        }
+
+        int firstAfterDrop = 0;
+        for (int i = n - 1; i >= 1; i--) {
+            if (nums[i] > nums[i - 1]) {
+                firstAfterDrop = i;
+                break;
+            }
+        }
+        // note firstAfterDrop
+        if (firstAfterDrop > 0) {
+            for (int i = n - 1; i >= 0; i--) {
+                if (nums[i] > nums[firstAfterDrop - 1]) {
+                    swap(nums, i, firstAfterDrop - 1);
+                    break;
+                }
+            }
+        }
+
+        reverse(nums, firstAfterDrop, n - 1);
+    }
+
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public void reverse(int[] nums, int i, int j) {
+        int left = i;
+        int right = j;
+
+        while (left < right) {
+            swap(nums, left, right);
+            left++;
+            right--;
+        }
+    }
+
     // Fri May 10 04:42:23 2024
     public void nextPermutation(int[] nums) {
         int n = nums.length;

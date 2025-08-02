@@ -25,7 +25,6 @@ public class RemoveInvalidParentheses {
     // Sun May  5 17:57:48 2019
     public List<String> removeInvalidParentheses(String s) {
         List<String> list = new ArrayList<>();
-        
         Set<String> hs = new HashSet<>();
         Queue<String> queue = new LinkedList<>();
 

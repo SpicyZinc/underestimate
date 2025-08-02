@@ -14,7 +14,8 @@ Explanation: No swap.
 
 idea:
 from left, find the right most and greatest digit, swap them.
-why need to be right most because leave the ones equal to the greatest where they are, this is greedy algorithm
+why need to be right most because leave the ones equal to the greatest where they are,
+this is greedy algorithm
 e.g. 1993
 */
 

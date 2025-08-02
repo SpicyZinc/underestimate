@@ -114,7 +114,6 @@ public class KthSmallestElementInSortedMatrix {
         return cnt;
     }
 
-
     // why fail
     public int kthSmallest(int[][] matrix, int k) {
         int m = matrix.length;

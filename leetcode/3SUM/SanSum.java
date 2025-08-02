@@ -22,131 +22,166 @@ such as add( ), contains( ), remove( ), and size( ), to remain constant even for
 import java.util.*;
 
 public class SanSum {
-	public static void main(String[] args) {
-		SanSum eg = new SanSum();
-		int[] nums = {-1, 0, 1, 2, -1, -4};
-		List<List<Integer>> result = eg.threeSum(nums);
-		for (List<Integer> path : result) {
-			System.out.println(path);
-		}
-	}
-	// Fri Jul 12 11:08:05 2019
-	public List<List<Integer>> threeSum(int[] nums) {
-		List<List<Integer>> result = new ArrayList<>();
+    public static void main(String[] args) {
+        SanSum eg = new SanSum();
+        int[] nums = {-1, 0, 1, 2, -1, -4};
+        List<List<Integer>> result = eg.threeSum(nums);
+        for (List<Integer> path : result) {
+            System.out.println(path);
+        }
+    }
+    // 2025
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> result = new ArrayList<>();
 
-		for (int i = 0; i < nums.length - 1; i++) {
-			Map<Integer, Integer> hm = new HashMap<>();
+        for (int i = 0; i < nums.length - 2; i++) {
+            // Skip duplicate first elements
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
 
-			for (int j = i + 1; j < nums.length; j++) {
-				int val = 0 - (nums[i] + nums[j]);
+            int left = i + 1;
+            int right = nums.length - 1;
 
-				if (hm.containsKey(val)) {
-					List<Integer> path = new ArrayList<>();
-					path.add(nums[i]);
-					path.add(val);
-					path.add(nums[j]);
-					
-					result.add(path);
-				} else {
-					hm.put(nums[j], j);
-				}
-			}
-		}
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
 
-		return result;
-	}
+                if (sum == 0) {
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
 
-	public boolean tripletZero(int[] nums) {
-		boolean found = false;
+                    // Skip duplicates
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
 
-		for (int i = 0; i < nums.length - 1; i++) {
-			Set<Integer> hs = new HashSet<>();
+                    left++;
+                    right--;
+                } else if (sum < 0) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
 
-			for (int j = i + 1; j < nums.length; j++) {
-				int val = 0 - (nums[i] + nums[j]);
+        return result;
+    }
 
-				if (hs.contains(val)) {
-					found = true;
+    // Fri Jul 12 11:08:05 2019
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
 
-					return found;
-				} else {
-					hs.add(nums[j]);
-				}
-			}
-		}
+        for (int i = 0; i < nums.length - 1; i++) {
+            Map<Integer, Integer> hm = new HashMap<>();
 
-		return found;
-	}
+            for (int j = i + 1; j < nums.length; j++) {
+                int val = 0 - (nums[i] + nums[j]);
 
-	// Sun May 19 23:43:30 2019
-	public List<List<Integer>> threeSum(int[] nums) {
-		Arrays.sort(nums);
-		
-		int n = nums.length;
-		
-		List<List<Integer>> result = new ArrayList<>();
-		
-		Set<List<Integer>> hs = new HashSet<>();
-		
-		for (int i = 0; i < n; i++) {
-			for (int j = i + 1, k = n - 1; j < k;) {
-				int sum = nums[i] + nums[j] + nums[k];
-				if (sum < 0) {
-					j++;
-				} else if (sum > 0) {
-					k--;
-				} else {
-					List<Integer> path = new ArrayList<>();
-					path.add(nums[i]);
-					path.add(nums[j]);
-					path.add(nums[k]);
-					
-					if (hs.add(path)) {
-						result.add(path);
-					}
-					
-					j++;
-					k--;
-				}
-			}
-		}
+                if (hm.containsKey(val)) {
+                    List<Integer> path = new ArrayList<>();
+                    path.add(nums[i]);
+                    path.add(val);
+                    path.add(nums[j]);
+                    
+                    result.add(path);
+                } else {
+                    hm.put(nums[j], j);
+                }
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	// 10/12/2018
-	public List<List<Integer>> threeSum(int[] nums) {
-		Arrays.sort(nums);
+    public boolean tripletZero(int[] nums) {
+        boolean found = false;
 
-		List<List<Integer>> result = new ArrayList<>();
-		Set<List<Integer>> hs = new HashSet<>();
+        for (int i = 0; i < nums.length - 1; i++) {
+            Set<Integer> hs = new HashSet<>();
 
-		if (nums == null || nums.length < 3) {
-			return result;
-		}
+            for (int j = i + 1; j < nums.length; j++) {
+                int val = 0 - (nums[i] + nums[j]);
 
-		for (int i = 0; i < nums.length; i++) {
-			for (int j = i + 1, k = nums.length - 1; j < k;) {
-				List<Integer> path = new ArrayList<Integer>();
-				int sum = nums[i] + nums[j] + nums[k];
-				if (sum == 0) {
-					// path.add(nums[i]);
-					// path.add(nums[j]);
-					// path.add(nums[k]);
-					Collections.addAll(path, nums[i], nums[j], nums[k]);
-					if (hs.add(path)) {
-						result.add(path);
-					}
-					j++;
-					k--;
-				} else if (sum > 0) {
-					k--;
-				} else {
-					j++;
-				}
-			}
-		}
-		
-		return result;
-	}
+                if (hs.contains(val)) {
+                    found = true;
+
+                    return found;
+                } else {
+                    hs.add(nums[j]);
+                }
+            }
+        }
+
+        return found;
+    }
+
+    // Sun May 19 23:43:30 2019
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        
+        int n = nums.length;
+        
+        List<List<Integer>> result = new ArrayList<>();
+        
+        Set<List<Integer>> hs = new HashSet<>();
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1, k = n - 1; j < k;) {
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum < 0) {
+                    j++;
+                } else if (sum > 0) {
+                    k--;
+                } else {
+                    List<Integer> path = new ArrayList<>();
+                    path.add(nums[i]);
+                    path.add(nums[j]);
+                    path.add(nums[k]);
+                    
+                    if (hs.add(path)) {
+                        result.add(path);
+                    }
+                    
+                    j++;
+                    k--;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // 10/12/2018
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+
+        List<List<Integer>> result = new ArrayList<>();
+        Set<List<Integer>> hs = new HashSet<>();
+
+        if (nums == null || nums.length < 3) {
+            return result;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1, k = nums.length - 1; j < k;) {
+                List<Integer> path = new ArrayList<Integer>();
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum == 0) {
+                    // path.add(nums[i]);
+                    // path.add(nums[j]);
+                    // path.add(nums[k]);
+                    Collections.addAll(path, nums[i], nums[j], nums[k]);
+                    if (hs.add(path)) {
+                        result.add(path);
+                    }
+                    j++;
+                    k--;
+                } else if (sum > 0) {
+                    k--;
+                } else {
+                    j++;
+                }
+            }
+        }
+        
+        return result;
+    }
 }

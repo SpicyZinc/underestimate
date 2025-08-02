@@ -29,43 +29,82 @@ Set<String> builtPath to keep record of ALL possible words to the longest
 */
 
 class LongestWordInDictionary {
-	// Sun Jun 16 03:17:12 2019
-	public String longestWord(String[] words) {
-		Arrays.sort(words, (a, b) -> a.compareTo(b));
+    // 2025
+    public String longestWord(String[] words) {
+        Arrays.sort(words, (a, b) -> a.compareTo(b));
+        
+        Set<String> hs = new HashSet<>();
+        String longest = "";
+        
+        for (String word : words) {
+            int len = word.length();
+            String prev = word.substring(0, len - 1);
+            if (len == 1 || hs.contains(prev)) {
+                hs.add(word);
+                longest = len > longest.length() ? word : longest;
+            }
+        }
+        
+        return longest;
+    }
+    // 2025
+    public String longestWord(String[] words) {
+        Arrays.sort(words, (a, b) -> a.compareTo(b));
+        
+        String longest = "";
+        int n = words.length;
+        Set<String> path = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            String current = words[i];
+            int len = current.length();
+            String prev = current.substring(0, len - 1);
+            
+            if (len == 1 || path.contains(prev)) {
+                path.add(current);
+                longest = len > longest.length() ? current : longest;
+            }
+        }
+        
+        return longest;
+    }
 
-		String longest = "";
-		
-		Set<String> buildPath = new HashSet<>();
-		
-		for (int i = 0; i < words.length; i++) {
-			String curr = words[i];
-			String prev = curr.substring(0, curr.length() - 1);
-			
-			if (curr.length() == 1 || buildPath.contains(prev)) {
-				buildPath.add(curr);
-				longest = curr.length() > longest.length() ? curr : longest;
-			}
-		}
+    // Sun Jun 16 03:17:12 2019
+    public String longestWord(String[] words) {
+        Arrays.sort(words, (a, b) -> a.compareTo(b));
 
-		return longest;
-	}
+        String longest = "";
+        
+        Set<String> buildPath = new HashSet<>();
+        
+        for (int i = 0; i < words.length; i++) {
+            String curr = words[i];
+            String prev = curr.substring(0, curr.length() - 1);
+            
+            if (curr.length() == 1 || buildPath.contains(prev)) {
+                buildPath.add(curr);
+                longest = curr.length() > longest.length() ? curr : longest;
+            }
+        }
 
-	public String longestWord(String[] words) {
-		String longest = "";
-		Arrays.sort(words);
+        return longest;
+    }
 
-		// all words path to the longest
-		Set<String> builtPath = new HashSet<String>();
+    public String longestWord(String[] words) {
+        String longest = "";
+        Arrays.sort(words);
 
-		for (String word : words) {
-			String prev = word.substring(0, word.length() - 1);
-			if (word.length() == 1 || builtPath.contains(prev)) {
-				builtPath.add(word);
-				// once update, next word, same length, would NOT update, but it will update the longest, we want alphabetically smaller one
-				longest = word.length() > longest.length() ? word : longest;
-			}
-		}
+        // all words path to the longest
+        Set<String> builtPath = new HashSet<>();
 
-		return longest;
-	}
+        for (String word : words) {
+            String prev = word.substring(0, word.length() - 1);
+            if (word.length() == 1 || builtPath.contains(prev)) {
+                builtPath.add(word);
+                // once update, next word, same length, would NOT update, but it will update the longest, we want alphabetically smaller one
+                longest = word.length() > longest.length() ? word : longest;
+            }
+        }
+
+        return longest;
+    }
 }

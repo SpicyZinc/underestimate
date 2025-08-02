@@ -46,6 +46,7 @@ class BuildingsWithAnOceanView {
     public int[] findBuildings(int[] heights) {
         // 就是建一个 decreased 的stack
         // 从左边看过去 就是下降的 不是的POP出来 留下的都是能看到右边海的
+        // 保持一个单调递减的stack of indices
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < heights.length; i++) {
             while (!stack.isEmpty() && heights[i] >= heights[stack.peek()]) {
@@ -54,6 +55,7 @@ class BuildingsWithAnOceanView {
             stack.push(i);
         }
         int[] result = new int[stack.size()];
+        // from right
         for (int i = result.length - 1; i >= 0; i--) {
             result[i] = stack.pop();
         }

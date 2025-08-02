@@ -20,75 +20,101 @@ levelSum to keep current level sum, and pass to nextLevel; this way, it is the s
 // This is the interface that allows for creating nested lists.
 // You should not implement it, or speculate about its implementation
 public interface NestedInteger {
-	// Constructor initializes an empty nested list.
-	public NestedInteger();
+    // Constructor initializes an empty nested list.
+    public NestedInteger();
 
-	// Constructor initializes a single integer.
-	public NestedInteger(int value);
+    // Constructor initializes a single integer.
+    public NestedInteger(int value);
 
-	// @return true if this NestedInteger holds a single integer, rather than a nested list.
-	public boolean isInteger();
+    // @return true if this NestedInteger holds a single integer, rather than a nested list.
+    public boolean isInteger();
 
-	// @return the single integer that this NestedInteger holds, if it holds a single integer
-	// Return null if this NestedInteger holds a nested list
-	public Integer getInteger();
+    // @return the single integer that this NestedInteger holds, if it holds a single integer
+    // Return null if this NestedInteger holds a nested list
+    public Integer getInteger();
 
-	// Set this NestedInteger to hold a single integer.
-	public void setInteger(int value);
+    // Set this NestedInteger to hold a single integer.
+    public void setInteger(int value);
 
-	// Set this NestedInteger to hold a nested list and adds a nested integer to it.
-	public void add(NestedInteger ni);
+    // Set this NestedInteger to hold a nested list and adds a nested integer to it.
+    public void add(NestedInteger ni);
 
-	// @return the nested list that this NestedInteger holds, if it holds a nested list
-	// Return null if this NestedInteger holds a single integer
-	public List<NestedInteger> getList();
+    // @return the nested list that this NestedInteger holds, if it holds a nested list
+    // Return null if this NestedInteger holds a single integer
+    public List<NestedInteger> getList();
 }
 
 public class NestedListWeightSum {
-	public int depthSumInverse(List<NestedInteger> nestedList) {
-		int weightedSum = 0;
-		int levelSum = 0;
+    // 2025
+    public int depthSumInverse(List<NestedInteger> nestedList) {
+        int unweighted = 0, weighted = 0;
 
-		while (!nestedList.isEmpty()) {
-			List<NestedInteger> nextLevel = new ArrayList<>();
+        Queue<NestedInteger> queue = new LinkedList<>(nestedList);
 
-			for (NestedInteger ni : nestedList) {
-				if (ni.isInteger()) {
-					levelSum += ni.getInteger();
-				} else {
-					nextLevel.addAll(ni.getList());
-				}
-			}
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int levelSum = 0;
 
-			weightedSum += levelSum;
-			nestedList = nextLevel;
-		}
+            for (int i = 0; i < size; i++) {
+                NestedInteger current = queue.poll();
+                if (current.isInteger()) {
+                    levelSum += current.getInteger();
+                } else {
+                    queue.addAll(current.getList());
+                }
+            }
 
-		return weightedSum;
-	}
+            unweighted += levelSum;
+            weighted += unweighted;
+        }
 
-	// Sun May 19 18:50:09 2019
-	var depthSumInverse = function(nestedList) {
-		let sum = 0;
-		let levelSum = 0;
+        return weighted;
+    }
 
-		while (nestedList.length) {
-			const size = nestedList.length;
-			let next = [];	
+    public int depthSumInverse(List<NestedInteger> nestedList) {
+        int weightedSum = 0;
+        int levelSum = 0;
 
-			for (let i = 0; i < size; i++) {
-				let item = nestedList[i];
-				if (Array.isArray(item)) {
-					next = [...next, ...item];
-				} else {
-					levelSum += item;
-				}
-			}
-			// 加过的再加一遍
-			sum += levelSum;
-			nestedList = next;
-		}
+        while (!nestedList.isEmpty()) {
+            List<NestedInteger> nextLevel = new ArrayList<>();
 
-		return sum;
-	};
+            for (NestedInteger ni : nestedList) {
+                if (ni.isInteger()) {
+                    levelSum += ni.getInteger();
+                } else {
+                    nextLevel.addAll(ni.getList());
+                }
+            }
+
+            weightedSum += levelSum;
+            nestedList = nextLevel;
+        }
+
+        return weightedSum;
+    }
+
+    // Sun May 19 18:50:09 2019
+    var depthSumInverse = function(nestedList) {
+        let sum = 0;
+        let levelSum = 0;
+
+        while (nestedList.length) {
+            const size = nestedList.length;
+            let next = [];  
+
+            for (let i = 0; i < size; i++) {
+                let item = nestedList[i];
+                if (Array.isArray(item)) {
+                    next = [...next, ...item];
+                } else {
+                    levelSum += item;
+                }
+            }
+            // 加过的再加一遍
+            sum += levelSum;
+            nestedList = next;
+        }
+
+        return sum;
+    };
 }

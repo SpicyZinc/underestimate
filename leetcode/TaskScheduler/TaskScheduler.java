@@ -17,40 +17,83 @@ The number of tasks is in the range [1, 10000].
 idea:
 https://www.cnblogs.com/grandyang/p/7098764.html
 
-understand the problem, n = 2 intervals, A -> B -> idle -> A -> B -> idle -> A -> B, first two A there are 2 intervals
+understand the problem, n = 2 intervals, A -> B -> idle -> A -> B -> idle -> A -> B,
+first two A there are 2 intervals
 use the letter appearing the most to schedule
 there will be the appearing times of this letter sections
 each section is n + 1 length, this way to guarantee that
 every two same tasks has n intervals (different task or idle are all treated as interval) in between
 
-need to come back
+each row
+A and B appear the maxFreq (3) times, maxCount = 2, n = 2
+partCount = maxFreq - 1 (2 parts, part 1 and part 2)
+partLength = n - (maxCount - 1)
+
+A B _      → part 1
+A B _      → part 2
+A B        → final part (no idle needed after last)
+
+emptySlots = partCount * partLength
+
+return is The return value is the total number of CPU time slots
 */
 
 public class TaskScheduler {
-	public int leastInterval(char[] tasks, int n) {
-		if (tasks.length == 0) {
-			return 0;
-		}
+    // 2025
+    public int leastInterval(char[] tasks, int n) {
+        int size = tasks.length;
+        
+        int[] freq = new int[26];
+        for (char task : tasks) {
+            freq[task - 'A']++;
+        }
+        
+        Arrays.sort(freq);
+        int maxFreq = freq[25];
+        int maxCount = 1;
+        
+        for (int i = 24; i >= 0; i--) {
+            if (freq[i] == maxFreq) {
+                maxCount++;
+            } else {
+                break;
+            }
+        }
 
-		if (n == 0) {
-			return tasks.length;
-		}
+        // (maxFreq - 1) → number of gaps between the most frequent tasks
+        // (n + 1) → each gap has space for:
+        // 1 most frequent task
+        // n cooldown units
+        // So (maxFreq - 1) * (n + 1) builds the full "frame"
 
-		int size = tasks.length;
-		int[] letters = new int[26];
+        return Math.max(size, (n + 1) * (maxFreq - 1) + maxCount);
+    }
 
-		for (int i = 0; i < size; i++) {
-			letters[tasks[i] - 'A']++;
-		}
+    public int leastInterval(char[] tasks, int n) {
+        int size = tasks.length;
+        if (size == 0) {
+            return 0;
+        }
+        if (n == 0) {
+            return size;
+        }
 
-		Arrays.sort(letters);
-		int mostTask = letters.length - 1;
-		int i = mostTask;
+        int[] letters = new int[26];
 
-		while (i >= 0 && letters[mostTask] == letters[i]) {
-			i--;
-		}
+        for (int i = 0; i < size; i++) {
+            letters[tasks[i] - 'A']++;
+        }
 
-		return Math.max(size, (letters[mostTask] - 1) * (n + 1) + (mostTask - i));
-	}
+        Arrays.sort(letters);
+        int mostTask = letters.length - 1;
+        int i = mostTask;
+
+        while (i >= 0 && letters[mostTask] == letters[i]) {
+            i--;
+        }
+
+        int maxCount = mostTask - i;
+
+        return Math.max(size, (letters[mostTask] - 1) * (n + 1) + maxCount);
+    }
 }

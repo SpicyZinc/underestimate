@@ -41,17 +41,60 @@ public class DiameterOfBinaryTree {
         int depth = eg.getMaxDepth(root);
         System.out.println(depth);
     }
+    // 2025 save time
+    int maxDiameter = 0;
 
-	// method 1
-	public int diameterOfBinaryTree(TreeNode root) {
-		if (root == null) {
-			return 0;
-		}
+    public int diameterOfBinaryTree(TreeNode root) {
+        getDepth(root);
+        return maxDiameter;
+    }
 
-		int maxDiameter = getMaxDepth(root.left) + getMaxDepth(root.right);
+    private int getDepth(TreeNode node) {
+        if (node == null) return 0;
 
-		return Math.max(maxDiameter, Math.max(diameterOfBinaryTree(root.left), diameterOfBinaryTree(root.right)));
-	}
+        int left = getDepth(node.left);
+        int right = getDepth(node.right);
+
+        // Update diameter at this node
+        maxDiameter = Math.max(maxDiameter, left + right);
+
+        // Return height of the current node
+        return Math.max(left, right) + 1;
+    }
+    // 2025
+    public int diameterOfBinaryTree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int rootDiameter = getDepth(root.left) + getDepth(root.right);
+        // note , diameter must be sum of both side's depth
+        int leftDiameter = diameterOfBinaryTree(root.left);
+        int rightDiameter = diameterOfBinaryTree(root.right);
+
+        return Math.max(rootDiameter, Math.max(leftDiameter, rightDiameter));
+    }
+
+    public int getDepth(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        int left = getDepth(node.left);
+        int right = getDepth(node.right);
+
+        return Math.max(left, right) + 1;
+    }
+
+    // method 1
+    public int diameterOfBinaryTree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int maxDiameter = getMaxDepth(root.left) + getMaxDepth(root.right);
+
+        return Math.max(maxDiameter, Math.max(diameterOfBinaryTree(root.left), diameterOfBinaryTree(root.right)));
+    }
 
     public int getMaxDepth(TreeNode node) {
         if (node == null) {

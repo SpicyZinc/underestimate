@@ -30,7 +30,52 @@ idea:
 BFS to find shortest from all possible paths
 */
 
-class ShortestPathInBinaryMatrix {    
+class ShortestPathInBinaryMatrix {
+    // Dont mix with the number of connected component
+        public int shortestPathBinaryMatrix(int[][] grid) {
+        int count = 0;
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0) {
+                    dfs(grid, i, j);
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public void dfs(int[][] grid, int i, int j) {
+        int[][] directions = {
+            {0, 1},
+            {0, -1},
+            {1, 0},
+            {-1, 0},
+            {1, 1},
+            {-1, -1},
+            {1, -1},
+            {-1, 1},
+        };
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        grid[i][j] = 2;
+
+        for (int[] dir : directions) {
+            int newX = i + dir[0];
+            int newY = j + dir[1];
+            if (newX >= 0 && newX < m && newY >= 0 && newY < n && grid[newX][newY] == 0) {
+                dfs(grid, newX, newY);
+            }
+        }
+    }
+
     int[][] directions = {
         {1, -1},
         {1, 0},

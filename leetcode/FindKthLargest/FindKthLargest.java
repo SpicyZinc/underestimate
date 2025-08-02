@@ -139,7 +139,7 @@ public class FindKthLargest {
 
         int i = start;
         int j = end;
-        
+
         while (i <= j) {
             while (i <= j && nums[i] <= pivotVal) {
                 i++;

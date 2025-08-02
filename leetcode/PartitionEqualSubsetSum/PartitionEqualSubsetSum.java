@@ -25,7 +25,7 @@ otherwise, cannot be partitioned
 */
 
 public class PartitionEqualSubsetSum {
-	// Fri Apr 26 01:48:53 2024
+    // Fri Apr 26 01:48:53 2024
     public boolean canPartition(int[] nums) {
         int totalSum = 0;
         // find sum of all array elements
@@ -53,36 +53,36 @@ public class PartitionEqualSubsetSum {
         return dp[n][subSetSum];
     }
 
-	public boolean canPartition(int[] nums) {
-		if (nums.length == 0 || nums == null) {
-			return false;
-		}
+    public boolean canPartition(int[] nums) {
+        if (nums.length == 0 || nums == null) {
+            return false;
+        }
 
-		int sum = 0;
-		for (int i = 0; i < nums.length; i++) {
-			sum += nums[i];
-		}
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+        }
 
-		if (sum % 2 == 1) {
-			return false;
-		}
-		
-		return dfs(nums, 0, sum / 2);
-	}
+        if (sum % 2 == 1) {
+            return false;
+        }
+        
+        return dfs(nums, 0, sum / 2);
+    }
 
-	public boolean dfs(int[] nums, int pos, int sum) {
-		if (sum == 0) {
-			return true;
-		} else if (sum < 0) {
-			return false;
-		}
+    public boolean dfs(int[] nums, int pos, int sum) {
+        if (sum == 0) {
+            return true;
+        } else if (sum < 0) {
+            return false;
+        }
 
-		for (int i = pos; i < nums.length; i++) {
-			if (dfs(nums, i + 1, sum - nums[i])) {
-				return true;
-			}
-		}
+        for (int i = pos; i < nums.length; i++) {
+            if (dfs(nums, i + 1, sum - nums[i])) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

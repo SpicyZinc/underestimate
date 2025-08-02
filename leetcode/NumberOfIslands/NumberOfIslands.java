@@ -33,7 +33,7 @@ so the count of 1 will be the number of islands
 
 public class NumberOfIslands {
     // 2025
-        public int numIslands(char[][] grid) {
+    public int numIslands(char[][] grid) {
         int count = 0;
         if (grid == null || grid.length == 0) {
             return count;

@@ -22,7 +22,8 @@ public class MergeSortedArray {
                 n--;
             }
         }
-
+        // Only need to copy nums2 if any left
+        // because nums1 will stay where they are since nums2 is the returned array
         while (n > 0) {
             A[m + n - 1] = B[n - 1];
             n--;
