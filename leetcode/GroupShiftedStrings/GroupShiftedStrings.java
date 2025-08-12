@@ -20,7 +20,7 @@ key is to write get the solo string as key for a shifted group
 how to sort?
 abc xyz 规律就是
 第一个char是base
-校正 去燥
+校正 去噪
 */
 
 import java.util.*;

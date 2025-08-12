@@ -56,101 +56,101 @@ rightBoundary() note, result.add(node.val) at last, when to return
 import java.util.*;
 
 class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
+    int val;
+    TreeNode left;
+    TreeNode right;
 
-	TreeNode(int x) {
-		val = x;
-		left = null;
-		right = null;
-	}
+    TreeNode(int x) {
+        val = x;
+        left = null;
+        right = null;
+    }
 }
 
 class BoundaryOfBinaryTree {
-	public static void main(String[] args) {
-		TreeNode root = new TreeNode(1);
-		root.right = new TreeNode(2);
-		root.right.left = new TreeNode(3);
-		root.right.right = new TreeNode(4);
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.right = new TreeNode(2);
+        root.right.left = new TreeNode(3);
+        root.right.right = new TreeNode(4);
 
 
-		TreeNode anotherRoot = new TreeNode(1);
-		TreeNode left = new TreeNode(2);
-		TreeNode right = new TreeNode(3);
-		
-		left.left = new TreeNode(4);
-		left.right = new TreeNode(5);
-		left.right.left = new TreeNode(7);
-		left.right.right = new TreeNode(8);
+        TreeNode anotherRoot = new TreeNode(1);
+        TreeNode left = new TreeNode(2);
+        TreeNode right = new TreeNode(3);
+        
+        left.left = new TreeNode(4);
+        left.right = new TreeNode(5);
+        left.right.left = new TreeNode(7);
+        left.right.right = new TreeNode(8);
 
-		right.left = new TreeNode(6);
-		right.left.left = new TreeNode(9);
-		right.left.right = new TreeNode(10);
+        right.left = new TreeNode(6);
+        right.left.left = new TreeNode(9);
+        right.left.right = new TreeNode(10);
 
-		anotherRoot.left = left;
-		anotherRoot.right = right;
+        anotherRoot.left = left;
+        anotherRoot.right = right;
 
-		BoundaryOfBinaryTree eg = new BoundaryOfBinaryTree();
-		List<Integer> boundary = eg.boundaryOfBinaryTree(root);
-		System.out.println(boundary.toString());
+        BoundaryOfBinaryTree eg = new BoundaryOfBinaryTree();
+        List<Integer> boundary = eg.boundaryOfBinaryTree(root);
+        System.out.println(boundary.toString());
 
-		List<Integer> anotherboundary = eg.boundaryOfBinaryTree(anotherRoot);
-		System.out.println(anotherboundary.toString());
-	}
+        List<Integer> anotherboundary = eg.boundaryOfBinaryTree(anotherRoot);
+        System.out.println(anotherboundary.toString());
+    }
 
-	public List<Integer> boundaryOfBinaryTree(TreeNode root) {
-		List<Integer> result = new ArrayList<>();
-		if (root == null) {
-			return result;
-		}
-		// add root to result
-		if (root.left != null || root.right != null) {
-			result.add(root.val);
-		}
-		// left boundary
-		leftBoundary(root.left, result);
-		// leaves boundary
-		leavesBoundary(root, result);
-		// right boundary
-		rightBoundary(root.right, result);
+    public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        // add root to result
+        if (root.left != null || root.right != null) {
+            result.add(root.val);
+        }
+        // left boundary
+        leftBoundary(root.left, result);
+        // leaves boundary
+        leavesBoundary(root, result);
+        // right boundary
+        rightBoundary(root.right, result);
 
-		return result;
-	}
+        return result;
+    }
 
-	public void leftBoundary(TreeNode node, List<Integer> result) {
-		if (node == null || node.left == null && node.right == null) {
-			return;
-		}
-		result.add(node.val);
-		if (node.left == null) {
-			leftBoundary(node.right, result);
-		} else {
-			leftBoundary(node.left, result);
-		}
-	}
+    public void leftBoundary(TreeNode node, List<Integer> result) {
+        if (node == null || node.left == null && node.right == null) {
+            return;
+        }
+        result.add(node.val);
+        if (node.left == null) {
+            leftBoundary(node.right, result);
+        } else {
+            leftBoundary(node.left, result);
+        }
+    }
 
-	public void rightBoundary(TreeNode node, List<Integer> result) {
-		if (node == null || node.left == null && node.right == null) {
-			return;
-		}
-		if (node.right == null) {
-			rightBoundary(node.left, result);
-		} else {
-			rightBoundary(node.right, result);
-		}
-		result.add(node.val);
-	}
+    public void rightBoundary(TreeNode node, List<Integer> result) {
+        if (node == null || node.left == null && node.right == null) {
+            return;
+        }
+        if (node.right == null) {
+            rightBoundary(node.left, result);
+        } else {
+            rightBoundary(node.right, result);
+        }
+        result.add(node.val);
+    }
 
-	public void leavesBoundary(TreeNode node, List<Integer> result) {
-		if (node == null) {
-			return;
-		}
-		// handle only one root node, and regular leaves
-		if (node.left == null && node.right == null) {
-			result.add(node.val);
-		}
-		leavesBoundary(node.left, result);
-		leavesBoundary(node.right, result);
-	}
+    public void leavesBoundary(TreeNode node, List<Integer> result) {
+        if (node == null) {
+            return;
+        }
+        // handle only one root node, and regular leaves
+        if (node.left == null && node.right == null) {
+            result.add(node.val);
+        }
+        leavesBoundary(node.left, result);
+        leavesBoundary(node.right, result);
+    }
 }

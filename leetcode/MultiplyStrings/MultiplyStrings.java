@@ -29,7 +29,7 @@ public class MultiplyStrings {
         int n1 = num1.length();
         int n2 = num2.length();
         int[] product = new int[n1 + n2];
-        
+
         for (int i = n1 - 1; i >= 0; i--) {
             int a = num1.charAt(i) - '0';
 

@@ -20,7 +20,8 @@ idea:
 at most == "<="
 1. dfs
 2. dfs + memo
-3. good idea, find out the longest subarray palindrome. and then check if the rest of the digits is less than k. closely related to LongestPalindromicSubsequence
+3. good idea, find out the longest subarray palindrome. and then check if the rest of the digits is less than k.
+closely related to LongestPalindromicSubsequence
 */
 class ValidPalindrome {
     // Fri May 10 02:39:23 2024

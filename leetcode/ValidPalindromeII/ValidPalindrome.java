@@ -24,8 +24,8 @@ Time complexity: O(N)
 */
 
 class ValidPalindromeII {
-	// Tue May 14 02:36:30 2024
-	public boolean validPalindrome(String s) {
+    // Tue May 14 02:36:30 2024
+    public boolean validPalindrome(String s) {
         int n = s.length();
         int i = 0;
         int j = n - 1;
@@ -53,63 +53,63 @@ class ValidPalindromeII {
         return i >= j;
     }
 
-	public boolean validPalindrome(String s) {
-		int i = 0;
-		int j = s.length() - 1;
+    public boolean validPalindrome(String s) {
+        int i = 0;
+        int j = s.length() - 1;
 
-		while (i < j && s.charAt(i) == s.charAt(j)) {
-			i++;
-			j--;
-		}
+        while (i < j && s.charAt(i) == s.charAt(j)) {
+            i++;
+            j--;
+        }
 
-		if (i >= j || isPalindrome(s, i + 1, j) || isPalindrome(s, i, j - 1)) {
-			return true;
-		}
+        if (i >= j || isPalindrome(s, i + 1, j) || isPalindrome(s, i, j - 1)) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public boolean isPalindrome(String s, int i, int j) {
-		while (i < j) {
-			if (s.charAt(i) != s.charAt(j)) {
-				return false;
-			}
-			i++;
-			j--;
-		}
+    public boolean isPalindrome(String s, int i, int j) {
+        while (i < j) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }
+            i++;
+            j--;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	// TLE
-	public boolean validPalindrome(String s) {
-		int len = s.length();
-		if (len <= 2) {
-			return true;
-		}
+    // TLE
+    public boolean validPalindrome(String s) {
+        int len = s.length();
+        if (len <= 2) {
+            return true;
+        }
 
-		for (int i = 0; i < len; i++) {
-			String substring = s.substring(0, i) + s.substring(i + 1);
-			if (isPalindrome(substring)) {
-				return true;
-			}
-		}
+        for (int i = 0; i < len; i++) {
+            String substring = s.substring(0, i) + s.substring(i + 1);
+            if (isPalindrome(substring)) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public boolean isPalindrome(String s) {
-		if (s.length() == 0 || s == null) return true;
+    public boolean isPalindrome(String s) {
+        if (s.length() == 0 || s == null) return true;
 
-		int n = s.length();
-		int i = 0;
-		while (i < n / 2) {
-			if (s.charAt(i) != s.charAt(n - 1 - i)) {
-				return false;
-			}
-			i++;
-		}
+        int n = s.length();
+        int i = 0;
+        while (i < n / 2) {
+            if (s.charAt(i) != s.charAt(n - 1 - i)) {
+                return false;
+            }
+            i++;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

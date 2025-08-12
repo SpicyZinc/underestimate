@@ -85,6 +85,50 @@ class Pair {
 }
 
 class BinaryTreeVerticalOrderTraversal {
+    // 2025 with Built in Pair
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+
+        Map<Integer, List<Integer>> hm = new HashMap<>();
+        int leftBoundary = 0;
+        int rightBoundary = 0;
+
+        Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
+        Pair<TreeNode, Integer> rootPair = new Pair<>(root, 0);
+        queue.add(rootPair);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                Pair<TreeNode, Integer> pair = queue.poll();
+                TreeNode node = pair.getKey();
+                int col = pair.getValue();
+
+                hm.computeIfAbsent(col, x -> new ArrayList<>()).add(node.val);
+
+                if (node.left != null) {
+                    queue.add(new Pair<>(node.left, col - 1));
+                    leftBoundary = Math.min(leftBoundary, col - 1);
+                }
+
+                if (node.right != null) {
+                    queue.add(new Pair<>(node.right, col + 1));
+                    rightBoundary = Math.max(rightBoundary, col + 1);
+                }
+            }
+        }
+
+        for (int i = leftBoundary; i <= rightBoundary; i++) {
+            result.add(hm.get(i));
+        }
+
+        return result;
+    }
+
     // Tue May 14 21:05:33 2024
     // note, if use Pair, have to use <>
     public List<List<Integer>> verticalOrder(TreeNode root) {

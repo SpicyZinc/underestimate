@@ -1,5 +1,6 @@
 /*
-Given a parentheses string s containing only the characters '(' and ')'. A parentheses string is balanced if:
+Given a parentheses string s containing only the characters '(' and ')'.
+A parentheses string is balanced if:
 
 Any left parenthesis '(' must have a corresponding two consecutive right parenthesis '))'.
 Left parenthesis '(' must go before the corresponding two consecutive right parenthesis '))'.
@@ -38,6 +39,7 @@ idea:
 4- check if stack isEmpty, Yes then increase count otherwise pop brackets.
 5- return 2 * stack.size()
 */
+
 class MinimumInsertionsToBalanceAParenthesesString {
     public int minInsertions(String s) {
         int openCount = 0;

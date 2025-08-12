@@ -30,7 +30,7 @@ class DecompressRunLengthEncodedList {
         int size = nums.length;
 
         List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < size; i+=2) {
+        for (int i = 0; i < size; i += 2) {
             int freq = nums[i];
             int val = nums[i + 1];
 

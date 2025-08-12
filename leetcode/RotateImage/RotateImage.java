@@ -18,7 +18,7 @@ idea:
 	1st row - last column 
 	copyMatrix[j][n-i-1] = matrix[i][j]; 
 
-2.  to realize clockwise 90 degrees rotate
+2.  to reach clockwise 90 degrees rotate
 	first, flip along with Anti-diagonal
 	main diagonal - the diagonal of a square matrix running from the upper left entry to the lower right entry
 	second, flip along with x axis
@@ -74,7 +74,7 @@ public class RotateImage {
 		// do not flip twice, twice would not change the matrix
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n - 1 - i; j++) {
-                swap(matrix, new int[] {i,j}, new int[] {n - 1 - j, n - 1 - i});
+                swap(matrix, new int[] {i, j}, new int[] {n - 1 - j, n - 1 - i});
             }
         }
         // flip along with x axis

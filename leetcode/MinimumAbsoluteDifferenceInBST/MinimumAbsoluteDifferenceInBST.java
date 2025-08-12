@@ -27,43 +27,44 @@ class TreeNode {
 
 
 public class MinimumAbsoluteDifferenceInBST {
-	// method 1
+    // method 1
     Integer prev = null;
     public int getMinimumDifference(TreeNode root) {
-    	int[] min = { Integer.MAX_VALUE };
-    	
-    	inorder(root, min);
-    	return min[0];
+        int[] min = { Integer.MAX_VALUE };
+        
+        inorder(root, min);
+        return min[0];
     }
 
     private void inorder(TreeNode node, int[] min) {
-    	if (node == null) {
-    		return;
-    	}
-    	inorder(node.left, min);
-    	if (prev != null) {
-    		min[0] = Math.min(min[0], node.val - prev);
-    	}
-    	prev = node.val;
-    	inorder(node.right, min);
+        if (node == null) {
+            return;
+        }
+        inorder(node.left, min);
+        if (prev != null) {
+            min[0] = Math.min(min[0], node.val - prev);
+        }
+        prev = node.val;
+        inorder(node.right, min);
     }
+
     // method 2
     int min = Integer.MAX_VALUE;
     public int getMinimumDifference(TreeNode root) {
-    	helper(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-    	return min;
+        helper(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        return min;
     }
     public void helper(TreeNode node, int lower, int upper) {
-    	if (node == null) {
-    		return;
-    	}
-    	if (lower != Integer.MIN_VALUE) {
-    		min = Math.min(min, node.val - lower);
-    	}
-    	if (upper != Integer.MAX_VALUE) {
-    		min = Math.min(min, upper - node.val);
-    	}
-    	helper(node.left, lower, node.val);
-    	helper(node.right, node.val, upper);
+        if (node == null) {
+            return;
+        }
+        if (lower != Integer.MIN_VALUE) {
+            min = Math.min(min, node.val - lower);
+        }
+        if (upper != Integer.MAX_VALUE) {
+            min = Math.min(min, upper - node.val);
+        }
+        helper(node.left, lower, node.val);
+        helper(node.right, node.val, upper);
     }
 }

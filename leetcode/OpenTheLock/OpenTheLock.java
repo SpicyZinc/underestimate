@@ -42,46 +42,47 @@ queue.add("0000")
 for each digit, try the rest number 0 - 9 except the current digit
 breath first search
 */
+
 class OpenTheLock {
-	public int openLock(String[] deadends, String target) {
-		Set<String> dead = new HashSet<>();
-		for (String deadend : deadends) dead.add(deadend);
+    public int openLock(String[] deadends, String target) {
+        Set<String> dead = new HashSet<>();
+        for (String deadend : deadends) dead.add(deadend);
 
-		if (dead.contains("0000")) return -1;
-		if ("0000".equals(target)) return 0;
+        if (dead.contains("0000")) return -1;
+        if ("0000".equals(target)) return 0;
 
-		Set<String> hs = new HashSet<>();
-		Queue<String> queue = new LinkedList<>();
-		queue.add("0000");
+        Set<String> hs = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+        queue.add("0000");
 
-		int level = 1;
-		while (!queue.isEmpty()) {
-			int size = queue.size();
-			while (size > 0) {
-				String current = queue.poll();
-				for (int i = 0; i < 4; i++) {
-					// actually there are 2 cases, since number is wrapping around
+        int level = 1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size > 0) {
+                String current = queue.poll();
+                for (int i = 0; i < 4; i++) {
+                    // actually there are 2 cases, since number is wrapping around
                     // 1. c == '9' ? 0 : c - '0' + 1
                     // 2. c == '0' ? 9 : c - '0' + 1
-					for (int diff = 1; diff <= 9; diff += 8) {
-						char c = current.charAt(i);
-						char replacement = (char) ((c - '0' + diff) % 10 + '0');
-						String s = current.substring(0, i) + replacement + current.substring(i + 1);
+                    for (int diff = 1; diff <= 9; diff += 8) {
+                        char c = current.charAt(i);
+                        char replacement = (char) ((c - '0' + diff) % 10 + '0');
+                        String s = current.substring(0, i) + replacement + current.substring(i + 1);
 
-						if (target.equals(s)) return level;
-						if (!dead.contains(s) && !hs.contains(s)) {
-							queue.add(s);
-						}
+                        if (target.equals(s)) return level;
+                        if (!dead.contains(s) && !hs.contains(s)) {
+                            queue.add(s);
+                        }
 
-						hs.add(s);
-					}
-				}
-				size--;
-			}
+                        hs.add(s);
+                    }
+                }
+                size--;
+            }
 
-			level++;
-		}
+            level++;
+        }
 
-		return -1;
-	}
+        return -1;
+    }
 }

@@ -41,6 +41,7 @@ https://github.com/rffffffff007/leetcode/blob/master/Valid%20Number.java
 
 4. http://rleetcode.blogspot.com/2014/01/valid-number-java.html
 */
+
 public class ValidNumber {
     public static void main(String[] args) {
         ValidNumber eg = new ValidNumber();

@@ -72,7 +72,7 @@ public class BinaryTreeRightSideView {
     }
 
     public List<Integer> rightSideViewRecursion(TreeNode root) {
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         if (root == null) {
             return result;
         }

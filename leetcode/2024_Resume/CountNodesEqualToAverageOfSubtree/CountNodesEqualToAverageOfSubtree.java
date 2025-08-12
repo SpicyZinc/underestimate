@@ -29,6 +29,7 @@ The number of nodes in the tree is in the range [1, 1000].
 idea:
 在dfs中populate 结果
 dfs return另外一个
+创建一个class SumNode, 从底向上
 */
 
 /**
@@ -65,7 +66,7 @@ class CountNodesEqualToAverageOfSubtree {
         return result;
     }
 
-    // get a node's to itself, sum and count
+    // get a node's sum and count to itself
     public SumNode dfs(TreeNode node) {
         if (node == null) {
             return null;

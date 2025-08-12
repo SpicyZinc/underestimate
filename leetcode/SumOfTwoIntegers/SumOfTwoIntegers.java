@@ -12,7 +12,7 @@ part 2, use ^ to get sum without carry
 add part 1 and part 2
 
 e.g. 15 + 07 = 22
-1. it is 12 without considering carry, 
+1. it is 12 without considering carry,
 2. carry is 1, but left shift 10
 3. 12 + 10 = 22
 */

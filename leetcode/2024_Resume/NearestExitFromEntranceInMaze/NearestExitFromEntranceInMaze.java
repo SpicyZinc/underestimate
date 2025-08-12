@@ -50,6 +50,10 @@ class NearestExitFromEntranceInMaze {
         int m = maze.length;
         int n = maze[0].length;
 
+        int[][] directions = new int[][] {
+            {0,1},{0,-1},{1,0},{-1,0}
+        };
+
         // For breadth first search, offer the first node ('entrance').
         // Note that we immediately mark the node as visited when putting into the queue as to
         // prevent other nodes from visiting it. Otherwise, we will be trapped in an infinite loop.
@@ -57,10 +61,6 @@ class NearestExitFromEntranceInMaze {
         queue.offer(entrance);
         // Mark as visited as wall
         maze[entrance[0]][entrance[1]] = '+';
-
-        int[][] directions = new int[][] {
-            {0,1},{0,-1},{1,0},{-1,0}
-        };
 
         int steps = 0;
 

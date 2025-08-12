@@ -29,53 +29,81 @@ idea:
 */
 
 public class ContinuousSubarraySum {
-	// Tue May 25 00:39:16 2021
-	// TLE
-	public boolean checkSubarraySum(int[] nums, int k) {
-		int n = nums.length;
-		int[] sum = new int[n + 1];
+    // 2025
+    public boolean checkSubarraySum(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
 
-		for (int i = 1; i <= n; i++) {
-			sum[i] = sum[i - 1] + nums[i - 1];
-		}
-		
-		for (int i = 0; i <= n; i++) {
-			for (int j = i + 2; j <= n; j++) {
-				if ((sum[j] - sum[i]) == 0 && k == 0) {
-					return true;
-				}
-				if (k != 0 && (sum[j] - sum[i]) % k == 0) {
-					return true;
-				}
-			}
-		}
+        int sum = 0;
 
-		return false;
-	}
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if (k != 0) {
+                sum %= k;
+            }
 
-	// map
-	public boolean checkSubarraySum(int[] nums, int k) {
-		Map<Integer, Integer> map = new HashMap<>();
-		map.put(0, -1);
+            // Special case: if sum % k == 0 and subarray length >= 2 (i >= 1)
+            if (sum == 0 && i >= 1) {
+                return true;
+            }
 
-		int sum = 0;
+            if (map.containsKey(sum)) {
+                if (i - map.get(sum) > 1) {
+                    return true;
+                }
+            } else {
+                map.put(sum, i);
+            }
+        }
 
-		for (int i = 0; i < nums.length; i++) {
-			sum += nums[i];
+        return false;
+    }
+    // Tue May 25 00:39:16 2021
+    // TLE
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int n = nums.length;
+        int[] sum = new int[n + 1];
 
-			if (k != 0) {
-				sum = sum % k;
-			}
+        for (int i = 1; i <= n; i++) {
+            sum[i] = sum[i - 1] + nums[i - 1];
+        }
+        
+        for (int i = 0; i <= n; i++) {
+            for (int j = i + 2; j <= n; j++) {
+                if ((sum[j] - sum[i]) == 0 && k == 0) {
+                    return true;
+                }
+                if (k != 0 && (sum[j] - sum[i]) % k == 0) {
+                    return true;
+                }
+            }
+        }
 
-			if (map.containsKey(sum)) {
-				if (i - map.get(sum) > 1) {
-					return true;
-				}
-			} else {
-				map.put(sum, i);
-			}
-		}
+        return false;
+    }
 
-		return false;
-	}
+    // map
+    public boolean checkSubarraySum(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+
+        int sum = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+
+            if (k != 0) {
+                sum = sum % k;
+            }
+
+            if (map.containsKey(sum)) {
+                if (i - map.get(sum) > 1) {
+                    return true;
+                }
+            } else {
+                map.put(sum, i);
+            }
+        }
+
+        return false;
+    }
 }

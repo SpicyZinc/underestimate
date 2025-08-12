@@ -29,115 +29,115 @@ sweep line
 import java.util.*;
 
 class Point {
-	int val;
-	boolean isStart;
+    int val;
+    boolean isStart;
 
-	public Point(int val, boolean isStart) {
-		this.val = val;
-		this.isStart = isStart;
-	}
+    public Point(int val, boolean isStart) {
+        this.val = val;
+        this.isStart = isStart;
+    }
 }
 
 class IntervalListIntersections {
-	public static void main(String[] args) {
-		IntervalListIntersections eg = new IntervalListIntersections();
+    public static void main(String[] args) {
+        IntervalListIntersections eg = new IntervalListIntersections();
 
-		int[][] A = {{0,2},{5,10},{13,23},{24,25}};
-		int[][] B = {{1,5},{8,12},{15,24},{25,26}};
+        int[][] A = {{0,2},{5,10},{13,23},{24,25}};
+        int[][] B = {{1,5},{8,12},{15,24},{25,26}};
 
-		int[][] result = eg.intervalIntersection(A, B);
+        int[][] result = eg.intervalIntersection(A, B);
 
-		for (int[] row : result) {
-			System.out.println(Arrays.toString(row));
-		}
-	}
-	// Fri Jul  5 17:48:14 2019
-	public int[][] intervalIntersection(int[][] A, int[][] B) {
-		int m = A.length;
-		int n = B.length;
+        for (int[] row : result) {
+            System.out.println(Arrays.toString(row));
+        }
+    }
+    // Fri Jul  5 17:48:14 2019
+    public int[][] intervalIntersection(int[][] A, int[][] B) {
+        int m = A.length;
+        int n = B.length;
 
-		int i = 0;
-		int j = 0;
+        int i = 0;
+        int j = 0;
 
-		List<int[]> intervals = new ArrayList<>();
+        List<int[]> intervals = new ArrayList<>();
 
-		while (i < m && j < n) {
-			int[] rangeA = A[i];
-			int[] rangeB = B[j];
+        while (i < m && j < n) {
+            int[] rangeA = A[i];
+            int[] rangeB = B[j];
 
-			if (rangeB[0] > rangeA[1]) {
-				i++;
-			} else if (rangeA[0] > rangeB[1]) {
-				j++;
-			} else {
-				intervals.add(new int[] {Math.max(rangeA[0], rangeB[0]), Math.min(rangeA[1], rangeB[1])});
-				// 还要细分 谁 advance by 1, note
-				if (rangeA[1] < rangeB[1]) {
-					i++;
-				} else {
-					j++;
-				}
-			}
-		}
+            if (rangeB[0] > rangeA[1]) {
+                i++;
+            } else if (rangeA[0] > rangeB[1]) {
+                j++;
+            } else {
+                intervals.add(new int[] {Math.max(rangeA[0], rangeB[0]), Math.min(rangeA[1], rangeB[1])});
+                // 还要细分 谁 advance by 1, note
+                if (rangeA[1] < rangeB[1]) {
+                    i++;
+                } else {
+                    j++;
+                }
+            }
+        }
 
-		int size = intervals.size();
-		int[][] result = new int[size][2];
-		
-		int k = 0;
-		for (int[] interval : intervals) {     
-			result[k++] = interval;
-		}
+        int size = intervals.size();
+        int[][] result = new int[size][2];
+        
+        int k = 0;
+        for (int[] interval : intervals) {     
+            result[k++] = interval;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public int[][] intervalIntersection(int[][] A, int[][] B) {
-		List<Point> points = new ArrayList<>();
+    public int[][] intervalIntersection(int[][] A, int[][] B) {
+        List<Point> points = new ArrayList<>();
 
-		for (int[] interval : A) {
-			int start = interval[0];
-			int end = interval[1];
+        for (int[] interval : A) {
+            int start = interval[0];
+            int end = interval[1];
 
-			points.add(new Point(start, true));
-			points.add(new Point(end, false));
-		}
+            points.add(new Point(start, true));
+            points.add(new Point(end, false));
+        }
 
-		for (int[] interval : B) {
-			int start = interval[0];
-			int end = interval[1];
+        for (int[] interval : B) {
+            int start = interval[0];
+            int end = interval[1];
 
-			points.add(new Point(start, true));
-			points.add(new Point(end, false));
-		}
+            points.add(new Point(start, true));
+            points.add(new Point(end, false));
+        }
 
-		Collections.sort(points, (a, b) -> (a.val == b.val) ? (a.isStart ? -1 : 1) : a.val - b.val);
+        Collections.sort(points, (a, b) -> (a.val == b.val) ? (a.isStart ? -1 : 1) : a.val - b.val);
 
-		int count = 0;
-		int start = -1;
+        int count = 0;
+        int start = -1;
 
-		List<int[]> result = new ArrayList<>();
-		for (Point point : points) {
-			if (point.isStart) {
-				count++;
-			} else {
-				count--;
-			}
+        List<int[]> result = new ArrayList<>();
+        for (Point point : points) {
+            if (point.isStart) {
+                count++;
+            } else {
+                count--;
+            }
 
-			if (count == 2) {
-				start = point.val;
-			}
-			if (count == 1 && start != -1) {
-				result.add(new int[] {start, point.val});
+            if (count == 2) {
+                start = point.val;
+            }
+            if (count == 1 && start != -1) {
+                result.add(new int[] {start, point.val});
 
-				start = -1;
-			}
-		}
+                start = -1;
+            }
+        }
 
-		int[][] intersections = new int[result.size()][2];
-		for (int i = 0; i < result.size(); i++) {
-			intersections[i] = result.get(i);
-		}
+        int[][] intersections = new int[result.size()][2];
+        for (int i = 0; i < result.size(); i++) {
+            intersections[i] = result.get(i);
+        }
 
-		return intersections;
-	}
+        return intersections;
+    }
 }

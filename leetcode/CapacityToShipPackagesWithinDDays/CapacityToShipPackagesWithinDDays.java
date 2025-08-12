@@ -49,40 +49,40 @@ need to check the ship's capacity from the largest weight to the sum of all elem
 */
 
 class CapacityToShipPackagesWithinDDays {
-	public int shipWithinDays(int[] weights, int D) {
-		// left is the max weight of the weights
-		// right is the sum of all weights
-		int left = 0;
-		int right = 0;
+    public int shipWithinDays(int[] weights, int D) {
+        // left is the max weight of the weights
+        // right is the sum of all weights
+        int left = 0;
+        int right = 0;
 
-		for (int weight : weights) {
-			left = Math.max(left, weight);
-			right += weight;
-		}
+        for (int weight : weights) {
+            left = Math.max(left, weight);
+            right += weight;
+        }
 
-		while (left < right) {
-			int daysNeeded = 1;
-			int currWeight = 0;
+        while (left < right) {
+            int daysNeeded = 1;
+            int currWeight = 0;
 
-			// possible weight
-			int midWeight = left + (right - left) / 2;
+            // possible weight
+            int midWeight = left + (right - left) / 2;
 
-			for (int weight : weights) {
-				// greater > midWeight, 要增加一天
-				if (currWeight + weight > midWeight) {
-					daysNeeded += 1;
-					currWeight = 0;
-				}
-				currWeight += weight;
-			}
+            for (int weight : weights) {
+                // greater > midWeight, 要增加一天
+                if (currWeight + weight > midWeight) {
+                    daysNeeded += 1;
+                    currWeight = 0;
+                }
+                currWeight += weight;
+            }
 
-			if (daysNeeded > D) {
-				left = midWeight + 1;
-			} else {
-				right = midWeight;
-			}
-		}
+            if (daysNeeded > D) {
+                left = midWeight + 1;
+            } else {
+                right = midWeight;
+            }
+        }
 
-		return left;
-	}
+        return left;
+    }
 }

@@ -46,104 +46,104 @@ first build graph
 import java.util.*;
 
 class CheapestFlightsWithinKStops {
-	public static void main(String[] args) {
-		CheapestFlightsWithinKStops eg = new CheapestFlightsWithinKStops();
+    public static void main(String[] args) {
+        CheapestFlightsWithinKStops eg = new CheapestFlightsWithinKStops();
 
-		int n = 3;
-		int[][] flights = { {0,1,100}, {1,2,100}, {0,2,500} };
-		int src = 0;
-		int dst = 2;
-		int K = 0;
+        int n = 3;
+        int[][] flights = { {0,1,100}, {1,2,100}, {0,2,500} };
+        int src = 0;
+        int dst = 2;
+        int K = 0;
 
-		eg.findCheapestPrice(n, flights, src, dst, K);
-	}
+        eg.findCheapestPrice(n, flights, src, dst, K);
+    }
 
-	// DFS
-	int minCost = Integer.MAX_VALUE;
+    // DFS
+    int minCost = Integer.MAX_VALUE;
 
-	public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
-		// first build graph
-		int[][] graph = new int[n][n];
-		for (int[] flight : flights) {
-			graph[flight[0]][flight[1]] = flight[2];
-		}
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+        // first build graph
+        int[][] graph = new int[n][n];
+        for (int[] flight : flights) {
+            graph[flight[0]][flight[1]] = flight[2];
+        }
 
-		Set<Integer> visited = new HashSet<>();
-		dfs(graph, src, dst, K, visited, 0);
+        Set<Integer> visited = new HashSet<>();
+        dfs(graph, src, dst, K, visited, 0);
 
-		return minCost == Integer.MAX_VALUE ? -1 : minCost;
-	}
+        return minCost == Integer.MAX_VALUE ? -1 : minCost;
+    }
 
-	public void dfs(int[][] graph, int current, int dst, int K, Set<Integer> visited, int currCost) {
-		if (current == dst) {
-			minCost = currCost;
+    public void dfs(int[][] graph, int current, int dst, int K, Set<Integer> visited, int currCost) {
+        if (current == dst) {
+            minCost = currCost;
 
-			return;
-		}
+            return;
+        }
 
-		if (K < 0) {
-			return;
-		}
+        if (K < 0) {
+            return;
+        }
 
-		for (int i = 0; i < graph[current].length; i++) {
-			int stop = i;
-			int cost = graph[current][i];
-			// if there is a flight between current and stop, otherwise no need, use 0 as a flag
-			if (cost > 0) {
-				if (visited.contains(stop) || currCost + cost > minCost) {
-					continue;
-				}
+        for (int i = 0; i < graph[current].length; i++) {
+            int stop = i;
+            int cost = graph[current][i];
+            // if there is a flight between current and stop, otherwise no need, use 0 as a flag
+            if (cost > 0) {
+                if (visited.contains(stop) || currCost + cost > minCost) {
+                    continue;
+                }
 
-				visited.add(stop);
-				dfs(graph, stop, dst, K - 1, visited, currCost + cost);
-				visited.remove(stop);
-			}
-		}
-	}
+                visited.add(stop);
+                dfs(graph, stop, dst, K - 1, visited, currCost + cost);
+                visited.remove(stop);
+            }
+        }
+    }
 
-	// BFS
-	public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
-		// build graph first
-		int[][] graph = new int[n][n];
-		for (int[] flight : flights) {
-			graph[flight[0]][flight[1]] = flight[2];
-		}
-		// Dijkstra's 的精髓就是 保留 最优的解
-		// newCost == shorter distance
-		Map<String, Integer> best = new HashMap<>();
+    // BFS
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+        // build graph first
+        int[][] graph = new int[n][n];
+        for (int[] flight : flights) {
+            graph[flight[0]][flight[1]] = flight[2];
+        }
+        // Dijkstra's 的精髓就是 保留 最优的解
+        // newCost == shorter distance
+        Map<String, Integer> best = new HashMap<>();
 
-		// [cost, stops, src]
-		PriorityQueue<int[]> pq = new PriorityQueue<int[]>((a, b) -> a[0] - b[0]);
-		pq.offer(new int[] {0, 0, src});
+        // [cost, stops, src]
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((a, b) -> a[0] - b[0]);
+        pq.offer(new int[] {0, 0, src});
 
-		while (!pq.isEmpty()) {
-			int[] nearest = pq.poll();
-			int cost = nearest[0];
-			int stops = nearest[1];
-			int city = nearest[2];
+        while (!pq.isEmpty()) {
+            int[] nearest = pq.poll();
+            int cost = nearest[0];
+            int stops = nearest[1];
+            int city = nearest[2];
 
-			if (stops > K + 1 || cost > best.getOrDefault(stops + "-" + city, Integer.MAX_VALUE)) {
-				continue;
-			}
+            if (stops > K + 1 || cost > best.getOrDefault(stops + "-" + city, Integer.MAX_VALUE)) {
+                continue;
+            }
 
-			if (city == dst) {
-				return cost;
-			}
+            if (city == dst) {
+                return cost;
+            }
 
-			// for each neighbor
-			for (int i = 0; i < n; i++) {
-				// if there is a flight between these two cities
-				if (graph[city][i] > 0) {
-					int newCost = cost + graph[city][i];
-					String key = (stops + 1) + "-" + i;
-					if (newCost < best.getOrDefault(key, Integer.MAX_VALUE)) {
-						pq.offer(new int[] {newCost, stops + 1, i});
-						best.put(key, newCost);
-					}
-				}
-			}
-		}
+            // for each neighbor
+            for (int i = 0; i < n; i++) {
+                // if there is a flight between these two cities
+                if (graph[city][i] > 0) {
+                    int newCost = cost + graph[city][i];
+                    String key = (stops + 1) + "-" + i;
+                    if (newCost < best.getOrDefault(key, Integer.MAX_VALUE)) {
+                        pq.offer(new int[] {newCost, stops + 1, i});
+                        best.put(key, newCost);
+                    }
+                }
+            }
+        }
 
-		return -1;
-	}
+        return -1;
+    }
 }

@@ -24,7 +24,7 @@ public class BestTimeToBuyAndSellStock {
     public BestTimeToBuyAndSellStock() {
         Random rand = new Random(12345);        
         int[] prices = new int[10];
-        
+
         for (int i = 0; i < prices.length; i++) {
             prices[i] = rand.nextInt(100);
             System.out.print(prices[i] + " ");

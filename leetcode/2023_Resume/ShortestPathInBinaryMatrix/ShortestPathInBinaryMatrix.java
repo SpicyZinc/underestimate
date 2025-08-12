@@ -32,7 +32,7 @@ BFS to find shortest from all possible paths
 
 class ShortestPathInBinaryMatrix {
     // Dont mix with the number of connected component
-        public int shortestPathBinaryMatrix(int[][] grid) {
+    public int shortestPathBinaryMatrix(int[][] grid) {
         int count = 0;
 
         int m = grid.length;

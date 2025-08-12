@@ -50,7 +50,7 @@ class LongestPalindromicSubstring {
     }
 
     public String getPalindrom(String s, int i, int j) {
-        while (i >= 0 && j <= s.length()-1) {
+        while (i >= 0 && j <= s.length() - 1) {
             if (s.charAt(i) == s.charAt(j)) {
                 i--;
                 j++;

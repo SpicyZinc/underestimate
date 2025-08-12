@@ -38,7 +38,7 @@ class RandomPickWithWeight {
     // Mon May  6 00:14:30 2019
     int[] sum;
     Random random;
-    
+
     public Solution(int[] w) {
         this.sum = new int[w.length];
         this.sum[0] = w[0];
@@ -46,7 +46,7 @@ class RandomPickWithWeight {
         for (int i = 1; i < w.length; i++) {
             this.sum[i] = this.sum[i - 1] + w[i];
         }
-        
+
         this.random = new Random();
     }
 

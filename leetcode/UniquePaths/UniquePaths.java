@@ -53,7 +53,7 @@ public class UniquePaths {
             }
         }
 
-        return step[n-1];
+        return step[n - 1];
     }
 
     public int uniquePaths(int m, int n) {

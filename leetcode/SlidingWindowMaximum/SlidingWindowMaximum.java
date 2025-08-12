@@ -60,6 +60,28 @@ public class SlidingWindowMaximum {
 
         eg.maxSlidingWindow(nums, k);
     }
+    // 2025 simple, but TLE
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int[] maxs = new int[n - k + 1];
+        int idx = 0;
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            pq.add(num);
+            if (pq.size() >= k) {
+                maxs[idx++] = pq.peek();
+                // 注意是删除的谁
+                // 既不是poll() 也不是最后一个
+                // 而是精准定位到i-k 窗口最左端
+                pq.remove(nums[i - k + 1]);
+            }
+        }
+
+        return maxs;
+    }
     // Sun Jun  9 14:10:00 2019
     public int[] maxSlidingWindow(int[] nums, int k) {
         if (nums.length == 0 || nums == null) {

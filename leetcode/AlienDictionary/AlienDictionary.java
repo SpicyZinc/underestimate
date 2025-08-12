@@ -1,6 +1,8 @@
 /*
-There is a new alien language which uses the Latin alphabet. However, the order among letters are unknown to you.
-You receive a list of words from the dictionary, where words are sorted lexicographically by the rules of this new language.
+There is a new alien language which uses the Latin alphabet.
+However, the order among letters are unknown to you.
+You receive a list of words from the dictionary,
+where words are sorted lexicographically by the rules of this new language.
 Derive the order of letters in this language.
 
 For example,
@@ -57,11 +59,11 @@ class AlienDictionary {
     // Mon Jul  8 21:54:24 2019
     public String alienOrder(String[] words) {
         String order = "";
-        
+
         if (words.length == 0 || words == null) {
             return order;
         }
-        
+
         Map<Character, Set<Character>> graph = new HashMap<>();
         Map<Character, Integer> indegree = new HashMap<>();
         

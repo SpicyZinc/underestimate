@@ -6,7 +6,6 @@ For every even-indexed level, all nodes at the level have odd integer values in 
 For every odd-indexed level, all nodes at the level have even integer values in strictly decreasing order (from left to right).
 Given the root of a binary tree, return true if the binary tree is Even-Odd, otherwise return false.
 
-
 Example 1:
 
 Input: root = [1,10,4,3,null,7,9,12,8,6,null,null,2]
@@ -34,11 +33,9 @@ Input: root = [5,9,1,3,5,7]
 Output: false
 Explanation: Node values in the level 1 should be even integers.
 
-
 Constraints:
 The number of nodes in the tree is in the range [1, 105].
 1 <= Node.val <= 10^6
-
 
 idea:
 bfs
@@ -64,7 +61,6 @@ class EvenOddTree {
     public boolean isEvenOddTree(TreeNode root) {
         Queue<TreeNode> queue = new LinkedList<>();
         boolean leftToRight = true;
-        int e = 0;
         queue.add(root);
 
         while (!queue.isEmpty()) {
@@ -74,10 +70,10 @@ class EvenOddTree {
                 TreeNode node = queue.poll();
 
                 if (leftToRight) {
-                    if (node.val % 2 == 1 &&  node.val > prevValue ) prevValue = node.val;
+                    if (node.val % 2 == 1 && node.val > prevValue) prevValue = node.val;
                     else return false;
                 } else {
-                    if (node.val % 2 == 0 &&  node.val < prevValue ) prevValue = node.val;
+                    if (node.val % 2 == 0 && node.val < prevValue) prevValue = node.val;
                     else return false;
                 }
 

@@ -55,7 +55,7 @@ public class FractionToRecurringDecimal {
         	return ans.toString();
         }
         // map to record irrational number repeating position
-        Map<Long, Integer> hm = new HashMap<Long, Integer>();
+        Map<Long, Integer> hm = new HashMap<>();
         ans.append(".");
     
         while (reminder != 0) {

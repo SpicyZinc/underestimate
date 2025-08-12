@@ -39,7 +39,7 @@ public class TargetSum {
                 cnt[0]++;
             }
 
-            return;    
+            return;
         }
         
         dfs(nums, pos + 1, sum + nums[pos], cnt, S);

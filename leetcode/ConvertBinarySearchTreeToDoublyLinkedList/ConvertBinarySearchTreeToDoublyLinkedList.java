@@ -42,6 +42,42 @@ class Node {
 */
 
 class Solution {
+    // 2025
+    Node tail = null;
+    Node head = null;
+
+    public Node treeToDoublyList(Node root) {
+        if (root == null) {
+            return null;
+        }
+
+        inorder(root);
+        // 连起首尾
+        head.left = tail;
+        tail.right = head;
+
+        return head;
+    }
+
+    public void inorder(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        inorder(node.left);
+
+        if (tail == null) {
+            head = node;
+        } else {
+            tail.right = node;
+            node.left = tail;
+        }
+        // advance 1
+        tail = node;
+
+        inorder(node.right);
+    }
+
     public Node treeToDoublyList(Node root) {
         if (root == null) return null;
 
@@ -58,9 +94,9 @@ class Solution {
         while (tail.right != null) {
             tail = tail.right;
         }
-        
+
         dfs(root, null);
-        
+
         // since it's a circular linkedlist set right & left pointers
         // 头尾相连
         tail.right = head;
@@ -68,17 +104,17 @@ class Solution {
 
         return head;
     }
-    
+
     public void dfs(Node node, Node prev) {
         if (node != null) {
             if (node.left != null) {
                 dfs(node.left, node);
             }
-            
+
             if (node.right != null) {
                 dfs(node.right, node);
             }
-            
+
             // if current node is the left child.
             // Then in the list it should appear before the parent node
             if (prev != null && prev.left == node) {

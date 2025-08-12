@@ -31,44 +31,37 @@ class Interval {
 	Interval() { start = 0; end = 0; }
 	Interval(int s, int e) { start = s; end = e; }
 }
+
 public class SummaryRanges {
-	List<Interval> intervals;
-    /** Initialize your data structure here. */
+    private Set<Integer> values;
+
     public SummaryRanges() {
-        intervals = new ArrayList<Interval>();
+        values = new TreeSet<>();
     }
     
-    public void addNum(int val) {
-        Interval current = new Interval(val, val);
-        List<Interval> res = new ArrayList<Interval>();
-        int pos = 0;
-
-        for (Interval a : intervals) {
-            if (current.end + 1 < a.start) {
-                res.add(a);
-            }
-            else if (current.start > a.end + 1) {
-                res.add(a);
-                pos++;
-            }
-            else if (current.start - 1 == a.end) {
-                current.start = a.start;
-            }
-            else if (current.end + 1 == a.start) {
-                current.end = a.end;
-            }
-            else {
-                current.start = Math.min(current.start, a.start);
-                current.end = Math.max(current.end, a.end);
-            }
+    public void addNum(int value) {
+       values.add(value);
+    }
+    
+    public int[][] getIntervals() {
+        if (values.isEmpty()) {
+            return new int[0][2];
         }
 
-        res.add(pos, current);
-        intervals = res;
-    }
-    
-    public List<Interval> getIntervals() {
-        return intervals;
+        List<int[]> intervals = new ArrayList<>();
+        int left = -1, right = -1;
+        for (Integer value : values) {
+            if (left < 0) {
+                left = right = value;
+            } else if (value == right + 1) {
+                right = value;
+            } else {
+                intervals.add(new int[] {left, right});
+                left = right = value;
+            } 
+        }
+        intervals.add(new int[] {left, right});
+        return intervals.toArray(new int[0][]); 
     }
 }
 
