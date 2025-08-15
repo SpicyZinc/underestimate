@@ -1,6 +1,8 @@
 /*
-Given the root of a binary search tree and a target value, return the value in the BST that is closest to the target. If there are multiple answers, print the smallest.
-Note: Given target value is a floating point. You are guaranteed to have only one unique value in the BST that is closest to the target.
+Given the root of a binary search tree and a target value, return the value in the BST that is closest to the target.
+If there are multiple answers, print the smallest.
+Note: Given target value is a floating point.
+You are guaranteed to have only one unique value in the BST that is closest to the target.
 
 idea:
 1. recursion

@@ -107,7 +107,7 @@ public class SwapNodesInPairs {
     public ListNode swapPairs(ListNode head) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        
+
         ListNode prev = dummy;
         ListNode curr = head;
         
@@ -119,7 +119,7 @@ public class SwapNodesInPairs {
             curr.next = rest;
             
             prev = curr;
-            curr = prev.next;
+            curr = curr.next;
 
         }
         
